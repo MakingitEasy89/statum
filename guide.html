@@ -100,54 +100,86 @@
 
   <div class="card">
     <h2>What this is</h2>
-    <p>A matchup analytics dashboard covering every skill-position player, QB, kicker, and pass rusher in the NFL across the 2024 and 2025 seasons, plus 2025 rookies. Every stat is tagged with the real defensive front and coverage shell that was on the field for that play — not a static "this team runs a 4-3" label.</p>
+    <p>A stats and analytics dashboard covering <b>NFL, WNBA, and MLB</b> — every skill-position player, QB, kicker, and pass rusher in the NFL; every WNBA player; every qualified MLB batter and pitcher. NFL stats are tagged with the real defensive front and coverage shell that was on the field for that play — not a static "this team runs a 4-3" label.</p>
   </div>
 
   <div class="card">
     <h2>How to use it</h2>
 
     <div class="tab-item">
-      <h3><span class="tab-tag" style="background:#00E5FF22;color:#00E5FF;">OFFENSE</span> / <span class="tab-tag" style="background:#B98CF222;color:#C77DFF;">DEFENSE</span></h3>
-      <p>Browse every player's season stats. Click a card to see their splits by defensive front, coverage type, weather, and home/away — plus every touchdown or sack they've been part of, with the exact context it happened in.</p>
+      <h3><span class="tab-tag" style="background:#F0C67422;color:#F0C674;">DASHBOARD</span></h3>
+      <p>The landing page. Real stat tiles (strong-confidence prop count, open bets, portfolio ROI), your top 5 strongest current picks, an upcoming slate grouped by real date (click any game to jump straight to props for those two teams), and your recent bet log. Nothing here is placeholder — every number is computed live from your actual data.</p>
     </div>
 
     <div class="tab-item">
-      <h3><span class="tab-tag" style="background:#FFB80022;color:#FFB800;">MARKET PULSE</span></h3>
-      <p>A snapshot of real Kalshi (CFTC-regulated exchange) prices — season-long leader races, win totals, and player thresholds. This is a manual snapshot, not a live feed, since the page can't reach outside APIs on its own.</p>
+      <h3><span class="tab-tag" style="background:#00D9FF22;color:#00D9FF;">OFFENSE</span> / <span class="tab-tag" style="background:#E838D422;color:#E838D4;">DEFENSE</span></h3>
+      <p>Browse every player's season stats (for MLB this is Batters/Pitchers). Click a card to see splits, recent games with real opponents, and — for NFL — every touchdown or sack with the exact front/coverage context it happened in.</p>
+    </div>
+
+    <div class="tab-item">
+      <h3><span class="tab-tag" style="background:#F0C67422;color:#F0C674;">MARKET PULSE</span></h3>
+      <p>Live prices from Kalshi and Polymarket, blended together — championship odds, season-long leader races, and a GEX-style order book depth panel showing where real money is actually stacked. If a live fetch fails for any reason, it falls back to the last known snapshot rather than showing nothing.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#00E67622;color:#00E676;">PROP FLOORS + PARLAY</span></h3>
-      <p>The core tool. Each player-stat gets three lines — P25, P50, P75 — set from 2024 games and tested against real 2025 games. Tap a tranche to add it to your slip at the bottom. Combine several legs to see a combined probability and payout, then use AI Assist to see a suggested swap for your weakest leg. Hit <b>Submit Bet</b> to resolve it instantly and send it to Tracking. The slip can be minimized with the ▼ button if it's in your way.</p>
+      <p>The core tool. Each player-stat gets three lines — P25, P50, P75 — backtested out-of-sample against real games. Tap a tranche to add it to your slip. If you've connected a real sportsbook odds feed (see below), matching lines auto-fill with a green "✓ Real line found" indicator; otherwise use "📏 Compare to your sportsbook line" and type in what you see on your own book to get an instant Strong Over/Moderate Over/Neutral/Moderate Under/Strong Under read.</p>
+      <p style="margin-top:8px;">Combined probability accounts for real same-team correlation where enough shared game history exists — not just naive multiplication — with a note showing when and how much the adjustment moved the number. Use <b>✨ AI Assist</b> to get a suggested swap for your weakest leg, <b>📋 Copy Slip</b> to format everything for pasting into DraftKings/FanDuel yourself, or <b>🎯 Submit Bet</b> to resolve instantly and send it to Tracking.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#FF3D7122;color:#FF3D71;">MATCHUP</span></h3>
-      <p>For each player in your current slip, pick a hypothetical opponent and see their real points-allowed rank, yards allowed to that position group, and whether that's a genuine weak spot for the defense. There's no 2026 schedule yet, so treat this as a "what if" tool, not an actual upcoming game.</p>
+      <p>For each player in your slip, pick a hypothetical opponent and see real points/runs-allowed rank and (NFL only) scheme signature. Works across all three sports in one mixed slip. Treat it as a "what if" tool — it isn't locked to an actual scheduled game.</p>
+    </div>
+
+    <div class="tab-item">
+      <h3><span class="tab-tag" style="background:#00D9FF22;color:#00D9FF;">TEAMS</span></h3>
+      <p>Browse every team's real offense (points/runs scored) and defense (allowed) stats side by side, with rank. Click a team to see its full roster — click any player there to jump straight to their own detail page.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#FFD54A22;color:#FFD54A;">TRACKING</span></h3>
-      <p>Your submitted bet history and running record — wins, losses, pending futures, net units, and which tranche (P25/P50/P75) has actually worked best for you. This is stored in your browser only; it won't follow you to another device, and it won't show anyone else's picks.</p>
+      <p>Your submitted bet history — wins, losses, net units, and which tranche has actually worked best for you. Click <b>🔍 Check vs a real game</b> on any leg to independently verify it against an actual embedded game log, separate from however it originally resolved. You can also <b>📥 Import Bet History</b> from another sportsbook — paste in whatever text you have, review the parsed rows (edit or delete anything wrong), and import. Everything here is stored in your browser only — it won't follow you to another device.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Other things worth knowing</h2>
+    <div class="tab-item">
+      <h3>☀️ / 🌙 Day &amp; Night mode</h3>
+      <p>Switches automatically by your local time, or click the toggle next to the sport switcher to override it manually.</p>
+    </div>
+    <div class="tab-item">
+      <h3>⚙ "How this works" toggles</h3>
+      <p>Methodology explanations are tucked behind small gear-icon toggles throughout the app instead of always taking up space — click one open any time you want the detail.</p>
+    </div>
+    <div class="tab-item">
+      <h3>Real sportsbook lines (optional)</h3>
+      <p>If a real odds API key is connected, prop cards auto-fill with actual DraftKings/FanDuel lines instead of needing manual entry. This is entirely optional — manual comparison works fine without it.</p>
     </div>
   </div>
 
   <div class="card">
     <h2>How the numbers are built</h2>
-    <p style="margin-bottom:14px;">Every ladder line is a percentile of a player's 2024 game log, tested against real 2025 games the line never saw — an out-of-sample backtest, not a threshold grading its own training data.</p>
-    <div class="methodology-row"><span class="tranche" style="color:#00E676;">P25</span><p>25th percentile — a conservative floor, historically cleared ~75% of the time.</p></div>
-    <div class="methodology-row"><span class="tranche" style="color:#00E5FF;">P50</span><p>Median — a 50/50 line.</p></div>
-    <div class="methodology-row"><span class="tranche" style="color:#FFB800;">P75</span><p>75th percentile — the stretch tranche, ~25% historical clear rate, bigger number when it hits.</p></div>
-    <p style="margin-top:10px;">A <b style="color:#FF3D71;">TEAM CHANGE</b> badge means the 2024 line was set on a different team/offense than the one being tested. A <b style="color:#B4FF39;">ROOKIE</b> badge means there's no 2024 baseline at all — the line is a single-season number.</p>
+    <p style="margin-bottom:14px;">Every ladder line is a percentile of a player's prior-season game log, tested against real current-season games the line never saw — an out-of-sample backtest, not a threshold grading its own training data.</p>
+    <div class="methodology-row"><span class="tranche" style="color:#00D9FF;">P25</span><p>25th percentile — a conservative floor, historically cleared ~75% of the time.</p></div>
+    <div class="methodology-row"><span class="tranche" style="color:#F0C674;">P50</span><p>Median — a 50/50 line.</p></div>
+    <div class="methodology-row"><span class="tranche" style="color:#E838D4;">P75</span><p>75th percentile — the stretch tranche, ~25% historical clear rate, bigger number when it hits.</p></div>
+    <p style="margin-top:10px;">A <b style="color:#FF3D71;">TEAM CHANGE</b> badge means the baseline line was set on a different team/offense than the one being tested. A <b style="color:#B4FF39;">ROOKIE</b> badge means there's no prior-season baseline at all. A <b>📊 confidence badge</b> (Strong/Moderate/Limited) tells you how many real out-of-sample games back that specific hit rate — treat Limited numbers with real caution.</p>
   </div>
 
   <div style="text-align:center; margin-top: 36px;">
     <a class="cta" href="./index.html">← Open the Dashboard</a>
   </div>
 
+  <div class="card">
+    <h2>Keeping it running</h2>
+    <p>If you're the one operating this dashboard: it auto-updates itself twice a day via GitHub Actions (see the workflow file in the repo). Games-played, prop ladders, and live odds all refresh automatically — no manual steps needed for normal operation. A manual run is only needed if you're changing the code itself.</p>
+  </div>
+
   <div class="footer-note">
-    Data: 2024–2025 NFL play-by-play and Next Gen Stats participation (nflverse), joined per-play.<br/>
-    Not affiliated with the NFL, any NFL team, or any sportsbook. For entertainment and analysis purposes only.<br/><br/>
+    Data: NFL play-by-play and Next Gen Stats participation (nflverse), WNBA and MLB play-by-play (sportsdataverse, MLB Stats API), joined per-play where applicable.<br/>
+    Not affiliated with the NFL, WNBA, MLB, any team, or any sportsbook. For entertainment and analysis purposes only.<br/><br/>
     © 2026 — built for personal use and shared with friends. Not for redistribution, rehosting, or commercial use without permission.
   </div>
 </div>
