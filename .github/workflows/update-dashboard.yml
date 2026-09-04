@@ -29,7 +29,7 @@ jobs:
       - name: Set up Node.js (for precompiling the JSX)
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Python dependencies
         run: pip install pandas numpy requests pyarrow --break-system-packages
