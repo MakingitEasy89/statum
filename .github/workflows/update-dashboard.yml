@@ -1,0 +1,45 @@
+name: Update Statum Dashboard
+
+# Runs automatically twice a day (roughly 9am and 9pm US Central time — GitHub Actions
+# schedules are always in UTC and don't auto-adjust for daylight saving, so actual local
+# time will drift by an hour twice a year). Also runnable on demand from the Actions tab.
+on:
+  schedule:
+    - cron: '0 14 * * *'
+    - cron: '0 2 * * *'
+  workflow_dispatch: {}
+
+# Lets the built-in GITHUB_TOKEN push commits back to this repo — without this, the
+# checkout is read-only and the final push step would fail.
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js (for precompiling the JSX)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Python dependencies
+        run: pip install pandas numpy requests pyarrow --break-system-packages
+
+      - name: Configure git identity
+        run: |
+          git config user.name "Statum Auto-Updater"
+          git config user.email "actions@github.com"
+
+      - name: Run the update script
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python update_dashboard.py
