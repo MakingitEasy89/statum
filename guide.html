@@ -157,6 +157,11 @@
       <h3>Real sportsbook lines (optional)</h3>
       <p>If a real odds API key is connected, prop cards auto-fill with actual DraftKings/FanDuel lines instead of needing manual entry. This is entirely optional — manual comparison works fine without it.</p>
     </div>
+    <div class="tab-item">
+      <h3><span class="tab-tag" style="background:#8B7FD122;color:#8B7FD1;">CFB</span> (optional, needs its own free key)</h3>
+      <p>College football books rarely offer player props, so this sport is built differently — around <b>spread, total, and moneyline</b> instead. Our own power-rating model (real points scored/allowed per team, plus a home-field edge computed from actual games) generates a prediction for every upcoming game, backtested against real historical closing lines. No player props, no parlay slip for this sport — just Dashboard, Games, Teams, and the market comparator.</p>
+      <p style="margin-top:8px;">Requires a free key from <a href="https://collegefootballdata.com/key" style="color:#8B7FD1;">collegefootballdata.com/key</a> — save it as <code>cfbd_api_key.txt</code> next to <code>update_dashboard.py</code> (same pattern as the odds key), or add it as a <code>CFBD_API_KEY</code> GitHub Actions secret for the automated runs. Without a key, this sport simply shows an empty state — everything else on the site is unaffected.</p>
+    </div>
   </div>
 
   <div class="card">
