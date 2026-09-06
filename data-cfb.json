@@ -1,1 +1,1 @@
-{"teams": [], "upcoming": [], "backtest": {"spreadHitRate": null, "spreadSample": 0, "totalHitRate": null, "totalSample": 0, "moneylineHitRate": null, "moneylineSample": 0}, "homeField": 2.5}
+{"teams": [{"school": null, "avgPointsScored": 26.7, "avgPointsAllowed": 26.7, "powerRating": 0.0, "games": 8378}], "upcoming": [], "backtest": {"spreadHitRate": 49.0, "spreadSample": 671, "totalHitRate": 53.2, "totalSample": 669, "moneylineHitRate": 54.4, "moneylineSample": 1496}, "homeField": 5.08}
