@@ -1034,6 +1034,16 @@ def fetch_cfb_games(season, api_key):
     data = cfbd_get("/games", {"year": season, "seasonType": "regular"}, api_key)
     if not data:
         return []
+    # one-time raw diagnostic: print the actual keys and a couple values from a real
+    # response, since a guessed field name (home_points/away_points) came back empty
+    # last run despite the API call itself succeeding — this shows ground truth instead
+    # of guessing a second time.
+    if data and len(data) > 0:
+        sample = data[0]
+        print(f"    RAW sample game keys: {sorted(sample.keys())}")
+        for candidate in ['home_points', 'homePoints', 'home_score', 'homeScore', 'points_home']:
+            if candidate in sample:
+                print(f"    Found score-like field '{candidate}' = {sample[candidate]}")
     games = []
     for g in data:
         try:
@@ -1041,7 +1051,8 @@ def fetch_cfb_games(season, api_key):
                 'id': g.get('id'), 'season': g.get('season'), 'week': g.get('week'),
                 'start_date': g.get('start_date'), 'completed': bool(g.get('completed')),
                 'home_team': g.get('home_team'), 'away_team': g.get('away_team'),
-                'home_points': g.get('home_points'), 'away_points': g.get('away_points'),
+                'home_points': g.get('home_points') if g.get('home_points') is not None else g.get('homePoints'),
+                'away_points': g.get('away_points') if g.get('away_points') is not None else g.get('awayPoints'),
                 'neutral_site': bool(g.get('neutral_site')),
             })
         except Exception:
