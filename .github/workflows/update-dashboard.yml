@@ -42,4 +42,5 @@ jobs:
       - name: Run the update script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: python update_dashboard.py
