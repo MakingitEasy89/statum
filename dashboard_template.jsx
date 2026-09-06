@@ -11,10 +11,10 @@ const { useState, useMemo, useEffect, useRef } = React;
 const RECEIVERS = __RECEIVERS__;
 const NFL_UPCOMING = __NFL_UPCOMING__;
 
-// WNBA and MLB data are NOT embedded here — they're fetched on demand the first time
-// you switch to that sport, instead of every visitor's browser having to load and parse
-// all three sports' data just to see the page. This is the fix for the mobile crash.
-let SportDataCache = { wnba: null, mlb: null };
+// WNBA, MLB, and CFB data are NOT embedded here — they're fetched on demand the first
+// time you switch to that sport, instead of every visitor's browser having to load and
+// parse every sport's data just to see the page. This is the fix for the mobile crash.
+let SportDataCache = { wnba: null, mlb: null, cfb: null };
 function wnbaPlayers() { return SportDataCache.wnba?.players || []; }
 function wnbaPool() { return SportDataCache.wnba?.pool || []; }
 function wnbaTeamDefense() { return SportDataCache.wnba?.teamDefense || {}; }
@@ -23,6 +23,20 @@ function mlbPlayers() { return SportDataCache.mlb?.players || []; }
 function mlbPool() { return SportDataCache.mlb?.pool || []; }
 function mlbTeamDefense() { return SportDataCache.mlb?.teamDefense || {}; }
 function mlbUpcoming() { return SportDataCache.mlb?.upcoming || {}; }
+function cfbTeams() { return SportDataCache.cfb?.teams || []; }
+function cfbUpcoming() { return SportDataCache.cfb?.upcoming || []; }
+function cfbBacktest() { return SportDataCache.cfb?.backtest || {}; }
+function cfbHomeField() { return SportDataCache.cfb?.homeField ?? 2.5; }
+// Adapts CFB's game-array shape into the same {team: {opp, date, isHome}} map the other
+// sports use, so the existing Dashboard slate logic works unchanged across all four sports.
+function cfbUpcomingAsTeamMap() {
+  const out = {};
+  cfbUpcoming().forEach(g => {
+    if (!out[g.homeTeam]) out[g.homeTeam] = { opp: g.awayTeam, date: g.date, isHome: true };
+    if (!out[g.awayTeam]) out[g.awayTeam] = { opp: g.homeTeam, date: g.date, isHome: false };
+  });
+  return out;
+}
 
 const QBS = __QBS__;
 const KICKERS = __KICKERS__;
@@ -2572,10 +2586,10 @@ function MatchupCard({ player, pos, team, opp, setOpp }) {
 // DASHBOARD / OVERVIEW — real-data summary widgets, no fabricated numbers
 // =====================================================================
 function DashboardView({ sport, slip, sportDataStatus, onSelectGame }) {
-  const pool = sport==="nfl" ? [...FULL_POOL, ...FUTURES_POOL] : sport==="wnba" ? wnbaPool() : mlbPool();
-  const upcoming = sport==="nfl" ? NFL_UPCOMING : sport==="wnba" ? wnbaUpcoming() : mlbUpcoming();
-  const sportLabel = sport==="nfl" ? "NFL" : sport==="wnba" ? "WNBA" : "MLB";
-  const sportAccent = sport==="nfl" ? ACCENT.teal : sport==="wnba" ? "#FF8A00" : "#6EC9F2";
+  const pool = sport==="nfl" ? [...FULL_POOL, ...FUTURES_POOL] : sport==="wnba" ? wnbaPool() : sport==="mlb" ? mlbPool() : [];
+  const upcoming = sport==="nfl" ? NFL_UPCOMING : sport==="wnba" ? wnbaUpcoming() : sport==="mlb" ? mlbUpcoming() : cfbUpcomingAsTeamMap();
+  const sportLabel = sport==="nfl" ? "NFL" : sport==="wnba" ? "WNBA" : sport==="mlb" ? "MLB" : "CFB";
+  const sportAccent = sport==="nfl" ? ACCENT.teal : sport==="wnba" ? "#FF8A00" : sport==="mlb" ? "#6EC9F2" : "#8B7FD1";
   const isLoadingSportData = sport !== "nfl" && sportDataStatus?.[sport] === "loading";
 
   const [bets, setBets] = useState([]);
@@ -2704,25 +2718,44 @@ function DashboardView({ sport, slip, sportDataStatus, onSelectGame }) {
         </Glass>
 
         <Glass hover={false} style={{ padding: "16px 18px" }}>
-          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>🏆 Top 5 Strong Picks — {sportLabel}</div>
-          {topPicks.length > 0 ? (
+          {sport === "cfb" ? (
             <>
-              {topPicks.map((p, i) => (
-                <div key={p.id || `${p.player}-${p.stat}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 0", borderTop: i>0 ? "1px solid var(--overlay-3)" : "none" }}>
-                  <div>
-                    <span style={{ fontSize: 10.5, color: "var(--text-tertiary)", marginRight: 8 }}>#{i+1}</span>
-                    <span style={{ fontSize: 13, fontWeight: 700 }}>{p.player}</span>
-                    <div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", marginLeft: 20 }}>{p.stat}</div>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 11.5, color: TRANCHE_COLOR.p50, fontWeight: 700 }}>{fmt(p.p50.line,0)} ({fmt(p.p50.testHit,0)}%)</span>
-                    <ConfidenceBadge testGames={p.testGames} />
-                  </div>
-                </div>
-              ))}
-              <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 8 }}>Ranked by P50 hit rate among Strong/Moderate-confidence {sportLabel} lines right now.</div>
+              <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>🏈 Next 5 Games — CFB</div>
+              {cfbUpcoming().slice(0, 5).length > 0 ? (
+                <>
+                  {cfbUpcoming().slice(0, 5).map((g, i) => (
+                    <div key={g.id} style={{ padding: "7px 0", borderTop: i>0 ? "1px solid var(--overlay-3)" : "none", fontSize: 12.5 }}>
+                      <b>{g.awayTeam}</b> <span style={{color:"var(--text-tertiary)"}}>@</span> <b>{g.homeTeam}</b>
+                      <span style={{ float: "right", color: "#8B7FD1", fontWeight: 700 }}>{g.predictedMargin>=0?g.homeTeam:g.awayTeam} -{fmt(Math.abs(g.predictedMargin),1)}</span>
+                    </div>
+                  ))}
+                  <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 8 }}>See the Games tab for full spread/total predictions and backtested confidence.</div>
+                </>
+              ) : <div style={{ fontSize: 12, color: "var(--text-tertiary)" }}>No upcoming games loaded — connect a free collegefootballdata.com API key (see Guide).</div>}
             </>
-          ) : <div style={{ fontSize: 12, color: "var(--text-tertiary)" }}>No qualifying picks for {sportLabel} yet.</div>}
+          ) : (
+            <>
+              <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>🏆 Top 5 Strong Picks — {sportLabel}</div>
+              {topPicks.length > 0 ? (
+                <>
+                  {topPicks.map((p, i) => (
+                    <div key={p.id || `${p.player}-${p.stat}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 0", borderTop: i>0 ? "1px solid var(--overlay-3)" : "none" }}>
+                      <div>
+                        <span style={{ fontSize: 10.5, color: "var(--text-tertiary)", marginRight: 8 }}>#{i+1}</span>
+                        <span style={{ fontSize: 13, fontWeight: 700 }}>{p.player}</span>
+                        <div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", marginLeft: 20 }}>{p.stat}</div>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 11.5, color: TRANCHE_COLOR.p50, fontWeight: 700 }}>{fmt(p.p50.line,0)} ({fmt(p.p50.testHit,0)}%)</span>
+                        <ConfidenceBadge testGames={p.testGames} />
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 8 }}>Ranked by P50 hit rate among Strong/Moderate-confidence {sportLabel} lines right now.</div>
+                </>
+              ) : <div style={{ fontSize: 12, color: "var(--text-tertiary)" }}>No qualifying picks for {sportLabel} yet.</div>}
+            </>
+          )}
         </Glass>
 
         <Glass hover={false} style={{ padding: "16px 18px" }}>
@@ -2755,6 +2788,133 @@ function DashboardView({ sport, slip, sportDataStatus, onSelectGame }) {
 // cards showing combined offense+defense, click one for the full picture
 // plus that team's top players.
 // =====================================================================
+// =====================================================================
+// COLLEGE FOOTBALL — game-level markets (spread/total/moneyline), not player
+// props, since CFB books rarely offer them. Confidence here is tiered by real
+// backtested performance against actual historical closing lines, not a
+// self-graded number — same "prove it against reality" standard as everywhere
+// else in this app, just applied to a different market shape.
+// =====================================================================
+function cfbConfidenceTier(hitRate, sample) {
+  if (hitRate == null || sample == null || sample < 10) return { label: "Limited", color: ACCENT.rose, note: sample ? `only ${sample} backtested games — too small a sample to trust` : "no backtest sample yet" };
+  if (hitRate >= 55 && sample >= 30) return { label: "Strong", color: ACCENT.green, note: `${hitRate}% real hit rate across ${sample} backtested games` };
+  if (hitRate >= 52.4 && sample >= 15) return { label: "Moderate", color: ACCENT.amber, note: `${hitRate}% real hit rate across ${sample} backtested games — above the ~52.4% break-even line at standard -110 odds` };
+  return { label: "Limited", color: ACCENT.rose, note: `${hitRate}% real hit rate across ${sample} backtested games — hasn't shown a real edge` };
+}
+
+function CFBGameCard({ game }) {
+  const [open, setOpen] = useState(false);
+  const [marketSpread, setMarketSpread] = useState("");
+  const [marketTotal, setMarketTotal] = useState("");
+  const backtest = cfbBacktest();
+
+  const favored = game.predictedMargin >= 0 ? game.homeTeam : game.awayTeam;
+  const favoredBy = Math.abs(game.predictedMargin);
+  const spreadTier = cfbConfidenceTier(backtest.spreadHitRate, backtest.spreadSample);
+  const totalTier = cfbConfidenceTier(backtest.totalHitRate, backtest.totalSample);
+  const mlTier = cfbConfidenceTier(backtest.moneylineHitRate, backtest.moneylineSample);
+
+  const mSpread = parseFloat(marketSpread);
+  const mTotal = parseFloat(marketTotal);
+  const hasMarketSpread = !isNaN(mSpread);
+  const hasMarketTotal = !isNaN(mTotal);
+  const marketHomeMargin = hasMarketSpread ? -mSpread : null;
+  const spreadEdge = hasMarketSpread ? Math.round((game.predictedMargin - marketHomeMargin) * 10) / 10 : null;
+  const totalEdge = hasMarketTotal ? Math.round((game.predictedTotal - mTotal) * 10) / 10 : null;
+
+  return (
+    <Glass hover={false} style={{ padding: "14px 16px" }} className="bounce-in">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8, flexWrap: "wrap", gap: 6 }}>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 800 }}>{game.awayTeam} <span style={{color:"var(--text-tertiary)"}}>@</span> {game.homeTeam}</div>
+          <div style={{ fontSize: 10.5, color: "var(--text-secondary-b)" }}>{game.date}{game.week ? ` · Week ${game.week}` : ""}</div>
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: 18, flexWrap: "wrap", marginBottom: 8 }}>
+        <div>
+          <div style={{ fontSize: 9, color: "var(--text-tertiary)", textTransform: "uppercase" }}>Our Spread</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#8B7FD1" }}>{favored} -{fmt(favoredBy,1)}</div>
+        </div>
+        <div>
+          <div style={{ fontSize: 9, color: "var(--text-tertiary)", textTransform: "uppercase" }}>Our Total</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#8B7FD1" }}>{fmt(game.predictedTotal,1)}</div>
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 4 }}>
+        <span title={spreadTier.note} style={{ fontSize: 8.5, fontWeight: 800, color: spreadTier.color, border: `1px solid ${spreadTier.color}55`, borderRadius: 8, padding: "1px 6px" }}>📊 Spread: {spreadTier.label}</span>
+        <span title={totalTier.note} style={{ fontSize: 8.5, fontWeight: 800, color: totalTier.color, border: `1px solid ${totalTier.color}55`, borderRadius: 8, padding: "1px 6px" }}>📊 Total: {totalTier.label}</span>
+        <span title={mlTier.note} style={{ fontSize: 8.5, fontWeight: 800, color: mlTier.color, border: `1px solid ${mlTier.color}55`, borderRadius: 8, padding: "1px 6px" }}>📊 ML: {mlTier.label}</span>
+      </div>
+
+      <button onClick={()=>setOpen(o=>!o)} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 10.5, cursor: "pointer", padding: 0, textDecoration: "underline dotted" }}>
+        {open ? "Hide" : "📏 Compare to your sportsbook line"}
+      </button>
+      {open && (
+        <div className="fade-in" style={{ marginTop: 8, padding: "10px 12px", background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 8 }}>
+          <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginBottom: 6 }}>Enter the line exactly as shown for the HOME team ({game.homeTeam}) on your sportsbook.</div>
+          <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
+            <input placeholder={`${game.homeTeam} spread (e.g. -7.5)`} value={marketSpread} onChange={e=>setMarketSpread(e.target.value)} style={{ width: 160, background: "var(--overlay-2)", border: "1px solid var(--overlay-6)", borderRadius: 6, padding: "5px 8px", color: "var(--text-primary)", fontSize: 12 }} />
+            <input placeholder="Total (e.g. 52.5)" value={marketTotal} onChange={e=>setMarketTotal(e.target.value)} style={{ width: 130, background: "var(--overlay-2)", border: "1px solid var(--overlay-6)", borderRadius: 6, padding: "5px 8px", color: "var(--text-primary)", fontSize: 12 }} />
+          </div>
+          {hasMarketSpread && (
+            <div style={{ fontSize: 11.5, color: Math.abs(spreadEdge) >= 2 ? ACCENT.green : "var(--text-secondary-a)", marginBottom: 4 }}>
+              {spreadEdge > 0 ? `We lean ${fmt(spreadEdge,1)} pts more toward ${game.homeTeam} than the market.` : spreadEdge < 0 ? `We lean ${fmt(Math.abs(spreadEdge),1)} pts more toward ${game.awayTeam} than the market.` : "We match the market almost exactly."}
+            </div>
+          )}
+          {hasMarketTotal && (
+            <div style={{ fontSize: 11.5, color: Math.abs(totalEdge) >= 3 ? ACCENT.green : "var(--text-secondary-a)" }}>
+              {totalEdge > 0 ? `We project ${fmt(totalEdge,1)} more points than the market total (lean Over).` : totalEdge < 0 ? `We project ${fmt(Math.abs(totalEdge),1)} fewer points than the market total (lean Under).` : "We match the market total almost exactly."}
+            </div>
+          )}
+        </div>
+      )}
+    </Glass>
+  );
+}
+
+function CFBGamesView({ sportDataStatus }) {
+  const games = cfbUpcoming();
+  const backtest = cfbBacktest();
+  const homeField = cfbHomeField();
+
+  if (sportDataStatus?.cfb === "loading") {
+    return <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading College Football data…</Glass>;
+  }
+  if (sportDataStatus?.cfb === "error") {
+    return <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: ACCENT.rose, fontSize: 13 }}>Couldn't load CFB data — switch sports and back, or refresh.</Glass>;
+  }
+  if (games.length === 0) {
+    return <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-tertiary)", fontSize: 13 }}>No upcoming games loaded yet — this needs a free collegefootballdata.com API key connected. See the Guide for setup.</Glass>;
+  }
+
+  return (
+    <div className="fade-in">
+      <InfoToggle label="How this works">
+        <Glass hover={false} style={{ padding: "12px 16px", fontSize: 12.5, color: "var(--text-body)", lineHeight: 1.6 }}>
+          College football books rarely offer player props, so this is built around <b>spread, total, and moneyline</b> instead —
+          our own power-rating model (real points-scored/allowed differential per team, plus an empirically-computed home-field edge —
+          currently {fmt(homeField,1)} points, derived from actual games, not assumed) generates a prediction for every upcoming game.
+          The confidence badges are backtested against <b>real historical closing lines</b>, not graded against our own predictions —
+          type in what you see on your own sportsbook to see exactly where we agree or disagree, and by how much.
+        </Glass>
+      </InfoToggle>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 10 }}>
+        {games.map(g => <CFBGameCard key={g.id} game={g} />)}
+      </div>
+    </div>
+  );
+}
+
+function cfbTeamRanks(team) {
+  const teams = cfbTeams();
+  const scoredSorted = [...teams].sort((a,b) => b.avgPointsScored - a.avgPointsScored);
+  const allowedSorted = [...teams].sort((a,b) => b.avgPointsAllowed - a.avgPointsAllowed); // most allowed = worst = highest rank number
+  const scoredRank = scoredSorted.findIndex(t => t.school === team) + 1;
+  const allowedRank = allowedSorted.findIndex(t => t.school === team) + 1;
+  return { scoredRank: scoredRank || null, allowedRank: allowedRank || null };
+}
+
 function TeamCard({ team, sport, onSelect }) {
   let scored=null, scoredRank=null, allowed=null, allowedRank=null, label="";
   if (sport === "nfl") {
@@ -2767,11 +2927,17 @@ function TeamCard({ team, sport, onSelect }) {
     scored = d?.ppgScored; scoredRank = d?.scoredRank;
     allowed = d?.ppgAllowed; allowedRank = d?.rank;
     label = "Pts";
-  } else {
+  } else if (sport === "mlb") {
     const d = mlbTeamDefense()[team];
     scored = d?.runsScoredPerGame; scoredRank = d?.scoredRank;
     allowed = d?.runsAllowedPerGame; allowedRank = d?.rank;
     label = "Runs";
+  } else {
+    const d = cfbTeams().find(t => t.school === team);
+    scored = d?.avgPointsScored; allowed = d?.avgPointsAllowed;
+    const ranks = cfbTeamRanks(team);
+    scoredRank = ranks.scoredRank; allowedRank = ranks.allowedRank;
+    label = "Pts";
   }
   const teamLabel = sport === "nfl" ? (TEAM_NAMES[team] || team) : team;
   return (
@@ -2797,15 +2963,25 @@ function TeamCard({ team, sport, onSelect }) {
 
 function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
   const teamLabel = sport === "nfl" ? (TEAM_NAMES[team] || team) : team;
-  let def = null, label = "";
-  if (sport === "nfl") { def = TEAM_DEFENSE[team]; label = "Pts"; }
-  else if (sport === "wnba") { def = wnbaTeamDefense()[team]; label = "Pts"; }
-  else { def = mlbTeamDefense()[team]; label = "Runs"; }
-
-  const scored = sport==="mlb" ? def?.runsScoredPerGame : def?.pointsScoredPerGame ?? def?.ppgScored;
-  const scoredRank = sport==="mlb" ? def?.scoredRank : def?.pointsScoredRank ?? def?.scoredRank;
-  const allowed = sport==="mlb" ? def?.runsAllowedPerGame : def?.pointsAllowedPerGame ?? def?.ppgAllowed;
-  const allowedRank = sport==="mlb" ? def?.rank : def?.pointsAllowedRank ?? def?.rank;
+  let def = null, label = "", scored = null, scoredRank = null, allowed = null, allowedRank = null;
+  if (sport === "nfl") {
+    def = TEAM_DEFENSE[team]; label = "Pts";
+    scored = def?.pointsScoredPerGame; scoredRank = def?.pointsScoredRank;
+    allowed = def?.pointsAllowedPerGame; allowedRank = def?.pointsAllowedRank;
+  } else if (sport === "wnba") {
+    def = wnbaTeamDefense()[team]; label = "Pts";
+    scored = def?.ppgScored; scoredRank = def?.scoredRank;
+    allowed = def?.ppgAllowed; allowedRank = def?.rank;
+  } else if (sport === "mlb") {
+    def = mlbTeamDefense()[team]; label = "Runs";
+    scored = def?.runsScoredPerGame; scoredRank = def?.scoredRank;
+    allowed = def?.runsAllowedPerGame; allowedRank = def?.rank;
+  } else {
+    def = cfbTeams().find(t => t.school === team); label = "Pts";
+    scored = def?.avgPointsScored; allowed = def?.avgPointsAllowed;
+    const ranks = cfbTeamRanks(team);
+    scoredRank = ranks.scoredRank; allowedRank = ranks.allowedRank;
+  }
 
   const teamPlayers = useMemo(() => {
     if (sport === "nfl") {
@@ -2813,7 +2989,13 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
         .filter(p => p.team === team);
     }
     if (sport === "wnba") return wnbaPlayers().filter(p => p.team === team);
-    return mlbPlayers().filter(p => p.team === team);
+    if (sport === "mlb") return mlbPlayers().filter(p => p.team === team);
+    return [];
+  }, [team, sport]);
+
+  const teamGames = useMemo(() => {
+    if (sport !== "cfb") return [];
+    return cfbUpcoming().filter(g => g.homeTeam === team || g.awayTeam === team);
   }, [team, sport]);
 
   return (
@@ -2835,17 +3017,34 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
         </Glass>
       )}
 
-      <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
-        Players ({teamPlayers.length})
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 8 }}>
-        {teamPlayers.slice(0, 30).map((p,i) => (
-          <Glass key={p.id || p.name || i} onClick={()=>onSelectPlayer(p)} style={{ padding: "10px 12px" }}>
-            <div style={{ fontSize: 12.5, fontWeight: 700 }}>{p.name}</div>
-            <div style={{ fontSize: 10, color: "var(--text-secondary-b)" }}>{p.pos || p.group || ""}</div>
-          </Glass>
-        ))}
-      </div>
+      {sport === "cfb" ? (
+        <>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
+            Upcoming Games ({teamGames.length})
+          </div>
+          {teamGames.length === 0 ? (
+            <div style={{ fontSize: 12, color: "var(--text-tertiary)" }}>No upcoming games loaded for this team.</div>
+          ) : (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 10 }}>
+              {teamGames.map(g => <CFBGameCard key={g.id} game={g} />)}
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
+            Players ({teamPlayers.length})
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 8 }}>
+            {teamPlayers.slice(0, 30).map((p,i) => (
+              <Glass key={p.id || p.name || i} onClick={()=>onSelectPlayer(p)} style={{ padding: "10px 12px" }}>
+                <div style={{ fontSize: 12.5, fontWeight: 700 }}>{p.name}</div>
+                <div style={{ fontSize: 10, color: "var(--text-secondary-b)" }}>{p.pos || p.group || ""}</div>
+              </Glass>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -3489,7 +3688,7 @@ function App() {
   // Lazy-load state for WNBA/MLB data — declared early since several useMemo hooks below
   // depend on dataTick to know when to recompute after a fetch completes.
   const [dataTick, setDataTick] = useState(0); // bumped after a lazy-load completes, to force a re-render
-  const [sportDataStatus, setSportDataStatus] = useState({ wnba: "idle", mlb: "idle" });
+  const [sportDataStatus, setSportDataStatus] = useState({ wnba: "idle", mlb: "idle", cfb: "idle" });
 
   async function loadSportData(key) {
     if (SportDataCache[key] || sportDataStatus[key] === "loading") return;
@@ -3509,6 +3708,7 @@ function App() {
   useEffect(() => {
     if (sport === "wnba") loadSportData("wnba");
     if (sport === "mlb") loadSportData("mlb");
+    if (sport === "cfb") loadSportData("cfb");
   }, [sport]);
 
   const offensePositions = ["WR","TE","RB","QB","K"];
@@ -3576,6 +3776,7 @@ function App() {
 
   useEffect(() => { setSelected(null); setSelectedTeam(null); setPosFilter("all"); }, [tab]);
   useEffect(() => { setSelected(null); setSelectedTeam(null); setSearch(""); setPosFilter("all"); setTeam("all"); setMatchupFilter(null); }, [sport]);
+  useEffect(() => { if (sport === "cfb" && (tab === "locks" || tab === "matchup")) setTab("dashboard"); }, [sport, tab]);
 
   const [themeOverride, setThemeOverride] = useState(null); // null = auto (local time), "day", or "night"
 
@@ -3629,6 +3830,11 @@ function App() {
             background: sport==="mlb" ? "#6EC9F218" : "var(--overlay-1)",
             color: sport==="mlb" ? "#6EC9F2" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer"
           }}>⚾ MLB</button>
+          <button onClick={()=>setSport("cfb")} className="bubble-btn" style={{
+            padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="cfb"?"#8B7FD1":"var(--overlay-6)"}`,
+            background: sport==="cfb" ? "#8B7FD118" : "var(--overlay-1)",
+            color: sport==="cfb" ? "#8B7FD1" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer"
+          }}>🏈 CFB</button>
           <button
             onClick={()=>setThemeOverride(o => o === null ? (dailyTheme.isDay ? "night" : "day") : (o === "day" ? "night" : "day"))}
             title={themeOverride === null ? "Auto (following local time) — click to override" : `Manual ${themeOverride} mode — click to switch, or refresh to reset to auto`}
@@ -3660,16 +3866,22 @@ function App() {
 
         <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
           <Pill active={tab==="dashboard"} onClick={()=>setTab("dashboard")} accent="#FFD54A">🏠 Dashboard</Pill>
-          <Pill active={tab==="offense"} onClick={()=>setTab("offense")} accent={ACCENT.teal}>{sport==="nfl" ? "NFL Offense" : sport==="wnba" ? "WNBA Players" : "MLB Batters"}</Pill>
-          <Pill active={tab==="defense"} onClick={()=>setTab("defense")} accent={ACCENT.violet}>{sport==="nfl" ? "NFL Defense · Sacks" : sport==="wnba" ? "WNBA Defense · Stl+Blk" : "MLB Pitchers"}</Pill>
+          {sport==="cfb" ? (
+            <Pill active={tab==="offense"} onClick={()=>setTab("offense")} accent="#8B7FD1">🏈 Games</Pill>
+          ) : (
+            <>
+              <Pill active={tab==="offense"} onClick={()=>setTab("offense")} accent={ACCENT.teal}>{sport==="nfl" ? "NFL Offense" : sport==="wnba" ? "WNBA Players" : "MLB Batters"}</Pill>
+              <Pill active={tab==="defense"} onClick={()=>setTab("defense")} accent={ACCENT.violet}>{sport==="nfl" ? "NFL Defense · Sacks" : sport==="wnba" ? "WNBA Defense · Stl+Blk" : "MLB Pitchers"}</Pill>
+            </>
+          )}
           <Pill active={tab==="market"} onClick={()=>setTab("market")} accent={ACCENT.amber}>Market Pulse · Kalshi</Pill>
-          <Pill active={tab==="locks"} onClick={()=>setTab("locks")} accent={ACCENT.green}>🎯 Prop Floors + Parlay</Pill>
-          <Pill active={tab==="matchup"} onClick={()=>setTab("matchup")} accent={ACCENT.rose}>🏟️ Matchup</Pill>
+          {sport!=="cfb" && <Pill active={tab==="locks"} onClick={()=>setTab("locks")} accent={ACCENT.green}>🎯 Prop Floors + Parlay</Pill>}
+          {sport!=="cfb" && <Pill active={tab==="matchup"} onClick={()=>setTab("matchup")} accent={ACCENT.rose}>🏟️ Matchup</Pill>}
           <Pill active={tab==="teams"} onClick={()=>setTab("teams")} accent="#6EC9F2">🏛️ Teams</Pill>
           <Pill active={tab==="tracking"} onClick={()=>setTab("tracking")} accent="#FFD54A">🏆 Tracking</Pill>
         </div>
 
-        {tab==="dashboard" && <DashboardView sport={sport} slip={slip} sportDataStatus={sportDataStatus} onSelectGame={(teamA, teamB, label)=>{ setMatchupFilter({teamA, teamB, label}); setTab("locks"); }} />}
+        {tab==="dashboard" && <DashboardView sport={sport} slip={slip} sportDataStatus={sportDataStatus} onSelectGame={(teamA, teamB, label)=>{ if (sport==="cfb") { setTab("offense"); } else { setMatchupFilter({teamA, teamB, label}); setTab("locks"); } }} />}
         {tab==="market" && <MarketPulseView sport={sport} />}
         {tab==="locks" && <PropFloorsView sport={sport} slip={slip} setSlip={setSlip} stake={stake} setStake={setStake} aiSuggestion={aiSuggestion} setAiSuggestion={setAiSuggestion} dataTick={dataTick} sportDataStatus={sportDataStatus} matchupFilter={matchupFilter} setMatchupFilter={setMatchupFilter} />}
         {tab==="matchup" && <MatchupView slip={slip} setSlip={setSlip} />}
@@ -3679,7 +3891,7 @@ function App() {
               <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading {sport==="wnba"?"WNBA":"MLB"} data…</Glass>
             )}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
-              {(sport==="nfl" ? TEAMS : sport==="wnba" ? getWnbaTeams() : getMlbTeamsList()).map(t => (
+              {(sport==="nfl" ? TEAMS : sport==="wnba" ? getWnbaTeams() : sport==="mlb" ? getMlbTeamsList() : cfbTeams().map(t=>t.school)).map(t => (
                 <TeamCard key={t} team={t} sport={sport} onSelect={setSelectedTeam} />
               ))}
             </div>
@@ -3813,6 +4025,8 @@ function App() {
             {filteredMLB.length > 60 && <div style={{ color: "var(--text-tertiary)", fontSize: 11.5, marginTop: 14, textAlign: "center" }}>Showing top 60 — narrow with search to see more.</div>}
           </>
         )}
+
+        {sport==="cfb" && tab==="offense" && <CFBGamesView sportDataStatus={sportDataStatus} />}
 
         {selected && sport==="mlb" && <MLBDetail p={selected} onClose={()=>setSelected(null)} />}
         {selected && sport==="wnba" && <WNBADetail p={selected} onClose={()=>setSelected(null)} />}
