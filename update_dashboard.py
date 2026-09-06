@@ -68,16 +68,15 @@ ODDS_SPORT_KEYS = {'nfl': 'americanfootball_nfl', 'wnba': 'basketball_wnba', 'ml
 
 
 def ensure_gitignored():
-    """The odds API key must never reach the public repo. This makes that automatic
-    rather than relying on remembering to edit .gitignore by hand."""
-    entry = "odds_api_key.txt"
-    if GITIGNORE_PATH.exists():
-        content = GITIGNORE_PATH.read_text(encoding='utf-8')
-        if entry in content:
-            return
-        GITIGNORE_PATH.write_text(content.rstrip('\n') + f'\n{entry}\n', encoding='utf-8')
-    else:
-        GITIGNORE_PATH.write_text(f'{entry}\n', encoding='utf-8')
+    """API keys must never reach the public repo. This makes that automatic rather
+    than relying on remembering to edit .gitignore by hand."""
+    entries = ["odds_api_key.txt", "cfbd_api_key.txt"]
+    existing = GITIGNORE_PATH.read_text(encoding='utf-8') if GITIGNORE_PATH.exists() else ""
+    missing = [e for e in entries if e not in existing]
+    if not missing:
+        return
+    new_content = existing.rstrip('\n') + '\n' + '\n'.join(missing) + '\n' if existing else '\n'.join(missing) + '\n'
+    GITIGNORE_PATH.write_text(new_content, encoding='utf-8')
 
 
 def load_odds_api_key():
@@ -971,6 +970,234 @@ fs.writeFileSync({json.dumps(str(out_path))}, result.code);
         return None
 
 
+# =====================================================================
+# COLLEGE FOOTBALL PIPELINE (College Football Data API — collegefootballdata.com,
+# free tier: 1,000 calls/month, includes historical betting lines).
+# Different market structure than the other 3 sports: no player props (CFB books
+# rarely offer them), so this is built around game-level markets — spread, total,
+# moneyline — with team-level offense/defense stats, matching the Teams tab pattern
+# already used elsewhere.
+#
+# NOTE: like the MLB pipeline, this could not be test-executed against live data
+# from this sandbox (api.collegefootballdata.com is outside its network allowlist).
+# Built defensively — every game/line parse is individually try/excepted so one bad
+# assumption fails quietly rather than breaking the whole run. Confirmed field names
+# only for the core /games response (home_team, away_team, completed, season, week,
+# start_date) via a verified schema; /lines parsing uses documented community
+# conventions and is the piece most likely to need a real-world adjustment.
+# =====================================================================
+CFBD_API_BASE = "https://api.collegefootballdata.com"
+CFBD_API_KEY_PATH = SCRIPT_DIR / "cfbd_api_key.txt"
+CFB_TRAIN_SEASON = 2025
+CFB_HOME_FIELD_DEFAULT = 2.5  # empirically overridden once we have enough real games to compute it ourselves
+
+
+def load_cfbd_api_key():
+    env_key = os.environ.get('CFBD_API_KEY')
+    if env_key and env_key.strip():
+        return env_key.strip()
+    if not CFBD_API_KEY_PATH.exists():
+        return None
+    key = CFBD_API_KEY_PATH.read_text(encoding='utf-8').strip()
+    return key if key else None
+
+
+def cfbd_get(path, params, api_key, timeout=25):
+    try:
+        r = requests.get(f"{CFBD_API_BASE}{path}", params=params,
+                          headers={'Authorization': f'Bearer {api_key}'}, timeout=timeout)
+        if r.status_code != 200:
+            return None
+        return r.json()
+    except requests.RequestException:
+        return None
+
+
+def fetch_cfb_teams(api_key):
+    data = cfbd_get("/teams/fbs", {"year": datetime.date.today().year}, api_key)
+    if not data:
+        return {}
+    out = {}
+    for t in data:
+        tid = t.get('id')
+        school = t.get('school')
+        if tid and school:
+            out[tid] = school
+    return out
+
+
+def fetch_cfb_games(season, api_key):
+    data = cfbd_get("/games", {"year": season, "seasonType": "regular"}, api_key)
+    if not data:
+        return []
+    games = []
+    for g in data:
+        try:
+            games.append({
+                'id': g.get('id'), 'season': g.get('season'), 'week': g.get('week'),
+                'start_date': g.get('start_date'), 'completed': bool(g.get('completed')),
+                'home_team': g.get('home_team'), 'away_team': g.get('away_team'),
+                'home_points': g.get('home_points'), 'away_points': g.get('away_points'),
+                'neutral_site': bool(g.get('neutral_site')),
+            })
+        except Exception:
+            continue
+    return games
+
+
+def fetch_cfb_lines(season, api_key):
+    """Real historical spread/total/moneyline, per game, per provider. Used to backtest
+    our own model's real accuracy — this is what makes the confidence numbers genuine
+    rather than self-graded. Defensive: unknown/renamed fields just get skipped per-line
+    rather than crashing the whole fetch."""
+    data = cfbd_get("/lines", {"year": season, "seasonType": "regular"}, api_key)
+    if not data:
+        return {}
+    out = {}
+    for g in data:
+        gid = g.get('id')
+        lines = g.get('lines') or []
+        if not gid or not lines:
+            continue
+        # take the first provider with a usable spread+overUnder; good enough for backtesting purposes
+        for line in lines:
+            try:
+                spread = line.get('spread')
+                total = line.get('overUnder')
+                if spread is None and total is None:
+                    continue
+                out[gid] = {
+                    'spread': float(spread) if spread is not None else None,
+                    'total': float(total) if total is not None else None,
+                    'homeMoneyline': line.get('homeMoneyline'), 'awayMoneyline': line.get('awayMoneyline'),
+                    'provider': line.get('provider'),
+                }
+                break
+            except (TypeError, ValueError):
+                continue
+    return out
+
+
+def build_cfb_team_ratings(games, season_names):
+    """Real power-rating differential per team: avg points scored, avg points allowed,
+    from actual completed games only. Same 'derive from real results' approach used for
+    every other sport tonight — no external rating service, just real scoring data."""
+    scored = {}
+    allowed = {}
+    games_count = {}
+    home_margins = []  # for empirically computing home-field advantage from real data
+    for g in games:
+        if not g['completed'] or g['home_points'] is None or g['away_points'] is None:
+            continue
+        h, a = g['home_team'], g['away_team']
+        hp, ap = g['home_points'], g['away_points']
+        for team, pf, pa in [(h, hp, ap), (a, ap, hp)]:
+            scored.setdefault(team, []).append(pf)
+            allowed.setdefault(team, []).append(pa)
+        if not g['neutral_site']:
+            home_margins.append(hp - ap)
+
+    home_field = round(sum(home_margins) / len(home_margins), 2) if len(home_margins) >= 20 else CFB_HOME_FIELD_DEFAULT
+
+    ratings = {}
+    for team in scored:
+        n = len(scored[team])
+        if n < 4:
+            continue
+        avg_scored = sum(scored[team]) / n
+        avg_allowed = sum(allowed[team]) / n
+        ratings[team] = {
+            'avgPointsScored': round(avg_scored, 1), 'avgPointsAllowed': round(avg_allowed, 1),
+            'powerRating': round(avg_scored - avg_allowed, 2), 'games': n,
+        }
+    return ratings, home_field
+
+
+def predict_cfb_game(home_team, away_team, ratings, home_field):
+    if home_team not in ratings or away_team not in ratings:
+        return None
+    h, a = ratings[home_team], ratings[away_team]
+    predicted_margin = round((h['powerRating'] - a['powerRating']) + home_field, 1)
+    predicted_total = round((h['avgPointsScored'] + h['avgPointsAllowed'] + a['avgPointsScored'] + a['avgPointsAllowed']) / 2, 1)
+    return {'predictedMargin': predicted_margin, 'predictedTotal': predicted_total}
+
+
+def backtest_cfb_model(train_games, test_games, test_lines):
+    """The real validation step: build ratings from train_games only, generate predictions
+    for every completed test_games matchup, then compare against the REAL historical line
+    for that game (from test_lines) to see how often our predicted side would have covered
+    and how often our total call was right. This is what makes any confidence badge here
+    trustworthy rather than a self-graded number."""
+    ratings, home_field = build_cfb_team_ratings(train_games, {})
+    spread_correct, spread_total = 0, 0
+    total_correct, total_total = 0, 0
+    ml_correct, ml_total = 0, 0
+
+    for g in test_games:
+        if not g['completed'] or g['home_points'] is None or g['away_points'] is None:
+            continue
+        pred = predict_cfb_game(g['home_team'], g['away_team'], ratings, home_field)
+        if not pred:
+            continue
+        actual_margin = g['home_points'] - g['away_points']
+        actual_total = g['home_points'] + g['away_points']
+
+        # moneyline: did our predicted favorite actually win?
+        ml_total += 1
+        predicted_home_favorite = pred['predictedMargin'] > 0
+        actual_home_won = actual_margin > 0
+        if predicted_home_favorite == actual_home_won:
+            ml_correct += 1
+
+        line = test_lines.get(g['id'])
+        if line and line.get('spread') is not None:
+            # CFBD spread convention: negative = home favored. Our predicted_margin is
+            # home-minus-away, so the comparable market number is -spread.
+            market_home_margin = -line['spread']
+            spread_total += 1
+            # did the home side cover the REAL market spread, and did we predict that side?
+            home_covered = actual_margin > market_home_margin
+            we_predicted_home_covers = pred['predictedMargin'] > market_home_margin
+            if home_covered == we_predicted_home_covers:
+                spread_correct += 1
+        if line and line.get('total') is not None:
+            total_total += 1
+            actual_over = actual_total > line['total']
+            we_predicted_over = pred['predictedTotal'] > line['total']
+            if actual_over == we_predicted_over:
+                total_correct += 1
+
+    return {
+        'spreadHitRate': round(100 * spread_correct / spread_total, 1) if spread_total >= 10 else None,
+        'spreadSample': spread_total,
+        'totalHitRate': round(100 * total_correct / total_total, 1) if total_total >= 10 else None,
+        'totalSample': total_total,
+        'moneylineHitRate': round(100 * ml_correct / ml_total, 1) if ml_total >= 10 else None,
+        'moneylineSample': ml_total,
+    }
+
+
+def build_cfb_upcoming(games, ratings, home_field, lines_by_game, team_names_by_id):
+    today = datetime.date.today().isoformat()
+    upcoming = []
+    for g in games:
+        if g['completed'] or not g['start_date']:
+            continue
+        game_date = g['start_date'][:10]
+        if game_date < today:
+            continue
+        pred = predict_cfb_game(g['home_team'], g['away_team'], ratings, home_field)
+        if not pred:
+            continue
+        upcoming.append({
+            'id': g['id'], 'date': game_date, 'week': g['week'],
+            'homeTeam': g['home_team'], 'awayTeam': g['away_team'],
+            'predictedMargin': pred['predictedMargin'], 'predictedTotal': pred['predictedTotal'],
+        })
+    upcoming.sort(key=lambda g: g['date'])
+    return upcoming[:60]  # keep the payload reasonable; this is a lot of FBS games in a given week
+
+
 def main():
     print("=" * 60)
     print("NFL Dashboard Auto-Updater")
@@ -1607,6 +1834,45 @@ def main():
     else:
         print("\n[5.9/8] No odds_api_key.txt found — skipping real sportsbook lines (manual entry still works fine).")
 
+    # ---- College Football pipeline (optional — only runs if cfbd_api_key.txt exists) ----
+    cfbd_key = load_cfbd_api_key()
+    cfb_teams, cfb_ratings, cfb_home_field, cfb_upcoming, cfb_backtest = [], {}, CFB_HOME_FIELD_DEFAULT, [], {}
+    if cfbd_key:
+        print("\n[5.95/8] Building College Football data (collegefootballdata.com)...")
+        try:
+            cfb_team_names = fetch_cfb_teams(cfbd_key)
+            train_games = fetch_cfb_games(CFB_TRAIN_SEASON, cfbd_key)
+            current_year = datetime.date.today().year
+            current_games = fetch_cfb_games(current_year, cfbd_key)
+            train_lines = fetch_cfb_lines(CFB_TRAIN_SEASON, cfbd_key)
+
+            # backtest: build ratings on train season, validate against real historical lines
+            # from that SAME season (out-of-sample by game, not by season, since we only have
+            # one full historical season of lines readily available on the free tier)
+            split_idx = int(len(train_games) * 0.6)
+            cfb_backtest = backtest_cfb_model(train_games[:split_idx], train_games[split_idx:], train_lines)
+
+            # ratings for actual predictions blend train season + current season games so far
+            all_games_for_ratings = train_games + [g for g in current_games if g['completed']]
+            cfb_ratings, cfb_home_field = build_cfb_team_ratings(all_games_for_ratings, cfb_team_names)
+
+            cfb_teams = [{'school': name, **cfb_ratings[name]} for name in cfb_ratings]
+            cfb_teams.sort(key=lambda t: -t['powerRating'])
+
+            cfb_upcoming = build_cfb_upcoming(current_games, cfb_ratings, cfb_home_field, {}, cfb_team_names)
+
+            print(f"  {len(cfb_teams)} teams rated, {len(cfb_upcoming)} upcoming games with predictions")
+            print(f"  Backtest (real historical lines, {CFB_TRAIN_SEASON} season): "
+                  f"spread {cfb_backtest['spreadHitRate']}% (n={cfb_backtest['spreadSample']}), "
+                  f"total {cfb_backtest['totalHitRate']}% (n={cfb_backtest['totalSample']}), "
+                  f"moneyline {cfb_backtest['moneylineHitRate']}% (n={cfb_backtest['moneylineSample']})")
+            print(f"  Empirical home-field advantage from real games: {cfb_home_field} pts")
+        except Exception as e:
+            print(f"  CFB pipeline error: {e} — shipping with empty CFB data this run, everything else unaffected.")
+            cfb_teams, cfb_ratings, cfb_upcoming, cfb_backtest = [], {}, [], {}
+    else:
+        print("\n[5.95/8] No cfbd_api_key.txt found — skipping College Football (get a free key at collegefootballdata.com/key).")
+
     # ---- 6. Assemble final data payload ----
     print("\n[6/8] Assembling data payload...")
     # NFL stays embedded (it's the default sport shown on load). WNBA/MLB are written as
@@ -1627,11 +1893,14 @@ def main():
 
     wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming}
     mlb_bundle = {'players': mlb_players, 'pool': mlb_pool, 'teamDefense': mlb_team_defense, 'upcoming': mlb_upcoming}
+    cfb_bundle = {'teams': cfb_teams, 'upcoming': cfb_upcoming, 'backtest': cfb_backtest, 'homeField': cfb_home_field}
     wnba_json_path = SCRIPT_DIR / "data-wnba.json"
     mlb_json_path = SCRIPT_DIR / "data-mlb.json"
+    cfb_json_path = SCRIPT_DIR / "data-cfb.json"
     wnba_json_path.write_text(json.dumps(wnba_bundle), encoding='utf-8')
     mlb_json_path.write_text(json.dumps(mlb_bundle), encoding='utf-8')
-    print(f"  Wrote {wnba_json_path.name} ({wnba_json_path.stat().st_size/1024:.0f} KB) and {mlb_json_path.name} ({mlb_json_path.stat().st_size/1024:.0f} KB) — fetched on demand, not embedded")
+    cfb_json_path.write_text(json.dumps(cfb_bundle), encoding='utf-8')
+    print(f"  Wrote {wnba_json_path.name} ({wnba_json_path.stat().st_size/1024:.0f} KB), {mlb_json_path.name} ({mlb_json_path.stat().st_size/1024:.0f} KB), and {cfb_json_path.name} ({cfb_json_path.stat().st_size/1024:.0f} KB) — all fetched on demand, not embedded")
 
     # ---- 7. Inject into template ----
     print("\n[7/8] Injecting data into template...")
@@ -1690,7 +1959,7 @@ def main():
     # ---- 7. Git commit + push ----
     print("\n[8/8] Committing and pushing to GitHub...")
     try:
-        subprocess.run(['git', 'add', 'index.html', 'data-wnba.json', 'data-mlb.json'], cwd=SCRIPT_DIR, check=True)
+        subprocess.run(['git', 'add', 'index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json'], cwd=SCRIPT_DIR, check=True)
         msg = f"Auto-update: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}"
         result = subprocess.run(['git', 'commit', '-m', msg], cwd=SCRIPT_DIR, capture_output=True, text=True)
         if 'nothing to commit' in (result.stdout + result.stderr):
@@ -1700,7 +1969,7 @@ def main():
             print("  Pushed successfully!")
     except subprocess.CalledProcessError as e:
         print(f"  Git error: {e}")
-        print("  You may need to push manually: git add index.html data-wnba.json data-mlb.json && git commit -m 'update' && git push")
+        print("  You may need to push manually: git add index.html data-wnba.json data-mlb.json data-cfb.json && git commit -m 'update' && git push")
 
     print("\nDone.")
 
