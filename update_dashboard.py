@@ -1007,9 +1007,13 @@ def cfbd_get(path, params, api_key, timeout=25):
         r = requests.get(f"{CFBD_API_BASE}{path}", params=params,
                           headers={'Authorization': f'Bearer {api_key}'}, timeout=timeout)
         if r.status_code != 200:
+            print(f"    CFBD {path} -> HTTP {r.status_code}: {r.text[:200]}")
             return None
-        return r.json()
-    except requests.RequestException:
+        data = r.json()
+        print(f"    CFBD {path} -> HTTP 200, {len(data) if isinstance(data, list) else 'non-list'} items")
+        return data
+    except requests.RequestException as e:
+        print(f"    CFBD {path} -> request failed: {e}")
         return None
 
 
@@ -1087,7 +1091,7 @@ def build_cfb_team_ratings(games, season_names):
     games_count = {}
     home_margins = []  # for empirically computing home-field advantage from real data
     for g in games:
-        if not g['completed'] or g['home_points'] is None or g['away_points'] is None:
+        if g['home_points'] is None or g['away_points'] is None:  # real scores present = actually completed, more reliable than the API's own flag
             continue
         h, a = g['home_team'], g['away_team']
         hp, ap = g['home_points'], g['away_points']
@@ -1134,7 +1138,7 @@ def backtest_cfb_model(train_games, test_games, test_lines):
     ml_correct, ml_total = 0, 0
 
     for g in test_games:
-        if not g['completed'] or g['home_points'] is None or g['away_points'] is None:
+        if g['home_points'] is None or g['away_points'] is None:  # real scores present = actually completed, more reliable than the API's own flag
             continue
         pred = predict_cfb_game(g['home_team'], g['away_team'], ratings, home_field)
         if not pred:
@@ -1181,7 +1185,7 @@ def build_cfb_upcoming(games, ratings, home_field, lines_by_game, team_names_by_
     today = datetime.date.today().isoformat()
     upcoming = []
     for g in games:
-        if g['completed'] or not g['start_date']:
+        if (g['home_points'] is not None and g['away_points'] is not None) or not g['start_date']:  # has a real score already = already played, not upcoming
             continue
         game_date = g['start_date'][:10]
         if game_date < today:
@@ -1845,6 +1849,8 @@ def main():
             current_year = datetime.date.today().year
             current_games = fetch_cfb_games(current_year, cfbd_key)
             train_lines = fetch_cfb_lines(CFB_TRAIN_SEASON, cfbd_key)
+            with_scores = sum(1 for g in train_games if g['home_points'] is not None and g['away_points'] is not None)
+            print(f"  {len(train_games)} games fetched for {CFB_TRAIN_SEASON}, {with_scores} have real final scores")
 
             # backtest: build ratings on train season, validate against real historical lines
             # from that SAME season (out-of-sample by game, not by season, since we only have
@@ -1853,7 +1859,7 @@ def main():
             cfb_backtest = backtest_cfb_model(train_games[:split_idx], train_games[split_idx:], train_lines)
 
             # ratings for actual predictions blend train season + current season games so far
-            all_games_for_ratings = train_games + [g for g in current_games if g['completed']]
+            all_games_for_ratings = train_games + [g for g in current_games if g['home_points'] is not None and g['away_points'] is not None]
             cfb_ratings, cfb_home_field = build_cfb_team_ratings(all_games_for_ratings, cfb_team_names)
 
             cfb_teams = [{'school': name, **cfb_ratings[name]} for name in cfb_ratings]
