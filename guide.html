@@ -100,7 +100,10 @@
 
   <div class="card">
     <h2>What this is</h2>
-    <p>A stats and analytics dashboard covering <b>NFL, WNBA, and MLB</b> — every skill-position player, QB, kicker, and pass rusher in the NFL; every WNBA player; every qualified MLB batter and pitcher. NFL stats are tagged with the real defensive front and coverage shell that was on the field for that play — not a static "this team runs a 4-3" label.</p>
+    <p>A stats dashboard covering <b>NFL, WNBA, MLB, and College Football</b>. Real historical data, tested against actual outcomes before anything is shown — not projections presented as certainty.</p>
+    <p style="margin-top:10px; padding:12px 14px; background:rgba(212,169,74,0.08); border:1px solid rgba(212,169,74,0.25); border-radius:8px; font-size:14px;">
+      <b>This is data, not advice.</b> Everything here is historical statistics and backtested reference ranges — not a recommendation to bet, and not a guarantee of any outcome. Sports outcomes are inherently uncertain. If you choose to bet, only risk what you can afford to lose, and treat every number here as one input among many, not a final answer.
+    </p>
   </div>
 
   <div class="card">
@@ -108,83 +111,69 @@
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#F0C67422;color:#F0C674;">DASHBOARD</span></h3>
-      <p>The landing page. Real stat tiles (strong-confidence prop count, open bets, portfolio ROI), your top 5 strongest current picks, an upcoming slate grouped by real date (click any game to jump straight to props for those two teams), and your recent bet log. Nothing here is placeholder — every number is computed live from your actual data.</p>
+      <p>The landing page. Quick stats, your top current picks, an upcoming slate grouped by date (click a game to jump to it), and your recent bet log.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#00D9FF22;color:#00D9FF;">OFFENSE</span> / <span class="tab-tag" style="background:#E838D422;color:#E838D4;">DEFENSE</span></h3>
-      <p>Browse every player's season stats (for MLB this is Batters/Pitchers). Click a card to see splits, recent games with real opponents, and — for NFL — every touchdown or sack with the exact front/coverage context it happened in.</p>
+      <p>Browse player season stats (Batters/Pitchers for MLB). Click a card for splits and recent games.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#F0C67422;color:#F0C674;">MARKET PULSE</span></h3>
-      <p>Live prices from Kalshi and Polymarket, blended together — championship odds, season-long leader races, and a GEX-style order book depth panel showing where real money is actually stacked. If a live fetch fails for any reason, it falls back to the last known snapshot rather than showing nothing.</p>
+      <p>Live prices from Kalshi and Polymarket — championship odds and season-long markets.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#00E67622;color:#00E676;">PROP FLOORS + PARLAY</span></h3>
-      <p>The core tool. Each player-stat gets three lines — P25, P50, P75 — backtested out-of-sample against real games. Tap a tranche to add it to your slip. If you've connected a real sportsbook odds feed (see below), matching lines auto-fill with a green "✓ Real line found" indicator; otherwise use "📏 Compare to your sportsbook line" and type in what you see on your own book to get an instant Strong Over/Moderate Over/Neutral/Moderate Under/Strong Under read.</p>
-      <p style="margin-top:8px;">Combined probability accounts for real same-team correlation where enough shared game history exists — not just naive multiplication — with a note showing when and how much the adjustment moved the number. Use <b>✨ AI Assist</b> to get a suggested swap for your weakest leg, <b>📋 Copy Slip</b> to format everything for pasting into DraftKings/FanDuel yourself, or <b>🎯 Submit Bet</b> to resolve instantly and send it to Tracking.</p>
+      <p>Reference ranges for player stats, backtested against real games. Tap one to add it to a slip. If a real sportsbook line is connected it auto-fills; otherwise type in your own book's line to compare. Build a slip across players, then Copy Slip to paste into your sportsbook yourself, or Submit Bet to track it here.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#FF3D7122;color:#FF3D71;">MATCHUP</span></h3>
-      <p>For each player in your slip, pick a hypothetical opponent and see real points/runs-allowed rank and (NFL only) scheme signature. Works across all three sports in one mixed slip. Treat it as a "what if" tool — it isn't locked to an actual scheduled game.</p>
+      <p>See how a player's numbers look against a hypothetical opponent. Not tied to an actual scheduled game — a "what if" tool.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#00D9FF22;color:#00D9FF;">TEAMS</span></h3>
-      <p>Browse every team's real offense (points/runs scored) and defense (allowed) stats side by side, with rank. Click a team to see its full roster — click any player there to jump straight to their own detail page.</p>
+      <p>Browse team offense/defense stats side by side, with rank. Click a team for its roster; search works here for any sport, including the 130+ College Football teams. A quick-search near the top of the page works from any tab.</p>
     </div>
 
     <div class="tab-item">
       <h3><span class="tab-tag" style="background:#FFD54A22;color:#FFD54A;">TRACKING</span></h3>
-      <p>Your submitted bet history — wins, losses, net units, and which tranche has actually worked best for you. Click <b>🔍 Check vs a real game</b> on any leg to independently verify it against an actual embedded game log, separate from however it originally resolved. You can also <b>📥 Import Bet History</b> from another sportsbook — paste in whatever text you have, review the parsed rows (edit or delete anything wrong), and import. Everything here is stored in your browser only — it won't follow you to another device.</p>
+      <p>Your submitted bet history and record. Import history from another sportsbook by pasting text — review before anything saves. Stored in your browser only.</p>
     </div>
+
+    <div class="tab-item">
+      <h3><span class="tab-tag" style="background:#8B7FD122;color:#8B7FD1;">COLLEGE FOOTBALL</span> (needs its own free key)</h3>
+      <p>Built differently since CFB books rarely offer player props — this sport focuses on spread, total, and moneyline instead, with a confidence read on each. No parlay slip for this sport. Requires a free key from <a href="https://collegefootballdata.com/key" style="color:#8B7FD1;">collegefootballdata.com/key</a>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How to read the confidence badges</h2>
+    <p>Every number is checked against real games before it's shown as Strong, Moderate, or Limited confidence — Limited means there isn't much real history behind that specific number yet, so treat it with extra caution. A <b style="color:#FF3D71;">TEAM CHANGE</b> badge means the player's history includes time on a different team. A <b style="color:#B4FF39;">ROOKIE</b> badge means there's no prior-season history at all.</p>
   </div>
 
   <div class="card">
     <h2>Other things worth knowing</h2>
     <div class="tab-item">
-      <h3>☀️ / 🌙 Day &amp; Night mode</h3>
-      <p>Switches automatically by your local time, or click the toggle next to the sport switcher to override it manually.</p>
+      <h3>Day &amp; Night mode</h3>
+      <p>Switches automatically by your local time, or toggle it manually.</p>
     </div>
     <div class="tab-item">
-      <h3>⚙ "How this works" toggles</h3>
-      <p>Methodology explanations are tucked behind small gear-icon toggles throughout the app instead of always taking up space — click one open any time you want the detail.</p>
+      <h3>"How this works" toggles</h3>
+      <p>Extra detail is tucked behind small toggles throughout the app instead of always taking up space.</p>
     </div>
-    <div class="tab-item">
-      <h3>Real sportsbook lines (optional)</h3>
-      <p>If a real odds API key is connected, prop cards auto-fill with actual DraftKings/FanDuel lines instead of needing manual entry. This is entirely optional — manual comparison works fine without it.</p>
-    </div>
-    <div class="tab-item">
-      <h3><span class="tab-tag" style="background:#8B7FD122;color:#8B7FD1;">CFB</span> (optional, needs its own free key)</h3>
-      <p>College football books rarely offer player props, so this sport is built differently — around <b>spread, total, and moneyline</b> instead. Our own power-rating model (real points scored/allowed per team, plus a home-field edge computed from actual games) generates a prediction for every upcoming game, backtested against real historical closing lines. No player props, no parlay slip for this sport — just Dashboard, Games, Teams, and the market comparator.</p>
-      <p style="margin-top:8px;">Requires a free key from <a href="https://collegefootballdata.com/key" style="color:#8B7FD1;">collegefootballdata.com/key</a> — save it as <code>cfbd_api_key.txt</code> next to <code>update_dashboard.py</code> (same pattern as the odds key), or add it as a <code>CFBD_API_KEY</code> GitHub Actions secret for the automated runs. Without a key, this sport simply shows an empty state — everything else on the site is unaffected.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>How the numbers are built</h2>
-    <p style="margin-bottom:14px;">Every ladder line is a percentile of a player's prior-season game log, tested against real current-season games the line never saw — an out-of-sample backtest, not a threshold grading its own training data.</p>
-    <div class="methodology-row"><span class="tranche" style="color:#00D9FF;">P25</span><p>25th percentile — a conservative floor, historically cleared ~75% of the time.</p></div>
-    <div class="methodology-row"><span class="tranche" style="color:#F0C674;">P50</span><p>Median — a 50/50 line.</p></div>
-    <div class="methodology-row"><span class="tranche" style="color:#E838D4;">P75</span><p>75th percentile — the stretch tranche, ~25% historical clear rate, bigger number when it hits.</p></div>
-    <p style="margin-top:10px;">A <b style="color:#FF3D71;">TEAM CHANGE</b> badge means the baseline line was set on a different team/offense than the one being tested. A <b style="color:#B4FF39;">ROOKIE</b> badge means there's no prior-season baseline at all. A <b>📊 confidence badge</b> (Strong/Moderate/Limited) tells you how many real out-of-sample games back that specific hit rate — treat Limited numbers with real caution.</p>
   </div>
 
   <div style="text-align:center; margin-top: 36px;">
     <a class="cta" href="./index.html">← Open the Dashboard</a>
   </div>
 
-  <div class="card">
-    <h2>Keeping it running</h2>
-    <p>If you're the one operating this dashboard: it auto-updates itself twice a day via GitHub Actions (see the workflow file in the repo). Games-played, prop ladders, and live odds all refresh automatically — no manual steps needed for normal operation. A manual run is only needed if you're changing the code itself.</p>
-  </div>
-
   <div class="footer-note">
-    Data: NFL play-by-play and Next Gen Stats participation (nflverse), WNBA and MLB play-by-play (sportsdataverse, MLB Stats API), joined per-play where applicable.<br/>
-    Not affiliated with the NFL, WNBA, MLB, any team, or any sportsbook. For entertainment and analysis purposes only.<br/><br/>
+    Data: NFL play-by-play and Next Gen Stats participation (nflverse), WNBA and MLB play-by-play (sportsdataverse, MLB Stats API), College Football Data API, joined per-play where applicable.<br/>
+    Not affiliated with the NFL, WNBA, MLB, NCAA, any team, or any sportsbook. For entertainment and analysis purposes only — not financial or betting advice.<br/><br/>
     © 2026 — built for personal use and shared with friends. Not for redistribution, rehosting, or commercial use without permission.
   </div>
 </div>
