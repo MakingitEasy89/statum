@@ -98,28 +98,47 @@ function getDailyTheme(override) {
 // control for explanatory text throughout the app — click to reveal, click again to hide.
 // Clean line-art sport icons — replaces emoji (which render inconsistently across
 // platforms and skew cartoonish) with crisp, consistent, single-color vector marks.
-function FootballIcon({ size = 16, color = "currentColor" }) {
+// All icons share one gold identity with a subtle glow for a high-tech HUD feel,
+// rather than each sport getting its own arbitrary color.
+const ICON_GOLD = "#F0C674";
+function iconGlow(active) { return `drop-shadow(0 0 ${active ? 4 : 2}px ${ICON_GOLD}${active ? "88" : "44"})`; }
+
+function FootballIcon({ size = 20, active = true }) {
+  const c = active ? ICON_GOLD : "var(--text-secondary-a)";
   return (
-    <svg width={size} height={size*0.62} viewBox="0 0 32 20" fill="none" style={{ flexShrink: 0 }}>
-      <ellipse cx="16" cy="10" rx="15" ry="9" stroke={color} strokeWidth="1.8" />
-      <path d="M6 10 L26 10 M13 6.5 L13 13.5 M16 5.5 L16 14.5 M19 6.5 L19 13.5" stroke={color} strokeWidth="1.4" strokeLinecap="round" />
+    <svg width={size} height={size*0.62} viewBox="0 0 32 20" fill="none" style={{ flexShrink: 0, filter: active ? iconGlow(true) : "none" }}>
+      <ellipse cx="16" cy="10" rx="15" ry="9" stroke={c} strokeWidth="1.8" />
+      <path d="M6 10 L26 10 M13 6.5 L13 13.5 M16 5.5 L16 14.5 M19 6.5 L19 13.5" stroke={c} strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   );
 }
-function BasketballIcon({ size = 16, color = "currentColor" }) {
+function BasketballIcon({ size = 20, active = true, signature = null }) {
+  const c = active ? ICON_GOLD : "var(--text-secondary-a)";
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={{ flexShrink: 0 }}>
-      <circle cx="16" cy="16" r="14" stroke={color} strokeWidth="1.8" />
-      <path d="M2 16 L30 16 M16 2 L16 30 M6 6 Q16 16 6 26 M26 6 Q16 16 26 26" stroke={color} strokeWidth="1.4" fill="none" />
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={{ flexShrink: 0, filter: active ? iconGlow(true) : "none" }}>
+      <circle cx="16" cy="16" r="14" stroke={c} strokeWidth="1.8" />
+      <path d="M2 16 L30 16 M16 2 L16 30 M6 6 Q16 16 6 26 M26 6 Q16 16 26 26" stroke={c} strokeWidth="1.4" fill="none" />
+      {signature && (
+        <g>
+          <circle cx="25" cy="25" r="6.5" fill="var(--theme-bg)" stroke={c} strokeWidth="1.3" />
+          <text x="25" y="27.8" textAnchor="middle" fontSize="7" fontWeight="800" fill={c} fontFamily="'JetBrains Mono', monospace">{signature}</text>
+        </g>
+      )}
     </svg>
   );
 }
-function BaseballIcon({ size = 16, color = "currentColor" }) {
+// WNBA gets its own signature badge — a small "W" chip — so it stays visually distinct
+// whenever a plain BasketballIcon gets used for NBA down the road.
+function WnbaIcon({ size = 20, active = true }) {
+  return <BasketballIcon size={size} active={active} signature="W" />;
+}
+function BaseballIcon({ size = 20, active = true }) {
+  const c = active ? ICON_GOLD : "var(--text-secondary-a)";
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={{ flexShrink: 0 }}>
-      <circle cx="16" cy="16" r="14" stroke={color} strokeWidth="1.8" />
-      <path d="M8 4 Q16 16 8 28 M24 4 Q16 16 24 28" stroke={color} strokeWidth="1.3" fill="none" />
-      <path d="M6 9 l1.6 0.6 M6 23 l1.6 -0.6 M26 9 l-1.6 0.6 M26 23 l-1.6 -0.6" stroke={color} strokeWidth="1" strokeLinecap="round" />
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={{ flexShrink: 0, filter: active ? iconGlow(true) : "none" }}>
+      <circle cx="16" cy="16" r="14" stroke={c} strokeWidth="1.8" />
+      <path d="M8 4 Q16 16 8 28 M24 4 Q16 16 24 28" stroke={c} strokeWidth="1.3" fill="none" />
+      <path d="M6 9 l1.6 0.6 M6 23 l1.6 -0.6 M26 9 l-1.6 0.6 M26 23 l-1.6 -0.6" stroke={c} strokeWidth="1" strokeLinecap="round" />
     </svg>
   );
 }
@@ -2141,7 +2160,7 @@ function ParlaySlip({ slip, onRemove, onClear, stake, setStake, aiSuggestion, on
     return (
       <div style={{
         position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 40,
-        background: "rgba(12,13,16,0.94)", backdropFilter: "blur(20px)", borderTop: "1px solid var(--overlay-6)",
+        background: "var(--card-bg)", backdropFilter: "blur(20px)", borderTop: "1px solid var(--overlay-6)",
         boxShadow: "0 -6px 24px rgba(0,0,0,0.5)"
       }} className="fade-in">
         <div onClick={()=>setMinimized(false)} style={{
@@ -2166,7 +2185,7 @@ function ParlaySlip({ slip, onRemove, onClear, stake, setStake, aiSuggestion, on
   return (
     <div style={{
       position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 40,
-      background: "rgba(12,13,16,0.92)", backdropFilter: "blur(20px)", borderTop: "1px solid var(--overlay-6)",
+      background: "var(--card-bg)", backdropFilter: "blur(20px)", borderTop: "1px solid var(--overlay-6)",
       boxShadow: "0 -10px 40px rgba(0,0,0,0.5)", maxHeight: "58vh", overflowY: "auto"
     }} className="fade-in">
       <div style={{ width: "90%", maxWidth: 1600, margin: "0 auto", padding: "14px 20px 20px" }}>
@@ -2789,7 +2808,7 @@ function DashboardView({ sport, slip, sportDataStatus, onSelectGame, onSelectPla
         <Glass hover={false} style={{ padding: "16px 18px" }}>
           {sport === "cfb" ? (
             <>
-              <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}><FootballIcon size={12} color="var(--text-secondary-b)" /> Next 5 Games — CFB</div>
+              <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}><FootballIcon size={16} /> Next 5 Games — CFB</div>
               {cfbUpcoming().slice(0, 5).length > 0 ? (
                 <>
                   {cfbUpcoming().slice(0, 5).map((g, i) => (
@@ -3925,25 +3944,25 @@ function App() {
             background: sport==="nfl" ? `${ACCENT.teal}18` : "var(--overlay-1)",
             color: sport==="nfl" ? ACCENT.teal : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
             display: "inline-flex", alignItems: "center", gap: 8
-          }}><FootballIcon color={sport==="nfl"?ACCENT.teal:"var(--text-secondary-a)"} /> NFL</button>
+          }}><FootballIcon active={sport==="nfl"} /> NFL</button>
           <button onClick={()=>setSport("wnba")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="wnba"?"#FF8A00":"var(--overlay-6)"}`,
             background: sport==="wnba" ? "#FF8A0018" : "var(--overlay-1)",
             color: sport==="wnba" ? "#FF8A00" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
             display: "inline-flex", alignItems: "center", gap: 8
-          }}><BasketballIcon color={sport==="wnba"?"#FF8A00":"var(--text-secondary-a)"} /> WNBA</button>
+          }}><WnbaIcon active={sport==="wnba"} /> WNBA</button>
           <button onClick={()=>setSport("mlb")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="mlb"?"#6EC9F2":"var(--overlay-6)"}`,
             background: sport==="mlb" ? "#6EC9F218" : "var(--overlay-1)",
             color: sport==="mlb" ? "#6EC9F2" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
             display: "inline-flex", alignItems: "center", gap: 8
-          }}><BaseballIcon color={sport==="mlb"?"#6EC9F2":"var(--text-secondary-a)"} /> MLB</button>
+          }}><BaseballIcon active={sport==="mlb"} /> MLB</button>
           <button onClick={()=>setSport("cfb")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="cfb"?"#8B7FD1":"var(--overlay-6)"}`,
             background: sport==="cfb" ? "#8B7FD118" : "var(--overlay-1)",
             color: sport==="cfb" ? "#8B7FD1" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
             display: "inline-flex", alignItems: "center", gap: 8
-          }}><FootballIcon color={sport==="cfb"?"#8B7FD1":"var(--text-secondary-a)"} /> CFB</button>
+          }}><FootballIcon active={sport==="cfb"} /> CFB</button>
           <button
             onClick={()=>setThemeOverride(o => o === null ? (dailyTheme.isDay ? "night" : "day") : (o === "day" ? "night" : "day"))}
             title={themeOverride === null ? "Auto (following local time) — click to override" : `Manual ${themeOverride} mode — click to switch, or refresh to reset to auto`}
@@ -3978,7 +3997,7 @@ function App() {
         <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
           <Pill active={tab==="dashboard"} onClick={()=>{setTab("dashboard");setSelected(null);}} accent="#FFD54A">🏠 Dashboard</Pill>
           {sport==="cfb" ? (
-            <Pill active={tab==="offense"} onClick={()=>{setTab("offense");setSelected(null);}} accent="#8B7FD1"><span style={{display:"inline-flex",alignItems:"center",gap:5}}><FootballIcon size={13} color="#8B7FD1" /> Games</span></Pill>
+            <Pill active={tab==="offense"} onClick={()=>{setTab("offense");setSelected(null);}} accent="#8B7FD1"><span style={{display:"inline-flex",alignItems:"center",gap:5}}><FootballIcon size={16} /> Games</span></Pill>
           ) : (
             <>
               <Pill active={tab==="offense"} onClick={()=>{setTab("offense");setSelected(null);}} accent={ACCENT.teal}>{sport==="nfl" ? "NFL Offense" : sport==="wnba" ? "WNBA Players" : "MLB Batters"}</Pill>
