@@ -1449,7 +1449,7 @@ function MarketPulseView({ sport }) {
     return (
       <div className="fade-in">
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-          <span style={{ fontSize: 11, fontWeight: 800, color: "#6EC9F2", border: "1px solid #6EC9F255", borderRadius: 999, padding: "4px 12px" }}>⚾ MLB MARKET PULSE</span>
+          <span style={{ fontSize: 11, fontWeight: 800, color: "#6EC9F2", border: "1px solid #6EC9F255", borderRadius: 999, padding: "4px 12px", display: "inline-flex", alignItems: "center", gap: 6 }}><BaseballIcon size={14} /> MLB MARKET PULSE</span>
           <span style={{ fontSize: 11, color: "var(--text-tertiary)" }}>{mlbStatus==="loading" ? "checking for live prices…" : `checked ${mlbLastChecked ? mlbLastChecked.toLocaleTimeString() : ""}`}</span>
         </div>
         <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>🏆 World Series Odds — Kalshi × Polymarket Blend</div>
@@ -1489,7 +1489,7 @@ function MarketPulseView({ sport }) {
     return (
       <div className="fade-in">
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-          <span style={{ fontSize: 11, fontWeight: 800, color: "#FF8A00", border: "1px solid #FF8A0055", borderRadius: 999, padding: "4px 12px" }}>🏀 WNBA MARKET PULSE</span>
+          <span style={{ fontSize: 11, fontWeight: 800, color: "#FF8A00", border: "1px solid #FF8A0055", borderRadius: 999, padding: "4px 12px", display: "inline-flex", alignItems: "center", gap: 6 }}><WnbaIcon size={14} /> WNBA MARKET PULSE</span>
           <span style={{ fontSize: 11, color: "var(--text-tertiary)" }}>{wnbaStatus==="loading" ? "checking for live prices…" : `checked ${wnbaLastChecked ? wnbaLastChecked.toLocaleTimeString() : ""}`}</span>
         </div>
         <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>🏆 Championship Odds — Kalshi × Polymarket Blend</div>
@@ -1550,7 +1550,7 @@ function MarketPulseView({ sport }) {
 
     <div className="fade-in">
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-        <span style={{ fontSize: 11, fontWeight: 800, color: ACCENT.teal, border: `1px solid ${ACCENT.teal}55`, borderRadius: 999, padding: "4px 12px" }}>🏈 NFL MARKET PULSE</span>
+        <span style={{ fontSize: 11, fontWeight: 800, color: ACCENT.teal, border: `1px solid ${ACCENT.teal}55`, borderRadius: 999, padding: "4px 12px", display: "inline-flex", alignItems: "center", gap: 6 }}><FootballIcon size={14} /> NFL MARKET PULSE</span>
       </div>
       <Glass hover={false} style={{ padding: "12px 16px", marginBottom: 18, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
         <div style={{ fontSize: 12.5, color: "var(--text-body)" }}>
@@ -2403,8 +2403,8 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
   return (
     <div className="fade-in" style={{ paddingBottom: slip.length ? (minimized ? 60 : 280) : 0 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 11, fontWeight: 800, color: sport==="nfl"?ACCENT.teal:sport==="wnba"?"#FF8A00":"#6EC9F2", border: `1px solid ${sport==="nfl"?ACCENT.teal:sport==="wnba"?"#FF8A00":"#6EC9F2"}55`, borderRadius: 999, padding: "4px 12px" }}>
-          {sport==="nfl" ? "🏈 NFL" : sport==="wnba" ? "🏀 WNBA" : "⚾ MLB"} PROP FLOORS
+        <span style={{ fontSize: 11, fontWeight: 800, color: sport==="nfl"?ACCENT.teal:sport==="wnba"?"#FF8A00":"#6EC9F2", border: `1px solid ${sport==="nfl"?ACCENT.teal:sport==="wnba"?"#FF8A00":"#6EC9F2"}55`, borderRadius: 999, padding: "4px 12px", display: "inline-flex", alignItems: "center", gap: 6 }}>
+          {sport==="nfl" ? <FootballIcon size={14} /> : sport==="wnba" ? <WnbaIcon size={14} /> : <BaseballIcon size={14} />} {sport==="nfl" ? "NFL" : sport==="wnba" ? "WNBA" : "MLB"} PROP FLOORS
         </span>
         {matchupFilter ? (
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11, fontWeight: 700, color: TRANCHE_COLOR.p50, border: `1px solid ${TRANCHE_COLOR.p50}55`, borderRadius: 999, padding: "4px 10px", background: `${TRANCHE_COLOR.p50}14` }}>
