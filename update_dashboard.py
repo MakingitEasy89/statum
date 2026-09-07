@@ -160,16 +160,23 @@ def fuzzy_match_player(book_name, known_names):
 
 
 def build_real_odds(sport, api_key, player_names, days_ahead):
-    """Returns {(player_name, stat_label): {line, overPrice, underPrice, book}}"""
+    """Returns {(player_name, stat_label): [{line, overPrice, underPrice, book}, ...]} — one
+    entry per bookmaker that has this player/stat, so the site can show every real price
+    instead of just whichever book happened to come back first. No extra API cost: the
+    response already includes every requested US bookmaker per event, this just stops
+    throwing the rest away."""
     market_map = ODDS_MARKET_MAP[sport]
     markets = list(market_map.values())
     reverse_map = {v: k for k, v in market_map.items()}
     events = fetch_odds_events(sport, api_key, days_ahead)
     out = {}
-    for event in events[:8]:  # free-tier-safe default: 8 events x 6 markets x 1 region = 48 credits/sport,
-                               # ~144 credits for a full run across all 3 sports — leaves room for several
-                               # test runs within a 500/month free tier before hitting the ceiling. Widen
-                               # this once you've upgraded and want fuller coverage — just ask.
+    for event in events[:25]:  # widened now that you're on the paid tier (was capped at 8 for the
+                                # free tier's 500/month budget). Your real observed cost at 8 events/sport
+                                # was ~37 credits total across all 3 sports — well under my conservative
+                                # worst-case estimate — so 25 should land roughly 3x that (~110-150 credits/run),
+                                # comfortable even with both the 2x/day automation and manual test runs on
+                                # top. Real usage will vary run to run; ask if you want this tuned further
+                                # once you've seen a few real runs' actual credit cost.
         data = fetch_event_props(sport, event['id'], api_key, markets)
         if not data:
             continue
@@ -194,12 +201,14 @@ def build_real_odds(sport, api_key, player_names, days_ahead):
                     if not over:
                         continue
                     key = (matched, stat_label)
-                    if key in out:
-                        continue  # first bookmaker found wins, keeps this simple
-                    out[key] = {
+                    book_name = bookmaker.get('title')
+                    entry_list = out.setdefault(key, [])
+                    if any(e['book'] == book_name for e in entry_list):
+                        continue  # this exact book already recorded for this player/stat this run
+                    entry_list.append({
                         'line': over.get('point'), 'overPrice': over.get('price'),
-                        'underPrice': under.get('price') if under else None, 'book': bookmaker.get('title'),
-                    }
+                        'underPrice': under.get('price') if under else None, 'book': book_name,
+                    })
         # bookmakers key present but no matching markets still counts against quota — nothing else to do here
     return out
 
@@ -1818,7 +1827,7 @@ def main():
             for entry in full_pool:
                 key = (entry['player'], entry['stat'])
                 if key in nfl_odds:
-                    entry['realLine'] = nfl_odds[key]
+                    entry['realLines'] = nfl_odds[key]
             print(f"  NFL: matched real lines for {len(nfl_odds)} player/stat combos")
 
             wnba_names = list({p['name'] for p in wnba_players})
@@ -1826,7 +1835,7 @@ def main():
             for entry in wnba_pool:
                 key = (entry['player'], entry['stat'])
                 if key in wnba_odds:
-                    entry['realLine'] = wnba_odds[key]
+                    entry['realLines'] = wnba_odds[key]
             print(f"  WNBA: matched real lines for {len(wnba_odds)} player/stat combos")
 
             mlb_names = list({p['name'] for p in mlb_players})
@@ -1834,7 +1843,7 @@ def main():
             for entry in mlb_pool:
                 key = (entry['player'], entry['stat'])
                 if key in mlb_odds:
-                    entry['realLine'] = mlb_odds[key]
+                    entry['realLines'] = mlb_odds[key]
             print(f"  MLB: matched real lines for {len(mlb_odds)} player/stat combos")
             if ODDS_CREDITS_REMAINING is not None:
                 print(f"  Credits remaining on your the-odds-api.com plan: {ODDS_CREDITS_REMAINING}")

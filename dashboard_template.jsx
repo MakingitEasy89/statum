@@ -1825,16 +1825,36 @@ function breakEvenProb(oddsStr) {
 
 const ZONE_COLOR = { "Strong Over": ACCENT.green, "Moderate Over": "#7FD98A", "Neutral / Pass": "var(--text-secondary-a)", "Moderate Under": "#F2A65A", "Strong Under": ACCENT.rose };
 
+function pickBestBook(realLines) {
+  if (!realLines || realLines.length === 0) return null;
+  // most common line among books (mode) — the "consensus" number
+  const lineCounts = {};
+  realLines.forEach(b => { lineCounts[b.line] = (lineCounts[b.line]||0) + 1; });
+  const modeLine = Object.entries(lineCounts).sort((a,b)=>b[1]-a[1])[0][0];
+  const atConsensus = realLines.filter(b => String(b.line) === modeLine);
+  // among books at the consensus line, the best (highest) Over price
+  return [...atConsensus].sort((a,b) => (b.overPrice ?? -9999) - (a.overPrice ?? -9999))[0];
+}
+
 function MarketLineComparator({ e }) {
-  const hasReal = !!e.realLine;
+  const realLines = e.realLines || [];
+  const bestBook = pickBestBook(realLines);
+  const hasReal = !!bestBook;
   const [open, setOpen] = useState(hasReal);
-  const [line, setLine] = useState(hasReal ? String(e.realLine.line) : "");
-  const [odds, setOdds] = useState(hasReal ? String(e.realLine.overPrice) : "-115");
+  const [line, setLine] = useState(hasReal ? String(bestBook.line) : "");
+  const [odds, setOdds] = useState(hasReal ? String(bestBook.overPrice) : "-115");
+  const [showAllBooks, setShowAllBooks] = useState(false);
 
   const lineNum = parseFloat(line);
   const valid = !isNaN(lineNum);
   const result = valid ? classifyMarketLine(lineNum, e.p25.line, e.p50.line, e.p75.line) : null;
   const beProb = breakEvenProb(odds);
+
+  // best Over and Under price across every book that has this player/stat — the actual
+  // "shop around" comparison, independent of which single line got auto-filled above
+  const bestOverPrice = realLines.length ? Math.max(...realLines.map(b => b.overPrice ?? -9999)) : null;
+  const bestUnderPrice = realLines.filter(b => b.underPrice != null).length
+    ? Math.max(...realLines.filter(b => b.underPrice != null).map(b => b.underPrice)) : null;
 
   // calibration check — does this tranche's historical hit rate actually match its theoretical target?
   const calibration = useMemo(() => {
@@ -1852,14 +1872,37 @@ function MarketLineComparator({ e }) {
   return (
     <div style={{ marginTop: 6 }}>
       <button onClick={()=>setOpen(o=>!o)} style={{ background: "none", border: "none", color: hasReal ? ACCENT.green : "var(--text-secondary-b)", fontSize: 10.5, cursor: "pointer", padding: 0, textDecoration: "underline dotted", fontWeight: hasReal ? 700 : 400 }}>
-        {hasReal ? `${open?"Hide":"Show"} · ✓ Real line found (${e.realLine.book})` : (open ? "Hide" : "📏 Compare to your sportsbook line")}
+        {hasReal ? `${open?"Hide":"Show"} · ✓ Real line found (${realLines.length} book${realLines.length!==1?"s":""})` : (open ? "Hide" : "📏 Compare to your sportsbook line")}
       </button>
       {open && (
         <div className="fade-in" style={{ marginTop: 8, padding: "10px 12px", background: "var(--overlay-1)", border: "1px solid var(--overlay-5)", borderRadius: 8 }}>
           {hasReal && (
-            <div style={{ fontSize: 10, color: ACCENT.green, marginBottom: 8 }}>
-              Auto-filled from {e.realLine.book} — edit below if you're checking a different book.
-            </div>
+            <>
+              <div style={{ fontSize: 10, color: ACCENT.green, marginBottom: 8 }}>
+                Auto-filled from {bestBook.book} (consensus line, best price) — edit below to check a different number, or shop the list.
+              </div>
+              {realLines.length > 1 && (
+                <div style={{ marginBottom: 10 }}>
+                  <button onClick={()=>setShowAllBooks(s=>!s)} style={{ background: "none", border: "none", color: TRANCHE_COLOR.p50, fontSize: 10, cursor: "pointer", padding: 0, textDecoration: "underline dotted", fontWeight: 700 }}>
+                    {showAllBooks ? "Hide" : "Shop"} all {realLines.length} books →
+                  </button>
+                  {showAllBooks && (
+                    <div className="fade-in" style={{ marginTop: 6, fontSize: 11 }}>
+                      {[...realLines].sort((a,b) => (b.overPrice??-9999) - (a.overPrice??-9999)).map((b,i) => (
+                        <div key={b.book} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderTop: i>0?"1px solid var(--overlay-3)":"none" }}>
+                          <span>{b.book} <span style={{color:"var(--text-tertiary)"}}>@ {fmt(b.line,1)}</span></span>
+                          <span>
+                            <span style={{ color: b.overPrice===bestOverPrice ? ACCENT.green : "var(--text-secondary-a)", fontWeight: b.overPrice===bestOverPrice?800:400 }}>O {b.overPrice>0?"+":""}{b.overPrice}</span>
+                            {b.underPrice != null && <span style={{ marginLeft: 8, color: b.underPrice===bestUnderPrice ? ACCENT.green : "var(--text-secondary-a)", fontWeight: b.underPrice===bestUnderPrice?800:400 }}>U {b.underPrice>0?"+":""}{b.underPrice}</span>}
+                          </span>
+                        </div>
+                      ))}
+                      <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginTop: 6 }}>Green = best price available for that side across these books.</div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
           )}
           <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
             <input placeholder="Line (e.g. 22.5)" value={line} onChange={ev=>setLine(ev.target.value)} style={{ width: 110, background: "var(--overlay-3)", border: "1px solid var(--overlay-6)", borderRadius: 6, padding: "5px 8px", color: "var(--text-primary)", fontSize: 12 }} />
@@ -2298,12 +2341,20 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
     if (slip.length === 0) return;
     const legs = slip.map(s => {
       const res = resolveLeg(s.entry, s.tranche);
+      const bestBook = pickBestBook(s.entry.realLines);
       return {
         player: s.entry.player, stat: s.entry.stat, pos: s.entry.pos, team: s.entry.team,
         tranche: s.tranche, kind: s.entry.kind || "ladder",
         lineLabel: legLineLabel({ ...s.entry, tranche: s.tranche, kind: s.entry.kind || "ladder" }),
         prob: legProb({ ...s.entry, tranche: s.tranche, kind: s.entry.kind || "ladder" }),
         note: s.entry.note || null,
+        // snapshot of the real market line at the moment you bet, if one was available —
+        // this is what line-movement tracking in Tracking compares against later. Not
+        // textbook closing-line-value (that needs the exact line right before kickoff,
+        // which would need a separate historical-odds lookup this doesn't do) — this is
+        // "how has the number moved since you got in," checked against whatever real
+        // line is live the next time the data refreshes.
+        marketSnapshot: bestBook ? { line: bestBook.line, price: bestBook.overPrice, book: bestBook.book, capturedAt: new Date().toISOString() } : null,
         ...res,
       };
     });
@@ -3256,6 +3307,38 @@ function RealGameCheck({ leg }) {
   );
 }
 
+function findCurrentBestBook(player, stat) {
+  const allEntries = [...FULL_POOL, ...wnbaPool(), ...mlbPool()];
+  const entry = allEntries.find(e => e.player === player && e.stat === stat);
+  if (!entry || !entry.realLines || entry.realLines.length === 0) return null;
+  return pickBestBook(entry.realLines);
+}
+
+// Not textbook closing-line-value — true CLV needs the exact line right before kickoff,
+// which would need a separate historical-odds lookup this doesn't do. This is the honest,
+// buildable version: how has the real market line moved since you got in, checked against
+// whatever real line is live the next time the data refreshes. Directionally the same
+// signal, just less precise about timing.
+function LineMovement({ leg }) {
+  if (!leg.marketSnapshot) return null;
+  const current = findCurrentBestBook(leg.player, leg.stat);
+  if (!current) {
+    return <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 4 }}>Line movement: no longer available (game may have passed, or the book pulled this market).</div>;
+  }
+  const lineDelta = Math.round((current.line - leg.marketSnapshot.line) * 10) / 10;
+  const isUnder = (leg.lineLabel||"").toLowerCase().includes("under");
+  const favorable = isUnder ? lineDelta < 0 : lineDelta > 0;
+  if (lineDelta === 0) {
+    return <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 4 }}>Line unchanged since you bet ({leg.marketSnapshot.book} {fmt(leg.marketSnapshot.line,1)}).</div>;
+  }
+  return (
+    <div style={{ fontSize: 10.5, marginTop: 4, color: favorable ? ACCENT.green : ACCENT.rose }}>
+      {favorable ? "📈" : "📉"} Line moved {fmt(Math.abs(lineDelta),1)} pts {favorable ? "in your favor" : "against you"} since you bet
+      ({fmt(leg.marketSnapshot.line,1)} → {fmt(current.line,1)}, {current.book})
+    </div>
+  );
+}
+
 function LegRow({ leg }) {
   const color = leg.status === "win" ? ACCENT.green : leg.status === "loss" ? ACCENT.rose : "var(--text-secondary-b)";
   const icon = leg.status === "win" ? "✅" : leg.status === "loss" ? "❌" : "⏳";
@@ -3270,6 +3353,7 @@ function LegRow({ leg }) {
       <div style={{ fontSize: 11, color: "var(--text-secondary-a)", lineHeight: 1.5 }}>{adviceFor(leg)}</div>
       {leg.note && <div style={{ fontSize: 10.5, color: "var(--text-tertiary)", marginTop: 3, fontStyle: "italic" }}>📋 {leg.note}</div>}
       <RealGameCheck leg={leg} />
+      <LineMovement leg={leg} />
     </div>
   );
 }
