@@ -96,6 +96,49 @@ function getDailyTheme(override) {
 
 // Gear + connected-nodes icon (matches the uploaded reference art), used as the toggle
 // control for explanatory text throughout the app — click to reveal, click again to hide.
+// Clean line-art sport icons — replaces emoji (which render inconsistently across
+// platforms and skew cartoonish) with crisp, consistent, single-color vector marks.
+function FootballIcon({ size = 16, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size*0.62} viewBox="0 0 32 20" fill="none" style={{ flexShrink: 0 }}>
+      <ellipse cx="16" cy="10" rx="15" ry="9" stroke={color} strokeWidth="1.8" />
+      <path d="M6 10 L26 10 M13 6.5 L13 13.5 M16 5.5 L16 14.5 M19 6.5 L19 13.5" stroke={color} strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+function BasketballIcon({ size = 16, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={{ flexShrink: 0 }}>
+      <circle cx="16" cy="16" r="14" stroke={color} strokeWidth="1.8" />
+      <path d="M2 16 L30 16 M16 2 L16 30 M6 6 Q16 16 6 26 M26 6 Q16 16 26 26" stroke={color} strokeWidth="1.4" fill="none" />
+    </svg>
+  );
+}
+function BaseballIcon({ size = 16, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={{ flexShrink: 0 }}>
+      <circle cx="16" cy="16" r="14" stroke={color} strokeWidth="1.8" />
+      <path d="M8 4 Q16 16 8 28 M24 4 Q16 16 24 28" stroke={color} strokeWidth="1.3" fill="none" />
+      <path d="M6 9 l1.6 0.6 M6 23 l1.6 -0.6 M26 9 l-1.6 0.6 M26 23 l-1.6 -0.6" stroke={color} strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  );
+}
+function SunIcon({ size = 16, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+      <circle cx="12" cy="12" r="5" stroke={color} strokeWidth="1.8" />
+      <path d="M12 1.5 L12 4 M12 20 L12 22.5 M22.5 12 L20 12 M4 12 L1.5 12 M19.1 4.9 L17.3 6.7 M6.7 17.3 L4.9 19.1 M19.1 19.1 L17.3 17.3 M6.7 6.7 L4.9 4.9" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+function MoonIcon({ size = 16, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+      <path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a6.8 6.8 0 0 0 9.5 9.5Z" stroke={color} strokeWidth="1.7" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function GearNodeIcon({ size = 20, open }) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" style={{ flexShrink: 0, transition: "transform 0.2s ease", transform: open ? "rotate(20deg)" : "rotate(0deg)" }}>
@@ -2355,12 +2398,12 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
       </div>
       {sport !== "nfl" && sportDataStatus?.[sport] === "loading" && (
         <Glass hover={false} style={{ padding: "20px 16px", marginBottom: 20, textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>
-          Loading {sport==="wnba"?"WNBA":"MLB"} data…
+          Loading {sport==="wnba"?"WNBA":sport==="mlb"?"MLB":"CFB"} data…
         </Glass>
       )}
       {sport !== "nfl" && sportDataStatus?.[sport] === "error" && (
         <Glass hover={false} style={{ padding: "20px 16px", marginBottom: 20, textAlign: "center", color: ACCENT.rose, fontSize: 13 }}>
-          Couldn't load {sport==="wnba"?"WNBA":"MLB"} data — try switching sports again, or refresh the page.
+          Couldn't load {sport==="wnba"?"WNBA":sport==="mlb"?"MLB":"CFB"} data — try switching sports again, or refresh the page.
         </Glass>
       )}
       <InfoToggle label="How this works">
@@ -2585,7 +2628,33 @@ function MatchupCard({ player, pos, team, opp, setOpp }) {
 // =====================================================================
 // DASHBOARD / OVERVIEW — real-data summary widgets, no fabricated numbers
 // =====================================================================
-function DashboardView({ sport, slip, sportDataStatus, onSelectGame }) {
+// Finds the raw player record + correct tab for a given pool-entry player name, so any
+// summary view (Dashboard's Top Picks, etc.) can offer a real "why" click-through to that
+// player's full detail page, the same way Team rosters already do.
+function findPlayerRecordForNav(sport, playerName) {
+  if (sport === "nfl") {
+    let p = RECEIVERS.find(x => x.name === playerName);
+    if (p) return { player: { ...p, kind: "skill" }, tab: "offense" };
+    p = QBS.find(x => x.name === playerName);
+    if (p) return { player: { ...p, kind: "qb" }, tab: "offense" };
+    p = KICKERS.find(x => x.name === playerName);
+    if (p) return { player: { ...p, kind: "k" }, tab: "offense" };
+    p = SACKS.find(x => x.name === playerName);
+    if (p) return { player: { ...p, kind: "sack" }, tab: "defense" };
+    return null;
+  }
+  if (sport === "wnba") {
+    const p = wnbaPlayers().find(x => x.name === playerName);
+    return p ? { player: p, tab: "offense" } : null;
+  }
+  if (sport === "mlb") {
+    const p = mlbPlayers().find(x => x.name === playerName);
+    return p ? { player: p, tab: p.group === "pitching" ? "defense" : "offense" } : null;
+  }
+  return null;
+}
+
+function DashboardView({ sport, slip, sportDataStatus, onSelectGame, onSelectPlayer }) {
   const pool = sport==="nfl" ? [...FULL_POOL, ...FUTURES_POOL] : sport==="wnba" ? wnbaPool() : sport==="mlb" ? mlbPool() : [];
   const upcoming = sport==="nfl" ? NFL_UPCOMING : sport==="wnba" ? wnbaUpcoming() : sport==="mlb" ? mlbUpcoming() : cfbUpcomingAsTeamMap();
   const sportLabel = sport==="nfl" ? "NFL" : sport==="wnba" ? "WNBA" : sport==="mlb" ? "MLB" : "CFB";
@@ -2720,16 +2789,18 @@ function DashboardView({ sport, slip, sportDataStatus, onSelectGame }) {
         <Glass hover={false} style={{ padding: "16px 18px" }}>
           {sport === "cfb" ? (
             <>
-              <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>🏈 Next 5 Games — CFB</div>
+              <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}><FootballIcon size={12} color="var(--text-secondary-b)" /> Next 5 Games — CFB</div>
               {cfbUpcoming().slice(0, 5).length > 0 ? (
                 <>
                   {cfbUpcoming().slice(0, 5).map((g, i) => (
-                    <div key={g.id} style={{ padding: "7px 0", borderTop: i>0 ? "1px solid var(--overlay-3)" : "none", fontSize: 12.5 }}>
+                    <div key={g.id} onClick={()=>onSelectGame(g.homeTeam, g.awayTeam, `${g.awayTeam} @ ${g.homeTeam}`)}
+                      style={{ padding: "7px 4px", borderTop: i>0 ? "1px solid var(--overlay-3)" : "none", fontSize: 12.5, cursor: "pointer", borderRadius: 6 }}
+                      className="glass-hover" title="See full prediction and confidence">
                       <b>{g.awayTeam}</b> <span style={{color:"var(--text-tertiary)"}}>@</span> <b>{g.homeTeam}</b>
                       <span style={{ float: "right", color: "#8B7FD1", fontWeight: 700 }}>{g.predictedMargin>=0?g.homeTeam:g.awayTeam} -{fmt(Math.abs(g.predictedMargin),1)}</span>
                     </div>
                   ))}
-                  <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 8 }}>See the Games tab for full spread/total predictions and backtested confidence.</div>
+                  <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 8 }}>Click a game for full spread/total predictions and backtested confidence.</div>
                 </>
               ) : <div style={{ fontSize: 12, color: "var(--text-tertiary)" }}>No upcoming games loaded — connect a free collegefootballdata.com API key (see Guide).</div>}
             </>
@@ -2739,10 +2810,12 @@ function DashboardView({ sport, slip, sportDataStatus, onSelectGame }) {
               {topPicks.length > 0 ? (
                 <>
                   {topPicks.map((p, i) => (
-                    <div key={p.id || `${p.player}-${p.stat}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 0", borderTop: i>0 ? "1px solid var(--overlay-3)" : "none" }}>
+                    <div key={p.id || `${p.player}-${p.stat}`} onClick={()=>onSelectPlayer(p.player)}
+                      style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 4px", borderTop: i>0 ? "1px solid var(--overlay-3)" : "none", cursor: "pointer", borderRadius: 6 }}
+                      className="glass-hover" title={`See why — full ${p.player} detail page`}>
                       <div>
                         <span style={{ fontSize: 10.5, color: "var(--text-tertiary)", marginRight: 8 }}>#{i+1}</span>
-                        <span style={{ fontSize: 13, fontWeight: 700 }}>{p.player}</span>
+                        <span style={{ fontSize: 13, fontWeight: 700, textDecoration: "underline", textDecorationColor: "var(--overlay-6)" }}>{p.player}</span>
                         <div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", marginLeft: 20 }}>{p.stat}</div>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -2751,7 +2824,7 @@ function DashboardView({ sport, slip, sportDataStatus, onSelectGame }) {
                       </div>
                     </div>
                   ))}
-                  <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 8 }}>Ranked by P50 hit rate among Strong/Moderate-confidence {sportLabel} lines right now.</div>
+                  <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 8 }}>Ranked by P50 hit rate among Strong/Moderate-confidence {sportLabel} lines right now. Click a name to see why.</div>
                 </>
               ) : <div style={{ fontSize: 12, color: "var(--text-tertiary)" }}>No qualifying picks for {sportLabel} yet.</div>}
             </>
@@ -3670,6 +3743,36 @@ function TrackingView({ slip, setSlip }) {
 // =====================================================================
 // APP
 // =====================================================================
+// Available from any tab — type a team name, see matches for the current sport, click one
+// to jump straight to its Teams detail page, no matter which tab you're currently on.
+function QuickTeamSearch({ sport, query, setQuery, onJump }) {
+  const teamList = sport==="nfl" ? TEAMS : sport==="wnba" ? getWnbaTeams() : sport==="mlb" ? getMlbTeamsList() : cfbTeams().map(t=>t.school);
+  const matches = useMemo(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase();
+    return teamList.filter(t => {
+      const displayName = sport==="nfl" ? (TEAM_NAMES[t]||t) : t;
+      return displayName.toLowerCase().includes(q) || t.toLowerCase().includes(q);
+    }).slice(0, 8);
+  }, [query, sport, teamList]);
+
+  return (
+    <div style={{ position: "relative", width: 200 }}>
+      <input placeholder="🔍 Find a team…" value={query} onChange={e=>setQuery(e.target.value)}
+        style={{ width: "100%", background: "var(--overlay-2)", border: "1px solid var(--overlay-6)", borderRadius: 999, padding: "7px 14px", color: "var(--text-primary)", fontSize: 12.5 }} />
+      {matches.length > 0 && (
+        <div className="fade-in" style={{ position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, background: "var(--card-bg)", backdropFilter: "blur(18px)", border: "1px solid var(--overlay-6)", borderRadius: 8, boxShadow: "0 10px 24px -8px rgba(0,0,0,0.4)", zIndex: 50, overflow: "hidden" }}>
+          {matches.map(t => (
+            <div key={t} onClick={()=>onJump(t)} style={{ padding: "8px 14px", fontSize: 12.5, cursor: "pointer", borderTop: "1px solid var(--overlay-3)" }} className="glass-hover">
+              {sport==="nfl" ? (TEAM_NAMES[t]||t) : t}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function App() {
   const [sport, setSport] = useState("nfl");
   const [tab, setTab] = useState("dashboard");
@@ -3680,6 +3783,8 @@ function App() {
   const [selected, setSelected] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [matchupFilter, setMatchupFilter] = useState(null); // { teamA, teamB, label } — set when a Dashboard slate game is clicked
+  const [teamsSearch, setTeamsSearch] = useState("");
+  const [quickSearch, setQuickSearch] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [slip, setSlip] = useState([]);
   const [stake, setStake] = useState(20);
@@ -3774,9 +3879,9 @@ function App() {
 
   const MLB_TEAMS = useMemo(() => getMlbTeamsList(), [dataTick]);
 
-  useEffect(() => { setSelected(null); setSelectedTeam(null); setPosFilter("all"); }, [tab]);
+  useEffect(() => { setSelectedTeam(null); setPosFilter("all"); }, [tab]);
   useEffect(() => { setSelected(null); setSelectedTeam(null); setSearch(""); setPosFilter("all"); setTeam("all"); setMatchupFilter(null); }, [sport]);
-  useEffect(() => { if (sport === "cfb" && (tab === "locks" || tab === "matchup")) setTab("dashboard"); }, [sport, tab]);
+  useEffect(() => { if (sport === "cfb" && (tab === "locks" || tab === "matchup" || tab === "market")) setTab("dashboard"); }, [sport, tab]);
 
   const [themeOverride, setThemeOverride] = useState(null); // null = auto (local time), "day", or "night"
 
@@ -3818,30 +3923,35 @@ function App() {
           <button onClick={()=>setSport("nfl")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="nfl"?ACCENT.teal:"var(--overlay-6)"}`,
             background: sport==="nfl" ? `${ACCENT.teal}18` : "var(--overlay-1)",
-            color: sport==="nfl" ? ACCENT.teal : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer"
-          }}>🏈 NFL</button>
+            color: sport==="nfl" ? ACCENT.teal : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
+            display: "inline-flex", alignItems: "center", gap: 8
+          }}><FootballIcon color={sport==="nfl"?ACCENT.teal:"var(--text-secondary-a)"} /> NFL</button>
           <button onClick={()=>setSport("wnba")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="wnba"?"#FF8A00":"var(--overlay-6)"}`,
             background: sport==="wnba" ? "#FF8A0018" : "var(--overlay-1)",
-            color: sport==="wnba" ? "#FF8A00" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer"
-          }}>🏀 WNBA</button>
+            color: sport==="wnba" ? "#FF8A00" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
+            display: "inline-flex", alignItems: "center", gap: 8
+          }}><BasketballIcon color={sport==="wnba"?"#FF8A00":"var(--text-secondary-a)"} /> WNBA</button>
           <button onClick={()=>setSport("mlb")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="mlb"?"#6EC9F2":"var(--overlay-6)"}`,
             background: sport==="mlb" ? "#6EC9F218" : "var(--overlay-1)",
-            color: sport==="mlb" ? "#6EC9F2" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer"
-          }}>⚾ MLB</button>
+            color: sport==="mlb" ? "#6EC9F2" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
+            display: "inline-flex", alignItems: "center", gap: 8
+          }}><BaseballIcon color={sport==="mlb"?"#6EC9F2":"var(--text-secondary-a)"} /> MLB</button>
           <button onClick={()=>setSport("cfb")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="cfb"?"#8B7FD1":"var(--overlay-6)"}`,
             background: sport==="cfb" ? "#8B7FD118" : "var(--overlay-1)",
-            color: sport==="cfb" ? "#8B7FD1" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer"
-          }}>🏈 CFB</button>
+            color: sport==="cfb" ? "#8B7FD1" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
+            display: "inline-flex", alignItems: "center", gap: 8
+          }}><FootballIcon color={sport==="cfb"?"#8B7FD1":"var(--text-secondary-a)"} /> CFB</button>
           <button
             onClick={()=>setThemeOverride(o => o === null ? (dailyTheme.isDay ? "night" : "day") : (o === "day" ? "night" : "day"))}
             title={themeOverride === null ? "Auto (following local time) — click to override" : `Manual ${themeOverride} mode — click to switch, or refresh to reset to auto`}
             className="bubble-btn" style={{
               marginLeft: "auto", padding: "9px 14px", borderRadius: 10, border: "1px solid var(--overlay-6)",
-              background: "var(--overlay-1)", color: "var(--text-body)", fontWeight: 700, fontSize: 13, cursor: "pointer"
-            }}>{dailyTheme.isDay ? "☀️" : "🌙"} {themeOverride === null ? "Auto" : dailyTheme.isDay ? "Day" : "Night"}</button>
+              background: "var(--overlay-1)", color: "var(--text-body)", fontWeight: 700, fontSize: 13, cursor: "pointer",
+              display: "inline-flex", alignItems: "center", gap: 7
+            }}>{dailyTheme.isDay ? <SunIcon color={TRANCHE_COLOR.p50} /> : <MoonIcon color="#8B9BC7" />} {themeOverride === null ? "Auto" : dailyTheme.isDay ? "Day" : "Night"}</button>
         </div>
 
         <div style={{ marginBottom: 22, display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10 }}>
@@ -3858,6 +3968,7 @@ function App() {
                 : `${mlbPlayers().length} batters & pitchers · official MLB Stats API · train/test validated prop lines`}
             </div>
           </div>
+          <QuickTeamSearch sport={sport} query={quickSearch} setQuery={setQuickSearch} onJump={(team)=>{ setSelectedTeam(team); setTab("teams"); setQuickSearch(""); }} />
           <a href="./guide.html" style={{
             fontSize: 12, fontWeight: 700, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 999,
             padding: "7px 14px", textDecoration: "none", whiteSpace: "nowrap"
@@ -3865,35 +3976,49 @@ function App() {
         </div>
 
         <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
-          <Pill active={tab==="dashboard"} onClick={()=>setTab("dashboard")} accent="#FFD54A">🏠 Dashboard</Pill>
+          <Pill active={tab==="dashboard"} onClick={()=>{setTab("dashboard");setSelected(null);}} accent="#FFD54A">🏠 Dashboard</Pill>
           {sport==="cfb" ? (
-            <Pill active={tab==="offense"} onClick={()=>setTab("offense")} accent="#8B7FD1">🏈 Games</Pill>
+            <Pill active={tab==="offense"} onClick={()=>{setTab("offense");setSelected(null);}} accent="#8B7FD1"><span style={{display:"inline-flex",alignItems:"center",gap:5}}><FootballIcon size={13} color="#8B7FD1" /> Games</span></Pill>
           ) : (
             <>
-              <Pill active={tab==="offense"} onClick={()=>setTab("offense")} accent={ACCENT.teal}>{sport==="nfl" ? "NFL Offense" : sport==="wnba" ? "WNBA Players" : "MLB Batters"}</Pill>
-              <Pill active={tab==="defense"} onClick={()=>setTab("defense")} accent={ACCENT.violet}>{sport==="nfl" ? "NFL Defense · Sacks" : sport==="wnba" ? "WNBA Defense · Stl+Blk" : "MLB Pitchers"}</Pill>
+              <Pill active={tab==="offense"} onClick={()=>{setTab("offense");setSelected(null);}} accent={ACCENT.teal}>{sport==="nfl" ? "NFL Offense" : sport==="wnba" ? "WNBA Players" : "MLB Batters"}</Pill>
+              <Pill active={tab==="defense"} onClick={()=>{setTab("defense");setSelected(null);}} accent={ACCENT.violet}>{sport==="nfl" ? "NFL Defense · Sacks" : sport==="wnba" ? "WNBA Defense · Stl+Blk" : "MLB Pitchers"}</Pill>
             </>
           )}
-          <Pill active={tab==="market"} onClick={()=>setTab("market")} accent={ACCENT.amber}>Market Pulse · Kalshi</Pill>
-          {sport!=="cfb" && <Pill active={tab==="locks"} onClick={()=>setTab("locks")} accent={ACCENT.green}>🎯 Prop Floors + Parlay</Pill>}
-          {sport!=="cfb" && <Pill active={tab==="matchup"} onClick={()=>setTab("matchup")} accent={ACCENT.rose}>🏟️ Matchup</Pill>}
-          <Pill active={tab==="teams"} onClick={()=>setTab("teams")} accent="#6EC9F2">🏛️ Teams</Pill>
-          <Pill active={tab==="tracking"} onClick={()=>setTab("tracking")} accent="#FFD54A">🏆 Tracking</Pill>
+          {sport!=="cfb" && <Pill active={tab==="market"} onClick={()=>{setTab("market");setSelected(null);}} accent={ACCENT.amber}>Market Pulse · Kalshi</Pill>}
+          {sport!=="cfb" && <Pill active={tab==="locks"} onClick={()=>{setTab("locks");setSelected(null);}} accent={ACCENT.green}>🎯 Prop Floors + Parlay</Pill>}
+          {sport!=="cfb" && <Pill active={tab==="matchup"} onClick={()=>{setTab("matchup");setSelected(null);}} accent={ACCENT.rose}>🏟️ Matchup</Pill>}
+          <Pill active={tab==="teams"} onClick={()=>{setTab("teams");setSelected(null);}} accent="#6EC9F2">🏛️ Teams</Pill>
+          <Pill active={tab==="tracking"} onClick={()=>{setTab("tracking");setSelected(null);}} accent="#FFD54A">🏆 Tracking</Pill>
         </div>
 
-        {tab==="dashboard" && <DashboardView sport={sport} slip={slip} sportDataStatus={sportDataStatus} onSelectGame={(teamA, teamB, label)=>{ if (sport==="cfb") { setTab("offense"); } else { setMatchupFilter({teamA, teamB, label}); setTab("locks"); } }} />}
-        {tab==="market" && <MarketPulseView sport={sport} />}
+        {tab==="dashboard" && <DashboardView sport={sport} slip={slip} sportDataStatus={sportDataStatus}
+          onSelectGame={(teamA, teamB, label)=>{ if (sport==="cfb") { setTab("offense"); } else { setMatchupFilter({teamA, teamB, label}); setTab("locks"); } }}
+          onSelectPlayer={(playerName)=>{
+            const found = findPlayerRecordForNav(sport, playerName);
+            if (found) { setSelected(found.player); setTab(found.tab); }
+          }} />}
+        {tab==="market" && sport!=="cfb" && <MarketPulseView sport={sport} />}
         {tab==="locks" && <PropFloorsView sport={sport} slip={slip} setSlip={setSlip} stake={stake} setStake={setStake} aiSuggestion={aiSuggestion} setAiSuggestion={setAiSuggestion} dataTick={dataTick} sportDataStatus={sportDataStatus} matchupFilter={matchupFilter} setMatchupFilter={setMatchupFilter} />}
         {tab==="matchup" && <MatchupView slip={slip} setSlip={setSlip} />}
         {tab==="teams" && !selectedTeam && (
           <div className="fade-in">
             {sport !== "nfl" && sportDataStatus[sport] === "loading" && (
-              <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading {sport==="wnba"?"WNBA":"MLB"} data…</Glass>
+              <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading {sport==="wnba"?"WNBA":sport==="mlb"?"MLB":"CFB"} data…</Glass>
             )}
+            <input placeholder={`Search ${sport==="cfb"?"130+ FBS teams":"teams"}…`} value={teamsSearch} onChange={e=>setTeamsSearch(e.target.value)}
+              style={{ width: "100%", maxWidth: 340, marginBottom: 14, background: "var(--overlay-2)", border: "1px solid var(--overlay-6)", borderRadius: 8, padding: "9px 14px", color: "var(--text-primary)", fontSize: 13 }} />
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
-              {(sport==="nfl" ? TEAMS : sport==="wnba" ? getWnbaTeams() : sport==="mlb" ? getMlbTeamsList() : cfbTeams().map(t=>t.school)).map(t => (
-                <TeamCard key={t} team={t} sport={sport} onSelect={setSelectedTeam} />
-              ))}
+              {(sport==="nfl" ? TEAMS : sport==="wnba" ? getWnbaTeams() : sport==="mlb" ? getMlbTeamsList() : cfbTeams().map(t=>t.school))
+                .filter(t => {
+                  if (!teamsSearch) return true;
+                  const displayName = sport==="nfl" ? (TEAM_NAMES[t]||t) : t;
+                  const q = teamsSearch.toLowerCase();
+                  return displayName.toLowerCase().includes(q) || t.toLowerCase().includes(q);
+                })
+                .map(t => (
+                  <TeamCard key={t} team={t} sport={sport} onSelect={setSelectedTeam} />
+                ))}
             </div>
           </div>
         )}
