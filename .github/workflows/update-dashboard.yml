@@ -1,0 +1,70 @@
+name: Update Statum Dashboard
+
+# Runs automatically twice a day (roughly 9am and 9pm US Central time - GitHub Actions
+# schedules are always in UTC and don't auto-adjust for daylight saving, so actual local
+# time will drift by an hour twice a year). Also runnable on demand from the Actions tab.
+on:
+  schedule:
+    # General baseline - covers MLB (daily games) and CFB (mostly Saturday), and acts
+    # as the catch-all for NFL/WNBA outside their specific windows below. Trimmed from
+    # 4x/day to 2x/day to make budget room for the game-time-specific runs below -
+    # see the math note at the bottom of this file for why.
+    - cron: '0 14 * * *'   # ~10am ET
+    - cron: '0 2 * * *'   # ~10pm ET
+
+    # NFL - real kickoff windows, not arbitrary times. All times below assume EDT
+    # (UTC-4), which covers most of the season (Sept-early Nov); once clocks fall back
+    # to EST in November, actual local time will be an hour later than intended until
+    # this gets manually adjusted for the winter half of the season.
+    - cron: '30 22 * * 4'  # Thursday ~6:30pm ET - before Thursday Night Football (~8:15pm ET)
+    - cron: '55 15 * * 0'  # Sunday 11:55am ET - before the early 1:00pm window
+    - cron: '0 19 * * 0'  # Sunday 3:00pm ET - before the late-afternoon 4:05/4:25pm window
+    - cron: '59 22 * * 0'  # Sunday 6:59pm ET - ahead of Sunday Night Football (~8:20pm ET)
+    - cron: '30 22 * * 1'  # Monday ~6:30pm ET - before Monday Night Football (~8:15pm ET)
+
+    # WNBA - real 2026 broadcast data shows games spread across Sunday, Monday, AND
+    # Wednesday (not concentrated into 2-3 clean windows like NFL), with tip-offs
+    # ranging from 1pm to 10pm ET depending on the matchup. A single "before kickoff"
+    # time doesn't map cleanly onto that spread, so this is an honest middle ground:
+    # one evening refresh on each of the three heaviest broadcast days, positioned to
+    # catch pregame news ahead of most evening tip-offs - not a precise per-game window
+    # the way the NFL times above are.
+    - cron: '30 21 * * 0,1,3'  # ~5:30pm ET on Sun/Mon/Wed
+
+  workflow_dispatch: {}
+
+# Lets the built-in GITHUB_TOKEN push commits back to this repo - without this, the
+# checkout is read-only and the final push step would fail.
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js (for precompiling the JSX)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Python dependencies
+        run: pip install pandas numpy requests pyarrow --break-system-packages
+
+      - name: Configure git identity
+        run: |
+          git config user.name "Statum Auto-Updater"
+          git config user.email "actions@github.com"
+
+      - name: Run the update script
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python update_dashboard.py
