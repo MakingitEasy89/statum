@@ -2208,17 +2208,33 @@ def main():
     # ---- 7. Git commit + push ----
     print("\n[8/8] Committing and pushing to GitHub...")
     try:
-        subprocess.run(['git', 'add', 'index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json'], cwd=SCRIPT_DIR, check=True)
+        # Pull first, preferring our freshly-generated files if there's any conflict on
+        # them specifically — these files (index.html, data-*.json) are fully regenerated
+        # every run, never hand-edited, so "ours" is always the right side to keep. This
+        # is what eliminates the recurring manual git-pull/reset dance from earlier tonight.
+        pull_result = subprocess.run(['git', 'pull', '--no-edit', '-X', 'ours'], cwd=SCRIPT_DIR, capture_output=True, text=True)
+        if pull_result.returncode != 0:
+            print(f"  [!] Auto-pull hit an issue, proceeding anyway (may need manual resolution if push fails): {pull_result.stderr.strip()[:200]}")
+
+        # Source files get pushed too now, not just the generated output — saves the
+        # separate "also upload to GitHub" step. Only added if actually present, since
+        # not every setup necessarily has all three.
+        files_to_add = ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json']
+        for source_file in ['update_dashboard.py', 'dashboard_template.jsx', 'guide.html']:
+            if (SCRIPT_DIR / source_file).exists():
+                files_to_add.append(source_file)
+
+        subprocess.run(['git', 'add'] + files_to_add, cwd=SCRIPT_DIR, check=True)
         msg = f"Auto-update: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}"
         result = subprocess.run(['git', 'commit', '-m', msg], cwd=SCRIPT_DIR, capture_output=True, text=True)
         if 'nothing to commit' in (result.stdout + result.stderr):
             print("  No changes to commit — data is identical to last run.")
         else:
             subprocess.run(['git', 'push'], cwd=SCRIPT_DIR, check=True)
-            print("  Pushed successfully!")
+            print(f"  Pushed successfully! ({len(files_to_add)} files: {', '.join(files_to_add)})")
     except subprocess.CalledProcessError as e:
         print(f"  Git error: {e}")
-        print("  You may need to push manually: git add index.html data-wnba.json data-mlb.json data-cfb.json && git commit -m 'update' && git push")
+        print("  If this keeps happening: git fetch origin && git reset --hard origin/main, then re-save your files and run this again.")
 
     print("\nDone.")
 
