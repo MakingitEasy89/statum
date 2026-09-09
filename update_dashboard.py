@@ -67,6 +67,42 @@ ODDS_MARKET_MAP = {
 ODDS_SPORT_KEYS = {'nfl': 'americanfootball_nfl', 'wnba': 'basketball_wnba', 'mlb': 'baseball_mlb'}
 
 
+def fetch_nfl_game_lines(events, api_key):
+    """Real spread/total for upcoming NFL games, decomposed into each team's implied
+    score. This is genuinely different information than a player's own season average —
+    it's what the market currently expects for THIS specific matchup. Kept as its own
+    function (not merged into the player-props fetch) since game-level outcomes have a
+    completely different shape (per-team, not per-player) — cleaner to keep separate
+    than to complicate the tested player-prop parsing logic. Returns
+    {team_name: {impliedTotal, spread, total}}."""
+    out = {}
+    for event in events[:25]:
+        data = fetch_event_props('nfl', event['id'], api_key, ['spreads', 'totals'])
+        if not data:
+            continue
+        home_team, away_team = data.get('home_team'), data.get('away_team')
+        for bookmaker in data.get('bookmakers', []):
+            spread_market = next((m for m in bookmaker.get('markets', []) if m['key'] == 'spreads'), None)
+            total_market = next((m for m in bookmaker.get('markets', []) if m['key'] == 'totals'), None)
+            if not spread_market or not total_market:
+                continue
+            try:
+                home_spread = next(o['point'] for o in spread_market['outcomes'] if o['name'] == home_team)
+                total = next(o['point'] for o in total_market['outcomes'] if o['name'] in ('Over', 'over'))
+            except (StopIteration, KeyError):
+                continue
+            # standard spread+total decomposition: home_score = (total - spread)/2, away = (total + spread)/2
+            # (spread here is negative when home team favored, matching the odds API's own convention)
+            home_implied = round((total - home_spread) / 2, 1)
+            away_implied = round((total + home_spread) / 2, 1)
+            if home_team and home_team not in out:
+                out[home_team] = {'impliedTotal': home_implied, 'spread': home_spread, 'total': total, 'opponent': away_team}
+            if away_team and away_team not in out:
+                out[away_team] = {'impliedTotal': away_implied, 'spread': -home_spread, 'total': total, 'opponent': home_team}
+            break  # one bookmaker's game line is enough here — this isn't a shopping comparison like props
+    return out
+
+
 def ensure_gitignored():
     """API keys must never reach the public repo. This makes that automatic rather
     than relying on remembering to edit .gitignore by hand."""
@@ -216,6 +252,20 @@ TEMPLATE_PATH = SCRIPT_DIR / "dashboard_template.jsx"
 OUTPUT_HTML = SCRIPT_DIR / "index.html"
 
 BASELINE_SEASONS = [2024, 2025]   # the validated historical train/test backtest — never changes
+
+# Static mapping, not guessed at runtime — NFL franchise names are stable (unlike API field
+# names), so hardcoding this is safe. Needed to match nflverse's team abbreviations against
+# the-odds-api.com's full-name team identifiers for the game-script signal.
+NFL_TEAM_FULL_NAMES = {
+    'ARI': 'Arizona Cardinals', 'ATL': 'Atlanta Falcons', 'BAL': 'Baltimore Ravens', 'BUF': 'Buffalo Bills',
+    'CAR': 'Carolina Panthers', 'CHI': 'Chicago Bears', 'CIN': 'Cincinnati Bengals', 'CLE': 'Cleveland Browns',
+    'DAL': 'Dallas Cowboys', 'DEN': 'Denver Broncos', 'DET': 'Detroit Lions', 'GB': 'Green Bay Packers',
+    'HOU': 'Houston Texans', 'IND': 'Indianapolis Colts', 'JAX': 'Jacksonville Jaguars', 'KC': 'Kansas City Chiefs',
+    'LA': 'Los Angeles Rams', 'LAC': 'Los Angeles Chargers', 'LV': 'Las Vegas Raiders', 'MIA': 'Miami Dolphins',
+    'MIN': 'Minnesota Vikings', 'NE': 'New England Patriots', 'NO': 'New Orleans Saints', 'NYG': 'New York Giants',
+    'NYJ': 'New York Jets', 'PHI': 'Philadelphia Eagles', 'PIT': 'Pittsburgh Steelers', 'SEA': 'Seattle Seahawks',
+    'SF': 'San Francisco 49ers', 'TB': 'Tampa Bay Buccaneers', 'TEN': 'Tennessee Titans', 'WAS': 'Washington Commanders',
+}
 CANDIDATE_CURRENT_SEASONS = [2026, 2027]  # script auto-detects whichever of these has real data
 
 # Shrinkage constant for blending current-season-to-date with the historical baseline.
@@ -1847,6 +1897,22 @@ def main():
                 if key in nfl_odds:
                     entry['realLines'] = nfl_odds[key]
             print(f"  NFL: matched real lines for {len(nfl_odds)} player/stat combos")
+
+            # Game-script signal: real Vegas spread/total decomposed into each team's implied
+            # score for their specific upcoming game. Different information than a player's
+            # own season average — attached onto NFL_UPCOMING so the Matchup tab can show
+            # whether the market expects an above/below-average offensive environment.
+            nfl_events = fetch_odds_events('nfl', odds_key, days_ahead=7)
+            nfl_game_lines = fetch_nfl_game_lines(nfl_events, odds_key)
+            matched_teams = 0
+            for team, info in nfl_upcoming.items():
+                # nfl_upcoming is keyed by team abbreviation; game lines are keyed by full
+                # team name from the odds API, so match through TEAM_NAMES_FULL if available
+                full_name = NFL_TEAM_FULL_NAMES.get(team)
+                if full_name and full_name in nfl_game_lines:
+                    info['gameScript'] = nfl_game_lines[full_name]
+                    matched_teams += 1
+            print(f"  NFL: matched real game-script lines for {matched_teams} teams")
 
             wnba_names = list({p['name'] for p in wnba_players})
             wnba_odds = build_real_odds('wnba', odds_key, wnba_names, days_ahead=7)

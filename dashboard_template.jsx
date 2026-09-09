@@ -1635,6 +1635,19 @@ function probToAmerican(p) {
   if (p >= 0.5) return Math.round(-100 * p / (1 - p));
   return Math.round(100 * (1 - p) / p);
 }
+// Kelly Criterion — how much of a bankroll to stake, given a real probability estimate and
+// the price you'd be paid. Uses QUARTER Kelly by default (25% of the full formula), the
+// standard professional practice for reducing variance and guarding against the case where
+// your probability estimate is wrong — full Kelly amplifies an estimation error just as
+// hard as it would amplify a real edge. Returns 0 (not negative) whenever the math says
+// there's no real edge at this price, rather than suggesting a bet anyway.
+function kellyFraction(prob, decimalOdds, kellyMultiplier = 0.25) {
+  if (!prob || prob <= 0 || prob >= 1 || !decimalOdds || decimalOdds <= 1) return 0;
+  const b = decimalOdds - 1;
+  const q = 1 - prob;
+  const fullKelly = (b * prob - q) / b;
+  return Math.max(0, fullKelly * kellyMultiplier);
+}
 function getGamelogSourceForLeg(leg) {
   let source = null, field = null, group = null;
   if (STAT_FIELD_MAP.skill[leg.stat]) { source = RECEIVERS.find(p => p.name === leg.player); field = STAT_FIELD_MAP.skill[leg.stat]; group = 'skill'; }
@@ -2191,6 +2204,13 @@ function copySlipToClipboard(legs, stake, payout) {
 
 function ParlaySlip({ slip, onRemove, onClear, stake, setStake, aiSuggestion, onRunAI, onSubmit, minimized, setMinimized }) {
   const [justCopied, setJustCopied] = useState(false);
+  const [bankroll, setBankroll] = useState(() => {
+    try { return localStorage.getItem("statum_bankroll") || ""; } catch(e) { return ""; }
+  });
+  function updateBankroll(v) {
+    setBankroll(v);
+    try { localStorage.setItem("statum_bankroll", v); } catch(e) {}
+  }
   if (slip.length === 0) return null;
   const legs = slip.map(s => ({ ...s.entry, tranche: s.tranche, kind: s.entry.kind || "ladder" }));
   const probDetail = comboProbDetailed(legs);
@@ -2198,6 +2218,12 @@ function ParlaySlip({ slip, onRemove, onClear, stake, setStake, aiSuggestion, on
   const american = probToAmerican(prob);
   const decimal = 1 / prob;
   const payout = stake * decimal;
+  const bankrollNum = parseFloat(bankroll);
+  const hasBankroll = !isNaN(bankrollNum) && bankrollNum > 0;
+  const kellyPct = kellyFraction(prob, decimal); // decimal here is OUR fair (no-vig) payout —
+  // a real sportsbook parlay pays a bit less due to vig, so the true Kelly stake is somewhat
+  // smaller than this. Flagged clearly in the UI rather than silently overstating it.
+  const kellyStake = hasBankroll ? bankrollNum * kellyPct : null;
 
   if (minimized) {
     return (
@@ -2282,6 +2308,35 @@ function ParlaySlip({ slip, onRemove, onClear, stake, setStake, aiSuggestion, on
             <div style={{ fontSize: 9.5, color: "var(--text-label)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Payout</div>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 800, color: ACCENT.amber }}>${fmt(payout,2)}</div>
           </div>
+        </div>
+
+        <div style={{ padding: "10px 14px", background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 8, marginBottom: 12 }}>
+          {!hasBankroll ? (
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 11.5, color: "var(--text-secondary-a)" }}>Set a bankroll to see a suggested stake size (Kelly Criterion):</span>
+              <input type="number" placeholder="e.g. 500" value={bankroll} onChange={e=>updateBankroll(e.target.value)} style={{
+                width: 100, background: "var(--overlay-4)", border: "1px solid var(--overlay-6)", borderRadius: 6,
+                color: "var(--text-primary)", padding: "5px 8px", fontSize: 12.5
+              }} />
+            </div>
+          ) : (
+            <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+              <div>
+                <span style={{ fontSize: 9.5, color: "var(--text-label)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Suggested Stake </span>
+                <span style={{ fontSize: 9, color: "var(--text-tertiary)" }}>(&#188; Kelly, ${fmt(bankrollNum,0)} bankroll)</span>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 17, fontWeight: 800, color: kellyStake > 0 ? ACCENT.green : "var(--text-tertiary)" }}>
+                  {kellyStake > 0 ? `$${fmt(kellyStake,2)} (${fmt(kellyPct*100,1)}%)` : "No edge at this price"}
+                </div>
+              </div>
+              <button onClick={()=>updateBankroll("")} style={{ background: "none", border: "none", color: "var(--text-tertiary)", fontSize: 10, cursor: "pointer", textDecoration: "underline dotted" }}>change bankroll</button>
+              <span style={{ fontSize: 9.5, color: "var(--text-tertiary)", maxWidth: 340, lineHeight: 1.4 }}>
+                Uses our fair (no-vig) odds — a real sportsbook parlay pays a bit less, so the true optimal stake is somewhat smaller than this. This assumes our probability estimate is accurate; if it's wrong, Kelly sizing amplifies that error just as much as a real edge.
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
           <button onClick={onRunAI} className="bubble-btn" style={{
             marginLeft: "auto", padding: "10px 18px", borderRadius: 999, border: "none", cursor: "pointer",
             background: "linear-gradient(135deg,#B98CF2,#4FC3F7)", color: "#0B0C0E", fontWeight: 800, fontSize: 12.5
@@ -2689,6 +2744,28 @@ function MatchupCard({ player, pos, team, opp, setOpp }) {
           ) : (
             <div style={{ fontSize: 11.5, color: "var(--text-tertiary)" }}>Position-group weakness matching applies to WR/TE/RB — {pos} isn't mapped to a receiving group here.</div>
           )}
+
+          {(() => {
+            const upcoming = NFL_UPCOMING[team];
+            // only show this when the selected opponent matches the REAL scheduled game —
+            // this is real Vegas data, so it can't honestly apply to a hypothetical opponent
+            if (!upcoming || upcoming.opp !== opp || !upcoming.gameScript) return null;
+            const gs = upcoming.gameScript;
+            const teamSeasonAvg = TEAM_DEFENSE[team]?.pointsScoredPerGame;
+            if (teamSeasonAvg == null) return null;
+            const diff = gs.impliedTotal - teamSeasonAvg;
+            const meaningful = Math.abs(diff) >= 3;
+            return (
+              <div style={{ marginTop: 10, padding: "10px 14px", background: meaningful ? (diff > 0 ? "rgba(0,230,118,0.08)" : "rgba(255,61,113,0.08)") : "var(--overlay-1)", border: `1px solid ${meaningful ? (diff > 0 ? ACCENT.green : ACCENT.rose) : "var(--overlay-5)"}55`, borderRadius: 10, fontSize: 12 }}>
+                <b style={{ color: "var(--text-body)" }}>📊 Real Vegas Game Script:</b> the market implies {TEAM_NAMES[team]||team} scores <b>{fmt(gs.impliedTotal,1)}</b> pts
+                in this real matchup vs their <b>{fmt(teamSeasonAvg,1)}</b>/gm season average
+                {meaningful && (
+                  <span style={{ color: diff > 0 ? ACCENT.green : ACCENT.rose, fontWeight: 700 }}> — {diff > 0 ? "a notably stronger" : "a notably weaker"} offensive environment than usual is being priced in</span>
+                )}.
+                <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginTop: 4 }}>From the real spread/total line, not our own model — different signal than the season stats above.</div>
+              </div>
+            );
+          })()}
         </>
       ) : <div style={{ color: "var(--text-tertiary)", fontSize: 12 }}>No defense data.</div>}
     </Glass>
