@@ -1792,9 +1792,9 @@ function AddButton({ inSlip, onClick, tranche }) {
 // 8 out-of-sample games vs. 30. This surfaces that difference instead of hiding it.
 function confidenceTier(testGames) {
   if (testGames == null) return null;
-  if (testGames >= 20) return { label: "Strong", color: ACCENT.green, note: `${testGames} out-of-sample games` };
-  if (testGames >= 10) return { label: "Moderate", color: ACCENT.amber, note: `${testGames} out-of-sample games` };
-  return { label: "Limited", color: ACCENT.rose, note: `only ${testGames} out-of-sample games — treat with real caution` };
+  if (testGames >= 20) return { label: "Strong", color: ACCENT.green, note: `checked against ${testGames} real games` };
+  if (testGames >= 10) return { label: "Moderate", color: ACCENT.amber, note: `checked against ${testGames} real games` };
+  return { label: "Limited", color: ACCENT.rose, note: `only ${testGames} real games checked — treat with real caution` };
 }
 function ConfidenceBadge({ testGames }) {
   const tier = confidenceTier(testGames);
@@ -1926,7 +1926,13 @@ function MarketLineComparator({ e }) {
             <div style={{ fontSize: 11.5, lineHeight: 1.7 }}>
               <div style={{ marginBottom: 4 }}>
                 <span style={{ fontWeight: 800, color: ZONE_COLOR[result.zone] }}>{result.zone}</span>
-                <span style={{ color: "var(--text-secondary-b)" }}> — line sits {fmt(Math.abs(result.edgeScore)*100,0)}% of the P25–P75 width {result.edgeScore>=0?"beyond":"short of"} the relevant quartile</span>
+                <span style={{ color: "var(--text-secondary-b)" }}> — {
+                  result.zone === "Strong Over" ? "this line is set notably lower than where this player typically lands — historically a strong sign for the Over." :
+                  result.zone === "Moderate Over" ? "this line is a bit lower than where this player typically lands — a mild lean toward the Over." :
+                  result.zone === "Neutral / Pass" ? "this line sits right around where this player typically lands — no clear edge either way." :
+                  result.zone === "Moderate Under" ? "this line is a bit higher than where this player typically lands — a mild lean toward the Under." :
+                  "this line is set notably higher than where this player typically lands — historically a strong sign for the Under."
+                }</span>
               </div>
               <div style={{ color: "var(--text-secondary-a)" }}>
                 Historical hit rate near this zone: <b style={{color:"var(--text-body)"}}>{fmt(refHit,0)}%</b>
@@ -2026,12 +2032,20 @@ function PlayerPoolGroup({ player, entries, onAdd, inSlipTranchesFor }) {
                 <MarketLineComparator e={e} />
               </>
             ) : (
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: 11.5, color: "var(--text-secondary-a)" }}>
-                  {e.kind === "under" ? `Under ${e.line}` : e.kind === "binary" ? "Anytime" : e.selection}
-                  {" · "}{fmt(e.kind === "under" ? e.testHit : e.kind === "binary" ? e.testRate : e.prob, 0)}%
-                </span>
-                <AddButton inSlip={inSlip.length>0} onClick={()=>onAdd(e, "p50")} tranche={null} />
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: 11.5, color: "var(--text-secondary-a)" }}>
+                    {e.kind === "under" ? `Under ${e.line}` : e.kind === "binary" ? "Anytime" : e.selection}
+                    {" · "}{fmt(e.kind === "under" ? e.testHit : e.kind === "binary" ? e.testRate : e.prob, 0)}%
+                    {e.kind === "binary" && <span style={{ color: "var(--text-tertiary)" }}> ({e.testGames} real games)</span>}
+                  </span>
+                  <AddButton inSlip={inSlip.length>0} onClick={()=>onAdd(e, "p50")} tranche={null} />
+                </div>
+                {e.kind === "binary" && e.realOdds && (
+                  <div style={{ fontSize: 10.5, color: ACCENT.green, marginTop: 4 }}>
+                    ✓ Real price: {e.realOdds.price>0?"+":""}{e.realOdds.price} ({e.realOdds.book})
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -2472,7 +2486,7 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
   const COMBINED_POOL = useMemo(() => {
     if (sport === "wnba") return wnbaPool();
     if (sport === "mlb") return mlbPool();
-    return [...FULL_POOL, ...FUTURES_POOL];
+    return [...FULL_POOL, ...FUTURES_POOL, ...ATD_POOL];
   }, [sport, dataTick]);
 
   const activeTop10 = useMemo(() => {
@@ -2490,7 +2504,8 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
 
   const filteredPool = useMemo(() => {
     return COMBINED_POOL.filter(e => {
-      if (poolPos !== "all" && e.pos !== poolPos) return false;
+      if (poolPos === "ATD" && e.kind !== "binary") return false;
+      if (poolPos !== "all" && poolPos !== "ATD" && e.pos !== poolPos) return false;
       if (poolSearch && !e.player.toLowerCase().includes(poolSearch.toLowerCase()) && !e.stat.toLowerCase().includes(poolSearch.toLowerCase()) && !(e.market||"").toLowerCase().includes(poolSearch.toLowerCase())) return false;
       if (matchupFilter && e.team !== matchupFilter.teamA && e.team !== matchupFilter.teamB) return false;
       return true;
@@ -2535,21 +2550,23 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
       <InfoToggle label="How this works">
         <Glass hover={false} style={{ padding: "12px 16px", fontSize: 12.5, color: "var(--text-body)", lineHeight: 1.6 }}>
           {sport==="nfl" ? (
-            <><b>Offer-curve model.</b> Each ladder is set from 2024 games only — <b style={{color:TRANCHE_COLOR.p25}}>P25</b> (conservative,
-            ~75% historical clear), <b style={{color:TRANCHE_COLOR.p50}}>P50</b> (median), <b style={{color:TRANCHE_COLOR.p75}}>P75</b> (stretch,
-            ~25% clear, bigger number). Hit rates shown are out-of-sample against 2025. Tap a tranche to add it to your slip below
-            and build a parlay across players. 📋 notes are usage/tendency call-outs pulled from real front & coverage splits — not
-            tied to a scheduled opponent, since there's no 2026 slate yet.</>
+            <>Each stat shows three real numbers from this player's 2024 games — a <b style={{color:TRANCHE_COLOR.p25}}>safer number</b> they
+            cleared about 75% of the time, a <b style={{color:TRANCHE_COLOR.p50}}>middle number</b> they cleared about half the time, and a
+            <b style={{color:TRANCHE_COLOR.p75}}> bigger number</b> they only cleared about 25% of the time (higher risk, bigger number if it hits).
+            The hit rates shown are checked against real 2025 games — not just fit to their own history. Tap a number to add it to your slip
+            and build a parlay across players. 📋 notes are usage/tendency call-outs from real game data — not tied to a specific upcoming
+            opponent yet, since there's no 2026 schedule out.</>
           ) : sport==="wnba" ? (
-            <><b>Offer-curve model.</b> Each ladder is set from 2025 games only — <b style={{color:TRANCHE_COLOR.p25}}>P25</b> (conservative,
-            ~75% historical clear), <b style={{color:TRANCHE_COLOR.p50}}>P50</b> (median), <b style={{color:TRANCHE_COLOR.p75}}>P75</b> (stretch,
-            ~25% clear, bigger number). Hit rates shown are out-of-sample against real 2026 season games. Tap a tranche to add it to
-            your slip below and build a parlay.</>
+            <>Each stat shows three real numbers from this player's 2025 games — a <b style={{color:TRANCHE_COLOR.p25}}>safer number</b> they
+            cleared about 75% of the time, a <b style={{color:TRANCHE_COLOR.p50}}>middle number</b> they cleared about half the time, and a
+            <b style={{color:TRANCHE_COLOR.p75}}> bigger number</b> they only cleared about 25% of the time (higher risk, bigger number if it hits).
+            The hit rates shown are checked against real 2026 games actually played so far. Tap a number to add it to your slip and build a parlay.</>
           ) : (
-            <><b>Offer-curve model.</b> Each ladder is set from 2025 games only — <b style={{color:TRANCHE_COLOR.p25}}>P25</b> (conservative,
-            ~75% historical clear), <b style={{color:TRANCHE_COLOR.p50}}>P50</b> (median), <b style={{color:TRANCHE_COLOR.p75}}>P75</b> (stretch,
-            ~25% clear, bigger number). Hit rates shown are out-of-sample against real 2026 season games, pulled from MLB's own
-            Stats API. Tap a tranche to add it to your slip below and build a parlay.</>
+            <>Each stat shows three real numbers from this player's 2025 games — a <b style={{color:TRANCHE_COLOR.p25}}>safer number</b> they
+            cleared about 75% of the time, a <b style={{color:TRANCHE_COLOR.p50}}>middle number</b> they cleared about half the time, and a
+            <b style={{color:TRANCHE_COLOR.p75}}> bigger number</b> they only cleared about 25% of the time (higher risk, bigger number if it hits).
+            The hit rates shown are checked against real 2026 games actually played so far, pulled from MLB's own Stats API. Tap a number to
+            add it to your slip and build a parlay.</>
           )}
         </Glass>
       </InfoToggle>
@@ -2575,8 +2592,8 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
           <input placeholder="Search player or stat…" value={poolSearch} onChange={e=>setPoolSearch(e.target.value)} style={{
             flex: 1, minWidth: 200, background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 8, padding: "8px 12px", color: "var(--text-primary)", fontSize: 13
           }} />
-          {(sport==="nfl" ? ["all","WR","TE","RB","QB","K","FUT"] : ["all"]).map(pos => (
-            <Pill key={pos} active={poolPos===pos} onClick={()=>setPoolPos(pos)}>{pos==="all"?"All":pos==="FUT"?"🔮 Futures":pos}</Pill>
+          {(sport==="nfl" ? ["all","WR","TE","RB","QB","K","ATD","FUT"] : ["all"]).map(pos => (
+            <Pill key={pos} active={poolPos===pos} onClick={()=>setPoolPos(pos)}>{pos==="all"?"All":pos==="FUT"?"🔮 Futures":pos==="ATD"?"🎯 Anytime TD":pos}</Pill>
           ))}
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 10 }}>
@@ -2803,7 +2820,7 @@ function findPlayerRecordForNav(sport, playerName) {
 }
 
 function DashboardView({ sport, slip, sportDataStatus, onSelectGame, onSelectPlayer }) {
-  const pool = sport==="nfl" ? [...FULL_POOL, ...FUTURES_POOL] : sport==="wnba" ? wnbaPool() : sport==="mlb" ? mlbPool() : [];
+  const pool = sport==="nfl" ? [...FULL_POOL, ...FUTURES_POOL, ...ATD_POOL] : sport==="wnba" ? wnbaPool() : sport==="mlb" ? mlbPool() : [];
   const upcoming = sport==="nfl" ? NFL_UPCOMING : sport==="wnba" ? wnbaUpcoming() : sport==="mlb" ? mlbUpcoming() : cfbUpcomingAsTeamMap();
   const sportLabel = sport==="nfl" ? "NFL" : sport==="wnba" ? "WNBA" : sport==="mlb" ? "MLB" : "CFB";
   const sportAccent = sport==="nfl" ? ACCENT.teal : sport==="wnba" ? "#FF8A00" : sport==="mlb" ? "#6EC9F2" : "#8B7FD1";
