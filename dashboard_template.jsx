@@ -1873,9 +1873,9 @@ function MarketLineComparator({ e }) {
   // calibration check — does this tranche's historical hit rate actually match its theoretical target?
   const calibration = useMemo(() => {
     const checks = [
-      { label: "P25", actual: e.p25.testHit, target: 75 },
-      { label: "P50", actual: e.p50.testHit, target: 50 },
-      { label: "P75", actual: e.p75.testHit, target: 25 },
+      { label: "P25", plainLabel: "safer number", actual: e.p25.testHit, target: 75 },
+      { label: "P50", plainLabel: "middle number", actual: e.p50.testHit, target: 50 },
+      { label: "P75", plainLabel: "bigger number", actual: e.p75.testHit, target: 25 },
     ];
     return checks.map(c => ({ ...c, diff: c.actual - c.target, off: Math.abs(c.actual - c.target) > 12 }));
   }, [e]);
@@ -1945,7 +1945,7 @@ function MarketLineComparator({ e }) {
               )}
               {miscalibrated && (
                 <div style={{ marginTop: 6, fontSize: 10.5, color: "#F2A65A" }}>
-                  ⚠ Calibration check: {calibration.filter(c=>c.off).map(c=>`${c.label} hit ${fmt(c.actual,0)}% historically vs a ~${c.target}% target`).join("; ")} — this zone hasn't tracked its theoretical rate closely, treat with extra caution.
+                  ⚠ Heads up: {calibration.filter(c=>c.off).map(c=>`the ${c.plainLabel} only hit ${fmt(c.actual,0)}% of the time (usually closer to ${c.target}%)`).join("; ")} — this player hasn't behaved the way these numbers usually suggest, treat with extra caution.
                 </div>
               )}
               <div style={{ marginTop: 6, fontSize: 9.5, color: "var(--text-tertiary)" }}>
