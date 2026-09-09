@@ -1250,6 +1250,24 @@ def main():
     roster_map = (roster_all.sort_values('season').drop_duplicates('gsis_id', keep='last')
                   .set_index('gsis_id')['full_name']) if len(roster_all) else pd.Series(dtype=str)
 
+    # Current-team lookup from roster data, NOT play-by-play. This matters specifically
+    # around trades/free-agent signings: play-by-play only knows a player's team once
+    # they've actually played a real game for it, so early in a season (or right after
+    # an offseason move) it can show a player's OLD team. Roster data reflects real
+    # roster moves as soon as they're official, independent of games played. Built
+    # defensively since nflverse's exact column name isn't 100% guaranteed stable —
+    # this prints what it actually found so a wrong assumption shows up immediately
+    # rather than silently doing nothing.
+    current_team_by_pid = pd.Series(dtype=str)
+    if len(roster_all):
+        team_col = next((c for c in ['team', 'team_abbr', 'recent_team'] if c in roster_all.columns), None)
+        if team_col:
+            current_team_by_pid = (roster_all.sort_values('season').drop_duplicates('gsis_id', keep='last')
+                                    .set_index('gsis_id')[team_col])
+            print(f"  Current-roster team lookup built from '{team_col}' column: {len(current_team_by_pid)} players")
+        else:
+            print(f"  [!] No team column found in roster data (columns: {list(roster_all.columns)[:15]}...) — falling back to play-by-play-derived team assignment")
+
     # ---- 3. Build merged play-by-play for every season ----
     print("\n[3/7] Classifying plays (front/coverage/weather)...")
     merged_frames = []
@@ -1339,7 +1357,7 @@ def main():
             continue
         name = roster_map.get(pid, g['receiver_player_name'].iloc[0])
         pos = g['position'].iloc[0]
-        team = latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
+        team = current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
         overall = agg_receiving(g)
         home = agg_receiving(g[g.is_home]) or {}
         away = agg_receiving(g[~g.is_home]) or {}
@@ -1440,7 +1458,7 @@ def main():
         if len(g) < 40:
             continue
         name = roster_map.get(pid, g['passer_player_name'].iloc[0])
-        team = latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
+        team = current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
         overall = agg_qb(g)
         home = agg_qb(g[g.is_home]) or {}
         away = agg_qb(g[~g.is_home]) or {}
@@ -1516,7 +1534,7 @@ def main():
         if pd.isna(pid) or len(g) < 15:
             continue
         name = roster_map.get(pid, g['kicker_player_name'].iloc[0])
-        team = latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
+        team = current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
         overall = agg_k(g)
         home = agg_k(g[g.is_home]) or {}
         away = agg_k(g[~g.is_home]) or {}
@@ -1571,7 +1589,7 @@ def main():
                 continue
             name = roster_map.get(pid, pid)
             pos = pos_map.get(pid, '?')
-            team = latest_team_by_pid.get(pid, g['defteam'].mode().iloc[0])
+            team = current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['defteam'].mode().iloc[0])
             home_sacks = g[g.is_home]['val'].sum()
             away_sacks = g[~g.is_home]['val'].sum()
             front_breakdown = g.groupby('front')['val'].sum().sort_values(ascending=False).to_dict()
