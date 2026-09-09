@@ -2208,14 +2208,6 @@ def main():
     # ---- 7. Git commit + push ----
     print("\n[8/8] Committing and pushing to GitHub...")
     try:
-        # Pull first, preferring our freshly-generated files if there's any conflict on
-        # them specifically — these files (index.html, data-*.json) are fully regenerated
-        # every run, never hand-edited, so "ours" is always the right side to keep. This
-        # is what eliminates the recurring manual git-pull/reset dance from earlier tonight.
-        pull_result = subprocess.run(['git', 'pull', '--no-edit', '-X', 'ours'], cwd=SCRIPT_DIR, capture_output=True, text=True)
-        if pull_result.returncode != 0:
-            print(f"  [!] Auto-pull hit an issue, proceeding anyway (may need manual resolution if push fails): {pull_result.stderr.strip()[:200]}")
-
         # Source files get pushed too now, not just the generated output — saves the
         # separate "also upload to GitHub" step. Only added if actually present, since
         # not every setup necessarily has all three.
@@ -2226,12 +2218,28 @@ def main():
 
         subprocess.run(['git', 'add'] + files_to_add, cwd=SCRIPT_DIR, check=True)
         msg = f"Auto-update: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}"
-        result = subprocess.run(['git', 'commit', '-m', msg], cwd=SCRIPT_DIR, capture_output=True, text=True)
-        if 'nothing to commit' in (result.stdout + result.stderr):
-            print("  No changes to commit — data is identical to last run.")
-        else:
-            subprocess.run(['git', 'push'], cwd=SCRIPT_DIR, check=True)
-            print(f"  Pushed successfully! ({len(files_to_add)} files: {', '.join(files_to_add)})")
+        commit_result = subprocess.run(['git', 'commit', '-m', msg], cwd=SCRIPT_DIR, capture_output=True, text=True)
+        nothing_to_commit = 'nothing to commit' in (commit_result.stdout + commit_result.stderr)
+        if nothing_to_commit:
+            print("  No local changes to commit — data is identical to last run.")
+
+        # Committing BEFORE pulling matters: it's what makes the auto-pull below actually
+        # work. Pulling while there are still uncommitted changes makes git refuse the
+        # merge entirely ("local changes would be overwritten") — which is a different,
+        # unfixable-by-conflict-resolution problem than an actual merge conflict. Once
+        # everything is committed locally first, pull becomes a normal merge between two
+        # commits, and -X ours can then correctly prefer our freshly-generated files
+        # wherever they conflict with whatever's on the remote.
+        pull_result = subprocess.run(['git', 'pull', '--no-edit', '-X', 'ours'], cwd=SCRIPT_DIR, capture_output=True, text=True)
+        if pull_result.returncode != 0:
+            print(f"  [!] Auto-pull hit an issue: {pull_result.stderr.strip()[:300]}")
+            print("  Falling back to: git fetch origin && git reset --hard origin/main, then re-save your files and run this again.")
+        elif not nothing_to_commit or 'up to date' not in pull_result.stdout.lower():
+            push_result = subprocess.run(['git', 'push'], cwd=SCRIPT_DIR, capture_output=True, text=True)
+            if push_result.returncode == 0:
+                print(f"  Pushed successfully! ({len(files_to_add)} files: {', '.join(files_to_add)})")
+            else:
+                print(f"  Push failed even after a clean pull: {push_result.stderr.strip()[:300]}")
     except subprocess.CalledProcessError as e:
         print(f"  Git error: {e}")
         print("  If this keeps happening: git fetch origin && git reset --hard origin/main, then re-save your files and run this again.")
