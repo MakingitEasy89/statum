@@ -83,12 +83,24 @@ def fetch_espn_current_rosters():
     out = {}
     teams_checked = 0
     teams_failed = []
+    # Switched from site.api.espn.com to site.web.api.espn.com — real users started hitting
+    # widespread 403s on the old subdomain in mid-2026 (confirmed via developer reports from
+    # August 2026), with site.web.api.espn.com reported as the working replacement. Also
+    # added more complete browser-like headers, since a bare User-Agent alone is often not
+    # enough to get past bot detection — real browsers send Accept/Accept-Language too, and
+    # a request missing them can look more obviously automated.
+    espn_headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer': 'https://www.espn.com/',
+    }
     for team in NFL_TEAM_FULL_NAMES:
         espn_code = ESPN_TEAM_ABBR_OVERRIDES.get(team, team.lower())
         try:
             resp = requests.get(
-                f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{espn_code}/roster",
-                timeout=15, headers={'User-Agent': 'Mozilla/5.0'}
+                f"https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/{espn_code}/roster",
+                timeout=15, headers=espn_headers
             )
             if resp.status_code != 200:
                 teams_failed.append(f"{team} (HTTP {resp.status_code})")
