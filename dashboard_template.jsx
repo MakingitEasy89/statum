@@ -10,6 +10,7 @@ const { useState, useMemo, useEffect, useRef } = React;
 // ---------------------------------------------------------------
 const RECEIVERS = __RECEIVERS__;
 const NFL_UPCOMING = __NFL_UPCOMING__;
+const ATD_POOL = __ATD_POOL__;
 
 // WNBA, MLB, and CFB data are NOT embedded here — they're fetched on demand the first
 // time you switch to that sport, instead of every visitor's browser having to load and

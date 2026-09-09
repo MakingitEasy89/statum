@@ -67,6 +67,136 @@ ODDS_MARKET_MAP = {
 ODDS_SPORT_KEYS = {'nfl': 'americanfootball_nfl', 'wnba': 'basketball_wnba', 'mlb': 'baseball_mlb'}
 
 
+# ESPN's team abbreviations mostly match nflverse's, with a few known exceptions.
+ESPN_TEAM_ABBR_OVERRIDES = {'WAS': 'wsh', 'LA': 'lar', 'LAC': 'lac', 'JAX': 'jax'}
+
+def fetch_espn_current_rosters():
+    """Real, current team assignment — direct from ESPN's own roster pages, not inferred
+    from play-by-play or a periodic nflverse snapshot. Built this after finding that the
+    nflverse roster fix from earlier was ITSELF stale for very recent transactions (players
+    who signed or got traded within the last few weeks of the offseason) — nflverse's
+    roster file updates on its own schedule, which doesn't always catch up before Week 1.
+    This is an unofficial, undocumented endpoint (no formal ESPN API docs exist for it),
+    so this prints exactly what it finds — if ESPN changes their response shape, that
+    will show up immediately here rather than silently returning nothing.
+    Returns {player_name: team_abbr}."""
+    out = {}
+    teams_checked = 0
+    teams_failed = []
+    for team in NFL_TEAM_FULL_NAMES:
+        espn_code = ESPN_TEAM_ABBR_OVERRIDES.get(team, team.lower())
+        try:
+            resp = requests.get(
+                f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{espn_code}/roster",
+                timeout=15, headers={'User-Agent': 'Mozilla/5.0'}
+            )
+            if resp.status_code != 200:
+                teams_failed.append(f"{team} (HTTP {resp.status_code})")
+                continue
+            data = resp.json()
+            groups = data.get('athletes', [])
+            found_this_team = 0
+            for group in groups:
+                for athlete in group.get('items', []):
+                    name = athlete.get('fullName') or athlete.get('displayName')
+                    if name:
+                        out[name] = team
+                        found_this_team += 1
+            if found_this_team == 0:
+                teams_failed.append(f"{team} (0 players parsed — response shape may differ from expected)")
+            teams_checked += 1
+        except Exception as e:
+            teams_failed.append(f"{team} ({e})")
+    print(f"  ESPN current-roster fetch: {teams_checked}/32 teams reached, {len(out)} total players parsed")
+    if teams_failed:
+        print(f"  [!] {len(teams_failed)} teams had issues: {teams_failed[:5]}{'...' if len(teams_failed) > 5 else ''}")
+    # spot-check specific players known to have moved recently, so a wrong assumption
+    # about the response shape shows up immediately and specifically, not just as a
+    # generic count
+    for check_name in ['A.J. Brown', 'Stefon Diggs', 'Kenneth Walker III', 'Kayshon Boutte']:
+        match = next((out[n] for n in out if check_name.lower() in n.lower() or n.lower() in check_name.lower()), None)
+        print(f"    Spot-check: {check_name} -> {match or 'NOT FOUND'}")
+    return out
+
+
+def build_atd_pool(baseline, current, receivers):
+    """Real Anytime Touchdown rate per skill player — the fraction of real games where they
+    scored at least one touchdown (rushing OR receiving combined, since either counts for
+    this market). Vectorized across all players at once rather than looping per-player,
+    since the raw play-by-play here can be 100k+ rows. Backtested the same way as other
+    props: rate comes from the 2024-2025 baseline, checked against real current-season
+    games for an honest confidence read — not just fit to its own training data."""
+    def per_game_scores(df):
+        if len(df) == 0:
+            return pd.DataFrame(columns=['pid', 'season', 'week', 'td'])
+        rec = df[df['receiver_player_id'].notna()][['receiver_player_id', 'season', 'week', 'pass_touchdown']].rename(
+            columns={'receiver_player_id': 'pid', 'pass_touchdown': 'td'})
+        rush = df[df['rusher_player_id'].notna()][['rusher_player_id', 'season', 'week', 'rush_touchdown']].rename(
+            columns={'rusher_player_id': 'pid', 'rush_touchdown': 'td'})
+        combined = pd.concat([rec, rush])
+        combined['td'] = combined['td'].fillna(0)
+        return combined.groupby(['pid', 'season', 'week'])['td'].max().reset_index()
+
+    base_games = per_game_scores(baseline)
+    cur_games = per_game_scores(current)
+    base_stats = base_games.groupby('pid')['td'].agg(['mean', 'count']) if len(base_games) else pd.DataFrame()
+    cur_stats = cur_games.groupby('pid')['td'].agg(['mean', 'count']) if len(cur_games) else pd.DataFrame()
+
+    pool = []
+    for r in receivers:
+        pid = r['id']
+        if pid not in base_stats.index or base_stats.loc[pid, 'count'] < 12:
+            continue
+        baseline_rate = float(base_stats.loc[pid, 'mean']) * 100
+        if pid in cur_stats.index and cur_stats.loc[pid, 'count'] > 0:
+            test_rate = float(cur_stats.loc[pid, 'mean']) * 100
+            test_games = int(cur_stats.loc[pid, 'count'])
+        else:
+            test_rate, test_games = baseline_rate, int(base_stats.loc[pid, 'count'])
+        pool.append({
+            'id': f"atd_{pid}", 'player': r['name'], 'pos': r['pos'], 'team': r['team'],
+            'stat': 'Anytime TD', 'kind': 'binary',
+            'testRate': round(test_rate, 1), 'testGames': test_games,
+            'baselineRate': round(baseline_rate, 1), 'baselineGames': int(base_stats.loc[pid, 'count']),
+        })
+    pool.sort(key=lambda p: -p['testRate'])
+    return pool
+
+
+def fetch_nfl_atd_odds(events, api_key, player_names):
+    """Real sportsbook Anytime TD prices via the-odds-api.com's player_anytime_td market
+    (confirmed as a real, documented market key — not a guess). The exact outcome naming
+    convention for a binary yes/no market isn't something I can verify without a live key,
+    so this prints the raw shape from the first real response it sees, and only acts on
+    outcomes it can confidently identify as the 'yes' side — if the naming differs from
+    what's expected here, that will show up in the diagnostic rather than silently
+    returning nothing. Returns {player_name: {price, book}}."""
+    out = {}
+    diagnostic_printed = False
+    for event in events[:25]:
+        data = fetch_event_props('nfl', event['id'], api_key, ['player_anytime_td'])
+        if not data:
+            continue
+        for bookmaker in data.get('bookmakers', []):
+            for market in bookmaker.get('markets', []):
+                if market['key'] != 'player_anytime_td':
+                    continue
+                if not diagnostic_printed:
+                    print(f"  ATD market raw outcome sample: {market.get('outcomes', [])[:2]}")
+                    diagnostic_printed = True
+                for outcome in market.get('outcomes', []):
+                    book_pname = outcome.get('description')
+                    side = (outcome.get('name') or '').strip().lower()
+                    if not book_pname or side not in ('yes', 'over', 'anytime'):
+                        continue  # only the "yes" side matters here — skip "no" entirely
+                    matched = fuzzy_match_player(book_pname, player_names)
+                    if not matched or matched in out:
+                        continue
+                    out[matched] = {'price': outcome.get('price'), 'book': bookmaker.get('title')}
+    print(f"  NFL: matched real Anytime TD prices for {len(out)} players")
+    return out
+
+
 def fetch_nfl_game_lines(events, api_key):
     """Real spread/total for upcoming NFL games, decomposed into each team's implied
     score. This is genuinely different information than a player's own season average —
@@ -1318,6 +1448,10 @@ def main():
         else:
             print(f"  [!] No team column found in roster data (columns: {list(roster_all.columns)[:15]}...) — falling back to play-by-play-derived team assignment")
 
+    # ESPN's own roster pages, checked FIRST (higher priority than the nflverse roster
+    # snapshot above) — see fetch_espn_current_rosters for why this exists.
+    espn_current_teams = fetch_espn_current_rosters()
+
     # ---- 3. Build merged play-by-play for every season ----
     print("\n[3/7] Classifying plays (front/coverage/weather)...")
     merged_frames = []
@@ -1407,7 +1541,7 @@ def main():
             continue
         name = roster_map.get(pid, g['receiver_player_name'].iloc[0])
         pos = g['position'].iloc[0]
-        team = current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
+        team = espn_current_teams.get(name) or current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
         overall = agg_receiving(g)
         home = agg_receiving(g[g.is_home]) or {}
         away = agg_receiving(g[~g.is_home]) or {}
@@ -1465,6 +1599,9 @@ def main():
     receivers.sort(key=lambda p: -p['overall']['targets'])
     print(f"  {len(receivers)} skill players")
 
+    atd_pool = build_atd_pool(baseline, current, receivers)
+    print(f"  {len(atd_pool)} players with real Anytime TD rates computed")
+
     # Target Share % — real metric (this player's targets ÷ their team's total targets over the same window)
     team_total_targets = targets_baseline.groupby('posteam').size().to_dict()
     for p in receivers:
@@ -1508,7 +1645,7 @@ def main():
         if len(g) < 40:
             continue
         name = roster_map.get(pid, g['passer_player_name'].iloc[0])
-        team = current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
+        team = espn_current_teams.get(name) or current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
         overall = agg_qb(g)
         home = agg_qb(g[g.is_home]) or {}
         away = agg_qb(g[~g.is_home]) or {}
@@ -1584,7 +1721,7 @@ def main():
         if pd.isna(pid) or len(g) < 15:
             continue
         name = roster_map.get(pid, g['kicker_player_name'].iloc[0])
-        team = current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
+        team = espn_current_teams.get(name) or current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['posteam'].mode().iloc[0])
         overall = agg_k(g)
         home = agg_k(g[g.is_home]) or {}
         away = agg_k(g[~g.is_home]) or {}
@@ -1639,7 +1776,7 @@ def main():
                 continue
             name = roster_map.get(pid, pid)
             pos = pos_map.get(pid, '?')
-            team = current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['defteam'].mode().iloc[0])
+            team = espn_current_teams.get(name) or current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, g['defteam'].mode().iloc[0])
             home_sacks = g[g.is_home]['val'].sum()
             away_sacks = g[~g.is_home]['val'].sum()
             front_breakdown = g.groupby('front')['val'].sum().sort_values(ascending=False).to_dict()
@@ -1914,6 +2051,13 @@ def main():
                     matched_teams += 1
             print(f"  NFL: matched real game-script lines for {matched_teams} teams")
 
+            # Real Anytime TD prices, attached onto the ATD pool built earlier
+            atd_names = [p['player'] for p in atd_pool]
+            atd_odds = fetch_nfl_atd_odds(nfl_events, odds_key, atd_names)
+            for entry in atd_pool:
+                if entry['player'] in atd_odds:
+                    entry['realOdds'] = atd_odds[entry['player']]
+
             wnba_names = list({p['name'] for p in wnba_players})
             wnba_odds = build_real_odds('wnba', odds_key, wnba_names, days_ahead=7)
             for entry in wnba_pool:
@@ -1993,6 +2137,7 @@ def main():
         'OL_STARTERS': ol_starters,
         'INJURIES': injury_status,
         'NFL_UPCOMING': nfl_upcoming,
+        'ATD_POOL': atd_pool,
     }
 
     wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming}
