@@ -3255,6 +3255,34 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
         </Glass>
       )}
 
+      {sport === "nfl" && def?.allowedByPosition && (
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
+            🎯 TDs Allowed by Position
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
+            {["WR", "TE", "RB"].map(pos => {
+              const d = def.allowedByPosition[pos];
+              if (!d) return null;
+              const isWeak = def.weakestPosition === pos;
+              return (
+                <Glass key={pos} hover={false} style={{ padding: "12px 14px", border: isWeak ? `1px solid ${ACCENT.rose}88` : undefined }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                    <b style={{ fontSize: 13 }}>{pos}s</b>
+                    {isWeak && <span style={{ fontSize: 8.5, color: ACCENT.rose, fontWeight: 800, border: `1px solid ${ACCENT.rose}55`, borderRadius: 6, padding: "1px 6px" }}>⚠ WEAKNESS</span>}
+                  </div>
+                  <div style={{ fontSize: 26, fontWeight: 800, color: isWeak ? ACCENT.rose : "var(--text-body)", fontFamily: "'JetBrains Mono', monospace" }}>{d.tds}</div>
+                  <div style={{ fontSize: 10, color: "var(--text-tertiary)" }}>TDs allowed · #{d.rank} of 32 vs {pos}s · {fmt(d.ypg,1)} yds/gm</div>
+                </Glass>
+              );
+            })}
+          </div>
+          <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginTop: 8 }}>
+            Real season totals — TD counts alone can be a small sample over a season, so weigh alongside the yards/game rank too, not TDs in isolation.
+          </div>
+        </div>
+      )}
+
       {sport === "cfb" ? (
         <>
           <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
