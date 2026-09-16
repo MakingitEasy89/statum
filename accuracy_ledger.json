@@ -6169,6 +6169,69 @@
       "predictedMargin": 11.9,
       "predictedTotal": 43.8,
       "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906612,
+      "homeTeam": "Southern Virginia",
+      "awayTeam": "Keystone",
+      "predictedMargin": 17.3,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864508,
+      "homeTeam": "Central Michigan",
+      "awayTeam": "Wyoming",
+      "predictedMargin": 9.5,
+      "predictedTotal": 41.0,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868397,
+      "homeTeam": "Davidson",
+      "awayTeam": "VMI",
+      "predictedMargin": 11.1,
+      "predictedTotal": 54.4,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867857,
+      "homeTeam": "Indiana State",
+      "awayTeam": "Valparaiso",
+      "predictedMargin": -0.0,
+      "predictedTotal": 58.6,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867826,
+      "homeTeam": "Colgate",
+      "awayTeam": "Cornell",
+      "predictedMargin": 10.6,
+      "predictedTotal": 50.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866639,
+      "homeTeam": "New Hampshire",
+      "awayTeam": "Harvard",
+      "predictedMargin": -12.4,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866638,
+      "homeTeam": "Bryant",
+      "awayTeam": "Princeton",
+      "predictedMargin": 2.3,
+      "predictedTotal": 48.0,
+      "snapshotDate": "2026-09-16"
     }
   ],
   "graded": [],
