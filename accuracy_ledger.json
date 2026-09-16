@@ -6232,6 +6232,24 @@
       "predictedMargin": 2.3,
       "predictedTotal": 48.0,
       "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908348,
+      "homeTeam": "Gettysburg",
+      "awayTeam": "Western Connecticut State",
+      "predictedMargin": -7.8,
+      "predictedTotal": 59.4,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908477,
+      "homeTeam": "Curry",
+      "awayTeam": "SUNY Maritime",
+      "predictedMargin": 19.9,
+      "predictedTotal": 60.5,
+      "snapshotDate": "2026-09-16"
     }
   ],
   "graded": [],
