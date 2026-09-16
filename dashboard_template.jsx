@@ -459,6 +459,36 @@ function SkillDetail({ p, onClose }) {
         </div>
       )}
 
+      {(() => {
+        // Matchup Signal — connects this player's OWN real coverage splits to their
+        // actual upcoming opponent's real coverage tendency. Only shows when the
+        // opponent has a genuinely clear tendency (not a coin-flip scheme mix) AND this
+        // player has a real, meaningfully-sized sample against that specific coverage —
+        // both real numbers, not a guess about what "should" happen.
+        const upcoming = NFL_UPCOMING[p.team];
+        if (!upcoming) return null;
+        const oppDef = TEAM_DEFENSE[upcoming.opp];
+        const primaryCov = oppDef?.scheme?.primaryCoverage;
+        const primaryPct = oppDef?.scheme?.primaryCoveragePct;
+        if (!primaryCov || !primaryPct || primaryPct < 38) return null; // not a clear enough tendency to be worth flagging
+        const split = p.coverages?.[primaryCov];
+        if (!split || split.targets < 5) return null; // not enough of this player's own volume against it to say anything real
+        const overallYpt = p.overall?.yptTarget ?? (p.overall?.yards / Math.max(1, p.overall?.targets));
+        const diff = split.yptTarget - overallYpt;
+        const meaningful = Math.abs(diff) >= overallYpt * 0.15;
+        return (
+          <Glass hover={false} style={{ padding: "14px 16px", marginBottom: 16, border: meaningful ? `1px solid ${diff>0?ACCENT.green:ACCENT.rose}66` : undefined }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 8, fontWeight: 700 }}>🎯 Matchup Signal</div>
+            <div style={{ fontSize: 12.5, lineHeight: 1.6 }}>
+              {TEAM_NAMES[upcoming.opp]||upcoming.opp} plays <b>{COVERAGE_LABEL[primaryCov]||primaryCov}</b> {fmt(primaryPct,0)}% of the time — a real, clear tendency, not a mixed scheme.
+              {" "}{p.name.split(' ')[0]} has averaged <b style={{color: meaningful ? (diff>0?ACCENT.green:ACCENT.rose) : "var(--text-body)"}}>{fmt(split.yptTarget,1)} yds/target</b> against
+              {" "}{COVERAGE_LABEL[primaryCov]||primaryCov} this season ({split.targets} targets), vs {fmt(overallYpt,1)} overall
+              {meaningful && <> — {diff>0 ? "notably better" : "notably worse"} than his average against this specific look.</>}
+            </div>
+          </Glass>
+        );
+      })()}
+
       <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 12, display: "flex", gap: 22, flexWrap: "wrap" }}>
         <StatChip label="Targets" value={p.overall.targets} />
         <StatChip label="Catches" value={p.overall.catches} />
@@ -1774,11 +1804,11 @@ function TrancheStep({ label, line, hit, accent, width }) {
 
 const TEAM_DEFENSE = __TEAM_DEFENSE__;
 const TRANCHE_ACCENT = { p25: TRANCHE_COLOR.p25, p50: TRANCHE_COLOR.p50, p75: TRANCHE_COLOR.p75 };
-function AddButton({ inSlip, onClick, tranche }) {
+function AddButton({ inSlip, onClick, tranche, compact }) {
   const accent = TRANCHE_ACCENT[tranche] || TRANCHE_COLOR.p50;
   return (
     <button onClick={onClick} className="bubble-btn" style={{
-      padding: "8px 16px", borderRadius: 999, fontSize: 12.5, fontWeight: 800, border: "none", cursor: "pointer",
+      padding: compact ? "5px 11px" : "8px 16px", borderRadius: 999, fontSize: compact ? 10.5 : 12.5, fontWeight: 800, border: "none", cursor: "pointer",
       background: inSlip ? "linear-gradient(135deg,#F2745A,#F2A900)" : `linear-gradient(135deg,${accent},${accent}CC)`,
       color: "#08090B", whiteSpace: "nowrap",
       boxShadow: inSlip ? "none" : `0 0 12px ${accent}66, 0 0 2px ${accent}AA inset`,
@@ -1991,42 +2021,48 @@ function LadderCard({ e, onAdd, inSlipTranches }) {
 }
 
 // One card per PLAYER, not per stat — consolidates all of a player's bettable lines
-// under a single header instead of repeating their name/team for every stat.
+// under a single header instead of repeating their name/team for every stat. The player
+// name toggles the whole group open/closed (mirrors how sportsbooks group props) to cut
+// down on page length — single-prop players start open since there's nothing to collapse
+// usefully, multi-prop players start closed.
 function PlayerPoolGroup({ player, entries, onAdd, inSlipTranchesFor }) {
+  const [expanded, setExpanded] = useState(entries.length === 1);
   const first = entries[0];
   const hasRookie = entries.some(e => e.isRookie);
   const hasTeamChange = entries.some(e => e.teamChanged);
   const subtitle = [first.pos, TEAM_NAMES[first.team]||first.team].filter(Boolean).join(" · ");
 
   return (
-    <Glass hover={false} style={{ padding: "14px 16px" }} className="glass bounce-in">
-      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2 }}>
-        <div style={{ fontSize: 14.5, fontWeight: 800 }}>{player}</div>
+    <Glass hover={false} style={{ padding: "14px 16px", border: "1.5px solid var(--overlay-7)" }} className="glass bounce-in">
+      <div onClick={()=>setExpanded(x=>!x)} style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2, cursor: "pointer", userSelect: "none" }}>
+        <span style={{ fontSize: 11, color: "var(--text-tertiary)", transform: expanded ? "rotate(90deg)" : "none", transition: "transform 0.15s", display: "inline-block", width: 12 }}>▸</span>
+        <div style={{ fontSize: 14, fontWeight: 800 }}>{player}</div>
         {hasTeamChange && <span title={`${first.team2024} → ${first.team2025}`} style={{ fontSize: 9, color: ACCENT.rose, border: `1px solid ${ACCENT.rose}55`, borderRadius: 8, padding: "1px 6px", fontWeight: 700 }}>TEAM CHANGE</span>}
         {hasRookie && <span style={{ fontSize: 9, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 8, padding: "1px 6px", fontWeight: 700 }}>ROOKIE</span>}
+        {!expanded && entries.length > 1 && <span style={{ fontSize: 10, color: "var(--text-tertiary)", marginLeft: "auto" }}>{entries.length} props</span>}
       </div>
-      {subtitle && <div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", marginBottom: 10 }}>{subtitle}</div>}
+      {subtitle && <div style={{ fontSize: 10, color: "var(--text-secondary-b)", marginBottom: expanded ? 10 : 0, marginLeft: 18 }}>{subtitle}</div>}
 
-      {entries.map((e, i) => {
+      {expanded && entries.map((e, i) => {
         const inSlip = inSlipTranchesFor(e);
         return (
-          <div key={e.id} style={{ paddingTop: i > 0 ? 10 : 0, marginTop: i > 0 ? 10 : 0, borderTop: i > 0 ? "1px solid var(--overlay-4)" : "none" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text-body)" }}>
+          <div key={e.id} style={{ paddingTop: i > 0 ? 8 : 8, marginTop: i > 0 ? 8 : 8, borderTop: "1px solid var(--overlay-4)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--text-body)" }}>
                 {e.kind === "future" ? e.market : e.stat}
               </div>
               <ConfidenceBadge testGames={e.testGames} />
             </div>
             {e.kind === "ladder" ? (
               <>
-                <div style={{ display: "flex", gap: 14, fontSize: 11, marginBottom: 6 }}>
+                <div style={{ display: "flex", gap: 12, fontSize: 10, marginBottom: 5 }}>
                   <span style={{ color: TRANCHE_COLOR.p25 }}>P25: {fmt(e.p25.line,0)} <span style={{color:"var(--text-secondary-b)"}}>({fmt(e.p25.testHit,0)}%)</span></span>
                   <span style={{ color: TRANCHE_COLOR.p50 }}>P50: {fmt(e.p50.line,0)} <span style={{color:"var(--text-secondary-b)"}}>({fmt(e.p50.testHit,0)}%)</span></span>
                   <span style={{ color: TRANCHE_COLOR.p75 }}>P75: {fmt(e.p75.line,0)} <span style={{color:"var(--text-secondary-b)"}}>({fmt(e.p75.testHit,0)}%)</span></span>
                 </div>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
                   {["p25","p50","p75"].map(tr => (
-                    <AddButton key={tr} inSlip={inSlip.includes(tr)} onClick={()=>onAdd(e, tr)} tranche={tr} />
+                    <AddButton key={tr} inSlip={inSlip.includes(tr)} onClick={()=>onAdd(e, tr)} tranche={tr} compact />
                   ))}
                 </div>
                 <MarketLineComparator e={e} />
@@ -2034,15 +2070,15 @@ function PlayerPoolGroup({ player, entries, onAdd, inSlipTranchesFor }) {
             ) : (
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: 11.5, color: "var(--text-secondary-a)" }}>
+                  <span style={{ fontSize: 10.5, color: "var(--text-secondary-a)" }}>
                     {e.kind === "under" ? `Under ${e.line}` : e.kind === "binary" ? "Anytime" : e.selection}
                     {" · "}{fmt(e.kind === "under" ? e.testHit : e.kind === "binary" ? e.testRate : e.prob, 0)}%
                     {e.kind === "binary" && <span style={{ color: "var(--text-tertiary)" }}> ({e.testGames} real games)</span>}
                   </span>
-                  <AddButton inSlip={inSlip.length>0} onClick={()=>onAdd(e, "p50")} tranche={null} />
+                  <AddButton inSlip={inSlip.length>0} onClick={()=>onAdd(e, "p50")} tranche={null} compact />
                 </div>
                 {e.kind === "binary" && e.realOdds && (
-                  <div style={{ fontSize: 10.5, color: ACCENT.green, marginTop: 4 }}>
+                  <div style={{ fontSize: 10, color: ACCENT.green, marginTop: 4 }}>
                     ✓ Real price: {e.realOdds.price>0?"+":""}{e.realOdds.price} ({e.realOdds.book})
                   </div>
                 )}
