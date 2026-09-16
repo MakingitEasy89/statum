@@ -11,6 +11,8 @@ const { useState, useMemo, useEffect, useRef } = React;
 const RECEIVERS = __RECEIVERS__;
 const NFL_UPCOMING = __NFL_UPCOMING__;
 const ATD_POOL = __ATD_POOL__;
+const REDZONE = __REDZONE__;
+const USAGE_BUMP = __USAGE_BUMP__;
 
 // WNBA, MLB, and CFB data are NOT embedded here — they're fetched on demand the first
 // time you switch to that sport, instead of every visitor's browser having to load and
@@ -484,6 +486,35 @@ function SkillDetail({ p, onClose }) {
               {" "}{p.name.split(' ')[0]} has averaged <b style={{color: meaningful ? (diff>0?ACCENT.green:ACCENT.rose) : "var(--text-body)"}}>{fmt(split.yptTarget,1)} yds/target</b> against
               {" "}{COVERAGE_LABEL[primaryCov]||primaryCov} this season ({split.targets} targets), vs {fmt(overallYpt,1)} overall
               {meaningful && <> — {diff>0 ? "notably better" : "notably worse"} than his average against this specific look.</>}
+            </div>
+          </Glass>
+        );
+      })()}
+
+      {(() => {
+        const bump = USAGE_BUMP[p.name];
+        if (!bump) return null;
+        // check whether any of the real historical trigger players are CURRENTLY out —
+        // if so this is an active, right-now opportunity rather than just background context
+        const activeTrigger = bump.triggerPlayers.find(name => INJURIES[name] && INJURIES[name].status === "Out");
+        return (
+          <Glass hover={false} style={{ padding: "14px 16px", marginBottom: 16, border: activeTrigger ? `1px solid ${ACCENT.green}88` : undefined, background: activeTrigger ? "rgba(0,230,118,0.06)" : undefined }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 8, fontWeight: 700 }}>
+              {activeTrigger ? "🔥 Active Usage Opportunity" : "📈 Usage Bump (Historical)"}
+            </div>
+            <div style={{ fontSize: 12.5, lineHeight: 1.6 }}>
+              {activeTrigger ? (
+                <>
+                  <b style={{color: ACCENT.green}}>{activeTrigger} is currently listed as Out.</b> In {bump.instances} real past games when {bump.triggerPlayers.join(" / ")} {bump.triggerPlayers.length>1?"were":"was"} out,
+                  {" "}{p.name.split(' ')[0]} averaged <b style={{color:ACCENT.green}}>+{fmt(bump.avgTargetBump,1)} targets</b> above his own normal baseline.
+                </>
+              ) : (
+                <>
+                  In {bump.instances} real past games when {bump.triggerPlayers.join(" / ")} {bump.triggerPlayers.length>1?"were":"was"} out,
+                  {" "}{p.name.split(' ')[0]} averaged <b style={{color: bump.avgTargetBump>0?ACCENT.green:ACCENT.rose}}>{bump.avgTargetBump>0?"+":""}{fmt(bump.avgTargetBump,1)} targets</b> vs his own normal baseline.
+                  {" "}Not currently relevant — just real historical context if that situation comes up again.
+                </>
+              )}
             </div>
           </Glass>
         );
@@ -3318,6 +3349,35 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
           </div>
         </div>
       )}
+
+      {sport === "nfl" && REDZONE[team] && (() => {
+        const rz = REDZONE[team];
+        return (
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
+              🏈 Red Zone Tendencies
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
+              <Glass hover={false} style={{ padding: "14px 16px" }}>
+                <div style={{ fontSize: 10, letterSpacing: "0.08em", color: ACCENT.teal, textTransform: "uppercase", fontWeight: 700, marginBottom: 8 }}>Offense — Inside the 20</div>
+                <div style={{ fontSize: 13, marginBottom: 4 }}>Pass rate: <b>{fmt(rz.offPassRate,0)}%</b> <span style={{color:"var(--text-tertiary)",fontSize:10.5}}>({rz.offVolume} real plays)</span></div>
+                <div style={{ fontSize: 13 }}>TD conversion: <b>{fmt(rz.offConversionRate,0)}%</b> <span style={{color:"var(--text-tertiary)",fontSize:10.5}}>({rz.offConversionN} real trips)</span></div>
+              </Glass>
+              <Glass hover={false} style={{ padding: "14px 16px" }}>
+                <div style={{ fontSize: 10, letterSpacing: "0.08em", color: ACCENT.rose, textTransform: "uppercase", fontWeight: 700, marginBottom: 8 }}>Defense — Allowed Inside the 20</div>
+                <div style={{ fontSize: 13, marginBottom: 4 }}>TD rate allowed: <b>{fmt(rz.defConversionRate,0)}%</b> <span style={{color:"var(--text-tertiary)",fontSize:10.5}}>({rz.defConversionN} real trips)</span></div>
+                <div style={{ fontSize: 12.5, display: "flex", gap: 14, marginTop: 6 }}>
+                  <span>vs Pass: <b style={{color: rz.defPassTDRate==null?"var(--text-tertiary)":(rz.defPassTDRate > (rz.defRunTDRate??0) ? ACCENT.rose : "var(--text-body)")}}>{rz.defPassTDRate!=null ? fmt(rz.defPassTDRate,0)+"%" : "n/a"}</b></span>
+                  <span>vs Rush: <b style={{color: rz.defRunTDRate==null?"var(--text-tertiary)":(rz.defRunTDRate > (rz.defPassTDRate??0) ? ACCENT.rose : "var(--text-body)")}}>{rz.defRunTDRate!=null ? fmt(rz.defRunTDRate,0)+"%" : "n/a"}</b></span>
+                </div>
+              </Glass>
+            </div>
+            <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginTop: 8 }}>
+              Real drive-level conversion (did a red-zone trip end in a TD) and real play-level TD rate by play type. "n/a" means too small a sample (under 15 real plays) to show honestly.
+            </div>
+          </div>
+        );
+      })()}
 
       {sport === "cfb" ? (
         <>

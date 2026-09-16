@@ -1,0 +1,6176 @@
+{
+  "pending": [
+    {
+      "sport": "nfl",
+      "player": "Ja'Marr Chase",
+      "stat": "Receptions",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ja'Marr Chase",
+      "stat": "Receiving Yards",
+      "p25": 62.0,
+      "p50": 86.0,
+      "p75": 102.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ja'Marr Chase",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 11.0,
+      "p75": 13.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Puka Nacua",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Puka Nacua",
+      "stat": "Receiving Yards",
+      "p25": 56.0,
+      "p50": 97.0,
+      "p75": 117.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Puka Nacua",
+      "stat": "Targets",
+      "p25": 8.0,
+      "p50": 9.0,
+      "p75": 14.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receiving Yards",
+      "p25": 39.0,
+      "p50": 69.0,
+      "p75": 83.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 12.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receiving Yards",
+      "p25": 47.0,
+      "p50": 71.0,
+      "p75": 109.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Trey McBride",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Trey McBride",
+      "stat": "Receiving Yards",
+      "p25": 47.0,
+      "p50": 68.0,
+      "p75": 96.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Trey McBride",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 9.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Jefferson",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Jefferson",
+      "stat": "Receiving Yards",
+      "p25": 62.0,
+      "p50": 83.0,
+      "p75": 111.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Courtland Sutton",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Courtland Sutton",
+      "stat": "Receiving Yards",
+      "p25": 50.0,
+      "p50": 68.0,
+      "p75": 97.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Courtland Sutton",
+      "stat": "Targets",
+      "p25": 7.0,
+      "p50": 9.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Davante Adams",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Davante Adams",
+      "stat": "Receiving Yards",
+      "p25": 48.0,
+      "p50": 67.0,
+      "p75": 90.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Davante Adams",
+      "stat": "Targets",
+      "p25": 8.0,
+      "p50": 11.0,
+      "p75": 12.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Wan'Dale Robinson",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Wan'Dale Robinson",
+      "stat": "Receiving Yards",
+      "p25": 30.0,
+      "p50": 43.0,
+      "p75": 51.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Wan'Dale Robinson",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 9.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Drake London",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Drake London",
+      "stat": "Receiving Yards",
+      "p25": 54.0,
+      "p50": 64.0,
+      "p75": 86.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Drake London",
+      "stat": "Targets",
+      "p25": 7.0,
+      "p50": 9.0,
+      "p75": 13.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "CeeDee Lamb",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "CeeDee Lamb",
+      "stat": "Receiving Yards",
+      "p25": 61.0,
+      "p50": 89.0,
+      "p75": 95.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "CeeDee Lamb",
+      "stat": "Targets",
+      "p25": 8.0,
+      "p50": 10.0,
+      "p75": 12.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Travis Kelce",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Travis Kelce",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 45.0,
+      "p75": 84.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Travis Kelce",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 8.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jerry Jeudy",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jerry Jeudy",
+      "stat": "Receiving Yards",
+      "p25": 29.0,
+      "p50": 72.0,
+      "p75": 85.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jerry Jeudy",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 8.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Keenan Allen",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Keenan Allen",
+      "stat": "Receiving Yards",
+      "p25": 29.0,
+      "p50": 39.0,
+      "p75": 58.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Keenan Allen",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 8.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "A.J. Brown",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "A.J. Brown",
+      "stat": "Receiving Yards",
+      "p25": 43.0,
+      "p50": 84.0,
+      "p75": 109.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "A.J. Brown",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "George Pickens",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "George Pickens",
+      "stat": "Receiving Yards",
+      "p25": 49.0,
+      "p50": 74.0,
+      "p75": 88.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jakobi Meyers",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jakobi Meyers",
+      "stat": "Receiving Yards",
+      "p25": 50.0,
+      "p50": 61.0,
+      "p75": 84.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jakobi Meyers",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 9.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Nico Collins",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Nico Collins",
+      "stat": "Receiving Yards",
+      "p25": 59.0,
+      "p50": 83.0,
+      "p75": 118.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Nico Collins",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 8.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DJ Moore",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DJ Moore",
+      "stat": "Receiving Yards",
+      "p25": 33.0,
+      "p50": 53.0,
+      "p75": 78.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DJ Moore",
+      "stat": "Targets",
+      "p25": 7.0,
+      "p50": 8.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brock Bowers",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brock Bowers",
+      "stat": "Receiving Yards",
+      "p25": 45.0,
+      "p50": 58.0,
+      "p75": 97.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brock Bowers",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 9.0,
+      "p75": 12.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Khalil Shakir",
+      "stat": "Receiving Yards",
+      "p25": 39.0,
+      "p50": 56.0,
+      "p75": 66.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ladd McConkey",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ladd McConkey",
+      "stat": "Receiving Yards",
+      "p25": 46.0,
+      "p50": 70.0,
+      "p75": 97.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ladd McConkey",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zay Flowers",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zay Flowers",
+      "stat": "Receiving Yards",
+      "p25": 31.0,
+      "p50": 53.0,
+      "p75": 100.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zay Flowers",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeVonta Smith",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeVonta Smith",
+      "stat": "Receiving Yards",
+      "p25": 37.0,
+      "p50": 64.0,
+      "p75": 84.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeVonta Smith",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brian Thomas Jr.",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brian Thomas Jr.",
+      "stat": "Receiving Yards",
+      "p25": 48.0,
+      "p50": 86.0,
+      "p75": 94.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brian Thomas Jr.",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 8.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Michael Pittman",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Michael Pittman",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 39.0,
+      "p75": 65.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Michael Pittman",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jauan Jennings",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jauan Jennings",
+      "stat": "Receiving Yards",
+      "p25": 38.0,
+      "p50": 56.0,
+      "p75": 89.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jauan Jennings",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Garrett Wilson",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Garrett Wilson",
+      "stat": "Receiving Yards",
+      "p25": 41.0,
+      "p50": 57.0,
+      "p75": 90.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Garrett Wilson",
+      "stat": "Targets",
+      "p25": 7.0,
+      "p50": 8.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DK Metcalf",
+      "stat": "Receiving Yards",
+      "p25": 48.0,
+      "p50": 57.0,
+      "p75": 84.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DK Metcalf",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tee Higgins",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tee Higgins",
+      "stat": "Receiving Yards",
+      "p25": 56.0,
+      "p50": 73.0,
+      "p75": 84.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tee Higgins",
+      "stat": "Targets",
+      "p25": 7.0,
+      "p50": 9.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dalton Schultz",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dalton Schultz",
+      "stat": "Receiving Yards",
+      "p25": 21.0,
+      "p50": 28.0,
+      "p75": 39.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dalton Schultz",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "p25": 23.0,
+      "p50": 39.0,
+      "p75": 42.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rome Odunze",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cooper Kupp",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cooper Kupp",
+      "stat": "Receiving Yards",
+      "p25": 29.0,
+      "p50": 55.0,
+      "p75": 89.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cooper Kupp",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Terry McLaurin",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Terry McLaurin",
+      "stat": "Receiving Yards",
+      "p25": 43.0,
+      "p50": 67.0,
+      "p75": 98.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Terry McLaurin",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Hunter Henry",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Hunter Henry",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 40.0,
+      "p75": 57.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Hunter Henry",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chris Olave",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chris Olave",
+      "stat": "Receiving Yards",
+      "p25": 10.0,
+      "p50": 47.0,
+      "p75": 86.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Michael Wilson",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Michael Wilson",
+      "stat": "Receiving Yards",
+      "p25": 19.0,
+      "p50": 31.0,
+      "p75": 54.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Michael Wilson",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jameson Williams",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jameson Williams",
+      "stat": "Receiving Yards",
+      "p25": 32.0,
+      "p50": 58.0,
+      "p75": 80.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jameson Williams",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Downs",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Downs",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 63.0,
+      "p75": 79.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Downs",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 8.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyle Pitts",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyle Pitts",
+      "stat": "Receiving Yards",
+      "p25": 11.0,
+      "p50": 26.0,
+      "p75": 59.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyle Pitts",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Xavier Worthy",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Xavier Worthy",
+      "stat": "Receiving Yards",
+      "p25": 22.0,
+      "p50": 46.0,
+      "p75": 63.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Xavier Worthy",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zach Ertz",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zach Ertz",
+      "stat": "Receiving Yards",
+      "p25": 24.0,
+      "p50": 36.0,
+      "p75": 52.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zach Ertz",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Marvin Harrison Jr.",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Marvin Harrison Jr.",
+      "stat": "Receiving Yards",
+      "p25": 34.0,
+      "p50": 47.0,
+      "p75": 63.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Marvin Harrison Jr.",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Ferguson",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Ferguson",
+      "stat": "Receiving Yards",
+      "p25": 15.0,
+      "p50": 23.0,
+      "p75": 46.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Ferguson",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Addison",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Addison",
+      "stat": "Receiving Yards",
+      "p25": 33.0,
+      "p50": 48.0,
+      "p75": 66.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Addison",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "p25": 36.0,
+      "p50": 73.0,
+      "p75": 81.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Stefon Diggs",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Quentin Johnston",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Quentin Johnston",
+      "stat": "Receiving Yards",
+      "p25": 16.0,
+      "p50": 41.0,
+      "p75": 48.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Quentin Johnston",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Waddle",
+      "stat": "Receiving Yards",
+      "p25": 31.0,
+      "p50": 44.0,
+      "p75": 56.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Waddle",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Deebo Samuel Sr.",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Deebo Samuel Sr.",
+      "stat": "Receiving Yards",
+      "p25": 20.0,
+      "p50": 38.0,
+      "p75": 68.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Deebo Samuel Sr.",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mike Evans",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mike Evans",
+      "stat": "Receiving Yards",
+      "p25": 51.0,
+      "p50": 69.0,
+      "p75": 93.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mike Evans",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Darnell Mooney",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Darnell Mooney",
+      "stat": "Receiving Yards",
+      "p25": 34.0,
+      "p50": 61.0,
+      "p75": 88.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Darnell Mooney",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bijan Robinson",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bijan Robinson",
+      "stat": "Receiving Yards",
+      "p25": 10.0,
+      "p50": 25.0,
+      "p75": 40.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bijan Robinson",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bijan Robinson",
+      "stat": "Rush Attempts",
+      "p25": 14.0,
+      "p50": 18.0,
+      "p75": 22.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bijan Robinson",
+      "stat": "Rush Yards",
+      "p25": 63.0,
+      "p50": 92.0,
+      "p75": 102.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tre Tucker",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tre Tucker",
+      "stat": "Receiving Yards",
+      "p25": 18.0,
+      "p50": 24.0,
+      "p75": 41.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tre Tucker",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Romeo Doubs",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Romeo Doubs",
+      "stat": "Receiving Yards",
+      "p25": 22.0,
+      "p50": 44.0,
+      "p75": 58.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Romeo Doubs",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "De'Von Achane",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "De'Von Achane",
+      "stat": "Receiving Yards",
+      "p25": 14.0,
+      "p50": 32.0,
+      "p75": 50.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "De'Von Achane",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "De'Von Achane",
+      "stat": "Rush Attempts",
+      "p25": 10.0,
+      "p50": 11.0,
+      "p75": 14.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "De'Von Achane",
+      "stat": "Rush Yards",
+      "p25": 24.0,
+      "p50": 37.0,
+      "p75": 77.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cade Otton",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cade Otton",
+      "stat": "Receiving Yards",
+      "p25": 22.0,
+      "p50": 35.0,
+      "p75": 61.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cade Otton",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Juwan Johnson",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Juwan Johnson",
+      "stat": "Receiving Yards",
+      "p25": 24.0,
+      "p50": 31.0,
+      "p75": 48.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Juwan Johnson",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jonnu Smith",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jonnu Smith",
+      "stat": "Receiving Yards",
+      "p25": 26.0,
+      "p50": 48.0,
+      "p75": 62.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jonnu Smith",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receiving Yards",
+      "p25": 12.0,
+      "p50": 30.0,
+      "p75": 44.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Attempts",
+      "p25": 11.0,
+      "p50": 14.0,
+      "p75": 17.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Yards",
+      "p25": 66.0,
+      "p50": 83.0,
+      "p75": 108.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "George Kittle",
+      "stat": "Receiving Yards",
+      "p25": 51.0,
+      "p50": 64.0,
+      "p75": 99.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "George Kittle",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Troy Franklin",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Parker Washington",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Parker Washington",
+      "stat": "Receiving Yards",
+      "p25": 13.0,
+      "p50": 24.0,
+      "p75": 48.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Parker Washington",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dallas Goedert",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 42.0,
+      "p75": 59.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dallas Goedert",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Calvin Ridley",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Calvin Ridley",
+      "stat": "Receiving Yards",
+      "p25": 41.0,
+      "p50": 59.0,
+      "p75": 78.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Calvin Ridley",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chase Brown",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chase Brown",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chase Brown",
+      "stat": "Rush Attempts",
+      "p25": 11.0,
+      "p50": 13.0,
+      "p75": 18.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chase Brown",
+      "stat": "Rush Yards",
+      "p25": 43.0,
+      "p50": 60.0,
+      "p75": 81.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Alec Pierce",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Alec Pierce",
+      "stat": "Receiving Yards",
+      "p25": 14.0,
+      "p50": 42.0,
+      "p75": 75.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Alec Pierce",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Xavier Legette",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Xavier Legette",
+      "stat": "Receiving Yards",
+      "p25": 25.0,
+      "p50": 34.0,
+      "p75": 41.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Xavier Legette",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Evan Engram",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Evan Engram",
+      "stat": "Receiving Yards",
+      "p25": 33.0,
+      "p50": 36.0,
+      "p75": 41.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Evan Engram",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mark Andrews",
+      "stat": "Receiving Yards",
+      "p25": 25.0,
+      "p50": 41.0,
+      "p75": 58.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mark Andrews",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chig Okonkwo",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "David Njoku",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "David Njoku",
+      "stat": "Receiving Yards",
+      "p25": 30.0,
+      "p50": 44.0,
+      "p75": 63.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "David Njoku",
+      "stat": "Targets",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Olamide Zaccheaus",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Olamide Zaccheaus",
+      "stat": "Receiving Yards",
+      "p25": 11.0,
+      "p50": 22.0,
+      "p75": 45.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Olamide Zaccheaus",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeMario Douglas",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeMario Douglas",
+      "stat": "Receiving Yards",
+      "p25": 14.0,
+      "p50": 34.0,
+      "p75": 59.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeMario Douglas",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dalton Kincaid",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dalton Kincaid",
+      "stat": "Receiving Yards",
+      "p25": 21.0,
+      "p50": 32.0,
+      "p75": 47.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dalton Kincaid",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Pat Freiermuth",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Pat Freiermuth",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 30.0,
+      "p75": 55.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Pat Freiermuth",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam LaPorta",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam LaPorta",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 48.0,
+      "p75": 54.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam LaPorta",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Darius Slayton",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Darius Slayton",
+      "stat": "Receiving Yards",
+      "p25": 10.0,
+      "p50": 26.0,
+      "p75": 50.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Darius Slayton",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kayshon Boutte",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kayshon Boutte",
+      "stat": "Receiving Yards",
+      "p25": 18.0,
+      "p50": 33.0,
+      "p75": 46.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kayshon Boutte",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "T.J. Hockenson",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "T.J. Hockenson",
+      "stat": "Receiving Yards",
+      "p25": 27.0,
+      "p50": 45.0,
+      "p75": 66.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "T.J. Hockenson",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Keon Coleman",
+      "stat": "Receiving Yards",
+      "p25": 15.0,
+      "p50": 26.0,
+      "p75": 51.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Keon Coleman",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyler Lockett",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyler Lockett",
+      "stat": "Receiving Yards",
+      "p25": 19.0,
+      "p50": 22.0,
+      "p75": 61.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyler Lockett",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Adonai Mitchell",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeAndre Hopkins",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeAndre Hopkins",
+      "stat": "Receiving Yards",
+      "p25": 10.0,
+      "p50": 31.0,
+      "p75": 43.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "DeAndre Hopkins",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Alvin Kamara",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Alvin Kamara",
+      "stat": "Receiving Yards",
+      "p25": 24.0,
+      "p50": 40.0,
+      "p75": 54.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Alvin Kamara",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Alvin Kamara",
+      "stat": "Rush Attempts",
+      "p25": 11.0,
+      "p50": 16.0,
+      "p75": 19.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Alvin Kamara",
+      "stat": "Rush Yards",
+      "p25": 41.0,
+      "p50": 67.0,
+      "p75": 86.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dontayvion Wicks",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dontayvion Wicks",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mike Gesicki",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mike Gesicki",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 34.0,
+      "p75": 69.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mike Gesicki",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Breece Hall",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Breece Hall",
+      "stat": "Receiving Yards",
+      "p25": 13.0,
+      "p50": 25.0,
+      "p75": 40.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Breece Hall",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Breece Hall",
+      "stat": "Rush Attempts",
+      "p25": 10.0,
+      "p50": 13.0,
+      "p75": 16.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Breece Hall",
+      "stat": "Rush Yards",
+      "p25": 43.0,
+      "p50": 54.0,
+      "p75": 65.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Javonte Williams",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Javonte Williams",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Javonte Williams",
+      "stat": "Rush Attempts",
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Javonte Williams",
+      "stat": "Rush Yards",
+      "p25": 12.0,
+      "p50": 23.0,
+      "p75": 43.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Marvin Mims Jr.",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Calvin Austin III",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Elijah Moore",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Elijah Moore",
+      "stat": "Receiving Yards",
+      "p25": 11.0,
+      "p50": 21.0,
+      "p75": 41.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Elijah Moore",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tucker Kraft",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tucker Kraft",
+      "stat": "Receiving Yards",
+      "p25": 26.0,
+      "p50": 35.0,
+      "p75": 54.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tucker Kraft",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Demarcus Robinson",
+      "stat": "Receiving Yards",
+      "p25": 12.0,
+      "p50": 28.0,
+      "p75": 45.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Demarcus Robinson",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Andrei Iosivas",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Andrei Iosivas",
+      "stat": "Receiving Yards",
+      "p25": 10.0,
+      "p50": 29.0,
+      "p75": 41.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rashod Bateman",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rashod Bateman",
+      "stat": "Receiving Yards",
+      "p25": 25.0,
+      "p50": 41.0,
+      "p75": 64.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rashod Bateman",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brenton Strange",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brenton Strange",
+      "stat": "Receiving Yards",
+      "p25": 12.0,
+      "p50": 21.0,
+      "p75": 50.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brenton Strange",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Theo Johnson",
+      "stat": "Receiving Yards",
+      "p25": 21.0,
+      "p50": 36.0,
+      "p75": 45.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Theo Johnson",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Christian Watson",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Christian Kirk",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 21,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Christian Kirk",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 44.0,
+      "p75": 64.0,
+      "gamelogLenAtSnapshot": 21,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Christian Kirk",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 21,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Saquon Barkley",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Saquon Barkley",
+      "stat": "Rush Attempts",
+      "p25": 18.0,
+      "p50": 23.0,
+      "p75": 26.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Saquon Barkley",
+      "stat": "Rush Yards",
+      "p25": 92.0,
+      "p50": 118.0,
+      "p75": 152.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Tolbert",
+      "stat": "Receiving Yards",
+      "p25": 19.0,
+      "p50": 24.0,
+      "p75": 43.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Tolbert",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cole Kmet",
+      "stat": "Receiving Yards",
+      "p25": 11.0,
+      "p50": 26.0,
+      "p75": 49.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Aaron Jones",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Aaron Jones",
+      "stat": "Receiving Yards",
+      "p25": 13.0,
+      "p50": 23.0,
+      "p75": 30.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Aaron Jones",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Aaron Jones",
+      "stat": "Rush Attempts",
+      "p25": 12.0,
+      "p50": 14.0,
+      "p75": 18.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Aaron Jones",
+      "stat": "Rush Yards",
+      "p25": 45.0,
+      "p50": 65.0,
+      "p75": 91.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Travis Etienne",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Travis Etienne",
+      "stat": "Rush Attempts",
+      "p25": 7.0,
+      "p50": 11.0,
+      "p75": 13.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Travis Etienne",
+      "stat": "Rush Yards",
+      "p25": 23.0,
+      "p50": 44.0,
+      "p75": 49.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Reed",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Reed",
+      "stat": "Receiving Yards",
+      "p25": 23.0,
+      "p50": 40.0,
+      "p75": 70.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Reed",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sterling Shepard",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sterling Shepard",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Noah Fant",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Noah Fant",
+      "stat": "Receiving Yards",
+      "p25": 19.0,
+      "p50": 26.0,
+      "p75": 57.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Noah Fant",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Palmer",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Palmer",
+      "stat": "Receiving Yards",
+      "p25": 21.0,
+      "p50": 38.0,
+      "p75": 48.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Palmer",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rachaad White",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rachaad White",
+      "stat": "Rush Attempts",
+      "p25": 6.0,
+      "p50": 10.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rachaad White",
+      "stat": "Rush Yards",
+      "p25": 18.0,
+      "p50": 31.0,
+      "p75": 52.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Isaiah Likely",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Isaiah Likely",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 27.0,
+      "p75": 47.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Isaiah Likely",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyren Williams",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyren Williams",
+      "stat": "Rush Attempts",
+      "p25": 15.0,
+      "p50": 19.0,
+      "p75": 22.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyren Williams",
+      "stat": "Rush Yards",
+      "p25": 69.0,
+      "p50": 86.0,
+      "p75": 100.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "p25": 13.0,
+      "p50": 14.0,
+      "p75": 17.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "p25": 30.0,
+      "p50": 53.0,
+      "p75": 73.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Coker",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Coker",
+      "stat": "Receiving Yards",
+      "p25": 20.0,
+      "p50": 36.0,
+      "p75": 65.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Coker",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rico Dowdle",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rico Dowdle",
+      "stat": "Rush Attempts",
+      "p25": 9.0,
+      "p50": 12.0,
+      "p75": 20.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rico Dowdle",
+      "stat": "Rush Yards",
+      "p25": 29.0,
+      "p50": 62.0,
+      "p75": 91.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyrone Tracy Jr.",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyrone Tracy Jr.",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyrone Tracy Jr.",
+      "stat": "Rush Attempts",
+      "p25": 6.0,
+      "p50": 10.0,
+      "p75": 17.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyrone Tracy Jr.",
+      "stat": "Rush Yards",
+      "p25": 23.0,
+      "p50": 42.0,
+      "p75": 59.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ricky Pearsall",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 20,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ricky Pearsall",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 20,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brandin Cooks",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Malik Washington",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Adam Thielen",
+      "stat": "Receiving Yards",
+      "p25": 43.0,
+      "p50": 50.0,
+      "p75": 88.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kenneth Walker III",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kenneth Walker III",
+      "stat": "Receiving Yards",
+      "p25": 15.0,
+      "p50": 28.0,
+      "p75": 36.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kenneth Walker III",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kenneth Walker III",
+      "stat": "Rush Attempts",
+      "p25": 10.0,
+      "p50": 14.0,
+      "p75": 16.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kenneth Walker III",
+      "stat": "Rush Yards",
+      "p25": 31.0,
+      "p50": 49.0,
+      "p75": 74.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tony Pollard",
+      "stat": "Rush Attempts",
+      "p25": 9.0,
+      "p50": 17.0,
+      "p75": 21.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tony Pollard",
+      "stat": "Rush Yards",
+      "p25": 41.0,
+      "p50": 62.0,
+      "p75": 93.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Warren",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Warren",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Warren",
+      "stat": "Rush Attempts",
+      "p25": 3.0,
+      "p50": 9.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chuba Hubbard",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chuba Hubbard",
+      "stat": "Rush Attempts",
+      "p25": 12.0,
+      "p50": 17.0,
+      "p75": 19.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chuba Hubbard",
+      "stat": "Rush Yards",
+      "p25": 54.0,
+      "p50": 72.0,
+      "p75": 100.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Devaughn Vele",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Devaughn Vele",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 27.0,
+      "p75": 47.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Devaughn Vele",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rhamondre Stevenson",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rhamondre Stevenson",
+      "stat": "Rush Attempts",
+      "p25": 9.0,
+      "p50": 13.0,
+      "p75": 20.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rhamondre Stevenson",
+      "stat": "Rush Yards",
+      "p25": 20.0,
+      "p50": 60.0,
+      "p75": 73.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dyami Brown",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dyami Brown",
+      "stat": "Receiving Yards",
+      "p25": 12.0,
+      "p50": 22.0,
+      "p75": 40.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dyami Brown",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "John Metchie III",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "John Metchie III",
+      "stat": "Receiving Yards",
+      "p25": 13.0,
+      "p50": 26.0,
+      "p75": 33.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "John Metchie III",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kendrick Bourne",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kendrick Bourne",
+      "stat": "Receiving Yards",
+      "p25": 11.0,
+      "p50": 20.0,
+      "p75": 39.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kendrick Bourne",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Jacobs",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Jacobs",
+      "stat": "Rush Attempts",
+      "p25": 13.0,
+      "p50": 18.0,
+      "p75": 19.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Jacobs",
+      "stat": "Rush Yards",
+      "p25": 63.0,
+      "p50": 74.0,
+      "p75": 91.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Austin Hooper",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Austin Hooper",
+      "stat": "Receiving Yards",
+      "p25": 13.0,
+      "p50": 27.0,
+      "p75": 38.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Noah Gray",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Noah Gray",
+      "stat": "Receiving Yards",
+      "p25": 10.0,
+      "p50": 22.0,
+      "p75": 35.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "James Cook",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "James Cook",
+      "stat": "Rush Attempts",
+      "p25": 10.0,
+      "p50": 13.0,
+      "p75": 17.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "James Cook",
+      "stat": "Rush Yards",
+      "p25": 39.0,
+      "p50": 71.0,
+      "p75": 92.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "KaVontae Turpin",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cedric Tillman",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 21,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cedric Tillman",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 21,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bucky Irving",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bucky Irving",
+      "stat": "Rush Attempts",
+      "p25": 9.0,
+      "p50": 11.0,
+      "p75": 15.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bucky Irving",
+      "stat": "Rush Yards",
+      "p25": 44.0,
+      "p50": 69.0,
+      "p75": 86.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jonathan Taylor",
+      "stat": "Rush Attempts",
+      "p25": 17.0,
+      "p50": 21.0,
+      "p75": 25.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jonathan Taylor",
+      "stat": "Rush Yards",
+      "p25": 64.0,
+      "p50": 104.0,
+      "p75": 113.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Will Dissly",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Will Dissly",
+      "stat": "Receiving Yards",
+      "p25": 18.0,
+      "p50": 25.0,
+      "p75": 41.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Will Dissly",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyjae Spears",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyjae Spears",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyjae Spears",
+      "stat": "Rush Attempts",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justice Hill",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justice Hill",
+      "stat": "Rush Attempts",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyler Conklin",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyler Conklin",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Greg Dortch",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Nick Westbrook-Ikhine",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Nick Westbrook-Ikhine",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 37.0,
+      "p75": 50.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Nick Westbrook-Ikhine",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Allen Lazard",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 21,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Allen Lazard",
+      "stat": "Receiving Yards",
+      "p25": 16.0,
+      "p50": 41.0,
+      "p75": 61.0,
+      "gamelogLenAtSnapshot": 21,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Allen Lazard",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 21,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Marquez Valdes-Scantling",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Lil'Jordan Humphrey",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tutu Atwell",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tutu Atwell",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 33.0,
+      "p75": 48.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tutu Atwell",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ja'Tavion Sanders",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zach Charbonnet",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zach Charbonnet",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zach Charbonnet",
+      "stat": "Rush Attempts",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 14.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zach Charbonnet",
+      "stat": "Rush Yards",
+      "p25": 11.0,
+      "p50": 20.0,
+      "p75": 54.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jerome Ford",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jerome Ford",
+      "stat": "Rush Attempts",
+      "p25": 5.0,
+      "p50": 8.0,
+      "p75": 10.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jerome Ford",
+      "stat": "Rush Yards",
+      "p25": 19.0,
+      "p50": 39.0,
+      "p75": 55.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tim Patrick",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tim Patrick",
+      "stat": "Receiving Yards",
+      "p25": 11.0,
+      "p50": 23.0,
+      "p75": 44.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tommy Tremble",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "David Montgomery",
+      "stat": "Receiving Yards",
+      "p25": 11.0,
+      "p50": 24.0,
+      "p75": 35.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "David Montgomery",
+      "stat": "Rush Attempts",
+      "p25": 9.0,
+      "p50": 12.0,
+      "p75": 16.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "David Montgomery",
+      "stat": "Rush Yards",
+      "p25": 32.0,
+      "p50": 40.0,
+      "p75": 77.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Curtis Samuel",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Curtis Samuel",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ameer Abdullah",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Gabe Davis",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 16,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Gabe Davis",
+      "stat": "Targets",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 16,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kareem Hunt",
+      "stat": "Rush Attempts",
+      "p25": 8.0,
+      "p50": 14.0,
+      "p75": 18.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kareem Hunt",
+      "stat": "Rush Yards",
+      "p25": 31.0,
+      "p50": 57.0,
+      "p75": 68.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Luke Schoonmaker",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Foster Moreau",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Attempts",
+      "p25": 11.0,
+      "p50": 14.0,
+      "p75": 17.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Yards",
+      "p25": 41.0,
+      "p50": 56.0,
+      "p75": 82.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Isiah Pacheco",
+      "stat": "Rush Attempts",
+      "p25": 5.0,
+      "p50": 8.0,
+      "p75": 13.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Isiah Pacheco",
+      "stat": "Rush Yards",
+      "p25": 18.0,
+      "p50": 29.0,
+      "p75": 44.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Derrick Henry",
+      "stat": "Rush Attempts",
+      "p25": 15.0,
+      "p50": 19.0,
+      "p75": 24.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Derrick Henry",
+      "stat": "Rush Yards",
+      "p25": 77.0,
+      "p50": 106.0,
+      "p75": 149.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Devin Singletary",
+      "stat": "Rush Attempts",
+      "p25": 4.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Devin Singletary",
+      "stat": "Rush Yards",
+      "p25": 15.0,
+      "p50": 23.0,
+      "p75": 35.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brian Robinson",
+      "stat": "Rush Attempts",
+      "p25": 10.0,
+      "p50": 13.0,
+      "p75": 16.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brian Robinson",
+      "stat": "Rush Yards",
+      "p25": 24.0,
+      "p50": 60.0,
+      "p75": 71.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Attempts",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Yards",
+      "p25": 10.0,
+      "p50": 22.0,
+      "p75": 44.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Raheem Mostert",
+      "stat": "Rush Attempts",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Emanuel Wilson",
+      "stat": "Rush Attempts",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ray Davis",
+      "stat": "Rush Attempts",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Nick Chubb",
+      "stat": "Rush Attempts",
+      "p25": 10.0,
+      "p50": 11.0,
+      "p75": 15.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Nick Chubb",
+      "stat": "Rush Yards",
+      "p25": 34.0,
+      "p50": 44.0,
+      "p75": 50.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Mason",
+      "stat": "Rush Attempts",
+      "p25": 5.0,
+      "p50": 13.0,
+      "p75": 19.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Mason",
+      "stat": "Rush Yards",
+      "p25": 16.0,
+      "p50": 75.0,
+      "p75": 91.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyler Allgeier",
+      "stat": "Rush Attempts",
+      "p25": 6.0,
+      "p50": 8.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyler Allgeier",
+      "stat": "Rush Yards",
+      "p25": 19.0,
+      "p50": 33.0,
+      "p75": 53.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tank Bigsby",
+      "stat": "Rush Attempts",
+      "p25": 7.0,
+      "p50": 11.0,
+      "p75": 13.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tank Bigsby",
+      "stat": "Rush Yards",
+      "p25": 26.0,
+      "p50": 42.0,
+      "p75": 75.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Wright",
+      "stat": "Rush Attempts",
+      "p25": 2.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Matthew Stafford",
+      "stat": "Passing Yards",
+      "p25": 194.0,
+      "p50": 233.0,
+      "p75": 294.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Matthew Stafford",
+      "stat": "Completions",
+      "p25": 16.0,
+      "p50": 19.0,
+      "p75": 25.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jared Goff",
+      "stat": "Passing Yards",
+      "p25": 223.0,
+      "p50": 281.0,
+      "p75": 311.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jared Goff",
+      "stat": "Completions",
+      "p25": 18.0,
+      "p50": 22.0,
+      "p75": 26.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam Darnold",
+      "stat": "Passing Yards",
+      "p25": 232.0,
+      "p50": 245.0,
+      "p75": 273.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam Darnold",
+      "stat": "Completions",
+      "p25": 18.0,
+      "p50": 21.0,
+      "p75": 23.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam Darnold",
+      "stat": "QB Rush Yards",
+      "p25": 3.0,
+      "p50": 11.0,
+      "p75": 18.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Allen",
+      "stat": "Passing Yards",
+      "p25": 167.0,
+      "p50": 235.0,
+      "p75": 276.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Allen",
+      "stat": "Completions",
+      "p25": 16.0,
+      "p50": 20.0,
+      "p75": 22.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Josh Allen",
+      "stat": "QB Rush Yards",
+      "p25": 18.0,
+      "p50": 30.0,
+      "p75": 48.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Baker Mayfield",
+      "stat": "Passing Yards",
+      "p25": 188.0,
+      "p50": 288.0,
+      "p75": 319.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Baker Mayfield",
+      "stat": "Completions",
+      "p25": 19.0,
+      "p50": 23.0,
+      "p75": 26.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Baker Mayfield",
+      "stat": "QB Rush Yards",
+      "p25": 10.0,
+      "p50": 21.0,
+      "p75": 29.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Patrick Mahomes",
+      "stat": "Passing Yards",
+      "p25": 203.0,
+      "p50": 257.0,
+      "p75": 280.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Patrick Mahomes",
+      "stat": "Completions",
+      "p25": 19.0,
+      "p50": 24.0,
+      "p75": 27.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Patrick Mahomes",
+      "stat": "QB Rush Yards",
+      "p25": 12.0,
+      "p50": 17.0,
+      "p75": 27.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bo Nix",
+      "stat": "Passing Yards",
+      "p25": 174.0,
+      "p50": 217.0,
+      "p75": 270.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bo Nix",
+      "stat": "Completions",
+      "p25": 19.0,
+      "p50": 21.0,
+      "p75": 25.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bo Nix",
+      "stat": "QB Rush Yards",
+      "p25": 5.0,
+      "p50": 25.0,
+      "p75": 41.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "p25": 134.0,
+      "p50": 191.0,
+      "p75": 256.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Caleb Williams",
+      "stat": "Completions",
+      "p25": 17.0,
+      "p50": 20.0,
+      "p75": 23.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Caleb Williams",
+      "stat": "QB Rush Yards",
+      "p25": 12.0,
+      "p50": 33.0,
+      "p75": 39.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Herbert",
+      "stat": "Passing Yards",
+      "p25": 167.0,
+      "p50": 227.0,
+      "p75": 281.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Herbert",
+      "stat": "Completions",
+      "p25": 16.0,
+      "p50": 19.0,
+      "p75": 21.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Herbert",
+      "stat": "QB Rush Yards",
+      "p25": 1.0,
+      "p50": 10.0,
+      "p75": 28.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "C.J. Stroud",
+      "stat": "Passing Yards",
+      "p25": 191.0,
+      "p50": 242.0,
+      "p75": 258.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "C.J. Stroud",
+      "stat": "Completions",
+      "p25": 18.0,
+      "p50": 20.0,
+      "p75": 23.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "C.J. Stroud",
+      "stat": "QB Rush Yards",
+      "p25": 6.0,
+      "p50": 13.0,
+      "p75": 24.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Drake Maye",
+      "stat": "Passing Yards",
+      "p25": 117.0,
+      "p50": 206.0,
+      "p75": 243.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Drake Maye",
+      "stat": "Completions",
+      "p25": 12.0,
+      "p50": 20.0,
+      "p75": 24.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Drake Maye",
+      "stat": "QB Rush Yards",
+      "p25": 18.0,
+      "p50": 27.0,
+      "p75": 38.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Aaron Rodgers",
+      "stat": "Passing Yards",
+      "p25": 184.0,
+      "p50": 233.0,
+      "p75": 276.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Aaron Rodgers",
+      "stat": "Completions",
+      "p25": 18.0,
+      "p50": 22.0,
+      "p75": 24.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Geno Smith",
+      "stat": "Passing Yards",
+      "p25": 207.0,
+      "p50": 233.0,
+      "p75": 312.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Geno Smith",
+      "stat": "Completions",
+      "p25": 20.0,
+      "p50": 22.0,
+      "p75": 28.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Geno Smith",
+      "stat": "QB Rush Yards",
+      "p25": 2.0,
+      "p50": 14.0,
+      "p75": 19.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Love",
+      "stat": "Passing Yards",
+      "p25": 193.0,
+      "p50": 222.0,
+      "p75": 260.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Love",
+      "stat": "Completions",
+      "p25": 13.0,
+      "p50": 18.0,
+      "p75": 21.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Lamar Jackson",
+      "stat": "Passing Yards",
+      "p25": 194.0,
+      "p50": 247.0,
+      "p75": 285.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Lamar Jackson",
+      "stat": "Completions",
+      "p25": 16.0,
+      "p50": 17.0,
+      "p75": 22.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Lamar Jackson",
+      "stat": "QB Rush Yards",
+      "p25": 39.0,
+      "p50": 52.0,
+      "p75": 72.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Hurts",
+      "stat": "Passing Yards",
+      "p25": 129.0,
+      "p50": 202.0,
+      "p75": 241.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Hurts",
+      "stat": "Completions",
+      "p25": 14.0,
+      "p50": 16.0,
+      "p75": 19.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Hurts",
+      "stat": "QB Rush Yards",
+      "p25": 31.0,
+      "p50": 39.0,
+      "p75": 57.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Joe Burrow",
+      "stat": "Passing Yards",
+      "p25": 234.0,
+      "p50": 271.0,
+      "p75": 356.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Joe Burrow",
+      "stat": "Completions",
+      "p25": 23.0,
+      "p50": 27.0,
+      "p75": 30.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Joe Burrow",
+      "stat": "QB Rush Yards",
+      "p25": 1.0,
+      "p50": 9.0,
+      "p75": 15.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dak Prescott",
+      "stat": "Passing Yards",
+      "p25": 178.0,
+      "p50": 232.0,
+      "p75": 307.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dak Prescott",
+      "stat": "Completions",
+      "p25": 18.0,
+      "p50": 23.0,
+      "p75": 27.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brock Purdy",
+      "stat": "Passing Yards",
+      "p25": 221.0,
+      "p50": 260.0,
+      "p75": 316.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brock Purdy",
+      "stat": "Completions",
+      "p25": 17.0,
+      "p50": 19.0,
+      "p75": 23.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brock Purdy",
+      "stat": "QB Rush Yards",
+      "p25": 11.0,
+      "p50": 17.0,
+      "p75": 30.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Trevor Lawrence",
+      "stat": "Passing Yards",
+      "p25": 169.0,
+      "p50": 185.0,
+      "p75": 230.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Trevor Lawrence",
+      "stat": "Completions",
+      "p25": 14.0,
+      "p50": 17.0,
+      "p75": 21.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Trevor Lawrence",
+      "stat": "QB Rush Yards",
+      "p25": 5.0,
+      "p50": 8.0,
+      "p75": 12.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bryce Young",
+      "stat": "Passing Yards",
+      "p25": 134.0,
+      "p50": 181.0,
+      "p75": 222.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bryce Young",
+      "stat": "Completions",
+      "p25": 15.0,
+      "p50": 17.0,
+      "p75": 20.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bryce Young",
+      "stat": "QB Rush Yards",
+      "p25": 8.0,
+      "p50": 12.0,
+      "p75": 23.0,
+      "gamelogLenAtSnapshot": 31,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "p25": 205.0,
+      "p50": 230.0,
+      "p75": 260.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Daniels",
+      "stat": "Completions",
+      "p25": 17.0,
+      "p50": 22.0,
+      "p75": 24.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Daniels",
+      "stat": "QB Rush Yards",
+      "p25": 34.0,
+      "p50": 47.0,
+      "p75": 68.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tua Tagovailoa",
+      "stat": "Passing Yards",
+      "p25": 211.0,
+      "p50": 234.0,
+      "p75": 324.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tua Tagovailoa",
+      "stat": "Completions",
+      "p25": 22.0,
+      "p50": 28.0,
+      "p75": 29.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kirk Cousins",
+      "stat": "Passing Yards",
+      "p25": 222.0,
+      "p50": 235.0,
+      "p75": 268.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kirk Cousins",
+      "stat": "Completions",
+      "p25": 19.0,
+      "p50": 20.0,
+      "p75": 23.0,
+      "gamelogLenAtSnapshot": 24,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Daniel Jones",
+      "stat": "Passing Yards",
+      "p25": 180.0,
+      "p50": 197.0,
+      "p75": 251.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Daniel Jones",
+      "stat": "Completions",
+      "p25": 20.0,
+      "p50": 22.0,
+      "p75": 23.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Daniel Jones",
+      "stat": "QB Rush Yards",
+      "p25": 16.0,
+      "p50": 23.0,
+      "p75": 36.0,
+      "gamelogLenAtSnapshot": 23,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mac Jones",
+      "stat": "Passing Yards",
+      "p25": 117.0,
+      "p50": 197.0,
+      "p75": 232.0,
+      "gamelogLenAtSnapshot": 19,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mac Jones",
+      "stat": "Completions",
+      "p25": 14.0,
+      "p50": 18.0,
+      "p75": 22.0,
+      "gamelogLenAtSnapshot": 19,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mac Jones",
+      "stat": "QB Rush Yards",
+      "p25": 0.0,
+      "p50": 6.0,
+      "p75": 14.0,
+      "gamelogLenAtSnapshot": 19,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Russell Wilson",
+      "stat": "Passing Yards",
+      "p25": 185.0,
+      "p50": 211.0,
+      "p75": 270.0,
+      "gamelogLenAtSnapshot": 18,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Russell Wilson",
+      "stat": "Completions",
+      "p25": 15.0,
+      "p50": 20.0,
+      "p75": 22.0,
+      "gamelogLenAtSnapshot": 18,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Russell Wilson",
+      "stat": "QB Rush Yards",
+      "p25": 3.0,
+      "p50": 8.0,
+      "p75": 16.0,
+      "gamelogLenAtSnapshot": 18,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Fields",
+      "stat": "Passing Yards",
+      "p25": 87.0,
+      "p50": 138.0,
+      "p75": 178.0,
+      "gamelogLenAtSnapshot": 17,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Fields",
+      "stat": "Completions",
+      "p25": 9.0,
+      "p50": 14.0,
+      "p75": 18.0,
+      "gamelogLenAtSnapshot": 17,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Fields",
+      "stat": "QB Rush Yards",
+      "p25": 21.0,
+      "p50": 27.0,
+      "p75": 55.0,
+      "gamelogLenAtSnapshot": 17,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ka'imi Fairbairn",
+      "stat": "FG Made",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ka'imi Fairbairn",
+      "stat": "Kicking Points",
+      "p25": 6.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cameron Dicker",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cameron Dicker",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brandon Aubrey",
+      "stat": "FG Made",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brandon Aubrey",
+      "stat": "Kicking Points",
+      "p25": 6.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chris Boswell",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chris Boswell",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Wil Lutz",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Wil Lutz",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Elliott",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Elliott",
+      "stat": "Kicking Points",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Harrison Butker",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Will Reichard",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Will Reichard",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Daniel Carlson",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Joey Slye",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Joey Slye",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Bates",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Bates",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Eddy Pineiro",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Eddy Pineiro",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chad Ryland",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chad Ryland",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cairo Santos",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cairo Santos",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brandon McManus",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brandon McManus",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Moody",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jake Moody",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Joshua Karty",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 22,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Evan McPherson",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Evan McPherson",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zane Gonzalez",
+      "stat": "FG Made",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 17,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Zane Gonzalez",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 17,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907580,
+      "homeTeam": "Concord",
+      "awayTeam": "Charleston (WV)",
+      "predictedMargin": -0.8,
+      "predictedTotal": 60.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858225,
+      "homeTeam": "Pittsburgh",
+      "awayTeam": "Syracuse",
+      "predictedMargin": 26.3,
+      "predictedTotal": 56.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908593,
+      "homeTeam": "UMass Dartmouth",
+      "awayTeam": "Framingham State",
+      "predictedMargin": 10.7,
+      "predictedTotal": 50.0,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858226,
+      "homeTeam": "Wake Forest",
+      "awayTeam": "Miami",
+      "predictedMargin": -13.2,
+      "predictedTotal": 50.6,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856811,
+      "homeTeam": "Texas Tech",
+      "awayTeam": "Houston",
+      "predictedMargin": 23.7,
+      "predictedTotal": 52.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858455,
+      "homeTeam": "Oregon",
+      "awayTeam": "Portland State",
+      "predictedMargin": 51.0,
+      "predictedTotal": 57.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869940,
+      "homeTeam": "Delaware",
+      "awayTeam": "Coastal Carolina",
+      "predictedMargin": 12.4,
+      "predictedTotal": 58.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908564,
+      "homeTeam": "Vermont State Castleton",
+      "awayTeam": "Maine Maritime",
+      "predictedMargin": 30.8,
+      "predictedTotal": 55.7,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908578,
+      "homeTeam": "WPI",
+      "awayTeam": "Husson",
+      "predictedMargin": -9.6,
+      "predictedTotal": 46.9,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908580,
+      "homeTeam": "Plymouth State",
+      "awayTeam": "Bridgewater State",
+      "predictedMargin": 8.0,
+      "predictedTotal": 57.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401909141,
+      "homeTeam": "Oberlin",
+      "awayTeam": "Wabash",
+      "predictedMargin": -60.6,
+      "predictedTotal": 56.9,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856792,
+      "homeTeam": "Kansas State",
+      "awayTeam": "Tulane",
+      "predictedMargin": 9.8,
+      "predictedTotal": 53.0,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401860889,
+      "homeTeam": "Texas State",
+      "awayTeam": "North Texas",
+      "predictedMargin": -11.1,
+      "predictedTotal": 67.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858456,
+      "homeTeam": "Penn State",
+      "awayTeam": "Buffalo",
+      "predictedMargin": 19.2,
+      "predictedTotal": 49.3,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858454,
+      "homeTeam": "Ohio State",
+      "awayTeam": "Kent State",
+      "predictedMargin": 45.4,
+      "predictedTotal": 49.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856812,
+      "homeTeam": "Kansas",
+      "awayTeam": "Arizona State",
+      "predictedMargin": 4.8,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867805,
+      "homeTeam": "New Haven",
+      "awayTeam": "Brown",
+      "predictedMargin": 1.0,
+      "predictedTotal": 53.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867908,
+      "homeTeam": "Long Island University",
+      "awayTeam": "Villanova",
+      "predictedMargin": -7.9,
+      "predictedTotal": 45.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867817,
+      "homeTeam": "Columbia",
+      "awayTeam": "Lafayette",
+      "predictedMargin": -7.6,
+      "predictedTotal": 51.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867834,
+      "homeTeam": "Lehigh",
+      "awayTeam": "Dartmouth",
+      "predictedMargin": 20.0,
+      "predictedTotal": 47.7,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868242,
+      "homeTeam": "East Tennessee State",
+      "awayTeam": "West Georgia",
+      "predictedMargin": 12.0,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908143,
+      "homeTeam": "Belhaven",
+      "awayTeam": "Central College",
+      "predictedMargin": -13.5,
+      "predictedTotal": 54.7,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908196,
+      "homeTeam": "FDU Florham",
+      "awayTeam": "Widener",
+      "predictedMargin": -2.0,
+      "predictedTotal": 43.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908243,
+      "homeTeam": "Northwestern (MN)",
+      "awayTeam": "Loras",
+      "predictedMargin": 3.1,
+      "predictedTotal": 48.6,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908296,
+      "homeTeam": "Misericordia",
+      "awayTeam": "Stevenson",
+      "predictedMargin": 2.4,
+      "predictedTotal": 48.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908366,
+      "homeTeam": "Muhlenberg",
+      "awayTeam": "Wilkes",
+      "predictedMargin": 5.7,
+      "predictedTotal": 48.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908493,
+      "homeTeam": "Baldwin Wallace",
+      "awayTeam": "Alma",
+      "predictedMargin": 14.5,
+      "predictedTotal": 64.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908519,
+      "homeTeam": "Worcester State",
+      "awayTeam": "Western New England",
+      "predictedMargin": -9.8,
+      "predictedTotal": 59.3,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908532,
+      "homeTeam": "New England",
+      "awayTeam": "Hampden Sydney",
+      "predictedMargin": -0.0,
+      "predictedTotal": 66.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908559,
+      "homeTeam": "New England College",
+      "awayTeam": "Fitchburg State",
+      "predictedMargin": -36.2,
+      "predictedTotal": 49.6,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856798,
+      "homeTeam": "Iowa State",
+      "awayTeam": "Bowling Green",
+      "predictedMargin": 20.8,
+      "predictedTotal": 45.7,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858228,
+      "homeTeam": "Georgia Tech",
+      "awayTeam": "Mercer",
+      "predictedMargin": -1.5,
+      "predictedTotal": 57.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858229,
+      "homeTeam": "Clemson",
+      "awayTeam": "North Carolina",
+      "predictedMargin": 12.7,
+      "predictedTotal": 45.2,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858451,
+      "homeTeam": "Minnesota",
+      "awayTeam": "Akron",
+      "predictedMargin": 10.9,
+      "predictedTotal": 49.4,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908164,
+      "homeTeam": "Delaware Valley",
+      "awayTeam": "Albright",
+      "predictedMargin": 9.6,
+      "predictedTotal": 47.7,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908103,
+      "homeTeam": "Randolph Macon",
+      "awayTeam": "Maryville (TN)",
+      "predictedMargin": 21.3,
+      "predictedTotal": 52.4,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908085,
+      "homeTeam": "SUNY Morrisville",
+      "awayTeam": "Union",
+      "predictedMargin": -17.3,
+      "predictedTotal": 43.0,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908010,
+      "homeTeam": "Springfield",
+      "awayTeam": "Wisconsin Platteville",
+      "predictedMargin": 2.5,
+      "predictedTotal": 49.4,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907881,
+      "homeTeam": "SUNY Cortland",
+      "awayTeam": "Hartwick",
+      "predictedMargin": 39.0,
+      "predictedTotal": 54.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907864,
+      "homeTeam": "Alfred",
+      "awayTeam": "St. Lawrence",
+      "predictedMargin": 1.2,
+      "predictedTotal": 49.9,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907737,
+      "homeTeam": "Case Western Reserve",
+      "awayTeam": "Shenandoah",
+      "predictedMargin": 4.0,
+      "predictedTotal": 52.7,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907657,
+      "homeTeam": "Berry",
+      "awayTeam": "Carnegie Mellon",
+      "predictedMargin": 19.3,
+      "predictedTotal": 50.6,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907653,
+      "homeTeam": "Millersville",
+      "awayTeam": "Slippery Rock",
+      "predictedMargin": -27.1,
+      "predictedTotal": 63.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907546,
+      "homeTeam": "Edinboro",
+      "awayTeam": "West Chester",
+      "predictedMargin": 15.2,
+      "predictedTotal": 51.4,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907518,
+      "homeTeam": "Shepherd",
+      "awayTeam": "California (PA)",
+      "predictedMargin": 1.7,
+      "predictedTotal": 57.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907495,
+      "homeTeam": "Gannon",
+      "awayTeam": "Bloomsburg",
+      "predictedMargin": -12.2,
+      "predictedTotal": 59.0,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907486,
+      "homeTeam": "Assumption",
+      "awayTeam": "Pace",
+      "predictedMargin": 19.5,
+      "predictedTotal": 52.3,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906841,
+      "homeTeam": "Kentucky Wesleyan",
+      "awayTeam": "Findlay",
+      "predictedMargin": -34.0,
+      "predictedTotal": 41.6,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906677,
+      "homeTeam": "Northwood",
+      "awayTeam": "Hillsdale",
+      "predictedMargin": 13.8,
+      "predictedTotal": 48.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856686,
+      "homeTeam": "Arkansas",
+      "awayTeam": "Georgia",
+      "predictedMargin": -17.5,
+      "predictedTotal": 58.0,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858460,
+      "homeTeam": "Wisconsin",
+      "awayTeam": "Eastern Michigan",
+      "predictedMargin": 4.1,
+      "predictedTotal": 44.4,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908218,
+      "homeTeam": "Bluffton",
+      "awayTeam": "Trine",
+      "predictedMargin": -2.4,
+      "predictedTotal": 63.5,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856695,
+      "homeTeam": "Vanderbilt",
+      "awayTeam": "NC State",
+      "predictedMargin": 18.1,
+      "predictedTotal": 59.1,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908332,
+      "homeTeam": "Dickinson",
+      "awayTeam": "Lycoming",
+      "predictedMargin": 6.5,
+      "predictedTotal": 55.0,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908320,
+      "homeTeam": "Mary Hardin Baylor",
+      "awayTeam": "Endicott",
+      "predictedMargin": -13.5,
+      "predictedTotal": 54.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908274,
+      "homeTeam": "Rose Hulman",
+      "awayTeam": "Albion",
+      "predictedMargin": 11.0,
+      "predictedTotal": 55.3,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908269,
+      "homeTeam": "Mount St Joseph",
+      "awayTeam": "Adrian",
+      "predictedMargin": -8.1,
+      "predictedTotal": 56.8,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908259,
+      "homeTeam": "Manchester",
+      "awayTeam": "Olivet",
+      "predictedMargin": 2.4,
+      "predictedTotal": 64.4,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908232,
+      "homeTeam": "Hanover",
+      "awayTeam": "Hope",
+      "predictedMargin": -1.5,
+      "predictedTotal": 55.2,
+      "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908191,
+      "homeTeam": "Eastern",
+      "awayTeam": "Lebanon Valley",
+      "predictedMargin": 11.9,
+      "predictedTotal": 43.8,
+      "snapshotDate": "2026-09-16"
+    }
+  ],
+  "graded": [],
+  "summary": {}
+}

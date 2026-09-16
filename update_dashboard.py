@@ -131,6 +131,135 @@ def fetch_espn_current_rosters():
     return out
 
 
+def build_redzone_tendencies(baseline, current):
+    """Real red-zone tendencies per team: offensive pass-vs-rush lean inside the 20, real
+    drive-level TD conversion rate once a team reaches the red zone, and — for defenses —
+    the real TD rate allowed specifically on red-zone PASS plays vs RUSH plays. This last
+    piece is what actually connects to an opposing offense's own red-zone tendency: a
+    pass-heavy red-zone offense against a defense that's specifically leaky against red-zone
+    passing (not just leaky overall) is a real, checkable signal.
+    Blends baseline (2024-2025) with current season if there's enough current data,
+    matching how the rest of the app blends its backtest windows."""
+    df = pd.concat([baseline, current]) if len(current) else baseline
+    rz = df[(df['yardline_100'] <= 20) & (df['play_type'].isin(['pass', 'run']))].copy()
+    if len(rz) == 0:
+        return {}
+
+    # Offensive tendency: real pass rate on red-zone plays specifically
+    off_tendency = rz.groupby('posteam')['play_type'].apply(lambda s: round((s == 'pass').mean() * 100, 1))
+    off_volume = rz.groupby('posteam').size()
+
+    # Drive-level conversion: does a drive that touched the red zone end in a real TD?
+    # (a play-level "did this play score" flag, rolled up per game+drive+team)
+    df2 = df.copy()
+    df2['scored_td'] = (df2['pass_touchdown'] == 1) | (df2['rush_touchdown'] == 1)
+    df2['entered_rz'] = df2['yardline_100'] <= 20
+    drives = df2.groupby(['game_id', 'posteam', 'defteam', 'drive']).agg(
+        entered_rz=('entered_rz', 'any'), scored_td=('scored_td', 'any')
+    ).reset_index()
+    rz_drives = drives[drives['entered_rz']]
+
+    off_conversion = rz_drives.groupby('posteam')['scored_td'].mean() * 100
+    off_conversion_n = rz_drives.groupby('posteam').size()
+    def_conversion = rz_drives.groupby('defteam')['scored_td'].mean() * 100
+    def_conversion_n = rz_drives.groupby('defteam').size()
+
+    # Defensive vulnerability by play type: of red-zone PASS plays run against this defense,
+    # what % were touchdowns — same question for RUSH plays. This is play-level (not
+    # drive-level) since it's asking about a specific play type's effectiveness, not a
+    # whole drive's outcome.
+    rz['is_td'] = (rz['pass_touchdown'] == 1) | (rz['rush_touchdown'] == 1)
+    def_by_type = rz.groupby(['defteam', 'play_type'])['is_td'].agg(['mean', 'count'])
+
+    out = {}
+    all_teams = set(off_tendency.index) | set(def_conversion.index)
+    for team in all_teams:
+        pass_row = def_by_type.loc[(team, 'pass')] if (team, 'pass') in def_by_type.index else None
+        run_row = def_by_type.loc[(team, 'run')] if (team, 'run') in def_by_type.index else None
+        out[team] = {
+            'offPassRate': float(off_tendency.get(team)) if team in off_tendency.index else None,
+            'offVolume': int(off_volume.get(team, 0)),
+            'offConversionRate': round(float(off_conversion.get(team)), 1) if team in off_conversion.index else None,
+            'offConversionN': int(off_conversion_n.get(team, 0)),
+            'defConversionRate': round(float(def_conversion.get(team)), 1) if team in def_conversion.index else None,
+            'defConversionN': int(def_conversion_n.get(team, 0)),
+            'defPassTDRate': round(float(pass_row['mean']) * 100, 1) if pass_row is not None and pass_row['count'] >= 15 else None,
+            'defPassTDN': int(pass_row['count']) if pass_row is not None else 0,
+            'defRunTDRate': round(float(run_row['mean']) * 100, 1) if run_row is not None and run_row['count'] >= 15 else None,
+            'defRunTDN': int(run_row['count']) if run_row is not None else 0,
+        }
+    return out
+
+
+def build_usage_bump_analysis(receivers, injury_df):
+    """For each real historical instance where a skill player was ruled Out, checks what
+    actually happened to same-team, same-position-group teammates' usage that same week,
+    compared to each teammate's own baseline in games where nobody at their position was
+    out. This is a real historical correlation, not a guess about what "should" happen —
+    it only reports a bump when there's a real, repeated pattern (2+ real instances)."""
+    if len(injury_df) == 0:
+        return {}
+    POSITION_GROUPS = {'WR': 'WR', 'TE': 'TE', 'RB': 'RB', 'FB': 'RB'}
+
+    usage_by_key = {}   # (team, posgroup, season, week) -> [(player_name, targets), ...]
+    player_all_games = {}  # player_name -> [(season, week, targets), ...]
+    for p in receivers:
+        pos_group = POSITION_GROUPS.get(p['pos'])
+        if not pos_group:
+            continue
+        team = p['team']
+        games = []
+        for g in p.get('gamelog', []):
+            try:
+                parts = g['game_id'].split('_')
+                season, week = int(parts[0]), int(parts[1])
+            except Exception:
+                continue
+            targets = g.get('targets', 0) or 0
+            games.append((season, week, targets))
+            key = (team, pos_group, season, week)
+            usage_by_key.setdefault(key, []).append((p['name'], targets))
+        player_all_games[p['name']] = games
+
+    inj_out = injury_df[
+        (injury_df['report_status'] == 'Out') & (injury_df['position'].isin(['WR', 'TE', 'RB', 'FB']))
+    ]
+
+    bump_instances = {}  # player_name -> [{'bump','outPlayer','season','week'}, ...]
+    for _, row in inj_out.iterrows():
+        try:
+            team, season, week = row['team'], int(row['season']), int(row['week'])
+        except Exception:
+            continue
+        pos_group = POSITION_GROUPS.get(row['position'])
+        if not pos_group:
+            continue
+        out_player = row['full_name']
+        key = (team, pos_group, season, week)
+        for teammate_name, actual_targets in usage_by_key.get(key, []):
+            if teammate_name == out_player:
+                continue
+            other_games = [t for (s, w, t) in player_all_games.get(teammate_name, []) if not (s == season and w == week)]
+            if len(other_games) < 3:
+                continue  # not enough of their own baseline to compare against
+            baseline_avg = sum(other_games) / len(other_games)
+            bump_instances.setdefault(teammate_name, []).append({
+                'bump': actual_targets - baseline_avg, 'outPlayer': out_player,
+                'season': season, 'week': week,
+            })
+
+    out = {}
+    for player_name, instances in bump_instances.items():
+        if len(instances) < 2:
+            continue  # need a real, repeated pattern, not a single data point
+        avg_bump = sum(i['bump'] for i in instances) / len(instances)
+        trigger_players = list(dict.fromkeys(i['outPlayer'] for i in instances))[:3]
+        out[player_name] = {
+            'avgTargetBump': round(avg_bump, 1), 'instances': len(instances), 'triggerPlayers': trigger_players,
+        }
+    return out
+
+
 def build_atd_pool(baseline, current, receivers):
     """Real Anytime Touchdown rate per skill player — the fraction of real games where they
     scored at least one touchdown (rushing OR receiving combined, since either counts for
@@ -1408,6 +1537,137 @@ def build_cfb_upcoming(games, ratings, home_field, lines_by_game, team_names_by_
     return upcoming[:60]  # keep the payload reasonable; this is a lot of FBS games in a given week
 
 
+# =====================================================================
+# ACCURACY LEDGER — backend-only, never shown in the UI. Snapshots today's
+# real predictions (P25/P50/P75 lines for NFL, spread/total for CFB), then
+# on later runs checks whether a real result now exists for that specific
+# player-game or game, and grades the earlier snapshot against it. This is
+# what lets accuracy get graded against REAL FUTURE outcomes as they
+# happen, rather than only backtesting against past seasons. Persisted to
+# a JSON file that accumulates across runs (committed to the repo like the
+# other data files) so the track record survives between script runs.
+# =====================================================================
+ACCURACY_LEDGER_PATH = SCRIPT_DIR / "accuracy_ledger.json"
+
+def load_accuracy_ledger():
+    if ACCURACY_LEDGER_PATH.exists():
+        try:
+            return json.loads(ACCURACY_LEDGER_PATH.read_text(encoding='utf-8'))
+        except Exception:
+            pass
+    return {"pending": [], "graded": [], "summary": {}}
+
+def save_accuracy_ledger(ledger):
+    summary = {}
+    for entry in ledger["graded"]:
+        key = f"{entry['sport']}_{entry['tranche']}"
+        summary.setdefault(key, {"graded": 0, "hits": 0})
+        summary[key]["graded"] += 1
+        if entry["hit"]:
+            summary[key]["hits"] += 1
+    for key, s in summary.items():
+        s["rate"] = round(100 * s["hits"] / s["graded"], 1) if s["graded"] else None
+    ledger["summary"] = summary
+    ACCURACY_LEDGER_PATH.write_text(json.dumps(ledger, indent=2), encoding='utf-8')
+    return summary
+
+def update_nfl_accuracy_ledger(ledger, full_pool, nfl_upcoming, receivers, qbs, kickers):
+    # full_pool entries carry a composite "name|stat" id (for slip-tracking purposes), NOT
+    # the player's real id — so the lookup here has to go by name, matching what full_pool
+    # actually provides, not by the receivers/qbs/kickers' own pid-based id field.
+    all_players = {p['name']: p for p in receivers + qbs + kickers}
+    today = pd.Timestamp.now().strftime('%Y-%m-%d')
+    stat_field_map = {
+        "Receiving Yards": "yards", "Receptions": "catches",
+        "Rush Yards": "rush_yards", "Rush Attempts": "rush_att",
+        "Passing Yards": "yards", "Completions": "catches",
+    }
+
+    still_pending = []
+    graded_count = 0
+    for snap in ledger["pending"]:
+        if snap["sport"] != "nfl":
+            still_pending.append(snap)
+            continue
+        player = all_players.get(snap["player"])
+        gl = player.get('gamelog', []) if player else []
+        if not player or len(gl) <= snap["gamelogLenAtSnapshot"]:
+            still_pending.append(snap)  # game hasn't been played yet (or player vanished from pool -- rare)
+            continue
+        field = stat_field_map.get(snap["stat"])
+        actual = gl[-1].get(field) if field else None
+        if actual is None:
+            still_pending.append(snap)
+            continue
+        for tranche in ["p25", "p50", "p75"]:
+            ledger["graded"].append({
+                "sport": "nfl", "tranche": tranche, "player": snap["player"], "stat": snap["stat"],
+                "line": snap[tranche], "actual": round(float(actual), 1),
+                "hit": actual >= snap[tranche], "snapshotDate": snap["snapshotDate"], "gradedDate": today,
+            })
+        graded_count += 1
+    ledger["pending"] = still_pending
+
+    existing_keys = {(s["player"], s["stat"]) for s in ledger["pending"] if s["sport"] == "nfl"}
+    new_snapshots = 0
+    for entry in full_pool:
+        if entry.get('kind') != 'ladder' or entry.get('team') not in nfl_upcoming:
+            continue
+        key = (entry['player'], entry['stat'])
+        if key in existing_keys:
+            continue
+        player = all_players.get(entry['player'])
+        if not player:
+            continue
+        ledger["pending"].append({
+            "sport": "nfl", "player": entry['player'], "stat": entry['stat'],
+            "p25": entry['p25']['line'], "p50": entry['p50']['line'], "p75": entry['p75']['line'],
+            "gamelogLenAtSnapshot": len(player.get('gamelog', [])), "snapshotDate": today,
+        })
+        new_snapshots += 1
+    print(f"  NFL accuracy ledger: graded {graded_count} newly-completed games, snapshotted {new_snapshots} new predictions")
+    return ledger
+
+def update_cfb_accuracy_ledger(ledger, cfb_games, cfb_upcoming_list):
+    today = pd.Timestamp.now().strftime('%Y-%m-%d')
+    games_by_id = {g['id']: g for g in cfb_games}
+
+    still_pending = []
+    graded_count = 0
+    for snap in ledger["pending"]:
+        if snap["sport"] != "cfb":
+            still_pending.append(snap)
+            continue
+        g = games_by_id.get(snap["gameId"])
+        if not g or g['home_points'] is None or g['away_points'] is None:
+            still_pending.append(snap)  # not played yet
+            continue
+        real_margin = g['home_points'] - g['away_points']
+        real_total = g['home_points'] + g['away_points']
+        for market, predicted, actual in [("spread", snap["predictedMargin"], real_margin), ("total", snap["predictedTotal"], real_total)]:
+            hit = (predicted > 0) == (actual > 0) if market == "spread" else abs(predicted - actual) <= 3
+            ledger["graded"].append({
+                "sport": "cfb", "tranche": market, "player": f"{snap['awayTeam']} @ {snap['homeTeam']}", "stat": market,
+                "line": predicted, "actual": actual, "hit": hit, "snapshotDate": snap["snapshotDate"], "gradedDate": today,
+            })
+        graded_count += 1
+    ledger["pending"] = still_pending
+
+    existing_ids = {s["gameId"] for s in ledger["pending"] if s["sport"] == "cfb"}
+    new_snapshots = 0
+    for g in cfb_upcoming_list:
+        if g['id'] in existing_ids:
+            continue
+        ledger["pending"].append({
+            "sport": "cfb", "gameId": g['id'], "homeTeam": g['homeTeam'], "awayTeam": g['awayTeam'],
+            "predictedMargin": g['predictedMargin'], "predictedTotal": g['predictedTotal'], "snapshotDate": today,
+        })
+        new_snapshots += 1
+    print(f"  CFB accuracy ledger: graded {graded_count} newly-completed games, snapshotted {new_snapshots} new predictions")
+    return ledger
+
+
+
 def main():
     print("=" * 60)
     print("NFL Dashboard Auto-Updater")
@@ -1511,6 +1771,9 @@ def main():
     print("\n[4/7] Building player datasets with train/test splits and current-season blend...")
     baseline = merged_all[merged_all.season.isin(BASELINE_SEASONS)]
     current = merged_all[merged_all.season == current_season] if current_season else merged_all.iloc[0:0]
+
+    redzone_tendencies = build_redzone_tendencies(baseline, current)
+    print(f"  Red zone tendencies computed for {len(redzone_tendencies)} teams")
 
     def blend_stat(train_val, current_val, n_current_games):
         """Shrinkage-weighted blend of historical baseline vs current season-to-date."""
@@ -1974,6 +2237,26 @@ def main():
         injury_status = build_injury_status(inj_path)
     else:
         injury_status = {}
+
+    # Historical injury reports across the full baseline window — separate from the
+    # current-week status above, which only tells you who's out THIS week. This is what
+    # makes the usage-bump analysis possible: real week-by-week "Out" designations across
+    # two full seasons, not just a snapshot.
+    historical_injury_frames = []
+    for hist_season in BASELINE_SEASONS:
+        hist_inj_p, _ = fetch_injuries_and_depthcharts(hist_season)
+        if hist_inj_p:
+            historical_injury_frames.append(pd.read_csv(hist_inj_p, low_memory=False))
+    if current_season:
+        cur_inj_p, _ = fetch_injuries_and_depthcharts(current_season)
+        if cur_inj_p:
+            historical_injury_frames.append(pd.read_csv(cur_inj_p, low_memory=False))
+    historical_injuries = pd.concat(historical_injury_frames) if historical_injury_frames else pd.DataFrame()
+    print(f"  Historical injury reports loaded: {len(historical_injuries)} rows across {len(historical_injury_frames)} season(s)")
+
+    usage_bump = build_usage_bump_analysis(receivers, historical_injuries)
+    print(f"  Usage-bump analysis: {len(usage_bump)} players with a real, repeated historical bump pattern")
+
     print(f"  {len(ol_starters)} teams' O-line starters loaded")
     print(f"  {len(injury_status)} players with a current injury designation" +
           ("" if injury_status else " (none — offseason, or no report yet this week)"))
@@ -2009,6 +2292,11 @@ def main():
 
     nfl_upcoming = build_nfl_upcoming(games_all)
     print(f"  {len(nfl_upcoming)} NFL teams with a scheduled next game")
+
+    # Accuracy ledger — backend-only tracking, never shown in the UI. See the function
+    # docstrings above for how the snapshot/grade cycle works.
+    accuracy_ledger = load_accuracy_ledger()
+    accuracy_ledger = update_nfl_accuracy_ledger(accuracy_ledger, full_pool, nfl_upcoming, receivers, qbs, kickers)
 
     # ---- MLB pipeline ----
     print("\n[5.75/8] Building MLB data...")
@@ -2120,6 +2408,7 @@ def main():
             cfb_teams.sort(key=lambda t: -t['powerRating'])
 
             cfb_upcoming = build_cfb_upcoming(current_games, cfb_ratings, cfb_home_field, {}, cfb_team_names)
+            accuracy_ledger = update_cfb_accuracy_ledger(accuracy_ledger, current_games, cfb_upcoming)
 
             print(f"  {len(cfb_teams)} teams rated, {len(cfb_upcoming)} upcoming games with predictions")
             print(f"  Backtest (real historical lines, {CFB_TRAIN_SEASON} season): "
@@ -2150,6 +2439,8 @@ def main():
         'INJURIES': injury_status,
         'NFL_UPCOMING': nfl_upcoming,
         'ATD_POOL': atd_pool,
+        'REDZONE': redzone_tendencies,
+        'USAGE_BUMP': usage_bump,
     }
 
     wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming}
@@ -2217,13 +2508,24 @@ def main():
     OUTPUT_HTML.write_text(html, encoding='utf-8')
     print(f"  Wrote {OUTPUT_HTML} ({len(html)/1024/1024:.2f} MB)")
 
+    # Save the accuracy ledger and print a quick summary — backend-only, this never reaches
+    # the actual dashboard UI. Check accuracy_ledger.json directly, or ask me to read it
+    # back to you, whenever you want to see how things are actually grading out.
+    summary = save_accuracy_ledger(accuracy_ledger)
+    if summary:
+        print("\n[Accuracy Ledger] Current grading summary (backend-only, not shown in UI):")
+        for key, s in sorted(summary.items()):
+            print(f"    {key}: {s['hits']}/{s['graded']} hit ({s['rate']}%)")
+    pending_count = len(accuracy_ledger.get('pending', []))
+    print(f"    {pending_count} predictions still pending (waiting on real games to be played)")
+
     # ---- 7. Git commit + push ----
     print("\n[8/8] Committing and pushing to GitHub...")
     try:
         # Source files get pushed too now, not just the generated output — saves the
         # separate "also upload to GitHub" step. Only added if actually present, since
         # not every setup necessarily has all three.
-        files_to_add = ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json']
+        files_to_add = ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'accuracy_ledger.json']
         for source_file in ['update_dashboard.py', 'dashboard_template.jsx', 'guide.html']:
             if (SCRIPT_DIR / source_file).exists():
                 files_to_add.append(source_file)
