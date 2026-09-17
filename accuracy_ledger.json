@@ -6250,6 +6250,24 @@
       "predictedMargin": 19.9,
       "predictedTotal": 60.5,
       "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907873,
+      "homeTeam": "Brockport",
+      "awayTeam": "Rensselaer",
+      "predictedMargin": 11.8,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-09-17"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906127,
+      "homeTeam": "Elizabeth City State",
+      "awayTeam": "Virginia State",
+      "predictedMargin": 2.7,
+      "predictedTotal": 53.8,
+      "snapshotDate": "2026-09-17"
     }
   ],
   "graded": [],
