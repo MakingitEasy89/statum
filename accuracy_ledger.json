@@ -6268,6 +6268,24 @@
       "predictedMargin": 2.7,
       "predictedTotal": 53.8,
       "snapshotDate": "2026-09-17"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401873620,
+      "homeTeam": "Mercyhurst",
+      "awayTeam": "Glenville State",
+      "predictedMargin": -7.8,
+      "predictedTotal": 53.3,
+      "snapshotDate": "2026-09-17"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908897,
+      "homeTeam": "Trinity (CT)",
+      "awayTeam": "Colby",
+      "predictedMargin": 21.5,
+      "predictedTotal": 37.3,
+      "snapshotDate": "2026-09-17"
     }
   ],
   "graded": [],
