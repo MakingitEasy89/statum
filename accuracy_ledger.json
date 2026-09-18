@@ -6322,6 +6322,42 @@
       "predictedMargin": 8.3,
       "predictedTotal": 52.0,
       "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906944,
+      "homeTeam": "Northern Michigan",
+      "awayTeam": "Davenport",
+      "predictedMargin": -16.9,
+      "predictedTotal": 56.7,
+      "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907347,
+      "homeTeam": "Washburn",
+      "awayTeam": "Central Oklahoma",
+      "predictedMargin": -6.1,
+      "predictedTotal": 54.2,
+      "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907760,
+      "homeTeam": "Minnesota Morris",
+      "awayTeam": "Buena Vista",
+      "predictedMargin": 6.5,
+      "predictedTotal": 48.9,
+      "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907854,
+      "homeTeam": "Buffalo State",
+      "awayTeam": "Alfred State",
+      "predictedMargin": -30.1,
+      "predictedTotal": 56.0,
+      "snapshotDate": "2026-09-18"
     }
   ],
   "graded": [
