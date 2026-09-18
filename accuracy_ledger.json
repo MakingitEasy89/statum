@@ -5632,24 +5632,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401907580,
-      "homeTeam": "Concord",
-      "awayTeam": "Charleston (WV)",
-      "predictedMargin": -0.8,
-      "predictedTotal": 60.5,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858225,
-      "homeTeam": "Pittsburgh",
-      "awayTeam": "Syracuse",
-      "predictedMargin": 26.3,
-      "predictedTotal": 56.5,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401908593,
       "homeTeam": "UMass Dartmouth",
       "awayTeam": "Framingham State",
@@ -6313,8 +6295,91 @@
       "predictedMargin": -2.8,
       "predictedTotal": 48.1,
       "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906134,
+      "homeTeam": "Shaw",
+      "awayTeam": "Lincoln (PA)",
+      "predictedMargin": 13.0,
+      "predictedTotal": 54.0,
+      "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906154,
+      "homeTeam": "Johnson C. Smith",
+      "awayTeam": "Fayetteville State",
+      "predictedMargin": 16.1,
+      "predictedTotal": 47.2,
+      "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906195,
+      "homeTeam": "UNC Pembroke",
+      "awayTeam": "Valdosta State",
+      "predictedMargin": 8.3,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-09-18"
     }
   ],
-  "graded": [],
-  "summary": {}
+  "graded": [
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Charleston (WV) @ Concord",
+      "stat": "spread",
+      "line": -0.8,
+      "actual": -3,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Charleston (WV) @ Concord",
+      "stat": "total",
+      "line": 60.5,
+      "actual": 79,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Syracuse @ Pittsburgh",
+      "stat": "spread",
+      "line": 26.3,
+      "actual": 14,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Syracuse @ Pittsburgh",
+      "stat": "total",
+      "line": 56.5,
+      "actual": 40,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-18"
+    }
+  ],
+  "summary": {
+    "cfb_spread": {
+      "graded": 2,
+      "hits": 2,
+      "rate": 100.0
+    },
+    "cfb_total": {
+      "graded": 2,
+      "hits": 0,
+      "rate": 0.0
+    }
+  }
 }
