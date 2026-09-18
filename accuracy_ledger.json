@@ -6286,6 +6286,33 @@
       "predictedMargin": 21.5,
       "predictedTotal": 37.3,
       "snapshotDate": "2026-09-17"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908980,
+      "homeTeam": "Salisbury",
+      "awayTeam": "Washington and Lee",
+      "predictedMargin": 23.0,
+      "predictedTotal": 54.8,
+      "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401909132,
+      "homeTeam": "DePauw",
+      "awayTeam": "Ohio Wesleyan",
+      "predictedMargin": 29.0,
+      "predictedTotal": 59.5,
+      "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908914,
+      "homeTeam": "Middlebury",
+      "awayTeam": "Wesleyan (CT)",
+      "predictedMargin": -2.8,
+      "predictedTotal": 48.1,
+      "snapshotDate": "2026-09-18"
     }
   ],
   "graded": [],
