@@ -1365,8 +1365,11 @@ def fetch_cfb_games(season, api_key):
     session) — the live API uses camelCase (homeTeam, awayTeam, homePoints, startDate,
     neutralSite), not the snake_case a community schema reference had suggested. This
     was a real bug: team names were coming back as None, silently collapsing every game
-    into one fake team. Fixed now with the confirmed real keys, not another guess."""
-    data = cfbd_get("/games", {"year": season, "seasonType": "regular"}, api_key)
+    into one fake team. Fixed now with the confirmed real keys, not another guess.
+    classification='fbs' matters — without it, CFBD returns games across every division
+    (FBS, FCS, D2, D3), which is exactly what was inflating the team count to 670+ and
+    producing nonsense rank numbers like '#521 of X' instead of a real 1-134 FBS ranking."""
+    data = cfbd_get("/games", {"year": season, "seasonType": "regular", "classification": "fbs"}, api_key)
     if not data:
         return []
     games = []
@@ -1518,6 +1521,23 @@ def backtest_cfb_model(train_games, test_games, test_lines):
 
 def build_cfb_upcoming(games, ratings, home_field, lines_by_game, team_names_by_id):
     today = datetime.date.today().isoformat()
+
+    # Targeted diagnostic — a user reported a real, known game (Ole Miss) missing from
+    # the upcoming list despite it being scheduled for that same night. Rather than guess
+    # again, this checks exactly which of the three real filter conditions a team's game
+    # is failing, so the actual cause shows up directly in the next real run's output.
+    for check_team in ['Ole Miss', 'LSU']:
+        matches = [g for g in games if g['home_team'] == check_team or g['away_team'] == check_team]
+        print(f"  [diagnostic] '{check_team}': {len(matches)} total games found in raw CFBD data")
+        for g in matches[:3]:
+            already_played = g['home_points'] is not None and g['away_points'] is not None
+            has_date = bool(g['start_date'])
+            has_rating = check_team in ratings
+            opp = g['away_team'] if g['home_team'] == check_team else g['home_team']
+            opp_has_rating = opp in ratings
+            print(f"    vs {opp} on {g['start_date']}: already_played={already_played}, has_start_date={has_date}, "
+                  f"'{check_team}'_has_rating={has_rating}, '{opp}'_has_rating={opp_has_rating}")
+
     upcoming = []
     for g in games:
         if (g['home_points'] is not None and g['away_points'] is not None) or not g['start_date']:  # has a real score already = already played, not upcoming
