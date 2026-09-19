@@ -5632,60 +5632,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401907580,
-      "homeTeam": "Concord",
-      "awayTeam": "Charleston (WV)",
-      "predictedMargin": -0.8,
-      "predictedTotal": 60.5,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858225,
-      "homeTeam": "Pittsburgh",
-      "awayTeam": "Syracuse",
-      "predictedMargin": 26.3,
-      "predictedTotal": 56.5,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401908593,
-      "homeTeam": "UMass Dartmouth",
-      "awayTeam": "Framingham State",
-      "predictedMargin": 10.7,
-      "predictedTotal": 50.0,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858226,
-      "homeTeam": "Wake Forest",
-      "awayTeam": "Miami",
-      "predictedMargin": -13.2,
-      "predictedTotal": 50.6,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856811,
-      "homeTeam": "Texas Tech",
-      "awayTeam": "Houston",
-      "predictedMargin": 23.7,
-      "predictedTotal": 52.8,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858455,
-      "homeTeam": "Oregon",
-      "awayTeam": "Portland State",
-      "predictedMargin": 51.0,
-      "predictedTotal": 57.5,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401869940,
       "homeTeam": "Delaware",
       "awayTeam": "Coastal Carolina",
@@ -6169,8 +6115,1466 @@
       "predictedMargin": 11.9,
       "predictedTotal": 43.8,
       "snapshotDate": "2026-09-16"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907347,
+      "homeTeam": "Washburn",
+      "awayTeam": "Central Oklahoma",
+      "predictedMargin": -6.1,
+      "predictedTotal": 54.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908980,
+      "homeTeam": "Salisbury",
+      "awayTeam": "Washington and Lee",
+      "predictedMargin": 23.0,
+      "predictedTotal": 54.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908355,
+      "homeTeam": "Johns Hopkins",
+      "awayTeam": "Susquehanna",
+      "predictedMargin": 4.6,
+      "predictedTotal": 56.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908340,
+      "homeTeam": "Catholic",
+      "awayTeam": "Franklin & Marshall",
+      "predictedMargin": -25.4,
+      "predictedTotal": 49.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401873620,
+      "homeTeam": "Mercyhurst",
+      "awayTeam": "Glenville State",
+      "predictedMargin": -7.8,
+      "predictedTotal": 53.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908113,
+      "homeTeam": "Centre",
+      "awayTeam": "LaGrange",
+      "predictedMargin": -9.6,
+      "predictedTotal": 42.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908093,
+      "homeTeam": "Utica",
+      "awayTeam": "Hobart",
+      "predictedMargin": 12.9,
+      "predictedTotal": 49.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908070,
+      "homeTeam": "Ithaca",
+      "awayTeam": "Hilbert",
+      "predictedMargin": 58.1,
+      "predictedTotal": 49.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907873,
+      "homeTeam": "Brockport",
+      "awayTeam": "Rensselaer",
+      "predictedMargin": 11.8,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907854,
+      "homeTeam": "Buffalo State",
+      "awayTeam": "Alfred State",
+      "predictedMargin": -30.0,
+      "predictedTotal": 56.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868397,
+      "homeTeam": "Davidson",
+      "awayTeam": "VMI",
+      "predictedMargin": 11.1,
+      "predictedTotal": 54.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867857,
+      "homeTeam": "Indiana State",
+      "awayTeam": "Valparaiso",
+      "predictedMargin": -0.0,
+      "predictedTotal": 58.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867826,
+      "homeTeam": "Colgate",
+      "awayTeam": "Cornell",
+      "predictedMargin": 10.6,
+      "predictedTotal": 50.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866639,
+      "homeTeam": "New Hampshire",
+      "awayTeam": "Harvard",
+      "predictedMargin": -12.4,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866638,
+      "homeTeam": "Bryant",
+      "awayTeam": "Princeton",
+      "predictedMargin": 2.3,
+      "predictedTotal": 48.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907760,
+      "homeTeam": "Minnesota Morris",
+      "awayTeam": "Buena Vista",
+      "predictedMargin": 6.5,
+      "predictedTotal": 48.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401909132,
+      "homeTeam": "DePauw",
+      "awayTeam": "Ohio Wesleyan",
+      "predictedMargin": 29.0,
+      "predictedTotal": 59.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908173,
+      "homeTeam": "Alvernia",
+      "awayTeam": "King's",
+      "predictedMargin": -19.1,
+      "predictedTotal": 47.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906944,
+      "homeTeam": "Northern Michigan",
+      "awayTeam": "Davenport",
+      "predictedMargin": -16.9,
+      "predictedTotal": 56.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906127,
+      "homeTeam": "Elizabeth City State",
+      "awayTeam": "Virginia State",
+      "predictedMargin": 2.7,
+      "predictedTotal": 53.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908866,
+      "homeTeam": "Williams",
+      "awayTeam": "Bowdoin",
+      "predictedMargin": 24.7,
+      "predictedTotal": 43.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908539,
+      "homeTeam": "Nichols",
+      "awayTeam": "Coast Guard",
+      "predictedMargin": -30.3,
+      "predictedTotal": 77.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864508,
+      "homeTeam": "Central Michigan",
+      "awayTeam": "Wyoming",
+      "predictedMargin": 9.5,
+      "predictedTotal": 41.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908824,
+      "homeTeam": "Amherst",
+      "awayTeam": "Bates",
+      "predictedMargin": 17.4,
+      "predictedTotal": 40.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908897,
+      "homeTeam": "Trinity (CT)",
+      "awayTeam": "Colby",
+      "predictedMargin": 21.5,
+      "predictedTotal": 37.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908908,
+      "homeTeam": "Tufts",
+      "awayTeam": "Hamilton",
+      "predictedMargin": 14.2,
+      "predictedTotal": 48.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908477,
+      "homeTeam": "Curry",
+      "awayTeam": "SUNY Maritime",
+      "predictedMargin": 19.9,
+      "predictedTotal": 60.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908348,
+      "homeTeam": "Gettysburg",
+      "awayTeam": "Western Connecticut State",
+      "predictedMargin": -7.8,
+      "predictedTotal": 59.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907636,
+      "homeTeam": "Concordia St. Paul",
+      "awayTeam": "Bemidji State",
+      "predictedMargin": -6.2,
+      "predictedTotal": 52.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907619,
+      "homeTeam": "West Virginia State",
+      "awayTeam": "West Virginia Wesleyan",
+      "predictedMargin": 33.1,
+      "predictedTotal": 59.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907605,
+      "homeTeam": "West Liberty",
+      "awayTeam": "Frostburg State",
+      "predictedMargin": -7.0,
+      "predictedTotal": 58.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907596,
+      "homeTeam": "Wheeling",
+      "awayTeam": "Fairmont State",
+      "predictedMargin": 8.8,
+      "predictedTotal": 59.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907564,
+      "homeTeam": "Shippensburg",
+      "awayTeam": "IU Pennsylvania",
+      "predictedMargin": -20.6,
+      "predictedTotal": 50.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907511,
+      "homeTeam": "Saint Anselm",
+      "awayTeam": "Franklin Pierce",
+      "predictedMargin": -6.8,
+      "predictedTotal": 44.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906937,
+      "homeTeam": "Fort Valley State",
+      "awayTeam": "Benedict",
+      "predictedMargin": -6.9,
+      "predictedTotal": 39.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906881,
+      "homeTeam": "Wayne State (MI)",
+      "awayTeam": "Wisconsin La Crosse",
+      "predictedMargin": -33.2,
+      "predictedTotal": 51.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906650,
+      "homeTeam": "Ashland",
+      "awayTeam": "Ohio Dominican",
+      "predictedMargin": 11.7,
+      "predictedTotal": 45.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906612,
+      "homeTeam": "Southern Virginia",
+      "awayTeam": "Keystone",
+      "predictedMargin": 17.3,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906195,
+      "homeTeam": "UNC Pembroke",
+      "awayTeam": "Valdosta State",
+      "predictedMargin": 8.3,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906154,
+      "homeTeam": "Johnson C. Smith",
+      "awayTeam": "Fayetteville State",
+      "predictedMargin": 16.1,
+      "predictedTotal": 47.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906134,
+      "homeTeam": "Shaw",
+      "awayTeam": "Lincoln (PA)",
+      "predictedMargin": 13.0,
+      "predictedTotal": 54.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908914,
+      "homeTeam": "Middlebury",
+      "awayTeam": "Wesleyan (CT)",
+      "predictedMargin": -2.8,
+      "predictedTotal": 48.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908671,
+      "homeTeam": "Mount Union",
+      "awayTeam": "Heidelberg",
+      "predictedMargin": 22.5,
+      "predictedTotal": 57.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908841,
+      "homeTeam": "Ohio Northern",
+      "awayTeam": "Muskingum",
+      "predictedMargin": 28.2,
+      "predictedTotal": 56.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908664,
+      "homeTeam": "Marietta",
+      "awayTeam": "Capital",
+      "predictedMargin": 10.0,
+      "predictedTotal": 51.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908225,
+      "homeTeam": "Franklin",
+      "awayTeam": "Calvin",
+      "predictedMargin": -10.9,
+      "predictedTotal": 65.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907467,
+      "homeTeam": "Wittenberg",
+      "awayTeam": "Washington St. Louis",
+      "predictedMargin": -10.8,
+      "predictedTotal": 50.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906931,
+      "homeTeam": "Roosevelt",
+      "awayTeam": "Wisconsin Stout",
+      "predictedMargin": -15.2,
+      "predictedTotal": 62.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906904,
+      "homeTeam": "Kentucky State",
+      "awayTeam": "Saginaw Valley State",
+      "predictedMargin": 13.3,
+      "predictedTotal": 57.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401873395,
+      "homeTeam": "Concordia Chicago",
+      "awayTeam": "Rockford",
+      "predictedMargin": 25.8,
+      "predictedTotal": 54.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908543,
+      "homeTeam": "Texas Lutheran",
+      "awayTeam": "Austin",
+      "predictedMargin": 23.4,
+      "predictedTotal": 53.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908388,
+      "homeTeam": "Millsaps",
+      "awayTeam": "Hendrix",
+      "predictedMargin": 7.1,
+      "predictedTotal": 65.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908361,
+      "homeTeam": "Juniata",
+      "awayTeam": "McDaniel",
+      "predictedMargin": 8.8,
+      "predictedTotal": 45.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908300,
+      "homeTeam": "McMurry",
+      "awayTeam": "Huntingdon",
+      "predictedMargin": 12.2,
+      "predictedTotal": 56.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908020,
+      "homeTeam": "Coe",
+      "awayTeam": "Wisconsin Oshkosh",
+      "predictedMargin": 26.4,
+      "predictedTotal": 51.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907997,
+      "homeTeam": "Wartburg",
+      "awayTeam": "Wisconsin River Falls",
+      "predictedMargin": -9.2,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907791,
+      "homeTeam": "Elmhurst",
+      "awayTeam": "Carroll (WI)",
+      "predictedMargin": -16.1,
+      "predictedTotal": 48.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907979,
+      "homeTeam": "Wisconsin Stevens Point",
+      "awayTeam": "Pacific (OR)",
+      "predictedMargin": -5.0,
+      "predictedTotal": 50.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906996,
+      "homeTeam": "Michigan Tech",
+      "awayTeam": "Upper Iowa",
+      "predictedMargin": 2.1,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858448,
+      "homeTeam": "Illinois",
+      "awayTeam": "Southern Illinois",
+      "predictedMargin": 3.1,
+      "predictedTotal": 57.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401909127,
+      "homeTeam": "Wooster",
+      "awayTeam": "Denison",
+      "predictedMargin": -6.3,
+      "predictedTotal": 53.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401909122,
+      "homeTeam": "Wisconsin Lutheran",
+      "awayTeam": "Lakeland",
+      "predictedMargin": 7.9,
+      "predictedTotal": 56.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401909027,
+      "homeTeam": "Bethany (WV)",
+      "awayTeam": "Thiel",
+      "predictedMargin": 7.3,
+      "predictedTotal": 63.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908963,
+      "homeTeam": "Salve Regina",
+      "awayTeam": "William Paterson",
+      "predictedMargin": 26.6,
+      "predictedTotal": 47.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908873,
+      "homeTeam": "Saint John's (MN)",
+      "awayTeam": "Hamline",
+      "predictedMargin": 70.5,
+      "predictedTotal": 58.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908773,
+      "homeTeam": "Lake Forest",
+      "awayTeam": "Grinnell",
+      "predictedMargin": 49.1,
+      "predictedTotal": 52.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908760,
+      "homeTeam": "Lawrence",
+      "awayTeam": "Illinois College",
+      "predictedMargin": -46.2,
+      "predictedTotal": 47.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908732,
+      "homeTeam": "Beloit",
+      "awayTeam": "Luther",
+      "predictedMargin": 7.9,
+      "predictedTotal": 43.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908725,
+      "homeTeam": "Cornell (IA)",
+      "awayTeam": "Monmouth (IL)",
+      "predictedMargin": -41.3,
+      "predictedTotal": 49.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908587,
+      "homeTeam": "Westfield State",
+      "awayTeam": "Dean",
+      "predictedMargin": 35.2,
+      "predictedTotal": 52.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868023,
+      "homeTeam": "Holy Cross",
+      "awayTeam": "Yale",
+      "predictedMargin": -13.4,
+      "predictedTotal": 47.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868159,
+      "homeTeam": "St. Thomas (MN)",
+      "awayTeam": "Southern Utah",
+      "predictedMargin": 13.8,
+      "predictedTotal": 59.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907112,
+      "homeTeam": "New Mexico Highlands",
+      "awayTeam": "Black Hills State",
+      "predictedMargin": 1.1,
+      "predictedTotal": 65.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858227,
+      "homeTeam": "Boston College",
+      "awayTeam": "Maine",
+      "predictedMargin": 2.4,
+      "predictedTotal": 52.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907206,
+      "homeTeam": "Quincy",
+      "awayTeam": "Lincoln (MO)",
+      "predictedMargin": 16.2,
+      "predictedTotal": 57.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907699,
+      "homeTeam": "Minnesota State",
+      "awayTeam": "Northern State",
+      "predictedMargin": 11.8,
+      "predictedTotal": 57.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907140,
+      "homeTeam": "Colorado School of Mines",
+      "awayTeam": "Fort Lewis",
+      "predictedMargin": 19.8,
+      "predictedTotal": 54.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908078,
+      "homeTeam": "Sewanee",
+      "awayTeam": "North Carolina Wesleyan",
+      "predictedMargin": -8.2,
+      "predictedTotal": 50.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907845,
+      "homeTeam": "North Park",
+      "awayTeam": "North Central College",
+      "predictedMargin": -44.6,
+      "predictedTotal": 56.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907747,
+      "homeTeam": "St. John Fisher",
+      "awayTeam": "Rochester (NY)",
+      "predictedMargin": 9.6,
+      "predictedTotal": 41.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907781,
+      "homeTeam": "Augustana (IL)",
+      "awayTeam": "Illinois Wesleyan",
+      "predictedMargin": 5.4,
+      "predictedTotal": 58.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908748,
+      "homeTeam": "Augsburg",
+      "awayTeam": "St. Scholastica",
+      "predictedMargin": 15.7,
+      "predictedTotal": 56.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907679,
+      "homeTeam": "Augustana (SD)",
+      "awayTeam": "Minnesota St Moorhead",
+      "predictedMargin": 3.2,
+      "predictedTotal": 64.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907667,
+      "homeTeam": "Chicago",
+      "awayTeam": "Nebraska Wesleyan",
+      "predictedMargin": 37.3,
+      "predictedTotal": 47.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908847,
+      "homeTeam": "Concordia (WI)",
+      "awayTeam": "Aurora",
+      "predictedMargin": 11.6,
+      "predictedTotal": 60.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907395,
+      "homeTeam": "Tusculum",
+      "awayTeam": "Anderson (SC)",
+      "predictedMargin": -11.4,
+      "predictedTotal": 46.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907102,
+      "homeTeam": "Adams State",
+      "awayTeam": "South Dakota Mines",
+      "predictedMargin": -18.7,
+      "predictedTotal": 60.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907819,
+      "homeTeam": "Wisconsin Eau Claire",
+      "awayTeam": "Carthage",
+      "predictedMargin": 7.6,
+      "predictedTotal": 51.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866634,
+      "homeTeam": "Stony Brook",
+      "awayTeam": "Rhode Island",
+      "predictedMargin": -4.1,
+      "predictedTotal": 53.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868275,
+      "homeTeam": "Western Carolina",
+      "awayTeam": "Presbyterian",
+      "predictedMargin": -4.9,
+      "predictedTotal": 62.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907371,
+      "homeTeam": "Northwest Missouri State",
+      "awayTeam": "Missouri Southern State",
+      "predictedMargin": 32.2,
+      "predictedTotal": 50.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907221,
+      "homeTeam": "Truman State",
+      "awayTeam": "Missouri S&T",
+      "predictedMargin": 14.6,
+      "predictedTotal": 56.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867898,
+      "homeTeam": "Montana State",
+      "awayTeam": "Central Connecticut",
+      "predictedMargin": 30.3,
+      "predictedTotal": 53.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862774,
+      "homeTeam": "Toledo",
+      "awayTeam": "Temple",
+      "predictedMargin": 26.5,
+      "predictedTotal": 51.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867991,
+      "homeTeam": "Bucknell",
+      "awayTeam": "Pennsylvania",
+      "predictedMargin": -2.1,
+      "predictedTotal": 54.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907123,
+      "homeTeam": "Chadron State",
+      "awayTeam": "CSU Pueblo",
+      "predictedMargin": -10.3,
+      "predictedTotal": 54.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906187,
+      "homeTeam": "Erskine",
+      "awayTeam": "Brevard",
+      "predictedMargin": -15.6,
+      "predictedTotal": 53.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867846,
+      "homeTeam": "Illinois State",
+      "awayTeam": "Eastern Illinois",
+      "predictedMargin": 28.1,
+      "predictedTotal": 53.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907505,
+      "homeTeam": "Bentley",
+      "awayTeam": "Post",
+      "predictedMargin": 20.6,
+      "predictedTotal": 55.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908455,
+      "homeTeam": "Willamette",
+      "awayTeam": "La Verne",
+      "predictedMargin": -3.6,
+      "predictedTotal": 44.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401909119,
+      "homeTeam": "Eureka",
+      "awayTeam": "St. Norbert",
+      "predictedMargin": -20.5,
+      "predictedTotal": 50.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907705,
+      "homeTeam": "University of Mary",
+      "awayTeam": "Sioux Falls",
+      "predictedMargin": -7.0,
+      "predictedTotal": 54.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908985,
+      "homeTeam": "Averett",
+      "awayTeam": "Gallaudet",
+      "predictedMargin": 11.9,
+      "predictedTotal": 59.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907686,
+      "homeTeam": "Minot State",
+      "awayTeam": "Southwest Minnesota State",
+      "predictedMargin": 25.6,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908394,
+      "homeTeam": "Claremont Mudd Scripps",
+      "awayTeam": "George Fox",
+      "predictedMargin": 8.5,
+      "predictedTotal": 43.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858233,
+      "homeTeam": "California",
+      "awayTeam": "Wagner",
+      "predictedMargin": 14.8,
+      "predictedTotal": 47.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401860890,
+      "homeTeam": "Washington State",
+      "awayTeam": "Duquesne",
+      "predictedMargin": 7.7,
+      "predictedTotal": 47.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856685,
+      "homeTeam": "Alabama",
+      "awayTeam": "Florida State",
+      "predictedMargin": 11.6,
+      "predictedTotal": 52.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856694,
+      "homeTeam": "Texas A&M",
+      "awayTeam": "Kentucky",
+      "predictedMargin": 26.2,
+      "predictedTotal": 54.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858230,
+      "homeTeam": "Louisville",
+      "awayTeam": "SMU",
+      "predictedMargin": 2.5,
+      "predictedTotal": 54.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858450,
+      "homeTeam": "Michigan",
+      "awayTeam": "UTEP",
+      "predictedMargin": 20.6,
+      "predictedTotal": 48.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856797,
+      "homeTeam": "Cincinnati",
+      "awayTeam": "Miami (OH)",
+      "predictedMargin": 14.4,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866424,
+      "homeTeam": "Massachusetts",
+      "awayTeam": "Stonehill",
+      "predictedMargin": -8.0,
+      "predictedTotal": 44.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856801,
+      "homeTeam": "Utah",
+      "awayTeam": "Utah State",
+      "predictedMargin": 28.9,
+      "predictedTotal": 58.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866635,
+      "homeTeam": "UAlbany",
+      "awayTeam": "Monmouth",
+      "predictedMargin": -11.0,
+      "predictedTotal": 56.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868018,
+      "homeTeam": "Richmond",
+      "awayTeam": "Georgetown",
+      "predictedMargin": 9.6,
+      "predictedTotal": 47.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858457,
+      "homeTeam": "Rutgers",
+      "awayTeam": "USC",
+      "predictedMargin": -14.9,
+      "predictedTotal": 59.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401873230,
+      "homeTeam": "Cal Lutheran",
+      "awayTeam": "Puget Sound",
+      "predictedMargin": 30.6,
+      "predictedTotal": 64.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868942,
+      "homeTeam": "Bethune-Cookman",
+      "awayTeam": "Virginia Lynchburg",
+      "predictedMargin": 42.6,
+      "predictedTotal": 62.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868051,
+      "homeTeam": "Idaho",
+      "awayTeam": "Abilene Christian",
+      "predictedMargin": 0.8,
+      "predictedTotal": 53.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866641,
+      "homeTeam": "Norfolk State",
+      "awayTeam": "Hampton",
+      "predictedMargin": 10.5,
+      "predictedTotal": 54.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866422,
+      "homeTeam": "Liberty",
+      "awayTeam": "Ball State",
+      "predictedMargin": 18.5,
+      "predictedTotal": 49.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906633,
+      "homeTeam": "Tiffin",
+      "awayTeam": "Thomas More",
+      "predictedMargin": 36.9,
+      "predictedTotal": 47.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867804,
+      "homeTeam": "Baylor",
+      "awayTeam": "Louisiana Tech",
+      "predictedMargin": -1.3,
+      "predictedTotal": 56.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858449,
+      "homeTeam": "Indiana",
+      "awayTeam": "Western Kentucky",
+      "predictedMargin": 39.3,
+      "predictedTotal": 55.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908406,
+      "homeTeam": "Lewis & Clark",
+      "awayTeam": "Pomona Pitzer",
+      "predictedMargin": 12.4,
+      "predictedTotal": 49.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858471,
+      "homeTeam": "Iowa",
+      "awayTeam": "Northern Iowa",
+      "predictedMargin": 26.3,
+      "predictedTotal": 44.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906912,
+      "homeTeam": "Allen",
+      "awayTeam": "Albany State",
+      "predictedMargin": -5.8,
+      "predictedTotal": 52.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858231,
+      "homeTeam": "Duke",
+      "awayTeam": "Stanford",
+      "predictedMargin": 22.4,
+      "predictedTotal": 54.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856691,
+      "homeTeam": "South Carolina",
+      "awayTeam": "Mississippi State",
+      "predictedMargin": 6.3,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908501,
+      "homeTeam": "Lyon",
+      "awayTeam": "Greenville",
+      "predictedMargin": -1.8,
+      "predictedTotal": 51.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868317,
+      "homeTeam": "UL Monroe",
+      "awayTeam": "SE Louisiana",
+      "predictedMargin": -20.4,
+      "predictedTotal": 50.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907476,
+      "homeTeam": "Southern Connecticut State",
+      "awayTeam": "American International",
+      "predictedMargin": -2.3,
+      "predictedTotal": 49.6,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907645,
+      "homeTeam": "Minnesota Duluth",
+      "awayTeam": "Winona State",
+      "predictedMargin": 25.6,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907358,
+      "homeTeam": "Emporia State",
+      "awayTeam": "Nebraska Kearney",
+      "predictedMargin": 6.2,
+      "predictedTotal": 49.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908677,
+      "homeTeam": "John Carroll",
+      "awayTeam": "Kenyon",
+      "predictedMargin": 47.8,
+      "predictedTotal": 50.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864574,
+      "homeTeam": "App State",
+      "awayTeam": "Charlotte",
+      "predictedMargin": 27.0,
+      "predictedTotal": 54.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906051,
+      "homeTeam": "Virginia Union",
+      "awayTeam": "Bluefield State",
+      "predictedMargin": 46.7,
+      "predictedTotal": 65.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907293,
+      "homeTeam": "Lane College",
+      "awayTeam": "Morehouse",
+      "predictedMargin": -8.5,
+      "predictedTotal": 48.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401907569,
+      "homeTeam": "Lock Haven",
+      "awayTeam": "Kutztown",
+      "predictedMargin": -22.4,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908208,
+      "homeTeam": "Anderson (IN)",
+      "awayTeam": "Kalamazoo",
+      "predictedMargin": -8.5,
+      "predictedTotal": 48.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866640,
+      "homeTeam": "Towson",
+      "awayTeam": "Morgan State",
+      "predictedMargin": 5.0,
+      "predictedTotal": 50.9,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866637,
+      "homeTeam": "Elon",
+      "awayTeam": "Sacred Heart",
+      "predictedMargin": 12.7,
+      "predictedTotal": 52.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866636,
+      "homeTeam": "Campbell",
+      "awayTeam": "North Carolina A&T",
+      "predictedMargin": 17.8,
+      "predictedTotal": 61.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401868935,
+      "homeTeam": "Arkansas-Pine Bluff",
+      "awayTeam": "Central State",
+      "predictedMargin": -2.6,
+      "predictedTotal": 53.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401867979,
+      "homeTeam": "Gardner-Webb",
+      "awayTeam": "North Carolina Central",
+      "predictedMargin": -5.3,
+      "predictedTotal": 56.2,
+      "snapshotDate": "2026-09-19"
     }
   ],
-  "graded": [],
-  "summary": {}
+  "graded": [
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Charleston (WV) @ Concord",
+      "stat": "spread",
+      "line": -0.8,
+      "actual": -3,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Charleston (WV) @ Concord",
+      "stat": "total",
+      "line": 60.5,
+      "actual": 79,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Syracuse @ Pittsburgh",
+      "stat": "spread",
+      "line": 26.3,
+      "actual": 14,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Syracuse @ Pittsburgh",
+      "stat": "total",
+      "line": 56.5,
+      "actual": 40,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Framingham State @ UMass Dartmouth",
+      "stat": "spread",
+      "line": 10.7,
+      "actual": -2,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Framingham State @ UMass Dartmouth",
+      "stat": "total",
+      "line": 50.0,
+      "actual": 44,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Miami @ Wake Forest",
+      "stat": "spread",
+      "line": -13.2,
+      "actual": -13,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Miami @ Wake Forest",
+      "stat": "total",
+      "line": 50.6,
+      "actual": 53,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Houston @ Texas Tech",
+      "stat": "spread",
+      "line": 23.7,
+      "actual": 2,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Houston @ Texas Tech",
+      "stat": "total",
+      "line": 52.8,
+      "actual": 54,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Portland State @ Oregon",
+      "stat": "spread",
+      "line": 51.0,
+      "actual": 84,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Portland State @ Oregon",
+      "stat": "total",
+      "line": 57.5,
+      "actual": 84,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    }
+  ],
+  "summary": {
+    "cfb_spread": {
+      "graded": 6,
+      "hits": 5,
+      "rate": 83.3
+    },
+    "cfb_total": {
+      "graded": 6,
+      "hits": 2,
+      "rate": 33.3
+    }
+  }
 }

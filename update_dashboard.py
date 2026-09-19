@@ -1528,13 +1528,33 @@ def build_cfb_upcoming(games, ratings, home_field, lines_by_game, team_names_by_
         pred = predict_cfb_game(g['home_team'], g['away_team'], ratings, home_field)
         if not pred:
             continue
+        # Real kickoff time, converted from the UTC timestamp CFBD provides to US/Eastern —
+        # this is what actually lets games be organized by start time, not just by date.
+        kickoff_et = None
+        try:
+            from zoneinfo import ZoneInfo
+            dt_utc = datetime.datetime.fromisoformat(g['start_date'].replace('Z', '+00:00'))
+            dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+            # %-I (strip leading zero) is Linux/Mac-only and crashes on Windows — this
+            # user runs the pipeline on Windows, so formatting normally then stripping
+            # a leading zero manually is what actually works cross-platform.
+            hour_min = dt_et.strftime("%I:%M %p ET")
+            kickoff_et = hour_min.lstrip("0")
+        except Exception:
+            pass
         upcoming.append({
-            'id': g['id'], 'date': game_date, 'week': g['week'],
+            'id': g['id'], 'date': game_date, 'startDateTime': g['start_date'], 'kickoffET': kickoff_et, 'week': g['week'],
             'homeTeam': g['home_team'], 'awayTeam': g['away_team'],
             'predictedMargin': pred['predictedMargin'], 'predictedTotal': pred['predictedTotal'],
         })
-    upcoming.sort(key=lambda g: g['date'])
-    return upcoming[:60]  # keep the payload reasonable; this is a lot of FBS games in a given week
+    # Sort by the FULL timestamp (not just the date) so games on the same day are correctly
+    # ordered by actual kickoff time, not left in whatever order the source data happened to be in.
+    upcoming.sort(key=lambda g: g['startDateTime'])
+    # Widened from 60 — FBS alone runs ~65-70 games per week, so 60 didn't even cover a
+    # single full week, let alone let you see games happening a bit further out. 200
+    # comfortably covers several weeks forward without meaningfully affecting payload size
+    # (each entry here is small — a few hundred bytes at most).
+    return upcoming[:200]
 
 
 # =====================================================================

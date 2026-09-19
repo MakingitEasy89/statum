@@ -3132,7 +3132,7 @@ function CFBGameCard({ game }) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8, flexWrap: "wrap", gap: 6 }}>
         <div>
           <div style={{ fontSize: 14, fontWeight: 800 }}>{game.awayTeam} <span style={{color:"var(--text-tertiary)"}}>@</span> {game.homeTeam}</div>
-          <div style={{ fontSize: 10.5, color: "var(--text-secondary-b)" }}>{game.date}{game.week ? ` · Week ${game.week}` : ""}</div>
+          <div style={{ fontSize: 10.5, color: "var(--text-secondary-b)" }}>{game.date}{game.kickoffET ? ` · ${game.kickoffET}` : ""}{game.week ? ` · Week ${game.week}` : ""}</div>
         </div>
       </div>
       <div style={{ display: "flex", gap: 18, flexWrap: "wrap", marginBottom: 8 }}>
@@ -3181,6 +3181,7 @@ function CFBGamesView({ sportDataStatus }) {
   const games = cfbUpcoming();
   const backtest = cfbBacktest();
   const homeField = cfbHomeField();
+  const [gameSearch, setGameSearch] = useState("");
 
   if (sportDataStatus?.cfb === "loading") {
     return <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading College Football data…</Glass>;
@@ -3190,6 +3191,26 @@ function CFBGamesView({ sportDataStatus }) {
   }
   if (games.length === 0) {
     return <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-tertiary)", fontSize: 13 }}>No upcoming games loaded yet — this needs a free collegefootballdata.com API key connected. See the Guide for setup.</Glass>;
+  }
+
+  const filteredGames = gameSearch.trim()
+    ? games.filter(g => g.homeTeam.toLowerCase().includes(gameSearch.toLowerCase()) || g.awayTeam.toLowerCase().includes(gameSearch.toLowerCase()))
+    : games;
+
+  // Group by date — games already arrive sorted by real kickoff timestamp from the
+  // pipeline, so within each date group they're already in correct time order too.
+  const todayStr = new Date().toISOString().slice(0,10);
+  const tomorrowStr = new Date(Date.now() + 86400000).toISOString().slice(0,10);
+  const dateLabel = (d) => d === todayStr ? "Today" : d === tomorrowStr ? "Tomorrow" : new Date(d + "T00:00:00").toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
+  const groups = [];
+  let currentDate = null, currentGroup = null;
+  for (const g of filteredGames) {
+    if (g.date !== currentDate) {
+      currentDate = g.date;
+      currentGroup = { date: g.date, label: dateLabel(g.date), games: [] };
+      groups.push(currentGroup);
+    }
+    currentGroup.games.push(g);
   }
 
   return (
@@ -3204,9 +3225,21 @@ function CFBGamesView({ sportDataStatus }) {
         </Glass>
       </InfoToggle>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 10 }}>
-        {games.map(g => <CFBGameCard key={g.id} game={g} />)}
-      </div>
+      <input placeholder="Search by team — e.g. LSU, Ole Miss…" value={gameSearch} onChange={e=>setGameSearch(e.target.value)}
+        style={{ width: "100%", maxWidth: 360, marginBottom: 16, background: "var(--overlay-2)", border: "1px solid var(--overlay-6)", borderRadius: 8, padding: "10px 14px", color: "var(--text-primary)", fontSize: 13.5 }} />
+
+      {filteredGames.length === 0 ? (
+        <Glass hover={false} style={{ padding: "24px 20px", textAlign: "center", color: "var(--text-tertiary)", fontSize: 13 }}>No upcoming games found matching "{gameSearch}" in the next {games.length} scheduled games.</Glass>
+      ) : groups.map(group => (
+        <div key={group.date} style={{ marginBottom: 22 }}>
+          <div style={{ fontSize: 12, fontWeight: 800, color: "var(--text-secondary-b)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10, paddingBottom: 6, borderBottom: "1px solid var(--overlay-5)" }}>
+            {group.label} <span style={{ fontWeight: 500, color: "var(--text-tertiary)", textTransform: "none", letterSpacing: 0 }}>· {group.games.length} game{group.games.length!==1?"s":""}</span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 10 }}>
+            {group.games.map(g => <CFBGameCard key={g.id} game={g} />)}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -4279,7 +4312,7 @@ function App() {
         <div style={{ marginBottom: 22, display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10 }}>
           <div>
             <div style={{ fontSize: 11, letterSpacing: "0.18em", color: ACCENT.amber, fontWeight: 700, marginBottom: 6 }}>
-              {sport==="nfl" ? "NFL 2024–25 · MATCHUP INTELLIGENCE" : sport==="wnba" ? "WNBA 2025–26 · MATCHUP INTELLIGENCE" : "MLB 2025–26 · MATCHUP INTELLIGENCE"}
+              {sport==="nfl" ? "NFL 2024–25 · MATCHUP INTELLIGENCE" : sport==="wnba" ? "WNBA 2025–26 · MATCHUP INTELLIGENCE" : sport==="mlb" ? "MLB 2025–26 · MATCHUP INTELLIGENCE" : "COLLEGE FOOTBALL · MATCHUP INTELLIGENCE"}
             </div>
             <h1 style={{ fontSize: 32, fontWeight: 800, margin: 0, letterSpacing: "-0.02em", background: `linear-gradient(90deg,${dailyTheme.c1},${dailyTheme.c3} 45%,${dailyTheme.c4})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Statum</h1>
             <div style={{ fontSize: 12.5, color: "var(--text-label)", marginTop: 4 }}>
@@ -4287,7 +4320,9 @@ function App() {
                 ? `${RECEIVERS.length} skill players · ${QBS.length} QBs · ${KICKERS.length} kickers · ${SACKS.length} pass rushers · two full seasons, every play tagged by real front & coverage`
                 : sport==="wnba"
                 ? `${wnbaPlayers().length} players · real box scores parsed from play-by-play · train/test validated prop lines`
-                : `${mlbPlayers().length} batters & pitchers · official MLB Stats API · train/test validated prop lines`}
+                : sport==="mlb"
+                ? `${mlbPlayers().length} batters & pitchers · official MLB Stats API · train/test validated prop lines`
+                : `${cfbTeams().length} FBS teams rated · real historical lines · spread/total/moneyline backtested`}
             </div>
           </div>
           <QuickTeamSearch sport={sport} query={quickSearch} setQuery={setQuickSearch} onJump={(team)=>{ setSelectedTeam(team); setTab("teams"); setQuickSearch(""); }} />
