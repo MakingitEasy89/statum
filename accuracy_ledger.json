@@ -8986,6 +8986,78 @@
       "predictedMargin": -9.8,
       "predictedTotal": 48.1,
       "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858481,
+      "homeTeam": "Nebraska",
+      "awayTeam": "Indiana",
+      "predictedMargin": -10.0,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858256,
+      "homeTeam": "Pittsburgh",
+      "awayTeam": "North Carolina",
+      "predictedMargin": 26.4,
+      "predictedTotal": 49.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856808,
+      "homeTeam": "Arizona State",
+      "awayTeam": "Hawai'i",
+      "predictedMargin": 13.0,
+      "predictedTotal": 51.0,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862797,
+      "homeTeam": "East Carolina",
+      "awayTeam": "Rice",
+      "predictedMargin": 32.8,
+      "predictedTotal": 52.4,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858483,
+      "homeTeam": "Ohio State",
+      "awayTeam": "Maryland",
+      "predictedMargin": 35.2,
+      "predictedTotal": 47.7,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866437,
+      "homeTeam": "Toledo",
+      "awayTeam": "Buffalo",
+      "predictedMargin": 32.0,
+      "predictedTotal": 46.8,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858485,
+      "homeTeam": "Penn State",
+      "awayTeam": "USC",
+      "predictedMargin": 9.3,
+      "predictedTotal": 55.5,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866436,
+      "homeTeam": "Bowling Green",
+      "awayTeam": "Sacramento State",
+      "predictedMargin": 6.9,
+      "predictedTotal": 45.8,
+      "snapshotDate": "2026-09-19"
     }
   ],
   "graded": [
