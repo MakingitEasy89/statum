@@ -5632,42 +5632,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401908593,
-      "homeTeam": "UMass Dartmouth",
-      "awayTeam": "Framingham State",
-      "predictedMargin": 10.7,
-      "predictedTotal": 50.0,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858226,
-      "homeTeam": "Wake Forest",
-      "awayTeam": "Miami",
-      "predictedMargin": -13.2,
-      "predictedTotal": 50.6,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856811,
-      "homeTeam": "Texas Tech",
-      "awayTeam": "Houston",
-      "predictedMargin": 23.7,
-      "predictedTotal": 52.8,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858455,
-      "homeTeam": "Oregon",
-      "awayTeam": "Portland State",
-      "predictedMargin": 51.0,
-      "predictedTotal": 57.5,
-      "snapshotDate": "2026-09-16"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401869940,
       "homeTeam": "Delaware",
       "awayTeam": "Coastal Carolina",
@@ -6358,6 +6322,33 @@
       "predictedMargin": -30.1,
       "predictedTotal": 56.0,
       "snapshotDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401906937,
+      "homeTeam": "Fort Valley State",
+      "awayTeam": "Benedict",
+      "predictedMargin": -6.9,
+      "predictedTotal": 39.2,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908355,
+      "homeTeam": "Johns Hopkins",
+      "awayTeam": "Susquehanna",
+      "predictedMargin": 4.6,
+      "predictedTotal": 56.3,
+      "snapshotDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401908340,
+      "homeTeam": "Catholic",
+      "awayTeam": "Franklin & Marshall",
+      "predictedMargin": -25.4,
+      "predictedTotal": 49.5,
+      "snapshotDate": "2026-09-19"
     }
   ],
   "graded": [
@@ -6404,18 +6395,106 @@
       "hit": false,
       "snapshotDate": "2026-09-16",
       "gradedDate": "2026-09-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Framingham State @ UMass Dartmouth",
+      "stat": "spread",
+      "line": 10.7,
+      "actual": -2,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Framingham State @ UMass Dartmouth",
+      "stat": "total",
+      "line": 50.0,
+      "actual": 44,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Miami @ Wake Forest",
+      "stat": "spread",
+      "line": -13.2,
+      "actual": -13,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Miami @ Wake Forest",
+      "stat": "total",
+      "line": 50.6,
+      "actual": 53,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Houston @ Texas Tech",
+      "stat": "spread",
+      "line": 23.7,
+      "actual": 2,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Houston @ Texas Tech",
+      "stat": "total",
+      "line": 52.8,
+      "actual": 54,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Portland State @ Oregon",
+      "stat": "spread",
+      "line": 51.0,
+      "actual": 84,
+      "hit": true,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Portland State @ Oregon",
+      "stat": "total",
+      "line": 57.5,
+      "actual": 84,
+      "hit": false,
+      "snapshotDate": "2026-09-16",
+      "gradedDate": "2026-09-19"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 2,
-      "hits": 2,
-      "rate": 100.0
+      "graded": 6,
+      "hits": 5,
+      "rate": 83.3
     },
     "cfb_total": {
-      "graded": 2,
-      "hits": 0,
-      "rate": 0.0
+      "graded": 6,
+      "hits": 2,
+      "rate": 33.3
     }
   }
 }
