@@ -8914,6 +8914,330 @@
       "predictedMargin": 10.6,
       "predictedTotal": 59.5,
       "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Matthew Stafford",
+      "stat": "Passing Touchdowns",
+      "p25": 0.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jared Goff",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam Darnold",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Baker Mayfield",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Patrick Mahomes",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Caleb Williams",
+      "stat": "Passing Touchdowns",
+      "p25": 0.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Justin Herbert",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "C.J. Stroud",
+      "stat": "Passing Touchdowns",
+      "p25": 0.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Drake Maye",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Love",
+      "stat": "Passing Touchdowns",
+      "p25": 0.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Lamar Jackson",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jalen Hurts",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dak Prescott",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Brock Purdy",
+      "stat": "Passing Touchdowns",
+      "p25": 0.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 26,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Trevor Lawrence",
+      "stat": "Passing Touchdowns",
+      "p25": 0.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 28,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Daniels",
+      "stat": "Passing Touchdowns",
+      "p25": 0.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tua Tagovailoa",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 25,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "nfl",
+      "player": "Russell Wilson",
+      "stat": "Passing Touchdowns",
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "gamelogLenAtSnapshot": 18,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856831,
+      "homeTeam": "Houston",
+      "awayTeam": "Oklahoma State",
+      "predictedMargin": 34.9,
+      "predictedTotal": 50.8,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856720,
+      "homeTeam": "LSU",
+      "awayTeam": "Mississippi State",
+      "predictedMargin": 13.0,
+      "predictedTotal": 52.5,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858269,
+      "homeTeam": "California",
+      "awayTeam": "Wake Forest",
+      "predictedMargin": 7.7,
+      "predictedTotal": 51.4,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871091,
+      "homeTeam": "UL Monroe",
+      "awayTeam": "Louisiana Tech",
+      "predictedMargin": -10.5,
+      "predictedTotal": 52.2,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862805,
+      "homeTeam": "Rice",
+      "awayTeam": "Tulsa",
+      "predictedMargin": 0.9,
+      "predictedTotal": 50.0,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866478,
+      "homeTeam": "Miami (OH)",
+      "awayTeam": "Akron",
+      "predictedMargin": 19.7,
+      "predictedTotal": 50.2,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856809,
+      "homeTeam": "BYU",
+      "awayTeam": "Notre Dame",
+      "predictedMargin": 2.2,
+      "predictedTotal": 54.9,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864521,
+      "homeTeam": "Hawai'i",
+      "awayTeam": "New Mexico",
+      "predictedMargin": 5.3,
+      "predictedTotal": 50.3,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862803,
+      "homeTeam": "Temple",
+      "awayTeam": "Charlotte",
+      "predictedMargin": 31.5,
+      "predictedTotal": 55.5,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862806,
+      "homeTeam": "South Florida",
+      "awayTeam": "Kent State",
+      "predictedMargin": 47.9,
+      "predictedTotal": 59.3,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869966,
+      "homeTeam": "Louisiana",
+      "awayTeam": "Troy",
+      "predictedMargin": 10.8,
+      "predictedTotal": 52.3,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856721,
+      "homeTeam": "Ole Miss",
+      "awayTeam": "Missouri",
+      "predictedMargin": 14.3,
+      "predictedTotal": 55.5,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866445,
+      "homeTeam": "Sacramento State",
+      "awayTeam": "Ohio",
+      "predictedMargin": 4.1,
+      "predictedTotal": 50.1,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856830,
+      "homeTeam": "Kansas State",
+      "awayTeam": "Kansas",
+      "predictedMargin": 19.2,
+      "predictedTotal": 55.1,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856828,
+      "homeTeam": "Texas Tech",
+      "awayTeam": "Arizona State",
+      "predictedMargin": 36.1,
+      "predictedTotal": 51.8,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856832,
+      "homeTeam": "Baylor",
+      "awayTeam": "TCU",
+      "predictedMargin": 5.5,
+      "predictedTotal": 56.8,
+      "snapshotDate": "2026-09-20"
     }
   ],
   "graded": [

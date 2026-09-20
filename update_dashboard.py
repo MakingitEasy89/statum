@@ -260,13 +260,17 @@ def build_usage_bump_analysis(receivers, injury_df):
     return out
 
 
-def build_atd_pool(baseline, current, receivers):
+def build_atd_pool(baseline, current, receivers, qbs=None):
     """Real Anytime Touchdown rate per skill player — the fraction of real games where they
     scored at least one touchdown (rushing OR receiving combined, since either counts for
     this market). Vectorized across all players at once rather than looping per-player,
     since the raw play-by-play here can be 100k+ rows. Backtested the same way as other
     props: rate comes from the 2024-2025 baseline, checked against real current-season
-    games for an honest confidence read — not just fit to its own training data."""
+    games for an honest confidence read — not just fit to its own training data.
+    QBs included too — a QB doesn't score on a TD pass, but real rushing scores (goal-line
+    sneaks, scrambles) genuinely count for this market, and the same rusher_player_id
+    matching below already captures that correctly, it just wasn't being checked for QBs
+    at all before."""
     def per_game_scores(df):
         if len(df) == 0:
             return pd.DataFrame(columns=['pid', 'season', 'week', 'td'])
@@ -284,7 +288,7 @@ def build_atd_pool(baseline, current, receivers):
     cur_stats = cur_games.groupby('pid')['td'].agg(['mean', 'count']) if len(cur_games) else pd.DataFrame()
 
     pool = []
-    for r in receivers:
+    for r in receivers + (qbs or []):
         pid = r['id']
         if pid not in base_stats.index or base_stats.loc[pid, 'count'] < 12:
             continue
@@ -1914,9 +1918,6 @@ def main():
     receivers.sort(key=lambda p: -p['overall']['targets'])
     print(f"  {len(receivers)} skill players")
 
-    atd_pool = build_atd_pool(baseline, current, receivers)
-    print(f"  {len(atd_pool)} players with real Anytime TD rates computed")
-
     # Target Share % — real metric (this player's targets ÷ their team's total targets over the same window)
     team_total_targets = targets_baseline.groupby('posteam').size().to_dict()
     for p in receivers:
@@ -2012,6 +2013,9 @@ def main():
         })
     qbs.sort(key=lambda p: -p['overall']['yards'])
     print(f"  {len(qbs)} QBs (with rushing merged in)")
+
+    atd_pool = build_atd_pool(baseline, current, receivers, qbs)
+    print(f"  {len(atd_pool)} players with real Anytime TD rates computed (skill positions + QB rushing)")
 
     # ---- Kickers ----
     def agg_k(g):
@@ -2155,7 +2159,7 @@ def main():
         gl = p['gamelog']
         change = team_change_map.get(p['name'], {})
         for key, label, min25, min50 in [('yards', 'Passing Yards', 60, 120), ('completions', 'Completions', 6, 10),
-                                          ('rush_yards', 'QB Rush Yards', 0, 5)]:
+                                          ('tds', 'Passing Touchdowns', 0, 1), ('rush_yards', 'QB Rush Yards', 0, 5)]:
             train = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[0]], dtype=float)
             test = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[1]], dtype=float)
             if key == 'rush_yards' and train.mean() < 8:
