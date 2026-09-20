@@ -9238,6 +9238,24 @@
       "predictedMargin": 5.5,
       "predictedTotal": 56.8,
       "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858492,
+      "homeTeam": "Oregon",
+      "awayTeam": "Nebraska",
+      "predictedMargin": 24.7,
+      "predictedTotal": 55.1,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858494,
+      "homeTeam": "UCLA",
+      "awayTeam": "Wisconsin",
+      "predictedMargin": 7.9,
+      "predictedTotal": 46.4,
+      "snapshotDate": "2026-09-20"
     }
   ],
   "graded": [
