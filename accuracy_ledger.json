@@ -9040,6 +9040,51 @@
       "predictedMargin": -14.5,
       "predictedTotal": 51.2,
       "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869966,
+      "homeTeam": "Louisiana",
+      "awayTeam": "Troy",
+      "predictedMargin": 10.8,
+      "predictedTotal": 52.3,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858489,
+      "homeTeam": "Maryland",
+      "awayTeam": "Rutgers",
+      "predictedMargin": 19.6,
+      "predictedTotal": 56.2,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869957,
+      "homeTeam": "James Madison",
+      "awayTeam": "Georgia State",
+      "predictedMargin": 47.5,
+      "predictedTotal": 56.0,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862804,
+      "homeTeam": "UTSA",
+      "awayTeam": "Navy",
+      "predictedMargin": 10.6,
+      "predictedTotal": 59.5,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858490,
+      "homeTeam": "Michigan",
+      "awayTeam": "Penn State",
+      "predictedMargin": 7.1,
+      "predictedTotal": 48.8,
+      "snapshotDate": "2026-09-20"
     }
   ],
   "graded": [
