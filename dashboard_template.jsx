@@ -635,6 +635,37 @@ function QBDetail({ p, onClose }) {
         </div>
       )}
 
+      {(() => {
+        // Matchup Signal for QBs — same real connection as skill positions: this QB's own
+        // real performance against a specific coverage type, checked against their actual
+        // upcoming opponent's real coverage tendency. Uses yards/attempt (the QB-equivalent
+        // of yards/target) since a QB's own aggregate uses different field names than a
+        // receiver's.
+        const upcoming = NFL_UPCOMING[p.team];
+        if (!upcoming) return null;
+        const oppDef = TEAM_DEFENSE[upcoming.opp];
+        const primaryCov = oppDef?.scheme?.primaryCoverage;
+        const primaryPct = oppDef?.scheme?.primaryCoveragePct;
+        if (!primaryCov || !primaryPct || primaryPct < 38) return null;
+        const split = p.coverages?.[primaryCov];
+        if (!split || split.attempts < 8) return null;  // QBs throw more per game than a single receiver gets targeted, so a slightly higher volume bar makes sense here
+        const overallYpa = p.overall?.yptAtt;
+        if (overallYpa == null) return null;
+        const diff = split.yptAtt - overallYpa;
+        const meaningful = Math.abs(diff) >= overallYpa * 0.15;
+        return (
+          <Glass hover={false} style={{ padding: "14px 16px", marginBottom: 16, border: meaningful ? `1px solid ${diff>0?ACCENT.green:ACCENT.rose}66` : undefined }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 8, fontWeight: 700 }}>🎯 Matchup Signal</div>
+            <div style={{ fontSize: 12.5, lineHeight: 1.6 }}>
+              {TEAM_NAMES[upcoming.opp]||upcoming.opp} plays <b>{COVERAGE_LABEL[primaryCov]||primaryCov}</b> {fmt(primaryPct,0)}% of the time — a real, clear tendency, not a mixed scheme.
+              {" "}{p.name.split(' ')[0]} has averaged <b style={{color: meaningful ? (diff>0?ACCENT.green:ACCENT.rose) : "var(--text-body)"}}>{fmt(split.yptAtt,1)} yds/attempt</b> against
+              {" "}{COVERAGE_LABEL[primaryCov]||primaryCov} this season ({split.attempts} attempts), vs {fmt(overallYpa,1)} overall
+              {meaningful && <> — {diff>0 ? "notably better" : "notably worse"} than his average against this specific look.</>}
+            </div>
+          </Glass>
+        );
+      })()}
+
       <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 12, display: "flex", gap: 22, flexWrap: "wrap" }}>
         <StatChip label="Attempts" value={p.overall.attempts} />
         <StatChip label="Completions" value={p.overall.completions} />
