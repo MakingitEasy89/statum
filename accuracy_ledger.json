@@ -9238,6 +9238,15 @@
       "predictedMargin": 5.5,
       "predictedTotal": 56.8,
       "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858490,
+      "homeTeam": "Michigan",
+      "awayTeam": "Penn State",
+      "predictedMargin": 7.1,
+      "predictedTotal": 48.8,
+      "snapshotDate": "2026-09-20"
     }
   ],
   "graded": [
