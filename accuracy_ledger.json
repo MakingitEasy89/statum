@@ -8914,6 +8914,132 @@
       "predictedMargin": 7.7,
       "predictedTotal": 51.4,
       "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862803,
+      "homeTeam": "Temple",
+      "awayTeam": "Charlotte",
+      "predictedMargin": 31.5,
+      "predictedTotal": 55.5,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856828,
+      "homeTeam": "Texas Tech",
+      "awayTeam": "Arizona State",
+      "predictedMargin": 36.1,
+      "predictedTotal": 51.8,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869934,
+      "homeTeam": "Southern Miss",
+      "awayTeam": "Arkansas State",
+      "predictedMargin": 15.3,
+      "predictedTotal": 54.8,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856720,
+      "homeTeam": "LSU",
+      "awayTeam": "Mississippi State",
+      "predictedMargin": 13.0,
+      "predictedTotal": 52.5,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858267,
+      "homeTeam": "Boston College",
+      "awayTeam": "Pittsburgh",
+      "predictedMargin": -6.3,
+      "predictedTotal": 56.2,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858268,
+      "homeTeam": "SMU",
+      "awayTeam": "Virginia",
+      "predictedMargin": 10.9,
+      "predictedTotal": 54.4,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858488,
+      "homeTeam": "Indiana",
+      "awayTeam": "Ohio State",
+      "predictedMargin": 17.2,
+      "predictedTotal": 49.2,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862806,
+      "homeTeam": "South Florida",
+      "awayTeam": "Kent State",
+      "predictedMargin": 47.9,
+      "predictedTotal": 59.3,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856724,
+      "homeTeam": "Texas",
+      "awayTeam": "Florida",
+      "predictedMargin": 20.7,
+      "predictedTotal": 50.5,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856809,
+      "homeTeam": "BYU",
+      "awayTeam": "Notre Dame",
+      "predictedMargin": 2.2,
+      "predictedTotal": 54.9,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866442,
+      "homeTeam": "Buffalo",
+      "awayTeam": "Massachusetts",
+      "predictedMargin": 27.1,
+      "predictedTotal": 49.3,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858263,
+      "homeTeam": "Miami",
+      "awayTeam": "Florida State",
+      "predictedMargin": 27.9,
+      "predictedTotal": 53.8,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866443,
+      "homeTeam": "Central Michigan",
+      "awayTeam": "Western Michigan",
+      "predictedMargin": 5.5,
+      "predictedTotal": 43.3,
+      "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866444,
+      "homeTeam": "Eastern Michigan",
+      "awayTeam": "Toledo",
+      "predictedMargin": -14.5,
+      "predictedTotal": 51.2,
+      "snapshotDate": "2026-09-20"
     }
   ],
   "graded": [
