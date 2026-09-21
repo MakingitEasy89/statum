@@ -9247,6 +9247,69 @@
       "predictedMargin": 7.1,
       "predictedTotal": 48.8,
       "snapshotDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858492,
+      "homeTeam": "Oregon",
+      "awayTeam": "Nebraska",
+      "predictedMargin": 24.7,
+      "predictedTotal": 55.1,
+      "snapshotDate": "2026-09-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858494,
+      "homeTeam": "UCLA",
+      "awayTeam": "Wisconsin",
+      "predictedMargin": 7.9,
+      "predictedTotal": 46.4,
+      "snapshotDate": "2026-09-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856719,
+      "homeTeam": "Georgia",
+      "awayTeam": "Auburn",
+      "predictedMargin": 27.1,
+      "predictedTotal": 50.8,
+      "snapshotDate": "2026-09-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856722,
+      "homeTeam": "Oklahoma",
+      "awayTeam": "Kentucky",
+      "predictedMargin": 27.7,
+      "predictedTotal": 44.9,
+      "snapshotDate": "2026-09-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856723,
+      "homeTeam": "Tennessee",
+      "awayTeam": "Alabama",
+      "predictedMargin": 12.5,
+      "predictedTotal": 60.2,
+      "snapshotDate": "2026-09-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856829,
+      "homeTeam": "West Virginia",
+      "awayTeam": "Cincinnati",
+      "predictedMargin": -1.2,
+      "predictedTotal": 55.8,
+      "snapshotDate": "2026-09-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858265,
+      "homeTeam": "Syracuse",
+      "awayTeam": "Louisville",
+      "predictedMargin": -7.1,
+      "predictedTotal": 54.9,
+      "snapshotDate": "2026-09-21"
     }
   ],
   "graded": [
