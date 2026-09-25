@@ -7117,15 +7117,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401869941,
-      "homeTeam": "Coastal Carolina",
-      "awayTeam": "Liberty",
-      "predictedMargin": 6.0,
-      "predictedTotal": 53.4,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401862779,
       "homeTeam": "Temple",
       "awayTeam": "Army",
@@ -10808,18 +10799,40 @@
       "hit": false,
       "snapshotDate": "2026-09-19",
       "gradedDate": "2026-09-20"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Liberty @ Coastal Carolina",
+      "stat": "spread",
+      "line": 6.0,
+      "actual": -17,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-25"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Liberty @ Coastal Carolina",
+      "stat": "total",
+      "line": 53.4,
+      "actual": 51,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-25"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 68,
+      "graded": 69,
       "hits": 54,
-      "rate": 79.4
+      "rate": 78.3
     },
     "cfb_total": {
-      "graded": 68,
-      "hits": 14,
-      "rate": 20.6
+      "graded": 69,
+      "hits": 15,
+      "rate": 21.7
     }
   }
 }
