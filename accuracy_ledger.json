@@ -7117,42 +7117,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401862779,
-      "homeTeam": "Temple",
-      "awayTeam": "Army",
-      "predictedMargin": 7.0,
-      "predictedTotal": 50.9,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862778,
-      "homeTeam": "UAB",
-      "awayTeam": "Navy",
-      "predictedMargin": -4.7,
-      "predictedTotal": 60.7,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858461,
-      "homeTeam": "Indiana",
-      "awayTeam": "Northwestern",
-      "predictedMargin": 42.4,
-      "predictedTotal": 49.1,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858234,
-      "homeTeam": "California",
-      "awayTeam": "Clemson",
-      "predictedMargin": 4.2,
-      "predictedTotal": 50.1,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401860897,
       "homeTeam": "Western Michigan",
       "awayTeam": "Boise State",
@@ -10821,18 +10785,106 @@
       "hit": true,
       "snapshotDate": "2026-09-19",
       "gradedDate": "2026-09-25"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Army @ Temple",
+      "stat": "spread",
+      "line": 7.0,
+      "actual": -4,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-26"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Army @ Temple",
+      "stat": "total",
+      "line": 50.9,
+      "actual": 38,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-26"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Navy @ UAB",
+      "stat": "spread",
+      "line": -4.7,
+      "actual": 4,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-26"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Navy @ UAB",
+      "stat": "total",
+      "line": 60.7,
+      "actual": 44,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-26"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Northwestern @ Indiana",
+      "stat": "spread",
+      "line": 42.4,
+      "actual": 6,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-26"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Northwestern @ Indiana",
+      "stat": "total",
+      "line": 49.1,
+      "actual": 52,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-26"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Clemson @ California",
+      "stat": "spread",
+      "line": 4.2,
+      "actual": -14,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-26"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Clemson @ California",
+      "stat": "total",
+      "line": 50.1,
+      "actual": 34,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-09-26"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 69,
-      "hits": 54,
-      "rate": 78.3
+      "graded": 73,
+      "hits": 55,
+      "rate": 75.3
     },
     "cfb_total": {
-      "graded": 69,
-      "hits": 15,
-      "rate": 21.7
+      "graded": 73,
+      "hits": 16,
+      "rate": 21.9
     }
   }
 }
