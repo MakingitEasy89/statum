@@ -9220,6 +9220,42 @@
       "predictedMargin": -0.6,
       "predictedTotal": 45.9,
       "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858273,
+      "homeTeam": "Georgia Tech",
+      "awayTeam": "Boston College",
+      "predictedMargin": 24.7,
+      "predictedTotal": 55.5,
+      "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866450,
+      "homeTeam": "Toledo",
+      "awayTeam": "Western Michigan",
+      "predictedMargin": 25.9,
+      "predictedTotal": 46.2,
+      "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869967,
+      "homeTeam": "Southern Miss",
+      "awayTeam": "Louisiana",
+      "predictedMargin": 11.9,
+      "predictedTotal": 55.9,
+      "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856834,
+      "homeTeam": "Kansas",
+      "awayTeam": "Baylor",
+      "predictedMargin": 11.5,
+      "predictedTotal": 56.4,
+      "snapshotDate": "2026-09-27"
     }
   ],
   "graded": [
