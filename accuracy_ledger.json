@@ -9094,6 +9094,60 @@
       "predictedMargin": 22.6,
       "predictedTotal": 52.8,
       "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866447,
+      "homeTeam": "Ball State",
+      "awayTeam": "Sacramento State",
+      "predictedMargin": 6.4,
+      "predictedTotal": 46.5,
+      "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856837,
+      "homeTeam": "Utah",
+      "awayTeam": "Houston",
+      "predictedMargin": 26.2,
+      "predictedTotal": 56.0,
+      "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858495,
+      "homeTeam": "Illinois",
+      "awayTeam": "Oregon",
+      "predictedMargin": -5.0,
+      "predictedTotal": 56.0,
+      "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864526,
+      "homeTeam": "Northern Illinois",
+      "awayTeam": "Hawai'i",
+      "predictedMargin": -0.7,
+      "predictedTotal": 46.8,
+      "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856841,
+      "homeTeam": "TCU",
+      "awayTeam": "West Virginia",
+      "predictedMargin": 24.4,
+      "predictedTotal": 53.5,
+      "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856840,
+      "homeTeam": "Cincinnati",
+      "awayTeam": "Texas Tech",
+      "predictedMargin": -6.0,
+      "predictedTotal": 55.7,
+      "snapshotDate": "2026-09-27"
     }
   ],
   "graded": [
