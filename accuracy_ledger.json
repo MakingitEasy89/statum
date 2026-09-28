@@ -9274,6 +9274,15 @@
       "predictedMargin": 10.9,
       "predictedTotal": 53.1,
       "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856730,
+      "homeTeam": "Mississippi State",
+      "awayTeam": "Oklahoma",
+      "predictedMargin": 7.7,
+      "predictedTotal": 50.2,
+      "snapshotDate": "2026-09-28"
     }
   ],
   "graded": [
