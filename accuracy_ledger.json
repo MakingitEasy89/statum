@@ -9256,6 +9256,24 @@
       "predictedMargin": 11.5,
       "predictedTotal": 56.4,
       "snapshotDate": "2026-09-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858500,
+      "homeTeam": "Wisconsin",
+      "awayTeam": "USC",
+      "predictedMargin": -5.4,
+      "predictedTotal": 50.0,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858499,
+      "homeTeam": "UCLA",
+      "awayTeam": "Michigan State",
+      "predictedMargin": 10.9,
+      "predictedTotal": 53.1,
+      "snapshotDate": "2026-09-28"
     }
   ],
   "graded": [
