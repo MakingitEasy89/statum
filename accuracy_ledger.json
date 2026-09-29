@@ -9175,6 +9175,33 @@
       "predictedMargin": -5.4,
       "predictedTotal": 50.0,
       "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856839,
+      "homeTeam": "Arizona State",
+      "awayTeam": "Kansas State",
+      "predictedMargin": 7.8,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858273,
+      "homeTeam": "Georgia Tech",
+      "awayTeam": "Boston College",
+      "predictedMargin": 24.7,
+      "predictedTotal": 55.5,
+      "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858270,
+      "homeTeam": "SMU",
+      "awayTeam": "California",
+      "predictedMargin": 24.9,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-09-29"
     }
   ],
   "graded": [
