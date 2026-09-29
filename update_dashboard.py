@@ -1580,19 +1580,41 @@ def primetime(row):
 
 
 def build_merged(season, games_all):
+    # Participation (personnel/formation) data is a separate nflverse feed from play-by-play,
+    # sourced from NFL charting data, and it runs well behind pbp -- for the current
+    # in-progress season it's frequently not published at all until much later (sometimes
+    # not until the season's over). This used to require BOTH files to exist, so a missing
+    # participation file silently deleted the ENTIRE current season everywhere downstream
+    # (QB/skill stats, TDs allowed/scored by position, redzone tendencies -- all of it),
+    # even though every one of those is computable from pbp alone. Now: pbp is the only
+    # hard requirement; participation is used when available and skipped gracefully when
+    # not, with only the defense-personnel/coverage detail (front/scheme breakdowns)
+    # falling back to 'Unknown' for that season until nflverse publishes it.
     pbp_path = CACHE_DIR / f"pbp_{season}.parquet"
     part_path = CACHE_DIR / f"participation_{season}.parquet"
-    if not pbp_path.exists() or not part_path.exists():
+    if not pbp_path.exists():
         return None
     pbp = pd.read_parquet(pbp_path)
-    part = pd.read_parquet(part_path)
     pbp['play_id'] = pbp['play_id'].astype(float)
-    part['play_id'] = part['play_id'].astype(float)
-    merged = pbp.merge(part, left_on=['game_id', 'play_id'], right_on=['nflverse_game_id', 'play_id'],
-                        how='left', suffixes=('', '_part'))
-    merged['front'] = merged['defense_personnel'].apply(classify_front)
+    if part_path.exists():
+        part = pd.read_parquet(part_path)
+        part['play_id'] = part['play_id'].astype(float)
+        merged = pbp.merge(part, left_on=['game_id', 'play_id'], right_on=['nflverse_game_id', 'play_id'],
+                            how='left', suffixes=('', '_part'))
+    else:
+        print(f"  [!] No participation data for {season} yet -- proceeding pbp-only "
+              f"(front/coverage/scheme detail will show as 'Unknown' for {season} until nflverse publishes it; "
+              f"yards, TDs, QB/skill stats, and team defense/offense profiles are unaffected)")
+        merged = pbp.copy()
+    if 'defense_personnel' in merged.columns:
+        merged['front'] = merged['defense_personnel'].apply(classify_front)
+    else:
+        merged['front'] = 'Unknown'
     merged['front_bucket'] = merged['front'].apply(bucket_front)
-    merged['coverage'] = merged['defense_coverage_type'].fillna('Unknown')
+    if 'defense_coverage_type' in merged.columns:
+        merged['coverage'] = merged['defense_coverage_type'].fillna('Unknown')
+    else:
+        merged['coverage'] = 'Unknown'
     merged['is_home'] = merged['posteam'] == merged['home_team']
     gctx = games_all[games_all.season == season].set_index('game_id')[['weekday', 'gametime', 'location', 'roof', 'temp', 'wind']]
     merged = merged.join(gctx, on='game_id', rsuffix='_g')
