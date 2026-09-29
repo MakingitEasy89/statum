@@ -13,6 +13,7 @@ const NFL_UPCOMING = __NFL_UPCOMING__;
 const ATD_POOL = __ATD_POOL__;
 const REDZONE = __REDZONE__;
 const USAGE_BUMP = __USAGE_BUMP__;
+const XGB_MODEL_INFO = __XGB_MODEL_INFO__;
 
 // WNBA, MLB, and CFB data are NOT embedded here — they're fetched on demand the first
 // time you switch to that sport, instead of every visitor's browser having to load and
@@ -417,6 +418,68 @@ function StatChip({ label, value, decimals = 0, accent, suffix = "" }) {
   );
 }
 
+// H/C toggle -- lets the person switch a stats block between the real 2024-25 Historical
+// baseline and the real Active/Current season, rather than only ever seeing one silently
+// chosen window. `hasCurrent` disables the C pill (with a note) when there's no real
+// current-season data yet for this specific team/player, instead of showing an empty state.
+function HCToggle({ view, setView, hasCurrent }) {
+  const pillStyle = (active, disabled) => ({
+    fontSize: 10.5, fontWeight: 700, padding: "4px 10px", borderRadius: 999, cursor: disabled ? "default" : "pointer",
+    border: `1px solid ${active ? ACCENT.teal : "var(--border-color, #ffffff22)"}`,
+    background: active ? `${ACCENT.teal}22` : "transparent",
+    color: active ? ACCENT.teal : disabled ? "var(--text-tertiary)" : "var(--text-secondary-b)",
+    opacity: disabled ? 0.5 : 1,
+  });
+  return (
+    <div style={{ display: "inline-flex", gap: 6, alignItems: "center", marginBottom: 12 }}>
+      <span onClick={() => setView("historical")} style={pillStyle(view === "historical", false)}>{HISTORICAL_LABEL}</span>
+      <span
+        onClick={() => hasCurrent && setView("current")}
+        title={hasCurrent ? undefined : "No real current-season data yet for this"}
+        style={pillStyle(view === "current", !hasCurrent)}
+      >
+        {ACTIVE_LABEL}{!hasCurrent && " (no data yet)"}
+      </span>
+    </div>
+  );
+}
+
+// Player-level Active (C) panel — surfaces the shrinkage-weighted current-season blend
+// (`currentSeasonBlend`, computed on the backend from real current-season play-by-play)
+// next to the Historical (H) per-game numbers shown above it, so league leaders / player
+// pages factor in both windows instead of silently showing 2024-25 only. `stats` is an
+// array of { label, key, decimals } where `key` indexes into the blend object
+// (e.g. "yardsPerGame" -> { value, weight_current, games_this_season }).
+function CurrentSeasonBlendPanel({ blend, stats }) {
+  if (!blend || !blend.currentSeasonGames) {
+    return (
+      <Glass hover={false} style={{ padding: "14px 18px", marginBottom: 16, opacity: 0.75 }}>
+        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>{ACTIVE_LABEL}</div>
+        <div style={{ fontSize: 11.5, color: "var(--text-tertiary)" }}>No real {CURRENT_SEASON || "current-season"} games for this player yet — everything above is {HISTORICAL_LABEL} only.</div>
+      </Glass>
+    );
+  }
+  const g = blend.currentSeasonGames;
+  const firstKey = stats.find(s => blend[s.key]);
+  const w = firstKey ? Math.round(blend[firstKey.key].weight_current * 100) : null;
+  return (
+    <Glass hover={false} style={{ padding: "14px 18px", marginBottom: 16, border: "1px solid #7CFFB255" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "#7CFFB2", textTransform: "uppercase", fontWeight: 700 }}>🟢 {ACTIVE_LABEL} · {g} real game{g===1?"":"s"}</div>
+        {w !== null && <div style={{ fontSize: 10, color: "var(--text-tertiary)" }}>{w}% weight on {CURRENT_SEASON || "current season"}</div>}
+      </div>
+      <div style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
+        {stats.map(s => blend[s.key] ? (
+          <StatChip key={s.key} label={s.label} value={blend[s.key].value} decimals={s.decimals} accent="#7CFFB2" />
+        ) : null)}
+      </div>
+      <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 10 }}>
+        Blended = shrinkage-weighted average of {HISTORICAL_LABEL} and this player's actual {CURRENT_SEASON || "current-season"} per-game pace — more real current-season games shift weight toward Active (C).
+      </div>
+    </Glass>
+  );
+}
+
 function SplitRow({ label, n, rate1Label, rate1, rate2Label, rate2, epa, maxAbs }) {
   if (!n) return null;
   const val = epa || 0;
@@ -557,6 +620,15 @@ function SkillDetail({ p, onClose }) {
           <StatChip label="TD/Gm" value={p.overall.tds/gamesPlayed} decimals={2} accent={ACCENT.amber} />
         </Glass>
       )}
+
+      <CurrentSeasonBlendPanel blend={p.currentSeasonBlend} stats={p.overall.rushAtt > 0 ? [
+        { label: "Tgt/Gm", key: "targetsPerGame", decimals: 1 },
+        { label: "Rush Yds/Gm", key: "rushYardsPerGame", decimals: 1 },
+        { label: "Scrim Yds/Gm", key: "scrimmageYardsPerGame", decimals: 1 },
+      ] : [
+        { label: "Tgt/Gm", key: "targetsPerGame", decimals: 1 },
+        { label: "Rec Yds/Gm", key: "yardsPerGame", decimals: 1 },
+      ]} />
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
         <Glass hover={false} style={{ padding: "12px 16px" }}><div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", fontWeight: 700, marginBottom: 8 }}>HOME</div><div style={{ fontSize: 13, color: "var(--text-body)" }}>{fmt(p.home.yards)} yds · {p.home.targets} tgt</div></Glass>
@@ -717,6 +789,11 @@ function QBDetail({ p, onClose }) {
         </Glass>
       )}
 
+      <CurrentSeasonBlendPanel blend={p.currentSeasonBlend} stats={[
+        { label: "Pass Yds/Gm", key: "passYardsPerGame", decimals: 1 },
+        { label: "Rush Yds/Gm", key: "rushYardsPerGame", decimals: 1 },
+      ]} />
+
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
         <Glass hover={false} style={{ padding: "12px 16px" }}><div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", fontWeight: 700, marginBottom: 8 }}>HOME</div><div style={{ fontSize: 13, color: "var(--text-body)" }}>{fmt(p.home.yards)} yds · {p.home.attempts} att</div></Glass>
         <Glass hover={false} style={{ padding: "12px 16px" }}><div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", fontWeight: 700, marginBottom: 8 }}>AWAY</div><div style={{ fontSize: 13, color: "var(--text-body)" }}>{fmt(p.away.yards)} yds · {p.away.attempts} att</div></Glass>
@@ -785,6 +862,10 @@ function KickerDetail({ p, onClose }) {
         </Glass>
       )}
 
+      <CurrentSeasonBlendPanel blend={p.currentSeasonBlend} stats={[
+        { label: "FG Made/Gm", key: "fgMadePerGame", decimals: 1 },
+      ]} />
+
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
         <Glass hover={false} style={{ padding: "12px 16px" }}><div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", fontWeight: 700, marginBottom: 8 }}>HOME</div><div style={{ fontSize: 13, color: "var(--text-body)" }}>{p.home.made}/{p.home.attempts} ({fmt(p.home.pct,0)}%)</div></Glass>
         <Glass hover={false} style={{ padding: "12px 16px" }}><div style={{ fontSize: 10.5, color: "var(--text-secondary-b)", fontWeight: 700, marginBottom: 8 }}>AWAY</div><div style={{ fontSize: 13, color: "var(--text-body)" }}>{p.away.made}/{p.away.attempts} ({fmt(p.away.pct,0)}%)</div></Glass>
@@ -842,6 +923,10 @@ function DefenseDetail({ d, onClose }) {
         <StatChip label="Away" value={d.awaySacks} decimals={d.awaySacks % 1 ? 1 : 0} />
         <StatChip label="Avg Rushers" value={d.avgPassRushers} decimals={1} />
       </Glass>
+
+      <CurrentSeasonBlendPanel blend={d.currentSeasonBlend} stats={[
+        { label: "Sacks/Gm", key: "sacksPerGame", decimals: 2 },
+      ]} />
 
       <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 16 }}>
         <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Sacks by Offensive Front Faced</div>
@@ -1060,6 +1145,16 @@ function WNBADetail({ p, onClose }) {
   );
 }
 
+function HCLeaderBadge({ games }) {
+  if (!games) return null;
+  return (
+    <span title={`Includes ${games} real game${games===1?"":"s"} from the ${CURRENT_SEASON||"current"} season, shrinkage-blended with the 2024-25 historical baseline`}
+      style={{ fontSize: 8.5, fontWeight: 800, color: "#7CFFB2", background: "#7CFFB222", border: "1px solid #7CFFB255", borderRadius: 5, padding: "1.5px 5px", letterSpacing: "0.04em" }}>
+      H+C
+    </span>
+  );
+}
+
 function OffenseCard({ p, onSelect, idx }) {
   let primary, primaryLabel, secondary, accent;
   const hasRush = p.overall.rushAtt > 0;
@@ -1083,39 +1178,65 @@ function OffenseCard({ p, onSelect, idx }) {
     secondary = `${p.overall.attempts} att · ${fmt(p.overall.pct,0)}% · ${fmt(p.overall.avgDist,0)}yd avg`;
     accent = ACCENT.rose;
   }
+
+  // Active/Current-season read (C), shrinkage-blended with the 2024-25 Historical baseline (H) that drives `primary` above.
+  const blend = p.currentSeasonBlend;
+  let curLine = null;
+  if (blend && blend.currentSeasonGames > 0) {
+    const g = blend.currentSeasonGames;
+    if (p.kind === "skill") {
+      const perGame = hasRush ? blend.scrimmageYardsPerGame : blend.yardsPerGame;
+      curLine = `${fmt(perGame.value,1)} ${hasRush ? "scrim" : "rec"} yds/gm blended · ${Math.round(perGame.weight_current*100)}% weight on ${g} real gm this szn`;
+    } else if (p.kind === "qb") {
+      const perGame = blend.passYardsPerGame;
+      curLine = `${fmt(perGame.value,1)} pass yds/gm blended · ${Math.round(perGame.weight_current*100)}% weight on ${g} real gm this szn`;
+    } else {
+      const perGame = blend.fgMadePerGame;
+      curLine = `${fmt(perGame.value,1)} fg/gm blended · ${Math.round(perGame.weight_current*100)}% weight on ${g} real gm this szn`;
+    }
+  }
+
   return (
     <Glass onClick={() => onSelect(p)} style={{ padding: "14px 16px", animationDelay: `${Math.min(idx,20)*18}ms` }}>
       <div className="fade-in" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
-          <div style={{ fontSize: 15, fontWeight: 700, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>{p.name}<InjuryBadge playerName={p.name} compact /><OLInjuryBadge team={p.team} pos={p.pos} compact /></div>
+          <div style={{ fontSize: 15, fontWeight: 700, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>{p.name}<InjuryBadge playerName={p.name} compact /><OLInjuryBadge team={p.team} pos={p.pos} compact /><HCLeaderBadge games={blend?.currentSeasonGames} /></div>
           <div style={{ fontSize: 11, color: "var(--text-secondary-b)", marginTop: 2 }}>{p.pos} · {TEAM_NAMES[p.team]||p.team}</div>
         </div>
         <div style={{ textAlign: "right" }}>
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 700, color: accent }}>{primary}</div>
-          <div style={{ fontSize: 9.5, color: "var(--text-label)" }}>{primaryLabel}</div>
+          <div style={{ fontSize: 9.5, color: "var(--text-label)" }}>{primaryLabel} · H</div>
         </div>
       </div>
       <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--text-secondary-a)", fontFamily: "'JetBrains Mono', monospace" }}>{secondary}</div>
+      {curLine && <div style={{ marginTop: 6, fontSize: 10.5, color: "#7CFFB2", fontFamily: "'JetBrains Mono', monospace" }}>▲ C: {curLine}</div>}
     </Glass>
   );
 }
 
 function DefenseCard({ d, onSelect, idx }) {
+  const blend = d.currentSeasonBlend;
+  let curLine = null;
+  if (blend && blend.currentSeasonGames > 0) {
+    const perGame = blend.sacksPerGame;
+    curLine = `${fmt(perGame.value,2)} sacks/gm blended · ${Math.round(perGame.weight_current*100)}% weight on ${blend.currentSeasonGames} real gm this szn`;
+  }
   return (
     <Glass onClick={() => onSelect(d)} style={{ padding: "14px 16px", animationDelay: `${Math.min(idx,20)*18}ms` }}>
       <div className="fade-in" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
-          <div style={{ fontSize: 15, fontWeight: 700 }}>{d.name}</div>
+          <div style={{ fontSize: 15, fontWeight: 700, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>{d.name}<HCLeaderBadge games={blend?.currentSeasonGames} /></div>
           <div style={{ fontSize: 11, color: "var(--text-secondary-b)", marginTop: 2 }}>{d.pos} · {TEAM_NAMES[d.team]||d.team}</div>
         </div>
         <div style={{ textAlign: "right" }}>
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 700, color: ACCENT.violet }}>{d.totalSacks}</div>
-          <div style={{ fontSize: 9.5, color: "var(--text-label)" }}>sacks</div>
+          <div style={{ fontSize: 9.5, color: "var(--text-label)" }}>sacks · H</div>
         </div>
       </div>
       <div style={{ display: "flex", gap: 12, marginTop: 10, fontSize: 11.5, color: "var(--text-secondary-a)", fontFamily: "'JetBrains Mono', monospace" }}>
         <span>{d.homeSacks} home</span><span>{d.awaySacks} away</span><span>{fmt(d.avgPassRushers,1)} avg rushers</span>
       </div>
+      {curLine && <div style={{ marginTop: 6, fontSize: 10.5, color: "#7CFFB2", fontFamily: "'JetBrains Mono', monospace" }}>▲ C: {curLine}</div>}
     </Glass>
   );
 }
@@ -1865,6 +1986,11 @@ function TrancheStep({ label, line, hit, accent, width }) {
 }
 
 const TEAM_DEFENSE = __TEAM_DEFENSE__;
+const TEAM_OFFENSE = __TEAM_OFFENSE__;
+const CURRENT_SEASON = __CURRENT_SEASON__;
+const BASELINE_SEASONS = __BASELINE_SEASONS__;
+const HISTORICAL_LABEL = `H · Historical (${BASELINE_SEASONS[0]}-${String(BASELINE_SEASONS[1]).slice(-2)})`;
+const ACTIVE_LABEL = CURRENT_SEASON ? `C · Active (${CURRENT_SEASON})` : "C · Active";
 const TRANCHE_ACCENT = { p25: TRANCHE_COLOR.p25, p50: TRANCHE_COLOR.p50, p75: TRANCHE_COLOR.p75 };
 function AddButton({ inSlip, onClick, tranche, compact }) {
   const accent = TRANCHE_ACCENT[tranche] || TRANCHE_COLOR.p50;
@@ -3332,9 +3458,22 @@ function TeamCard({ team, sport, onSelect }) {
 
 function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
   const teamLabel = sport === "nfl" ? (TEAM_NAMES[team] || team) : team;
+  // Historical (2024-25 baseline) vs Active (real current season) toggle -- NFL only, since
+  // that's the only sport with a real current-season team profile built out so far.
+  const [hcView, setHcView] = useState("historical");
+  const nflDefRaw = sport === "nfl" ? TEAM_DEFENSE[team] : null;
+  const nflOffRaw = sport === "nfl" ? TEAM_OFFENSE[team] : null;
+  const hasCurrentTeamData = !!(nflDefRaw?.current || nflOffRaw?.current);
+  const effectiveView = hasCurrentTeamData ? hcView : "historical";
+  // activeDef carries whichever window (historical/current) is selected -- points scored/
+  // allowed, scheme and allowedByPosition all read from this rather than TEAM_DEFENSE[team]
+  // directly, so the H/C toggle actually changes what's shown instead of only labeling it.
+  const activeDef = sport === "nfl" ? (effectiveView === "current" ? nflDefRaw?.current : nflDefRaw) : null;
+  const activeOff = sport === "nfl" ? nflOffRaw?.[effectiveView] : null;
+
   let def = null, label = "", scored = null, scoredRank = null, allowed = null, allowedRank = null;
   if (sport === "nfl") {
-    def = TEAM_DEFENSE[team]; label = "Pts";
+    def = activeDef; label = "Pts";
     scored = def?.pointsScoredPerGame; scoredRank = def?.pointsScoredRank;
     allowed = def?.pointsAllowedPerGame; allowedRank = def?.pointsAllowedRank;
   } else if (sport === "wnba") {
@@ -3370,7 +3509,14 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
   return (
     <div className="fade-in">
       <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", marginBottom: 14, padding: 0 }}>← Back to teams</button>
-      <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 16 }}>{teamLabel}</h2>
+      <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 10 }}>{teamLabel}</h2>
+
+      {sport === "nfl" && <HCToggle view={effectiveView} setView={setHcView} hasCurrent={hasCurrentTeamData} />}
+      {sport === "nfl" && effectiveView === "current" && activeDef?.gamesPlayed && (
+        <div style={{ fontSize: 10.5, color: "var(--text-tertiary)", marginBottom: 10, marginTop: -4 }}>
+          Based on {activeDef.gamesPlayed} real game{activeDef.gamesPlayed === 1 ? "" : "s"} so far this season — small sample, weigh alongside the Historical view.
+        </div>
+      )}
 
       <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 20, display: "flex", gap: 24, flexWrap: "wrap" }}>
         <StatChip label={`${label} Scored/Gm`} value={scored} decimals={1} accent={ACCENT.teal} />
@@ -3392,7 +3538,7 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
             🎯 TDs Allowed by Position
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
-            {["WR", "TE", "RB"].map(pos => {
+            {["WR", "TE", "RB", "QB"].map(pos => {
               const d = def.allowedByPosition[pos];
               if (!d) return null;
               const isWeak = def.weakestPosition === pos;
@@ -3403,13 +3549,48 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
                     {isWeak && <span style={{ fontSize: 8.5, color: ACCENT.rose, fontWeight: 800, border: `1px solid ${ACCENT.rose}55`, borderRadius: 6, padding: "1px 6px" }}>⚠ WEAKNESS</span>}
                   </div>
                   <div style={{ fontSize: 26, fontWeight: 800, color: isWeak ? ACCENT.rose : "var(--text-body)", fontFamily: "'JetBrains Mono', monospace" }}>{d.tds}</div>
-                  <div style={{ fontSize: 10, color: "var(--text-tertiary)" }}>TDs allowed · #{d.rank} of 32 vs {pos}s · {fmt(d.ypg,1)} yds/gm</div>
+                  <div style={{ fontSize: 10, color: "var(--text-tertiary)" }}>
+                    {pos === "QB"
+                      ? <>rushing TDs allowed · #{d.rank} of 32 · {d.rushAtt} real rush att faced</>
+                      : <>TDs allowed · #{d.rank} of 32 vs {pos}s · {fmt(d.ypg,1)} yds/gm</>}
+                  </div>
                 </Glass>
               );
             })}
           </div>
           <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginTop: 8 }}>
             Real season totals — TD counts alone can be a small sample over a season, so weigh alongside the yards/game rank too, not TDs in isolation.
+            {def.allowedByPosition.QB && " QB reflects real rushing scores allowed (scrambles, goal-line sneaks), not passing."}
+          </div>
+        </div>
+      )}
+
+      {sport === "nfl" && activeOff?.tdsByPosition && (
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
+            🏆 TDs Scored by Position
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
+            {["WR", "TE", "RB", "QB"].map(pos => {
+              const d = activeOff.tdsByPosition[pos];
+              if (!d) return null;
+              const isPrimary = activeOff.primaryScorer === pos;
+              return (
+                <Glass key={pos} hover={false} style={{ padding: "12px 14px", border: isPrimary ? `1px solid ${ACCENT.teal}88` : undefined }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                    <b style={{ fontSize: 13 }}>{pos}s</b>
+                    {isPrimary && <span style={{ fontSize: 8.5, color: ACCENT.teal, fontWeight: 800, border: `1px solid ${ACCENT.teal}55`, borderRadius: 6, padding: "1px 6px" }}>★ TOP SOURCE</span>}
+                  </div>
+                  <div style={{ fontSize: 26, fontWeight: 800, color: isPrimary ? ACCENT.teal : "var(--text-body)", fontFamily: "'JetBrains Mono', monospace" }}>{d.tds}</div>
+                  <div style={{ fontSize: 10, color: "var(--text-tertiary)" }}>
+                    {fmt(d.pct,0)}% of team TDs · {d.receivingTDs} rec / {d.rushingTDs} rush · {fmt(d.perGame,2)}/gm
+                  </div>
+                </Glass>
+              );
+            })}
+          </div>
+          <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginTop: 8 }}>
+            The offense's own side of the panel above — real receiving TDs credited to the receiver's position, real rushing TDs credited to the rusher's (including QB scrambles/sneaks). {activeOff.totalTDs} total real TDs over {activeOff.gamesPlayed} game{activeOff.gamesPlayed===1?"":"s"}.
           </div>
         </div>
       )}

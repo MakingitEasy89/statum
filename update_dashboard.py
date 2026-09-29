@@ -20,6 +20,8 @@ import sys
 import math
 import datetime
 import os
+import time
+import random
 from pathlib import Path
 
 try:
@@ -70,6 +72,16 @@ ODDS_SPORT_KEYS = {'nfl': 'americanfootball_nfl', 'wnba': 'basketball_wnba', 'ml
 # ESPN's team abbreviations mostly match nflverse's, with a few known exceptions.
 ESPN_TEAM_ABBR_OVERRIDES = {'WAS': 'wsh', 'LA': 'lar', 'LAC': 'lac', 'JAX': 'jax'}
 
+# ESPN roster endpoints to try, in order, per team. Kept as a list (not a single URL)
+# because ESPN has silently rotated which unofficial host actually serves this data at
+# least twice in 2026 -- if one starts blanket-403ing again (e.g. a datacenter/CI IP range
+# getting flagged), the others get a real shot before we give up on live data entirely.
+ESPN_ROSTER_URL_TEMPLATES = [
+    "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/{code}/roster",
+    "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{code}/roster",
+]
+ESPN_CACHE_PATH = CACHE_DIR / "espn_current_teams.json"
+
 def fetch_espn_current_rosters():
     """Real, current team assignment — direct from ESPN's own roster pages, not inferred
     from play-by-play or a periodic nflverse snapshot. Built this after finding that the
@@ -79,49 +91,95 @@ def fetch_espn_current_rosters():
     This is an unofficial, undocumented endpoint (no formal ESPN API docs exist for it),
     so this prints exactly what it finds — if ESPN changes their response shape, that
     will show up immediately here rather than silently returning nothing.
+
+    Resilience, added after a run came back 0/32 (every team 403ing at once — the
+    signature of an IP-range block on the runner, not a per-request rate limit, since
+    retries/headers can't fix that): each team gets a couple of retries across a couple of
+    known ESPN hosts with a small randomized delay between requests, and the result is
+    merged into a local cache file (_data_cache/espn_current_teams.json) rather than
+    replacing it outright. A team ESPN failed to serve THIS run keeps its last known-good
+    value from the cache instead of silently falling all the way back to (potentially
+    older) nflverse-based resolution. If literally nothing can be reached this run, the
+    whole cache is reused as-is and clearly logged as stale, rather than treated as a
+    fresh, trustworthy 0-team result.
     Returns {player_name: team_abbr}."""
-    out = {}
-    teams_checked = 0
-    teams_failed = []
-    # Switched from site.api.espn.com to site.web.api.espn.com — real users started hitting
-    # widespread 403s on the old subdomain in mid-2026 (confirmed via developer reports from
-    # August 2026), with site.web.api.espn.com reported as the working replacement. Also
-    # added more complete browser-like headers, since a bare User-Agent alone is often not
-    # enough to get past bot detection — real browsers send Accept/Accept-Language too, and
-    # a request missing them can look more obviously automated.
     espn_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'en-US,en;q=0.9',
         'Referer': 'https://www.espn.com/',
     }
+
+    cached_teams = {}
+    cached_at = None
+    if ESPN_CACHE_PATH.exists():
+        try:
+            cache_blob = json.loads(ESPN_CACHE_PATH.read_text(encoding='utf-8'))
+            cached_teams = cache_blob.get('teams', {})
+            cached_at = cache_blob.get('fetched_at')
+        except Exception as e:
+            print(f"  [!] Couldn't read ESPN cache ({e}) — proceeding without it")
+
+    live = {}
+    teams_checked = 0
+    teams_failed = []
     for team in NFL_TEAM_FULL_NAMES:
         espn_code = ESPN_TEAM_ABBR_OVERRIDES.get(team, team.lower())
-        try:
-            resp = requests.get(
-                f"https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/{espn_code}/roster",
-                timeout=15, headers=espn_headers
-            )
-            if resp.status_code != 200:
-                teams_failed.append(f"{team} (HTTP {resp.status_code})")
-                continue
-            data = resp.json()
-            groups = data.get('athletes', [])
-            found_this_team = 0
-            for group in groups:
-                for athlete in group.get('items', []):
-                    name = athlete.get('fullName') or athlete.get('displayName')
-                    if name:
-                        out[name] = team
-                        found_this_team += 1
-            if found_this_team == 0:
-                teams_failed.append(f"{team} (0 players parsed — response shape may differ from expected)")
-            teams_checked += 1
-        except Exception as e:
-            teams_failed.append(f"{team} ({e})")
-    print(f"  ESPN current-roster fetch: {teams_checked}/32 teams reached, {len(out)} total players parsed")
+        found_this_team = 0
+        last_err = None
+        for template in ESPN_ROSTER_URL_TEMPLATES:
+            success = False
+            for attempt in range(2):  # up to 2 tries per host before moving to the next host
+                try:
+                    resp = requests.get(template.format(code=espn_code), timeout=15, headers=espn_headers)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        for group in data.get('athletes', []):
+                            for athlete in group.get('items', []):
+                                name = athlete.get('fullName') or athlete.get('displayName')
+                                if name:
+                                    live[name] = team
+                                    found_this_team += 1
+                        success = True
+                        break
+                    last_err = f"HTTP {resp.status_code}"
+                    if resp.status_code not in (403, 429, 500, 502, 503, 504):
+                        break  # not a transient/blocking error — retrying won't help
+                except Exception as e:
+                    last_err = str(e)
+                time.sleep(0.4 + random.random() * 0.5)  # brief backoff before retry/next host
+            if success:
+                break
+        teams_checked += 1
+        if found_this_team == 0:
+            teams_failed.append(f"{team} ({last_err or '0 players parsed'})")
+        time.sleep(0.15 + random.random() * 0.2)  # small jitter between teams — avoid a bursty request pattern
+
+    print(f"  ESPN current-roster fetch: {32 - len(teams_failed)}/32 teams reached live, {len(live)} players parsed live")
     if teams_failed:
         print(f"  [!] {len(teams_failed)} teams had issues: {teams_failed[:5]}{'...' if len(teams_failed) > 5 else ''}")
+
+    if len(live) == 0 and cached_teams:
+        # Total block this run (the "0/32, all 403" failure mode) -- reuse the cache as-is
+        # rather than wiping out every player's current-team accuracy for one bad run.
+        age_note = f" from {cached_at}" if cached_at else ""
+        print(f"  [!] ESPN unreachable this run (likely blocked, not a data-shape issue) — "
+              f"falling back to the last cached roster snapshot{age_note} ({len(cached_teams)} players). "
+              f"Team assignments for very recent transactions may be stale until ESPN is reachable again.")
+        out = cached_teams
+    else:
+        # Merge: fresh, live-verified entries win; any team ESPN didn't serve this run
+        # keeps its last known-good cached value instead of losing that player entirely.
+        out = {**cached_teams, **live}
+        if live:
+            try:
+                ESPN_CACHE_PATH.write_text(json.dumps({
+                    'fetched_at': datetime.date.today().isoformat(),
+                    'teams': out,
+                }), encoding='utf-8')
+            except Exception as e:
+                print(f"  [!] Couldn't write ESPN cache ({e}) — non-fatal, continuing")
+
     # spot-check specific players known to have moved recently, so a wrong assumption
     # about the response shape shows up immediately and specifically, not just as a
     # generic count
@@ -187,6 +245,174 @@ def build_redzone_tendencies(baseline, current):
             'defPassTDN': int(pass_row['count']) if pass_row is not None else 0,
             'defRunTDRate': round(float(run_row['mean']) * 100, 1) if run_row is not None and run_row['count'] >= 15 else None,
             'defRunTDN': int(run_row['count']) if run_row is not None else 0,
+        }
+    return out
+
+
+QB_RUSH_TD_MIN_ATT = 8  # real min sample before an opposing QB's rushing production factors into a defense's "allowed by position" read -- teams don't face many QB rush attempts in a season, so this stays low relative to the WR/TE/RB thresholds elsewhere in this file
+
+
+def compute_team_defense(games_df, pbp_df, pos_map, min_games=1):
+    """Team defense profile (points allowed/scored, scheme tendencies, TDs allowed by
+    position group) computed from WHATEVER games+pbp slice is passed in -- this is what
+    lets the same logic build both the 2024-2025 historical profile and the current-season
+    profile, rather than hardcoding one fixed window like the original version of this did.
+
+    TDs-allowed-by-position now also includes a QB group: real rushing TDs allowed to
+    OPPOSING quarterbacks (goal-line sneaks, scrambles) -- previously this only covered
+    WR/TE/RB via receiving, which meant a defense's real vulnerability to a mobile QB in
+    the red zone (Hurts-style sneaks, e.g.) was invisible here even though the site tracks
+    that same QB rushing production everywhere else (Anytime TD, prop ladders)."""
+    if len(games_df) == 0:
+        return {}
+    pa_rows = []
+    for _, g in games_df.iterrows():
+        if pd.isna(g.home_score) or pd.isna(g.away_score):
+            continue
+        pa_rows.append({'team': g.home_team, 'allowed': g.away_score, 'scored': g.home_score})
+        pa_rows.append({'team': g.away_team, 'allowed': g.home_score, 'scored': g.away_score})
+    pa = pd.DataFrame(pa_rows)
+    if len(pa) == 0:
+        return {}
+    points_allowed = pa.groupby('team').agg(gamesPlayed=('allowed', 'count'), totalAllowed=('allowed', 'sum'), totalScored=('scored', 'sum')).reset_index()
+    points_allowed['ppgAllowed'] = points_allowed['totalAllowed'] / points_allowed['gamesPlayed']
+    points_allowed['ppgScored'] = points_allowed['totalScored'] / points_allowed['gamesPlayed']
+    points_allowed['rank'] = points_allowed['ppgAllowed'].rank(ascending=False).astype(int)
+    points_allowed['scoredRank'] = points_allowed['ppgScored'].rank(ascending=False).astype(int)
+    points_allowed = points_allowed.set_index('team')
+
+    if len(pbp_df) == 0:
+        return {}
+    targets_all = pbp_df[pbp_df['receiver_player_id'].notna()].copy()
+    targets_all['recv_pos'] = targets_all['receiver_player_id'].map(pos_map).replace('FB', 'RB')
+    targets_all = targets_all[targets_all['recv_pos'].isin(['WR', 'TE', 'RB'])]
+    games_played_by_def = pbp_df.groupby('defteam')['game_id'].nunique()
+    pos_allowed = targets_all.groupby(['defteam', 'recv_pos']).agg(
+        targets=('week', 'count'), catches=('complete_pass', 'sum'), yards=('yards_gained', 'sum'),
+        tds=('pass_touchdown', 'sum'), epaAllowed=('epa', 'sum')
+    ).reset_index()
+    pos_allowed = pos_allowed.join(games_played_by_def.rename('gp'), on='defteam')
+    pos_allowed['ypg'] = pos_allowed['yards'] / pos_allowed['gp']
+    pos_allowed['epaPerTgt'] = pos_allowed['epaAllowed'] / pos_allowed['targets']
+    pos_allowed['rank'] = pos_allowed.groupby('recv_pos')['ypg'].rank(ascending=False).astype(int)
+
+    # Real rushing TDs allowed to opposing QBs -- a defense doesn't "allow a target" to a
+    # QB the way it does a receiver, so this is keyed off the rusher's own position instead.
+    rush_all = pbp_df[pbp_df['rusher_player_id'].notna()].copy()
+    rush_all['rush_pos'] = rush_all['rusher_player_id'].map(pos_map)
+    qb_rush = rush_all[rush_all['rush_pos'] == 'QB']
+    qb_rush_allowed = pd.DataFrame()
+    if len(qb_rush):
+        qb_rush_allowed = qb_rush.groupby('defteam').agg(
+            rushAtt=('rush_attempt', 'count'), rushYards=('rushing_yards', 'sum'), tds=('rush_touchdown', 'sum')
+        )
+        qb_rush_allowed = qb_rush_allowed.join(games_played_by_def.rename('gp'))
+        qb_rush_allowed['ypg'] = qb_rush_allowed['rushYards'] / qb_rush_allowed['gp']
+        qualified = qb_rush_allowed[qb_rush_allowed['rushAtt'] >= QB_RUSH_TD_MIN_ATT]
+        qb_rush_allowed['rank'] = qualified['tds'].rank(ascending=False).astype(int) if len(qualified) else pd.Series(dtype=int)
+
+    def_plays = pbp_df[pbp_df['defteam'].notna() & (pbp_df['pass'] == 1)]
+    out = {}
+    for team, g in def_plays.groupby('defteam'):
+        gp = int(games_played_by_def.get(team, 0))
+        if gp < min_games:
+            continue
+        front_counts = g['front_bucket'].value_counts(normalize=True) * 100
+        cov_counts = g['coverage'].value_counts(normalize=True) * 100
+        if len(front_counts) == 0 or len(cov_counts) == 0:
+            continue
+        top_front_bucket = front_counts.idxmax()
+        sub = g[g['front_bucket'] == top_front_bucket]
+        top_front_exact = sub['front'].value_counts().idxmax() if len(sub) else None
+        top_cov = cov_counts.idxmax()
+        pa_row = points_allowed.loc[team] if team in points_allowed.index else None
+        pos_rows = pos_allowed[pos_allowed.defteam == team]
+        pos_by_group = {r['recv_pos']: {'ypg': round(r['ypg'], 1), 'rank': int(r['rank']), 'tds': int(r['tds']),
+                                          'targets': int(r['targets']), 'catches': int(r['catches']),
+                                          'epaPerTgt': round(r['epaPerTgt'], 3)} for _, r in pos_rows.iterrows()}
+        if len(qb_rush_allowed) and team in qb_rush_allowed.index:
+            qr = qb_rush_allowed.loc[team]
+            if qr['rushAtt'] >= QB_RUSH_TD_MIN_ATT and not pd.isna(qr.get('rank', np.nan)):
+                pos_by_group['QB'] = {'ypg': round(float(qr['ypg']), 1), 'rank': int(qr['rank']), 'tds': int(qr['tds']),
+                                        'rushAtt': int(qr['rushAtt']), 'targets': None, 'catches': None, 'epaPerTgt': None}
+        weakest = max(pos_by_group.items(), key=lambda kv: -kv[1]['rank']) if pos_by_group else None
+        out[team] = {
+            'pointsAllowedPerGame': round(float(pa_row['ppgAllowed']), 1) if pa_row is not None else None,
+            'pointsAllowedRank': int(pa_row['rank']) if pa_row is not None else None,
+            'pointsScoredPerGame': round(float(pa_row['ppgScored']), 1) if pa_row is not None else None,
+            'pointsScoredRank': int(pa_row['scoredRank']) if pa_row is not None else None,
+            'gamesPlayed': gp,
+            'scheme': {'primaryFrontBucket': top_front_bucket, 'primaryFrontBucketPct': round(float(front_counts.max()), 1),
+                       'primaryFrontExact': top_front_exact, 'primaryCoverage': top_cov,
+                       'primaryCoveragePct': round(float(cov_counts.max()), 1),
+                       'nickelPct': round(float(front_counts.get('Nickel', 0)), 1),
+                       'basePct': round(float(front_counts.get('Base', 0)), 1),
+                       'dimePct': round(float(front_counts.get('Dime', 0)), 1)},
+            'allowedByPosition': pos_by_group,
+            'weakestPosition': weakest[0] if weakest else None,
+            'weakestPositionRank': weakest[1]['rank'] if weakest else None,
+        }
+    return out
+
+
+def compute_team_offense(games_df, pbp_df, pos_map, min_games=1):
+    """The offense's own side of TDs-by-position -- a direct mirror of
+    compute_team_defense's allowedByPosition, but from the scoring team's perspective:
+    of THIS team's own real touchdowns, what share came from each position group.
+    Receiving TDs are credited to the receiver's position (WR/TE/RB); rushing TDs are
+    credited to the rusher's position (WR/TE/RB via jet sweeps etc., and QB via
+    scrambles/sneaks) -- so a team's true full TD distribution, not just receiving."""
+    if len(games_df) == 0 or len(pbp_df) == 0:
+        return {}
+    pf_rows = []
+    for _, g in games_df.iterrows():
+        if pd.isna(g.home_score) or pd.isna(g.away_score):
+            continue
+        pf_rows.append({'team': g.home_team, 'scored': g.home_score})
+        pf_rows.append({'team': g.away_team, 'scored': g.away_score})
+    pf = pd.DataFrame(pf_rows)
+    if len(pf) == 0:
+        return {}
+    points_scored = pf.groupby('team').agg(gamesPlayed=('scored', 'count'), totalScored=('scored', 'sum')).reset_index()
+    points_scored['ppgScored'] = points_scored['totalScored'] / points_scored['gamesPlayed']
+    points_scored['rank'] = points_scored['ppgScored'].rank(ascending=False).astype(int)
+    points_scored = points_scored.set_index('team')
+
+    df = pbp_df
+    rec_td = df[(df['pass_touchdown'] == 1) & df['receiver_player_id'].notna()].copy()
+    rec_td['pos_group'] = rec_td['receiver_player_id'].map(pos_map).replace('FB', 'RB')
+    rec_td = rec_td[rec_td['pos_group'].isin(['WR', 'TE', 'RB'])]
+    rec_counts = rec_td.groupby(['posteam', 'pos_group']).size()
+
+    rush_td = df[(df['rush_touchdown'] == 1) & df['rusher_player_id'].notna()].copy()
+    rush_td['pos_group'] = rush_td['rusher_player_id'].map(pos_map).replace('FB', 'RB')
+    rush_td = rush_td[rush_td['pos_group'].isin(['WR', 'TE', 'RB', 'QB'])]
+    rush_counts = rush_td.groupby(['posteam', 'pos_group']).size()
+
+    out = {}
+    for team in points_scored.index:
+        gp = int(points_scored.loc[team, 'gamesPlayed'])
+        if gp < min_games:
+            continue
+        by_position = {}
+        total_tds = 0
+        for pg in ['WR', 'TE', 'RB', 'QB']:
+            rec_n = int(rec_counts.get((team, pg), 0)) if pg != 'QB' else 0
+            rush_n = int(rush_counts.get((team, pg), 0))
+            tds = rec_n + rush_n
+            total_tds += tds
+            by_position[pg] = {'tds': tds, 'receivingTDs': rec_n, 'rushingTDs': rush_n, 'perGame': round(tds / gp, 2) if gp else 0.0}
+        for pg, d in by_position.items():
+            d['pct'] = round(d['tds'] / total_tds * 100, 1) if total_tds else 0.0
+        top_scorer = max(by_position.items(), key=lambda kv: kv[1]['tds'])[0] if total_tds else None
+        pr = points_scored.loc[team]
+        out[team] = {
+            'pointsPerGame': round(float(pr['ppgScored']), 1),
+            'pointsRank': int(pr['rank']),
+            'gamesPlayed': gp,
+            'totalTDs': total_tds,
+            'tdsByPosition': by_position,
+            'primaryScorer': top_scorer,
         }
     return out
 
@@ -258,6 +484,125 @@ def build_usage_bump_analysis(receivers, injury_df):
             'avgTargetBump': round(avg_bump, 1), 'instances': len(instances), 'triggerPlayers': trigger_players,
         }
     return out
+
+
+def build_xgboost_lean_model(baseline, current, full_pool, receivers):
+    """A supplementary, model-based signal — NOT a replacement for the real percentile
+    system, which stays the primary, transparent display. This combines recent form,
+    home/away, and opponent strength into one learned probability of clearing a player's
+    own real P50 line, trained on real historical games.
+
+    Scope for this first version: Receiving Yards only (the highest-volume, most-bet
+    prop) — extending to other stats/positions is a natural next step once this is
+    validated with real usage, not attempted all at once here.
+
+    Honest limitations, disclosed rather than hidden:
+    - Trained on POOLED data across all players, not per-player — a single player has
+      nowhere near enough games (30-40) to train an individual model on; pooling many
+      players' games together is what makes a model like this workable at all here.
+    - Opponent strength uses that opponent's END-OF-BASELINE defensive rank as a stand-in
+      for their strength "at the time" of each historical game, not a true week-by-week
+      rolling value — a standard, disclosed simplification for a lightweight model like
+      this, not a claim of perfect historical precision.
+    - Real accuracy is measured below on real held-out games, not assumed — if it doesn't
+      meaningfully beat a naive baseline, that gets reported honestly, not hidden."""
+    try:
+        import xgboost as xgb
+    except ImportError:
+        # This is a supplementary diagnostic, never a required part of the pipeline (it was
+        # never wired into any real prop entry even when it WAS installed, since historically
+        # it didn't beat the naive baseline) -- a missing optional dependency here must never
+        # take down the whole update (real game data, props, team stats, etc. still need to
+        # ship). Run `pip install xgboost` locally to enable this diagnostic; the GitHub
+        # Actions workflow already installs it, so this only shows up on a local run without it.
+        print("  XGBoost lean model: 'xgboost' package not installed locally -- skipping this diagnostic "
+              "(run `pip install xgboost` to enable it; everything else is unaffected)")
+        return {}, None
+
+    # Match by player ID via the already-built receivers list, not the raw play-by-play
+    # name column — raw names are often abbreviated ("T.Hill") while full_pool uses the
+    # properly resolved roster name ("Tyreek Hill"). Matching on name directly was a real
+    # bug that silently produced zero rows the first time this was built.
+    pid_to_name = {r['id']: r['name'] for r in receivers}
+
+    combined = pd.concat([baseline, current]) if len(current) else baseline
+    rec = combined[combined['receiver_player_id'].notna()].copy()
+    if len(rec) == 0:
+        return {}, None
+
+    per_game = rec.groupby(['receiver_player_id', 'season', 'game_id']).agg(
+        yards=('yards_gained', 'sum'), is_home=('is_home', 'first'), defteam=('defteam', 'first'), week=('week', 'first')
+    ).reset_index().sort_values(['receiver_player_id', 'season', 'week'])
+
+    # end-of-baseline defensive rank vs WR/TE/RB receiving yards allowed, per team — used
+    # as the "opponent strength" feature (see the disclosed simplification above)
+    team_ypg_allowed = rec.groupby(['defteam', 'game_id'])['yards_gained'].sum().reset_index().groupby('defteam')['yards_gained'].mean()
+    opp_rank = team_ypg_allowed.rank(ascending=False).to_dict()  # rank 1 = allows the most yards (weakest defense)
+
+    # P50 lines already computed for the real prop pool — used as this model's real,
+    # existing target threshold rather than inventing a separate one
+    p50_by_name = {e['player']: e['p50']['line'] for e in full_pool if e['stat'] == 'Receiving Yards' and e['kind'] == 'ladder'}
+
+    rows, targets, meta = [], [], []
+    for pid, grp in per_game.groupby('receiver_player_id'):
+        name = pid_to_name.get(pid)
+        p50 = p50_by_name.get(name) if name else None
+        if p50 is None:
+            continue
+        yards_hist = []
+        for _, row in grp.iterrows():
+            if len(yards_hist) >= 3:  # only once there's real trailing history to compute from -- no leakage
+                trailing_3 = np.mean(yards_hist[-3:])
+                season_avg = np.mean(yards_hist)
+                opp_r = opp_rank.get(row['defteam'], np.median(list(opp_rank.values())) if opp_rank else 16)
+                rows.append([trailing_3, season_avg, 1.0 if row['is_home'] else 0.0, opp_r])
+                targets.append(1 if row['yards'] >= p50 else 0)
+                meta.append({'name': name, 'season': row['season'], 'week': row['week']})
+            yards_hist.append(row['yards'])
+
+    if len(rows) < 200:  # not enough pooled real data yet to train something trustworthy
+        print(f"  XGBoost lean model: only {len(rows)} real training rows available — skipping (needs 200+)")
+        return {}, None
+
+    X = np.array(rows)
+    y = np.array(targets)
+    # real train/test split by SEASON, not randomly — the model is tested on games from a
+    # season it never trained on, matching the same real backtest discipline used
+    # everywhere else in this app rather than a random shuffle that could leak information
+    seasons = np.array([m['season'] for m in meta])
+    train_mask = seasons < seasons.max()
+    test_mask = ~train_mask
+    if train_mask.sum() < 100 or test_mask.sum() < 30:
+        print(f"  XGBoost lean model: not enough real rows in both a train and a held-out test season yet — skipping")
+        return {}, None
+
+    model = xgb.XGBClassifier(n_estimators=60, max_depth=3, learning_rate=0.1, eval_metric='logloss')
+    model.fit(X[train_mask], y[train_mask])
+    preds = model.predict(X[test_mask])
+    real_accuracy = float((preds == y[test_mask]).mean()) * 100
+    naive_baseline = float(max(y[test_mask].mean(), 1 - y[test_mask].mean())) * 100  # "always guess the majority class"
+    print(f"  XGBoost lean model: {len(rows)} real pooled training rows, {test_mask.sum()} held-out real test games")
+    print(f"  Real measured accuracy: {real_accuracy:.1f}% (naive always-guess-majority baseline: {naive_baseline:.1f}%)")
+
+    # retrain on ALL real data (train+test) for the version actually used on current games —
+    # the held-out split above was only to honestly measure real accuracy first
+    model.fit(X, y)
+
+    # build current lean scores for players with enough real trailing history right now
+    leans = {}
+    for pid, grp in per_game.groupby('receiver_player_id'):
+        name = pid_to_name.get(pid)
+        if not name or name not in p50_by_name or len(grp) < 3:
+            continue
+        recent = grp['yards'].values
+        trailing_3 = float(np.mean(recent[-3:]))
+        season_avg = float(np.mean(recent))
+        is_home_guess = 0.5  # unknown for a future game at this point in the pipeline -- neutral
+        opp_r = float(np.median(list(opp_rank.values()))) if opp_rank else 16.0
+        prob = float(model.predict_proba([[trailing_3, season_avg, is_home_guess, opp_r]])[0][1])
+        leans[name] = {'leanProb': round(prob * 100, 1), 'trailing3': round(trailing_3, 1)}
+
+    return leans, {'accuracy': round(real_accuracy, 1), 'baseline': round(naive_baseline, 1), 'trainingRows': len(rows), 'testGames': int(test_mask.sum())}
 
 
 def build_atd_pool(baseline, current, receivers, qbs=None):
@@ -542,6 +887,13 @@ NFL_TEAM_FULL_NAMES = {
     'SF': 'San Francisco 49ers', 'TB': 'Tampa Bay Buccaneers', 'TEN': 'Tennessee Titans', 'WAS': 'Washington Commanders',
 }
 CANDIDATE_CURRENT_SEASONS = [2026, 2027]  # script auto-detects whichever of these has real data
+
+# Re-enabled (2026-09-28) now that a missing local `xgboost` install can no longer crash the
+# pipeline: the import itself is wrapped in try/except (prints a one-line skip notice and
+# returns cleanly if the package isn't there), and the call site below is also wrapped in
+# try/except as a second layer. It only ever attaches to a real prop entry if it genuinely
+# beats the naive baseline by 3+ points -- otherwise it's just a printed, tracked number.
+ENABLE_XGBOOST_DIAGNOSTIC = True
 
 # Shrinkage constant for blending current-season-to-date with the historical baseline.
 # weight_current = games_this_season / (games_this_season + SHRINKAGE_K)
@@ -2072,21 +2424,27 @@ def main():
     print(f"  {len(kickers)} kickers")
 
     # ---- Sacks (defenders) ----
-    sack_rows = []
-    for _, r in baseline[baseline['sack'] == 1].iterrows():
-        entries = []
-        if pd.notna(r.get('sack_player_id')):
-            entries.append((r['sack_player_id'], 1.0))
-        if pd.notna(r.get('half_sack_1_player_id')):
-            entries.append((r['half_sack_1_player_id'], 0.5))
-        if pd.notna(r.get('half_sack_2_player_id')):
-            entries.append((r['half_sack_2_player_id'], 0.5))
-        for pid, val in entries:
-            sack_rows.append({'pid': pid, 'val': val, 'week': r['week'], 'season': r['season'], 'posteam': r['posteam'],
-                               'defteam': r['defteam'], 'is_home': r['defteam'] == r['home_team'], 'front': r['front'],
-                               'coverage': r['coverage'], 'weather': r['weather'], 'qb': r.get('passer_player_name'),
-                               'down': r.get('down'), 'ydsToGo': r.get('ydstogo'), 'game_id': r['game_id']})
-    sdf = pd.DataFrame(sack_rows)
+    def build_sack_rows(df):
+        rows = []
+        if len(df) == 0:
+            return pd.DataFrame(rows)
+        for _, r in df[df['sack'] == 1].iterrows():
+            entries = []
+            if pd.notna(r.get('sack_player_id')):
+                entries.append((r['sack_player_id'], 1.0))
+            if pd.notna(r.get('half_sack_1_player_id')):
+                entries.append((r['half_sack_1_player_id'], 0.5))
+            if pd.notna(r.get('half_sack_2_player_id')):
+                entries.append((r['half_sack_2_player_id'], 0.5))
+            for pid, val in entries:
+                rows.append({'pid': pid, 'val': val, 'week': r['week'], 'season': r['season'], 'posteam': r['posteam'],
+                             'defteam': r['defteam'], 'is_home': r['defteam'] == r['home_team'], 'front': r['front'],
+                             'coverage': r['coverage'], 'weather': r['weather'], 'qb': r.get('passer_player_name'),
+                             'down': r.get('down'), 'ydsToGo': r.get('ydstogo'), 'game_id': r['game_id']})
+        return pd.DataFrame(rows)
+
+    sdf = build_sack_rows(baseline)
+    sdf_current = build_sack_rows(current) if len(current) else pd.DataFrame()
     sacks = []
     if len(sdf):
         for pid, g in sdf.groupby('pid'):
@@ -2102,6 +2460,20 @@ def main():
             weather_breakdown = g.groupby('weather')['val'].sum().to_dict()
             plays = g[['week', 'season', 'posteam', 'front', 'coverage', 'qb', 'down', 'ydsToGo', 'val']].sort_values(['season', 'week']).to_dict('records')
             gl = g.groupby(['season', 'game_id'])['val'].sum().reset_index().rename(columns={'val': 'sacks'})
+
+            # Real current-season blend, same shrinkage-weighted approach used for every
+            # other position -- this was previously the one player type on the site with
+            # zero current-season awareness at all.
+            cur_g = sdf_current[sdf_current.pid == pid] if len(sdf_current) else sdf_current
+            cur_games = cur_g['game_id'].nunique() if len(cur_g) else 0
+            blend = None
+            if cur_games > 0:
+                cur_total = float(cur_g['val'].sum())
+                blend = {
+                    'sacksPerGame': blend_stat(float(total) / max(len(gl), 1), cur_total / cur_games, cur_games),
+                    'currentSeasonGames': cur_games, 'currentSeasonStats': {'sacks': round(cur_total, 1), 'games': cur_games},
+                }
+
             sacks.append({
                 'id': pid, 'name': name, 'pos': pos, 'team': team, 'totalSacks': round(float(total), 1),
                 'homeSacks': round(float(home_sacks), 1), 'awaySacks': round(float(away_sacks), 1),
@@ -2112,6 +2484,7 @@ def main():
                            'coverage': p['coverage'], 'qb': p['qb'], 'down': (int(p['down']) if pd.notna(p['down']) else None),
                            'togo': (int(p['ydsToGo']) if pd.notna(p['ydsToGo']) else None), 'val': p['val']} for p in plays],
                 'gamelog': gl.to_dict('records'),
+                'currentSeasonBlend': blend,
             })
         sacks.sort(key=lambda d: -d['totalSacks'])
     print(f"  {len(sacks)} pass rushers")
@@ -2184,6 +2557,36 @@ def main():
                                    'id': f"{p['name']}|{label}".replace(' ', '_')})
     print(f"  {len(full_pool)} prop pool entries built")
 
+    # Defense-in-depth: this diagnostic already handles a missing xgboost install gracefully
+    # internally, but it must never be able to crash the whole update for ANY reason (a
+    # library version quirk, a numpy edge case, etc.) -- everything below it (team stats,
+    # TEAM_DEFENSE/TEAM_OFFENSE, the JSX injection, the git push) still needs to run either way.
+    if not ENABLE_XGBOOST_DIAGNOSTIC:
+        print("  XGBoost lean model: paused (ENABLE_XGBOOST_DIAGNOSTIC = False) -- skipping entirely")
+        xgb_leans, xgb_meta = {}, None
+    else:
+        try:
+            xgb_leans, xgb_meta = build_xgboost_lean_model(baseline, current, full_pool, receivers)
+        except Exception as e:
+            print(f"  [!] XGBoost lean model raised an unexpected error ({e}) -- skipping this diagnostic, rest of the update continues")
+            xgb_leans, xgb_meta = {}, None
+    if xgb_meta:
+        print(f"  XGBoost lean model result: {xgb_meta['accuracy']}% real accuracy vs {xgb_meta['baseline']}% naive baseline")
+        if xgb_meta['accuracy'] > xgb_meta['baseline'] + 3:
+            # only attach it to real entries if it genuinely, meaningfully beats a trivial
+            # baseline -- a model that doesn't clear this bar has no business being shown
+            # as a signal, since "worse than always guessing the majority class" is worse
+            # than useless, not just unhelpful
+            matched = 0
+            for entry in full_pool:
+                if entry['stat'] == 'Receiving Yards' and entry['kind'] == 'ladder' and entry['player'] in xgb_leans:
+                    entry['modelLean'] = xgb_leans[entry['player']]
+                    matched += 1
+            print(f"  Genuinely beats baseline -- attached to {matched} Receiving Yards entries")
+        else:
+            print(f"  Does NOT meaningfully beat the naive baseline -- not attached to any entries. "
+                  f"Kept as a measured, tracked result rather than shipped as a real signal.")
+
     best = {}
     for e in full_pool:
         score = (e['p25']['testHit'] + e['p50']['testHit'] + e['p75']['testHit']) / 3
@@ -2207,66 +2610,30 @@ def main():
         e.pop('_score', None)
     top10 = {'ladders': top10_list, 'poolSize': len(deduped), 'fullPoolSize': len(full_pool)}
 
-    # ---- Team defense profiles ----
-    team_defense = {}
+    # ---- Team defense + offense profiles (Historical 2024-25 baseline + real Active/Current season) ----
+    # Historical fields stay at the TOP LEVEL of team_defense exactly as before (so every
+    # existing call site that reads e.g. TEAM_DEFENSE[team].scheme keeps working unchanged
+    # and unchanged in meaning -- it was always the 2024-25 baseline). The new, real
+    # current-season numbers are added as TEAM_DEFENSE[team].current, present only once
+    # there's at least one real current-season game to compute it from.
     games_baseline = games_all[games_all.season.isin(BASELINE_SEASONS)]
-    pa_rows = []
-    for _, g in games_baseline.iterrows():
-        if pd.isna(g.home_score) or pd.isna(g.away_score):
-            continue
-        pa_rows.append({'team': g.home_team, 'allowed': g.away_score, 'scored': g.home_score})
-        pa_rows.append({'team': g.away_team, 'allowed': g.home_score, 'scored': g.away_score})
-    pa = pd.DataFrame(pa_rows)
-    points_allowed = pa.groupby('team').agg(gamesPlayed=('allowed', 'count'), totalAllowed=('allowed', 'sum'), totalScored=('scored', 'sum')).reset_index()
-    points_allowed['ppgAllowed'] = points_allowed['totalAllowed'] / points_allowed['gamesPlayed']
-    points_allowed['ppgScored'] = points_allowed['totalScored'] / points_allowed['gamesPlayed']
-    points_allowed['rank'] = points_allowed['ppgAllowed'].rank(ascending=False).astype(int)
-    points_allowed['scoredRank'] = points_allowed['ppgScored'].rank(ascending=False).astype(int)
-    points_allowed = points_allowed.set_index('team')
+    games_current_season = games_all[games_all.season == current_season] if current_season else games_all.iloc[0:0]
 
-    targets_all = baseline[baseline['receiver_player_id'].notna()].copy()
-    targets_all['recv_pos'] = targets_all['receiver_player_id'].map(pos_map).replace('FB', 'RB')
-    targets_all = targets_all[targets_all['recv_pos'].isin(['WR', 'TE', 'RB'])]
-    games_played_by_def = baseline.groupby('defteam')['game_id'].nunique()
-    pos_allowed = targets_all.groupby(['defteam', 'recv_pos']).agg(
-        targets=('week', 'count'), catches=('complete_pass', 'sum'), yards=('yards_gained', 'sum'),
-        tds=('pass_touchdown', 'sum'), epaAllowed=('epa', 'sum')
-    ).reset_index()
-    pos_allowed = pos_allowed.join(games_played_by_def.rename('gp'), on='defteam')
-    pos_allowed['ypg'] = pos_allowed['yards'] / pos_allowed['gp']
-    pos_allowed['epaPerTgt'] = pos_allowed['epaAllowed'] / pos_allowed['targets']
-    pos_allowed['rank'] = pos_allowed.groupby('recv_pos')['ypg'].rank(ascending=False).astype(int)
+    team_defense_hist = compute_team_defense(games_baseline, baseline, pos_map, min_games=1)
+    team_defense_cur = compute_team_defense(games_current_season, current, pos_map, min_games=1) if current_season and len(current) else {}
+    team_defense = {}
+    for team in set(team_defense_hist) | set(team_defense_cur):
+        entry = dict(team_defense_hist.get(team, {}))
+        entry['current'] = team_defense_cur.get(team)  # None until real current-season data exists for this team
+        team_defense[team] = entry
+    print(f"  {len(team_defense)} team defense profiles ({len(team_defense_cur)} with real current-season data)")
 
-    def_plays = baseline[baseline['defteam'].notna() & (baseline['pass'] == 1)]
-    for team, g in def_plays.groupby('defteam'):
-        front_counts = g['front_bucket'].value_counts(normalize=True) * 100
-        cov_counts = g['coverage'].value_counts(normalize=True) * 100
-        top_front_bucket = front_counts.idxmax()
-        sub = g[g['front_bucket'] == top_front_bucket]
-        top_front_exact = sub['front'].value_counts().idxmax() if len(sub) else None
-        top_cov = cov_counts.idxmax()
-        pa_row = points_allowed.loc[team] if team in points_allowed.index else None
-        pos_rows = pos_allowed[pos_allowed.defteam == team]
-        pos_by_group = {r['recv_pos']: {'ypg': round(r['ypg'], 1), 'rank': int(r['rank']), 'tds': int(r['tds']),
-                                          'targets': int(r['targets']), 'catches': int(r['catches']),
-                                          'epaPerTgt': round(r['epaPerTgt'], 3)} for _, r in pos_rows.iterrows()}
-        weakest = max(pos_by_group.items(), key=lambda kv: -kv[1]['rank']) if pos_by_group else None
-        team_defense[team] = {
-            'pointsAllowedPerGame': round(float(pa_row['ppgAllowed']), 1) if pa_row is not None else None,
-            'pointsAllowedRank': int(pa_row['rank']) if pa_row is not None else None,
-            'pointsScoredPerGame': round(float(pa_row['ppgScored']), 1) if pa_row is not None else None,
-            'pointsScoredRank': int(pa_row['scoredRank']) if pa_row is not None else None,
-            'scheme': {'primaryFrontBucket': top_front_bucket, 'primaryFrontBucketPct': round(float(front_counts.max()), 1),
-                       'primaryFrontExact': top_front_exact, 'primaryCoverage': top_cov,
-                       'primaryCoveragePct': round(float(cov_counts.max()), 1),
-                       'nickelPct': round(float(front_counts.get('Nickel', 0)), 1),
-                       'basePct': round(float(front_counts.get('Base', 0)), 1),
-                       'dimePct': round(float(front_counts.get('Dime', 0)), 1)},
-            'allowedByPosition': pos_by_group,
-            'weakestPosition': weakest[0] if weakest else None,
-            'weakestPositionRank': weakest[1]['rank'] if weakest else None,
-        }
-    print(f"  {len(team_defense)} team defense profiles")
+    team_offense_hist = compute_team_offense(games_baseline, baseline, pos_map, min_games=1)
+    team_offense_cur = compute_team_offense(games_current_season, current, pos_map, min_games=1) if current_season and len(current) else {}
+    team_offense = {}
+    for team in set(team_offense_hist) | set(team_offense_cur):
+        team_offense[team] = {'historical': team_offense_hist.get(team), 'current': team_offense_cur.get(team)}
+    print(f"  {len(team_offense)} team offense TD-by-position profiles ({len(team_offense_cur)} with real current-season data)")
 
     # ---- Injuries + O-line starters ----
     print("\n[5/8] Fetching injury reports and depth charts...")
@@ -2477,6 +2844,9 @@ def main():
         'KICKERS': kickers,
         'SACKS': sacks,
         'TEAM_DEFENSE': team_defense,
+        'TEAM_OFFENSE': team_offense,
+        'CURRENT_SEASON': current_season,  # real season the "Active/Current" (C) tag refers to; None if the upcoming season hasn't started producing real data yet
+        'BASELINE_SEASONS': BASELINE_SEASONS,  # the two real seasons the "Historical" (H) tag refers to
         'LOCKS': top10,
         'FULL_POOL': full_pool,
         'OL_STARTERS': ol_starters,
@@ -2485,6 +2855,7 @@ def main():
         'ATD_POOL': atd_pool,
         'REDZONE': redzone_tendencies,
         'USAGE_BUMP': usage_bump,
+        'XGB_MODEL_INFO': xgb_meta,
     }
 
     wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming}
