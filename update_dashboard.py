@@ -921,13 +921,41 @@ def download(url, dest_path):
 
 
 def season_has_data(season):
-    """Quick check whether a season's play-by-play file exists on nflverse yet."""
+    """Check whether a season's play-by-play file exists on nflverse yet.
+
+    A single unretried HEAD request used to decide this, with any failure (timeout,
+    dropped redirect, transient network blip) silently swallowed into "no data" -- so
+    a real current season could get missed for reasons that were never visible in the
+    console output. Now: retries the HEAD a couple of times, falls back to a 1-byte
+    ranged GET (some networks/CDNs mishandle HEAD-through-redirect but are fine with
+    GET), and always prints exactly what happened so a "no data" result is diagnosable
+    instead of a guess.
+    """
     url = f"{NFLVERSE_BASE}/pbp/play_by_play_{season}.parquet"
+    last_detail = None
+    for attempt in range(3):
+        try:
+            r = requests.head(url, timeout=30, allow_redirects=True)
+            if r.status_code == 200:
+                return True
+            last_detail = f"HEAD -> HTTP {r.status_code}"
+        except requests.RequestException as e:
+            last_detail = f"HEAD raised {type(e).__name__}: {e}"
+        time.sleep(0.5 + random.random() * 0.5)
+
     try:
-        r = requests.head(url, timeout=30, allow_redirects=True)
-        return r.status_code == 200
-    except requests.RequestException:
-        return False
+        r = requests.get(url, timeout=30, allow_redirects=True, headers={'Range': 'bytes=0-0'}, stream=True)
+        ok = r.status_code in (200, 206)
+        r.close()
+        if ok:
+            print(f"  [{season}] HEAD check failed ({last_detail}) but a ranged GET succeeded -- treating as available")
+            return True
+        last_detail = f"{last_detail}; ranged GET -> HTTP {r.status_code}"
+    except requests.RequestException as e:
+        last_detail = f"{last_detail}; ranged GET raised {type(e).__name__}: {e}"
+
+    print(f"  [{season}] season_has_data check failed after retries: {last_detail}")
+    return False
 
 
 def fetch_season_files(season):

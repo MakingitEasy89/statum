@@ -9094,6 +9094,87 @@
       "predictedMargin": 18.9,
       "predictedTotal": 57.9,
       "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856838,
+      "homeTeam": "Arizona",
+      "awayTeam": "Iowa State",
+      "predictedMargin": 16.5,
+      "predictedTotal": 49.3,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856834,
+      "homeTeam": "Kansas",
+      "awayTeam": "Baylor",
+      "predictedMargin": 11.5,
+      "predictedTotal": 56.4,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856727,
+      "homeTeam": "Alabama",
+      "awayTeam": "Texas A&M",
+      "predictedMargin": 15.9,
+      "predictedTotal": 55.1,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866449,
+      "homeTeam": "Ohio",
+      "awayTeam": "Eastern Michigan",
+      "predictedMargin": 22.6,
+      "predictedTotal": 52.8,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866450,
+      "homeTeam": "Toledo",
+      "awayTeam": "Western Michigan",
+      "predictedMargin": 25.9,
+      "predictedTotal": 46.2,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866476,
+      "homeTeam": "Central Michigan",
+      "awayTeam": "Miami (OH)",
+      "predictedMargin": 7.1,
+      "predictedTotal": 47.3,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869967,
+      "homeTeam": "Southern Miss",
+      "awayTeam": "Louisiana",
+      "predictedMargin": 11.9,
+      "predictedTotal": 55.9,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858499,
+      "homeTeam": "UCLA",
+      "awayTeam": "Michigan State",
+      "predictedMargin": 10.9,
+      "predictedTotal": 53.1,
+      "snapshotDate": "2026-09-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858500,
+      "homeTeam": "Wisconsin",
+      "awayTeam": "USC",
+      "predictedMargin": -5.4,
+      "predictedTotal": 50.0,
+      "snapshotDate": "2026-09-28"
     }
   ],
   "graded": [
