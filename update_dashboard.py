@@ -2269,7 +2269,6 @@ def main():
         fronts = {fb: agg_receiving(gg) for fb, gg in g.groupby('front_bucket')}
         covs = {cv: agg_receiving(gg) for cv, gg in g.groupby('coverage') if len(gg) >= 3}
         weathers = {w: agg_receiving(gg) for w, gg in g.groupby('weather')}
-        td_plays = g[g.pass_touchdown == 1][['week', 'season', 'defteam', 'front', 'coverage', 'yards_gained']].to_dict('records')
         gl = g.groupby(['season', 'game_id']).agg(
             targets=('week', 'count'), catches=('complete_pass', 'sum'), yards=('yards_gained', 'sum'), tds=('pass_touchdown', 'sum')
         ).reset_index()
@@ -2291,6 +2290,13 @@ def main():
         # current-season blend (targets/gm, receiving yds/gm, rushing yds/gm all shrinkage-weighted)
         cur_g = targets_current[targets_current.receiver_player_id == pid] if len(targets_current) else targets_current
         cur_games = cur_g['game_id'].nunique() if len(cur_g) else 0
+
+        # Touchdowns panel reads 'tds' -- include real current-season TDs here too, same
+        # reasoning as the gamelog/plays fixes above: an aggregate blend elsewhere doesn't
+        # help if the actual list on the page never gets the new games added to it.
+        td_plays_df = pd.concat([g, cur_g], ignore_index=True) if len(cur_g) else g
+        td_plays = td_plays_df[td_plays_df.pass_touchdown == 1][['week', 'season', 'defteam', 'front', 'coverage', 'yards_gained']].to_dict('records')
+
         blend = None
         if cur_games > 0:
             cur_overall = agg_receiving(cur_g)
@@ -2308,6 +2314,21 @@ def main():
                 'currentSeasonGames': cur_games,
                 'currentSeasonStats': cur_overall,
             }
+
+            # Real per-game rows for the current season, appended to the SAME 'gamelog' the
+            # Recent Games panel reads (which already mixes 2024 and 2025 games together,
+            # tagged by their own season) -- so real current-season games actually show up
+            # in that list next to 2024-25 ones instead of only ever appearing as an
+            # aggregate blended average above it.
+            cur_gl = cur_g.groupby(['season', 'game_id']).agg(
+                targets=('week', 'count'), catches=('complete_pass', 'sum'), yards=('yards_gained', 'sum'), tds=('pass_touchdown', 'sum')
+            ).reset_index()
+            if len(cur_rush):
+                cur_rush_gl = cur_rush.groupby(['season', 'game_id']).agg(
+                    rush_att=('rush_attempt', 'sum'), rush_yards=('rushing_yards', 'sum'), rush_td=('rush_touchdown', 'sum')
+                ).reset_index()
+                cur_gl = cur_gl.merge(cur_rush_gl, on=['season', 'game_id'], how='outer').fillna(0)
+            gl = pd.concat([gl, cur_gl], ignore_index=True).fillna(0).sort_values(['season', 'game_id']).reset_index(drop=True)
 
         receivers.append({
             'id': pid, 'shortName': g['receiver_player_name'].iloc[0], 'name': name, 'pos': pos, 'team': team,
@@ -2370,7 +2391,6 @@ def main():
         fronts = {fb: agg_qb(gg) for fb, gg in g.groupby('front_bucket')}
         covs = {cv: agg_qb(gg) for cv, gg in g.groupby('coverage') if len(gg) >= 5}
         weathers = {w: agg_qb(gg) for w, gg in g.groupby('weather')}
-        td_plays = g[g.pass_touchdown == 1][['week', 'season', 'defteam', 'front', 'coverage']].to_dict('records')
         gl = g.groupby(['season', 'game_id']).agg(
             attempts=('week', 'count'), completions=('complete_pass', 'sum'), yards=('passing_yards', 'sum'),
             tds=('pass_touchdown', 'sum'), ints=('interception', 'sum')
@@ -2393,6 +2413,12 @@ def main():
         # current-season blend (passing yards + rush yards, weighted by games played this season)
         cur_g = passes_current[passes_current.passer_player_id == pid] if len(passes_current) else passes_current
         cur_games = cur_g['game_id'].nunique() if len(cur_g) else 0
+
+        # Touchdowns panel reads 'tds' -- include real current-season TDs here too (same
+        # reasoning as the receivers block above).
+        td_plays_df = pd.concat([g, cur_g], ignore_index=True) if len(cur_g) else g
+        td_plays = td_plays_df[td_plays_df.pass_touchdown == 1][['week', 'season', 'defteam', 'front', 'coverage']].to_dict('records')
+
         blend = None
         if cur_games > 0:
             cur_overall = agg_qb(cur_g)
@@ -2405,6 +2431,21 @@ def main():
                 'currentSeasonGames': cur_games,
                 'currentSeasonStats': cur_overall,
             }
+
+            # Real current-season per-game rows appended to the same gamelog the Recent
+            # Games panel reads -- see the identical note on the receivers block above.
+            cur_gl = cur_g.groupby(['season', 'game_id']).agg(
+                attempts=('week', 'count'), completions=('complete_pass', 'sum'), yards=('passing_yards', 'sum'),
+                tds=('pass_touchdown', 'sum'), ints=('interception', 'sum')
+            ).reset_index()
+            if len(cur_rush):
+                cur_rush_gl = cur_rush.groupby(['season', 'game_id']).agg(
+                    rush_att=('rush_attempt', 'sum'), rush_yards=('rushing_yards', 'sum'), rush_td=('rush_touchdown', 'sum')
+                ).reset_index()
+                cur_gl = cur_gl.merge(cur_rush_gl, on=['season', 'game_id'], how='left').fillna(0)
+            else:
+                cur_gl['rush_att'] = 0; cur_gl['rush_yards'] = 0.0; cur_gl['rush_td'] = 0
+            gl = pd.concat([gl, cur_gl], ignore_index=True).fillna(0).sort_values(['season', 'game_id']).reset_index(drop=True)
 
         qbs.append({
             'id': pid, 'shortName': g['passer_player_name'].iloc[0], 'name': name, 'pos': 'QB', 'team': team,
@@ -2464,6 +2505,12 @@ def main():
                 'currentSeasonGames': cur_games, 'currentSeasonStats': cur_overall,
             }
 
+            # Real current-season per-game rows appended to the same gamelog the Recent
+            # Games panel reads -- see the identical note on the receivers block above.
+            cur_fg_gl = cur_g.groupby(['season', 'game_id']).agg(attempts=('made', 'count'), made=('made', 'sum')).reset_index()
+            cur_fg_gl['points'] = cur_fg_gl['made'] * 3
+            fg_gl = pd.concat([fg_gl, cur_fg_gl], ignore_index=True).fillna(0).sort_values(['season', 'game_id']).reset_index(drop=True)
+
         kickers.append({
             'id': pid, 'shortName': g['kicker_player_name'].iloc[0], 'name': name, 'pos': 'K', 'team': team,
             'overall': overall, 'home': home, 'away': away, 'distance': dist, 'weather': weathers,
@@ -2508,7 +2555,6 @@ def main():
             away_sacks = g[~g.is_home]['val'].sum()
             front_breakdown = g.groupby('front')['val'].sum().sort_values(ascending=False).to_dict()
             weather_breakdown = g.groupby('weather')['val'].sum().to_dict()
-            plays = g[['week', 'season', 'posteam', 'front', 'coverage', 'qb', 'down', 'ydsToGo', 'val']].sort_values(['season', 'week']).to_dict('records')
             gl = g.groupby(['season', 'game_id'])['val'].sum().reset_index().rename(columns={'val': 'sacks'})
 
             # Real current-season blend, same shrinkage-weighted approach used for every
@@ -2516,6 +2562,13 @@ def main():
             # zero current-season awareness at all.
             cur_g = sdf_current[sdf_current.pid == pid] if len(sdf_current) else sdf_current
             cur_games = cur_g['game_id'].nunique() if len(cur_g) else 0
+
+            # "Every Sack" on DefenseDetail reads 'plays', NOT 'gamelog' -- current-season
+            # sack plays need to land here too, or they'd pass through the gamelog/blend
+            # fix above but still never actually show up in the one place a person would
+            # look for them on this page.
+            plays_all = pd.concat([g, cur_g], ignore_index=True) if len(cur_g) else g
+            plays = plays_all[['week', 'season', 'posteam', 'front', 'coverage', 'qb', 'down', 'ydsToGo', 'val']].sort_values(['season', 'week']).to_dict('records')
             blend = None
             if cur_games > 0:
                 cur_total = float(cur_g['val'].sum())
@@ -2523,6 +2576,11 @@ def main():
                     'sacksPerGame': blend_stat(float(total) / max(len(gl), 1), cur_total / cur_games, cur_games),
                     'currentSeasonGames': cur_games, 'currentSeasonStats': {'sacks': round(cur_total, 1), 'games': cur_games},
                 }
+
+                # Real current-season per-game rows appended to the same gamelog the Recent
+                # Games panel reads -- see the identical note on the receivers block above.
+                cur_gl = cur_g.groupby(['season', 'game_id'])['val'].sum().reset_index().rename(columns={'val': 'sacks'})
+                gl = pd.concat([gl, cur_gl], ignore_index=True).fillna(0).sort_values(['season', 'game_id']).reset_index(drop=True)
 
             sacks.append({
                 'id': pid, 'name': name, 'pos': pos, 'team': team, 'totalSacks': round(float(total), 1),
