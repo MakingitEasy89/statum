@@ -9202,6 +9202,51 @@
       "predictedMargin": 24.9,
       "predictedTotal": 53.2,
       "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866448,
+      "homeTeam": "Buffalo",
+      "awayTeam": "Bowling Green",
+      "predictedMargin": 19.3,
+      "predictedTotal": 46.9,
+      "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856836,
+      "homeTeam": "Oklahoma State",
+      "awayTeam": "Colorado",
+      "predictedMargin": 10.0,
+      "predictedTotal": 50.0,
+      "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856835,
+      "homeTeam": "UCF",
+      "awayTeam": "BYU",
+      "predictedMargin": 2.1,
+      "predictedTotal": 50.7,
+      "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862811,
+      "homeTeam": "Tulane",
+      "awayTeam": "UTSA",
+      "predictedMargin": 11.3,
+      "predictedTotal": 56.5,
+      "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856732,
+      "homeTeam": "Texas",
+      "awayTeam": "Ole Miss",
+      "predictedMargin": 10.4,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-29"
     }
   ],
   "graded": [
