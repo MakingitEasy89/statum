@@ -9238,6 +9238,33 @@
       "predictedMargin": 11.3,
       "predictedTotal": 56.5,
       "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866448,
+      "homeTeam": "Buffalo",
+      "awayTeam": "Bowling Green",
+      "predictedMargin": 19.3,
+      "predictedTotal": 46.9,
+      "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866446,
+      "homeTeam": "Kent State",
+      "awayTeam": "Akron",
+      "predictedMargin": 4.8,
+      "predictedTotal": 52.2,
+      "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856732,
+      "homeTeam": "Texas",
+      "awayTeam": "Ole Miss",
+      "predictedMargin": 10.4,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-09-29"
     }
   ],
   "graded": [

@@ -463,14 +463,14 @@ function CurrentSeasonBlendPanel({ blend, stats }) {
   const firstKey = stats.find(s => blend[s.key]);
   const w = firstKey ? Math.round(blend[firstKey.key].weight_current * 100) : null;
   return (
-    <Glass hover={false} style={{ padding: "14px 18px", marginBottom: 16, border: "1px solid #7CFFB255" }}>
+    <Glass hover={false} style={{ padding: "14px 18px", marginBottom: 16, border: "1px solid color-mix(in srgb, var(--accent-current) 33%, transparent)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
-        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "#7CFFB2", textTransform: "uppercase", fontWeight: 700 }}>🟢 {ACTIVE_LABEL} · {g} real game{g===1?"":"s"}</div>
+        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--accent-current)", textTransform: "uppercase", fontWeight: 700 }}>🟢 {ACTIVE_LABEL} · {g} real game{g===1?"":"s"}</div>
         {w !== null && <div style={{ fontSize: 10, color: "var(--text-tertiary)" }}>{w}% weight on {CURRENT_SEASON || "current season"}</div>}
       </div>
       <div style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
         {stats.map(s => blend[s.key] ? (
-          <StatChip key={s.key} label={s.label} value={blend[s.key].value} decimals={s.decimals} accent="#7CFFB2" />
+          <StatChip key={s.key} label={s.label} value={blend[s.key].value} decimals={s.decimals} accent="var(--accent-current)" />
         ) : null)}
       </div>
       <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginTop: 10 }}>
@@ -1149,7 +1149,7 @@ function HCLeaderBadge({ games }) {
   if (!games) return null;
   return (
     <span title={`Includes ${games} real game${games===1?"":"s"} from the ${CURRENT_SEASON||"current"} season, shrinkage-blended with the 2024-25 historical baseline`}
-      style={{ fontSize: 8.5, fontWeight: 800, color: "#7CFFB2", background: "#7CFFB222", border: "1px solid #7CFFB255", borderRadius: 5, padding: "1.5px 5px", letterSpacing: "0.04em" }}>
+      style={{ fontSize: 8.5, fontWeight: 800, color: "var(--accent-current)", background: "color-mix(in srgb, var(--accent-current) 13%, transparent)", border: "1px solid color-mix(in srgb, var(--accent-current) 33%, transparent)", borderRadius: 5, padding: "1.5px 5px", letterSpacing: "0.04em" }}>
       H+C
     </span>
   );
@@ -1209,7 +1209,7 @@ function OffenseCard({ p, onSelect, idx }) {
         </div>
       </div>
       <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--text-secondary-a)", fontFamily: "'JetBrains Mono', monospace" }}>{secondary}</div>
-      {curLine && <div style={{ marginTop: 6, fontSize: 10.5, color: "#7CFFB2", fontFamily: "'JetBrains Mono', monospace" }}>▲ C: {curLine}</div>}
+      {curLine && <div style={{ marginTop: 6, fontSize: 10.5, color: "var(--accent-current)", fontFamily: "'JetBrains Mono', monospace" }}>▲ C: {curLine}</div>}
     </Glass>
   );
 }
@@ -1236,7 +1236,7 @@ function DefenseCard({ d, onSelect, idx }) {
       <div style={{ display: "flex", gap: 12, marginTop: 10, fontSize: 11.5, color: "var(--text-secondary-a)", fontFamily: "'JetBrains Mono', monospace" }}>
         <span>{d.homeSacks} home</span><span>{d.awaySacks} away</span><span>{fmt(d.avgPassRushers,1)} avg rushers</span>
       </div>
-      {curLine && <div style={{ marginTop: 6, fontSize: 10.5, color: "#7CFFB2", fontFamily: "'JetBrains Mono', monospace" }}>▲ C: {curLine}</div>}
+      {curLine && <div style={{ marginTop: 6, fontSize: 10.5, color: "var(--accent-current)", fontFamily: "'JetBrains Mono', monospace" }}>▲ C: {curLine}</div>}
     </Glass>
   );
 }
@@ -4477,6 +4477,11 @@ function App() {
     "--card-hover-bg": isDay ? "rgba(255,255,255,0.88)" : "rgba(18,20,25,0.78)",
     "--star-color": isDay ? "#1A1B1E" : "#FFFFFF",
     "--dot-grid": isDay ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
+    // Active (C) / current-season accent — the pale mint reads great on the dark theme
+    // (16:1 contrast) but was nearly invisible on the cream day background (1.2:1, below
+    // even the 3:1 floor for large text). Day mode gets a deeper forest green with the
+    // same "this is live/current" meaning at a real ~5:1 contrast instead.
+    "--accent-current": isDay ? "#0C7A3D" : "#7CFFB2",
   };
 
   return (
