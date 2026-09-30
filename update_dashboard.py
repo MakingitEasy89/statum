@@ -906,18 +906,32 @@ NFLVERSE_BASE = "https://github.com/nflverse/nflverse-data/releases/download"
 # =====================================================================
 # DOWNLOAD HELPERS
 # =====================================================================
-def download(url, dest_path):
-    """Download url to dest_path if not already cached. Returns True on success."""
+def download(url, dest_path, retries=3):
+    """Download url to dest_path if not already cached. Returns True on success.
+
+    Nearly every real data fetch in this pipeline (NFL pbp/participation/rosters, WNBA
+    pbp/schedules, injuries, depth charts) funnels through this one function, so a single
+    unretried request with a bare except was a single point of failure for an entire
+    sport's data on any transient network blip -- silently, with nothing printed to say
+    why. Now retries a couple of times with a short backoff and prints the real reason
+    when it ultimately fails, same fix as season_has_data()/wnba_season_has_data() below.
+    """
     if dest_path.exists():
         return True
-    try:
-        r = requests.get(url, timeout=180)
-        if r.status_code != 200:
-            return False
-        dest_path.write_bytes(r.content)
-        return True
-    except requests.RequestException:
-        return False
+    last_detail = None
+    for attempt in range(retries):
+        try:
+            r = requests.get(url, timeout=180)
+            if r.status_code == 200:
+                dest_path.write_bytes(r.content)
+                return True
+            last_detail = f"HTTP {r.status_code}"
+        except requests.RequestException as e:
+            last_detail = f"{type(e).__name__}: {e}"
+        if attempt < retries - 1:
+            time.sleep(0.5 + random.random() * 0.5)
+    print(f"  [!] download failed after {retries} attempt(s) for {url}: {last_detail}")
+    return False
 
 
 def season_has_data(season):
@@ -1004,17 +1018,57 @@ def fetch_wnba_pbp(season):
 
 
 def wnba_season_has_data(season):
+    """Check whether a WNBA season's play-by-play file exists yet.
+
+    Same bug and same fix as NFL's season_has_data(): a single unretried HEAD request
+    wrapped in a bare except was deciding this, so any transient network blip silently
+    reported "no data" for the whole season -- indistinguishable from the season
+    genuinely not existing yet, with nothing printed to tell the two apart. Retries the
+    HEAD, falls back to a ranged GET, and prints exactly what failed at each step.
+    """
+    url = f"{WNBA_BASE}/play_by_play_{season}.parquet"
+    last_detail = None
+    reachable = False
+    for attempt in range(3):
+        try:
+            r = requests.head(url, timeout=30, allow_redirects=True)
+            if r.status_code == 200:
+                reachable = True
+                break
+            last_detail = f"HEAD -> HTTP {r.status_code}"
+        except requests.RequestException as e:
+            last_detail = f"HEAD raised {type(e).__name__}: {e}"
+        time.sleep(0.5 + random.random() * 0.5)
+
+    if not reachable:
+        try:
+            r = requests.get(url, timeout=30, allow_redirects=True, headers={'Range': 'bytes=0-0'}, stream=True)
+            ok = r.status_code in (200, 206)
+            r.close()
+            if ok:
+                print(f"  [WNBA {season}] HEAD check failed ({last_detail}) but a ranged GET succeeded -- treating as available")
+                reachable = True
+            else:
+                last_detail = f"{last_detail}; ranged GET -> HTTP {r.status_code}"
+        except requests.RequestException as e:
+            last_detail = f"{last_detail}; ranged GET raised {type(e).__name__}: {e}"
+
+    if not reachable:
+        print(f"  [WNBA {season}] season_has_data check failed after retries: {last_detail}")
+        return False
+
+    test_path = CACHE_DIR / f"_wnba_probe_{season}.parquet"
+    if not download(url, test_path):
+        print(f"  [WNBA {season}] file is reachable but the full download failed -- treating as unavailable this run")
+        return False
     try:
-        r = requests.head(f"{WNBA_BASE}/play_by_play_{season}.parquet", timeout=30, allow_redirects=True)
-        if r.status_code != 200:
-            return False
-        test_path = CACHE_DIR / f"_wnba_probe_{season}.parquet"
-        ok = download(f"{WNBA_BASE}/play_by_play_{season}.parquet", test_path)
-        if not ok:
-            return False
         df = pd.read_parquet(test_path, columns=['game_id'])
-        return df['game_id'].nunique() >= 5
-    except Exception:
+        n = df['game_id'].nunique()
+        if n < 5:
+            print(f"  [WNBA {season}] file downloaded but only has {n} unique game(s) so far -- not enough data yet")
+        return n >= 5
+    except Exception as e:
+        print(f"  [WNBA {season}] file downloaded but failed to parse: {type(e).__name__}: {e}")
         return False
 
 
