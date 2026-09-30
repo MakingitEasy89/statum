@@ -1085,6 +1085,22 @@ def build_wnba_team_names(df):
     return names
 
 
+def agg_wnba_opponent_games(g):
+    """Real per-game average line for whatever slice of games is passed in -- used both for
+    a player's overall averages and, sliced by opp_team_name, for their real history against
+    one specific opponent. Same shape either way so the two are directly comparable."""
+    n = len(g)
+    if n == 0:
+        return None
+    fga = g.fga.sum(); fgm = g.fgm.sum(); tpa = g.tpa.sum(); tpm = g.tpm.sum()
+    return {
+        'games': int(n), 'pts': round(g.pts.mean(), 1), 'reb': round(g.reb.mean(), 1), 'ast': round(g.ast.mean(), 1),
+        'fgPct': round(100 * fgm / max(fga, 1), 1),
+        'tpPct': round(100 * tpm / tpa, 1) if tpa > 0 else None,
+        'tpaPerGame': round(tpa / n, 1),
+    }
+
+
 def build_wnba_players(gl_train, gl_test, team_names):
     players = []
     for player in gl_train.player.unique():
@@ -1104,11 +1120,18 @@ def build_wnba_players(gl_train, gl_test, team_names):
             'usage': round(all_g.usage_raw.mean(), 1) if all_g.usage_raw.notna().any() else None,
         }
         home_g = all_g[all_g.is_home == True]; away_g = all_g[all_g.is_home == False]
+        # Real per-opponent history -- across the 2025 baseline plus this season to date, so a
+        # WNBA team met this many times gives a real (if thin) sample. This is the WNBA analog
+        # of the NFL per-coverage split: no scheme classification is possible from ESPN's WNBA
+        # play-by-play (no shot location/zone or defender data at all), so "this specific
+        # opponent" stands in for "this specific coverage" as the real, checkable signal.
+        vs_opp = {opp: agg_wnba_opponent_games(gg) for opp, gg in all_g.groupby('opp_team_name') if len(gg) >= 2}
         players.append({
             'name': player, 'team': team_name, 'overall': overall,
             'home': {'pts': round(home_g.pts.mean(), 1) if len(home_g) else None, 'games': int(len(home_g))},
             'away': {'pts': round(away_g.pts.mean(), 1) if len(away_g) else None, 'games': int(len(away_g))},
             'gamelog': test_g[['game_id', 'pts', 'reb', 'ast', 'stl', 'blk', 'fga', 'fgm', 'tpa', 'tpm', 'opp_team_name', 'game_date', 'is_home']].to_dict('records'),
+            'vsOpp': vs_opp,
         })
     players.sort(key=lambda p: -p['overall']['pts'])
     return players
@@ -1208,6 +1231,28 @@ def build_wnba_team_defense(df):
                            'ppgScored': round(row['ppgScored'], 1), 'scoredRank': int(row['scoredRank']),
                            'games': int(row['games'])}
             for _, row in agg.iterrows()}
+
+
+def build_wnba_defense_profile(df, team_names):
+    """Real 3-point rate allowed per team -- the one genuine defensive-shape signal available
+    from ESPN's WNBA play-by-play. There's no shot location/zone or defender tracking in this
+    feed, so zone-vs-man can't be classified the way NFL coverage can; this is the finest real
+    signal that actually exists: a defense that helps off shooters or packs the paint gives up
+    a higher share of its opponents' shots as threes, whatever the specific scheme is called."""
+    shots = df[df['shooting_play'] == True].copy()
+    shots['def_team_id'] = np.where(shots['team_id'] == shots['home_team_id'], shots['away_team_id'], shots['home_team_id'])
+    agg = shots.groupby('def_team_id').agg(fgaFaced=('id', 'count'), tpaFaced=('is_three', 'sum'),
+                                             games=('game_id', 'nunique')).reset_index()
+    agg = agg[agg['games'] >= 3]
+    if len(agg) == 0:
+        return {}
+    agg['threePtRateAllowed'] = 100 * agg['tpaFaced'] / agg['fgaFaced'].replace(0, np.nan)
+    agg['rank'] = agg['threePtRateAllowed'].rank(ascending=False).astype(int)
+    out = {}
+    for _, row in agg.iterrows():
+        team = team_names.get(row['def_team_id'], str(row['def_team_id']))
+        out[team] = {'threePtRateAllowed': round(float(row['threePtRateAllowed']), 1), 'rank': int(row['rank']), 'games': int(row['games'])}
+    return out
 
 
 # =====================================================================
@@ -2790,13 +2835,13 @@ def main():
             break
     if wnba_test_season is None:
         print("  No current WNBA season data available yet.")
-        wnba_players, wnba_pool, wnba_team_defense, wnba_upcoming = [], [], {}, {}
+        wnba_players, wnba_pool, wnba_team_defense, wnba_upcoming, wnba_defense_profile = [], [], {}, {}, {}
     else:
         train_path = fetch_wnba_pbp(WNBA_TRAIN_SEASON)
         test_path = fetch_wnba_pbp(wnba_test_season)
         if train_path is None or test_path is None:
             print("  Could not fetch WNBA play-by-play files.")
-            wnba_players, wnba_pool, wnba_team_defense, wnba_upcoming = [], [], {}, {}
+            wnba_players, wnba_pool, wnba_team_defense, wnba_upcoming, wnba_defense_profile = [], [], {}, {}, {}
         else:
             wnba_train_df = build_wnba_box_scores(pd.read_parquet(train_path))
             wnba_test_df = build_wnba_box_scores(pd.read_parquet(test_path))
@@ -2807,7 +2852,8 @@ def main():
             wnba_pool = build_wnba_pool(wnba_gl_train, wnba_gl_test)
             wnba_team_defense = build_wnba_team_defense(wnba_test_df)
             wnba_upcoming = build_wnba_upcoming(wnba_test_season)
-            print(f"  {len(wnba_players)} WNBA players, {len(wnba_pool)} prop pool entries, {len(wnba_team_defense)} team defense profiles, {len(wnba_upcoming)} teams with a scheduled next game")
+            wnba_defense_profile = build_wnba_defense_profile(wnba_test_df, wnba_team_names)
+            print(f"  {len(wnba_players)} WNBA players, {len(wnba_pool)} prop pool entries, {len(wnba_team_defense)} team defense profiles, {len(wnba_upcoming)} teams with a scheduled next game, {len(wnba_defense_profile)} team 3PT-allowed profiles")
 
     nfl_upcoming = build_nfl_upcoming(games_all)
     print(f"  {len(nfl_upcoming)} NFL teams with a scheduled next game")
@@ -2966,7 +3012,7 @@ def main():
         'XGB_MODEL_INFO': xgb_meta,
     }
 
-    wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming}
+    wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming, 'defenseProfile': wnba_defense_profile}
     mlb_bundle = {'players': mlb_players, 'pool': mlb_pool, 'teamDefense': mlb_team_defense, 'upcoming': mlb_upcoming}
     cfb_bundle = {'teams': cfb_teams, 'upcoming': cfb_upcoming, 'backtest': cfb_backtest, 'homeField': cfb_home_field}
     wnba_json_path = SCRIPT_DIR / "data-wnba.json"

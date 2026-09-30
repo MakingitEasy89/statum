@@ -23,6 +23,7 @@ function wnbaPlayers() { return SportDataCache.wnba?.players || []; }
 function wnbaPool() { return SportDataCache.wnba?.pool || []; }
 function wnbaTeamDefense() { return SportDataCache.wnba?.teamDefense || {}; }
 function wnbaUpcoming() { return SportDataCache.wnba?.upcoming || {}; }
+function wnbaDefenseProfile() { return SportDataCache.wnba?.defenseProfile || {}; }
 function mlbPlayers() { return SportDataCache.mlb?.players || []; }
 function mlbPool() { return SportDataCache.mlb?.pool || []; }
 function mlbTeamDefense() { return SportDataCache.mlb?.teamDefense || {}; }
@@ -3851,6 +3852,91 @@ function ResearchView({ onSelectPlayer }) {
   );
 }
 
+// WNBA's ESPN play-by-play has no shot location, zone, or defender data at all -- just
+// makes/misses and a three-pointer flag parsed from play text -- so a real zone-vs-man
+// classification the way NFL coverage works is simply not possible from this data. The two
+// real signals that DO exist: each team's actual 3-point rate allowed (the closest thing to
+// a defensive "shape" this feed can support), and each player's real scoring history against
+// the specific upcoming opponent (the WNBA stand-in for "this specific coverage" -- same
+// real-sample, real-edge logic as the NFL tab, just keyed on the opponent team itself).
+function wnbaResearchMatchupsForGame(offTeam, defTeam) {
+  const defProfile = wnbaDefenseProfile()[defTeam] || null;
+  const rows = [];
+  for (const p of wnbaPlayers().filter(x => x.team === offTeam)) {
+    const hist = p.vsOpp?.[defTeam];
+    if (!hist || !hist.games || hist.games < 2) continue;
+    const overallPts = p.overall?.pts;
+    if (overallPts == null || hist.pts == null) continue;
+    rows.push({ name: p.name, games: hist.games, histPts: hist.pts, overallPts, diff: hist.pts - overallPts, histTpPct: hist.tpPct, tpaPerGame: hist.tpaPerGame });
+  }
+  const positive = rows.filter(r => r.diff > 0.5).sort((a,b) => b.diff - a.diff).slice(0, 5);
+  return { defProfile, players: positive, noVolume: rows.length === 0 };
+}
+
+function WNBAResearchView({ onSelectPlayer, sportDataStatus }) {
+  const games = useMemo(() => {
+    const seen = new Set();
+    const list = [];
+    for (const [team, info] of Object.entries(wnbaUpcoming())) {
+      if (!info || !info.opp) continue;
+      const key = [team, info.opp].sort().join("_");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const [teamA, teamB] = [team, info.opp].sort();
+      list.push({ teamA, teamB, date: info.date });
+    }
+    return list.sort((a,b) => String(a.date||"").localeCompare(String(b.date||"")));
+  }, []);
+
+  return (
+    <div className="fade-in">
+      <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>Scheme Matchups</div>
+      <div style={{ fontSize: 12, color: "var(--text-secondary-a)", marginBottom: 18, lineHeight: 1.55, maxWidth: 760 }}>
+        WNBA's play-by-play has no shot-location or defender data, so a zone-vs-man read isn't possible here the way coverage is for NFL. Two real signals stand in: each defense's actual 3-point rate allowed, and each player's real scoring history against this specific upcoming opponent — real meetings only, not a projection.
+      </div>
+      {sportDataStatus?.wnba === "loading" && <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading WNBA data…</Glass>}
+      {sportDataStatus?.wnba !== "loading" && games.length === 0 && <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>No upcoming games scheduled yet.</Glass>}
+      {sportDataStatus?.wnba !== "loading" && games.map(g => (
+        <Glass key={g.teamA + g.teamB} hover={false} style={{ padding: "18px 20px", marginBottom: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14, flexWrap: "wrap", gap: 6 }}>
+            <div style={{ fontSize: 15, fontWeight: 800 }}>{g.teamA} vs {g.teamB}</div>
+            <div style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>{g.date || ""}</div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
+            {[{ off: g.teamA, def: g.teamB }, { off: g.teamB, def: g.teamA }].map(({ off, def }) => {
+              const r = wnbaResearchMatchupsForGame(off, def);
+              return (
+                <div key={off} style={{ background: "var(--overlay-2)", borderRadius: 10, padding: "12px 14px" }}>
+                  <div style={{ fontSize: 11.5, fontWeight: 700, marginBottom: 8 }}>{off} offense <span style={{ color: "var(--text-tertiary)", fontWeight: 500 }}>vs</span> {def} defense</div>
+                  <div style={{ fontSize: 10.5, color: "var(--text-secondary-a)", marginBottom: 10, lineHeight: 1.5, paddingBottom: 10, borderBottom: "1px solid var(--overlay-3)" }}>
+                    {r.defProfile
+                      ? <>Allows threes on <b style={{ color: "var(--text-body)" }}>{fmt(r.defProfile.threePtRateAllowed,0)}%</b> of opponent shots — #{r.defProfile.rank} most generous in the league.</>
+                      : "No 3PT-allowed profile yet for this defense."}
+                  </div>
+                  {r.players.length === 0 && (
+                    <div style={{ fontSize: 11, color: "var(--text-tertiary)" }}>
+                      {r.noVolume ? "No player has faced this opponent enough times yet." : "Nobody on this offense shows a real scoring edge against this specific opponent."}
+                    </div>
+                  )}
+                  {r.players.map(pl => (
+                    <div key={pl.name} onClick={() => onSelectPlayer(pl.name)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderTop: "1px solid var(--overlay-3)", cursor: "pointer" }} className="bounce-in">
+                      <span style={{ fontSize: 11.5 }}>{pl.name}</span>
+                      <span style={{ textAlign: "right" }}>
+                        <div style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: ACCENT.green }}>{fmt(pl.histPts,1)} <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>vs {fmt(pl.overallPts,1)} ppg</span></div>
+                        <div style={{ fontSize: 9, color: "var(--text-tertiary)" }}>{pl.games} meetings{pl.histTpPct!=null ? ` · ${fmt(pl.histTpPct,0)}% 3PT` : ""}</div>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        </Glass>
+      ))}
+    </div>
+  );
+}
+
 function MatchupView({ slip, setSlip }) {
   const players = useMemo(() => {
     const seen = new Map();
@@ -4644,7 +4730,7 @@ function App() {
   useEffect(() => { setSelectedTeam(null); setPosFilter("all"); }, [tab]);
   useEffect(() => { setSelected(null); setSelectedTeam(null); setSearch(""); setPosFilter("all"); setTeam("all"); setMatchupFilter(null); }, [sport]);
   useEffect(() => { if (sport === "cfb" && (tab === "locks" || tab === "matchup" || tab === "market")) setTab("dashboard"); }, [sport, tab]);
-  useEffect(() => { if (sport !== "nfl" && tab === "research") setTab("dashboard"); }, [sport, tab]);
+  useEffect(() => { if (sport !== "nfl" && sport !== "wnba" && tab === "research") setTab("dashboard"); }, [sport, tab]);
 
   const [themeOverride, setThemeOverride] = useState(null); // null = auto (local time), "day", or "night"
 
@@ -4765,7 +4851,7 @@ function App() {
           {sport!=="cfb" && <Pill active={tab==="market"} onClick={()=>{setTab("market");setSelected(null);}} accent={ACCENT.amber}>Market Pulse · Kalshi</Pill>}
           {sport!=="cfb" && <Pill active={tab==="locks"} onClick={()=>{setTab("locks");setSelected(null);}} accent={ACCENT.green}>🎯 Prop Floors + Parlay</Pill>}
           {sport!=="cfb" && <Pill active={tab==="matchup"} onClick={()=>{setTab("matchup");setSelected(null);}} accent={ACCENT.rose}>🏟️ Matchup</Pill>}
-          {sport==="nfl" && <Pill active={tab==="research"} onClick={()=>{setTab("research");setSelected(null);}} accent={ACCENT.violet}>🔬 Research</Pill>}
+          {(sport==="nfl" || sport==="wnba") && <Pill active={tab==="research"} onClick={()=>{setTab("research");setSelected(null);}} accent={ACCENT.violet}>🔬 Research</Pill>}
           <Pill active={tab==="teams"} onClick={()=>{setTab("teams");setSelected(null);}} accent="#6EC9F2">🏛️ Teams</Pill>
           <Pill active={tab==="tracking"} onClick={()=>{setTab("tracking");setSelected(null);}} accent="#FFD54A">🏆 Tracking</Pill>
         </div>
@@ -4780,6 +4866,10 @@ function App() {
         {tab==="locks" && <PropFloorsView sport={sport} slip={slip} setSlip={setSlip} stake={stake} setStake={setStake} aiSuggestion={aiSuggestion} setAiSuggestion={setAiSuggestion} dataTick={dataTick} sportDataStatus={sportDataStatus} matchupFilter={matchupFilter} setMatchupFilter={setMatchupFilter} />}
         {tab==="matchup" && <MatchupView slip={slip} setSlip={setSlip} />}
         {tab==="research" && sport==="nfl" && <ResearchView onSelectPlayer={(playerName)=>{
+          const found = findPlayerRecordForNav(sport, playerName);
+          if (found) { setSelected(found.player); setTab(found.tab); }
+        }} />}
+        {tab==="research" && sport==="wnba" && <WNBAResearchView sportDataStatus={sportDataStatus} onSelectPlayer={(playerName)=>{
           const found = findPlayerRecordForNav(sport, playerName);
           if (found) { setSelected(found.player); setTab(found.tab); }
         }} />}

@@ -9274,6 +9274,15 @@
       "predictedMargin": 2.1,
       "predictedTotal": 50.7,
       "snapshotDate": "2026-09-30"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856836,
+      "homeTeam": "Oklahoma State",
+      "awayTeam": "Colorado",
+      "predictedMargin": 10.0,
+      "predictedTotal": 50.0,
+      "snapshotDate": "2026-09-30"
     }
   ],
   "graded": [
