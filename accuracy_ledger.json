@@ -9265,6 +9265,15 @@
       "predictedMargin": 10.4,
       "predictedTotal": 54.1,
       "snapshotDate": "2026-09-29"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856835,
+      "homeTeam": "UCF",
+      "awayTeam": "BYU",
+      "predictedMargin": 2.1,
+      "predictedTotal": 50.7,
+      "snapshotDate": "2026-09-30"
     }
   ],
   "graded": [
