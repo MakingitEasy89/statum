@@ -64,6 +64,23 @@ const COVERAGE_LABEL = {
   COVER_6:"Cover 6", COVER_9:"Cover 9", "2_MAN":"2-Man", COMBO:"Combo", BLOWN:"Blown Coverage", Unknown:"Unlabeled"
 };
 
+// Textbook weakness + the concepts that beat each coverage shell -- standard defensive-scheme
+// theory, keyed to the same coverage codes nflverse tags on every real play. This is the "why"
+// layer that sits on top of the real per-player, per-coverage splits computed below: the data
+// says a player has a real edge against a specific look, this says why that look is naturally
+// exploitable in the first place. Deliberately limited to the core shells with a clean, well-
+// established weakness -- COVER_9/COMBO/BLOWN/Unknown don't get an entry, since there's no
+// honest single "why" for a catch-all or a busted assignment.
+const COVERAGE_SCOUTING = {
+  COVER_0: { weakness: "No deep help anywhere — every defender is locked in man with nobody over the top.", beaters: ["Sight-adjust routes", "isolated one-on-one vertical shots"] },
+  COVER_1: { weakness: "Backside seam and rub/crossing routes away from the single deep safety.", beaters: ["Mesh", "drive", "deep-cross concepts"] },
+  COVER_2: { weakness: "Deep middle hole shot between the two safeties, plus the flat/hook area if a linebacker vacates it.", beaters: ["Smash concepts", "corner routes", "seam throws to the middle"] },
+  COVER_3: { weakness: "The curl-flat defender is in conflict, and the boundary (short-side) third is thin.", beaters: ["Flood/sail concepts", "boundary comeback routes"] },
+  COVER_4: { weakness: "The safety over the #2 receiver is in a run/pass conflict on the seam.", beaters: ["Four verticals", "a big slot or tight end isolated on a safety"] },
+  COVER_6: { weakness: "Two different coverages stitched together — the 2-deep side keeps Cover 2's hole shot, the quarters side keeps Cover 4's seam conflict.", beaters: ["Attacking the 2-deep boundary side", "a mismatch isolated to the quarters side"] },
+  "2_MAN": { weakness: "Underneath rubs and picks, plus the same deep hole shot as zone Cover 2.", beaters: ["Mesh and other rub-based quick game"] },
+};
+
 const ACCENT = { teal:"#00E5FF", amber:"#FFB800", violet:"#C77DFF", rose:"#FF3D71", green:"#00E676" };
 // P25/P50/P75 get their own dedicated palette — cyan / gold / magenta — instead of borrowing
 // the generic green/teal/amber trio. Gold ties directly to the Statum brand; cyan and magenta
@@ -390,20 +407,47 @@ function Pill({ active, onClick, children, accent = ACCENT.amber }) {
 }
 
 // Draws a real line from real data points only — never fabricated. Pass null/empty to skip.
-function Sparkline({ data, color = ACCENT.teal, width = 90, height = 28 }) {
+function Sparkline({ data, width = 90, height = 28, showDots = false }) {
   if (!data || data.length < 2) return null;
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
-  const points = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * width;
-    const y = height - ((v - min) / range) * height;
-    return `${x.toFixed(1)},${y.toFixed(1)}`;
-  }).join(" ");
+  const pts = data.map((v, i) => ({
+    x: (i / (data.length - 1)) * width,
+    y: height - ((v - min) / range) * height,
+  }));
+  const points = pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
   const trendUp = data[data.length - 1] >= data[0];
+  const stroke = trendUp ? "var(--trend-up)" : "var(--trend-down)";
   return (
-    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} style={{ display: "block" }}>
-      <polyline points={points} fill="none" stroke={trendUp ? ACCENT.green : ACCENT.rose} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} style={{ display: "block", overflow: "visible" }}>
+      <polyline points={points} fill="none" stroke={stroke} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
+      {showDots && pts.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={i === pts.length - 1 ? 2.6 : 1.6} fill={stroke} opacity={i === pts.length - 1 ? 1 : 0.6} />)}
     </svg>
+  );
+}
+
+// Pulls the last `count` real per-game values for one stat out of a player/defender's
+// gamelog (already sorted oldest→newest, and — since the current-season fix — spanning
+// 2024/2025/2026+ in one continuous list) for feeding into <Sparkline>. `fn` extracts the
+// number from a single gamelog row, e.g. g => g.yards, or g => (g.yards||0)+(g.rush_yards||0).
+function sparklineData(gamelog, fn, count = 8) {
+  if (!gamelog || gamelog.length < 2) return null;
+  const vals = gamelog.slice(-count).map(fn).filter(v => typeof v === "number" && !isNaN(v));
+  return vals.length >= 2 ? vals : null;
+}
+
+// Small labeled sparkline used on detail pages, right beside a "Recent Games"-type header,
+// so the trend behind that list is visible at a glance instead of something you'd have to
+// scroll and eyeball yourself. Renders nothing if there isn't enough real gamelog data yet.
+function TrendBadge({ data, label }) {
+  if (!data || data.length < 2) return null;
+  const up = data[data.length - 1] >= data[0];
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+      {label && <span style={{ fontSize: 9.5, color: "var(--text-tertiary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>}
+      <Sparkline data={data} width={72} height={22} />
+      <span style={{ fontSize: 12, fontWeight: 700, color: up ? "var(--trend-up)" : "var(--trend-down)" }}>{up ? "▲" : "▼"}</span>
+    </div>
   );
 }
 
@@ -662,7 +706,10 @@ function SkillDetail({ p, onClose }) {
         </Glass>
       )}
       <Glass hover={false} style={{ padding: "16px 18px" }}>
-        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Recent Games</div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700 }}>Recent Games</div>
+          <TrendBadge label={`last ${Math.min(8,(p.gamelog||[]).length)} gm`} data={sparklineData(p.gamelog, p.overall.rushAtt > 0 ? (g => (g.yards||0)+(g.rush_yards||0)) : (g => g.yards))} />
+        </div>
         <div style={{ maxHeight: 320, overflowY: "auto" }}>
           {[...(p.gamelog||[])].reverse().slice(0,15).map((g,i) => {
             const { week, opp } = parseGameId(g.game_id, p.team);
@@ -812,7 +859,10 @@ function QBDetail({ p, onClose }) {
         {weatherEntries.map(([w,s]) => <SplitRow key={w} label={w} n={s.attempts} rate1Label="comp%" rate1={s.compPct} rate2Label="ypa" rate2={s.yptAtt} epa={s.epaPerAtt} maxAbs={maxAbs} />)}
       </Glass>
       <Glass hover={false} style={{ padding: "16px 18px" }}>
-        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Recent Games</div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700 }}>Recent Games</div>
+          <TrendBadge label={`last ${Math.min(8,(p.gamelog||[]).length)} gm`} data={sparklineData(p.gamelog, g => g.yards)} />
+        </div>
         <div style={{ maxHeight: 320, overflowY: "auto" }}>
           {[...(p.gamelog||[])].reverse().slice(0,15).map((g,i) => {
             const { week, opp } = parseGameId(g.game_id, p.team);
@@ -855,10 +905,15 @@ function KickerDetail({ p, onClose }) {
       </Glass>
 
       {gamesPlayed > 0 && (
-        <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 16, display: "flex", gap: 22, flexWrap: "wrap" }}>
-          <div style={{ fontSize: 10, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700, width: "100%", marginBottom: 4 }}>Per Game ({gamesPlayed} games, 2024–25)</div>
-          <StatChip label="FGA/Gm" value={p.overall.attempts/gamesPlayed} decimals={1} accent={ACCENT.teal} />
-          <StatChip label="FGM/Gm" value={p.overall.made/gamesPlayed} decimals={1} accent={ACCENT.teal} />
+        <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 4 }}>
+            <div style={{ fontSize: 10, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700 }}>Per Game ({gamesPlayed} games, 2024–25)</div>
+            <TrendBadge label={`last ${Math.min(8,(p.gamelog||[]).length)} gm`} data={sparklineData(p.gamelog, g => g.made)} />
+          </div>
+          <div style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
+            <StatChip label="FGA/Gm" value={p.overall.attempts/gamesPlayed} decimals={1} accent={ACCENT.teal} />
+            <StatChip label="FGM/Gm" value={p.overall.made/gamesPlayed} decimals={1} accent={ACCENT.teal} />
+          </div>
         </Glass>
       )}
 
@@ -947,7 +1002,10 @@ function DefenseDetail({ d, onClose }) {
         ))}
       </Glass>
       <Glass hover={false} style={{ padding: "16px 18px" }}>
-        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Every Sack ({d.plays.length} plays)</div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700 }}>Every Sack ({d.plays.length} plays)</div>
+          <TrendBadge label={`last ${Math.min(8,(d.gamelog||[]).length)} gm`} data={sparklineData(d.gamelog, g => g.sacks)} />
+        </div>
         <div style={{ maxHeight: 320, overflowY: "auto" }}>
           {d.plays.map((pl,i) => (
             <div key={i} style={{ display:"grid", gridTemplateColumns:"32px 44px 46px 1fr 1fr 90px", gap:6, fontSize:11.5, padding:"7px 0", borderTop: i? "1px solid var(--overlay-3)":"none" }}>
@@ -1196,6 +1254,12 @@ function OffenseCard({ p, onSelect, idx }) {
     }
   }
 
+  // Last-8-games trend for whichever stat `primary` above is showing — same real gamelog
+  // the Recent Games panel reads (2024-25 and, once played, real current-season games too).
+  const sparkFn = p.kind === "skill" ? (hasRush ? (g => (g.yards||0) + (g.rush_yards||0)) : (g => g.yards))
+    : p.kind === "qb" ? (g => g.yards) : (g => g.made);
+  const sparkData = sparklineData(p.gamelog, sparkFn);
+
   return (
     <Glass onClick={() => onSelect(p)} style={{ padding: "14px 16px", animationDelay: `${Math.min(idx,20)*18}ms` }}>
       <div className="fade-in" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -1206,6 +1270,7 @@ function OffenseCard({ p, onSelect, idx }) {
         <div style={{ textAlign: "right" }}>
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 700, color: accent }}>{primary}</div>
           <div style={{ fontSize: 9.5, color: "var(--text-label)" }}>{primaryLabel} · H</div>
+          {sparkData && <div style={{ marginTop: 4, display: "flex", justifyContent: "flex-end" }}><Sparkline data={sparkData} width={64} height={20} /></div>}
         </div>
       </div>
       <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--text-secondary-a)", fontFamily: "'JetBrains Mono', monospace" }}>{secondary}</div>
@@ -1221,6 +1286,7 @@ function DefenseCard({ d, onSelect, idx }) {
     const perGame = blend.sacksPerGame;
     curLine = `${fmt(perGame.value,2)} sacks/gm blended · ${Math.round(perGame.weight_current*100)}% weight on ${blend.currentSeasonGames} real gm this szn`;
   }
+  const sparkData = sparklineData(d.gamelog, g => g.sacks);
   return (
     <Glass onClick={() => onSelect(d)} style={{ padding: "14px 16px", animationDelay: `${Math.min(idx,20)*18}ms` }}>
       <div className="fade-in" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -1231,6 +1297,7 @@ function DefenseCard({ d, onSelect, idx }) {
         <div style={{ textAlign: "right" }}>
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 700, color: ACCENT.violet }}>{d.totalSacks}</div>
           <div style={{ fontSize: 9.5, color: "var(--text-label)" }}>sacks · H</div>
+          {sparkData && <div style={{ marginTop: 4, display: "flex", justifyContent: "flex-end" }}><Sparkline data={sparkData} width={64} height={20} /></div>}
         </div>
       </div>
       <div style={{ display: "flex", gap: 12, marginTop: 10, fontSize: 11.5, color: "var(--text-secondary-a)", fontFamily: "'JetBrains Mono', monospace" }}>
@@ -3537,6 +3604,13 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
           <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
             🎯 TDs Allowed by Position
           </div>
+          {(() => {
+            // Bar height makes relative magnitude across positions immediately legible --
+            // a defense that "bleeds TEs" now shows a visibly longer bar for TE than the
+            // others, not just a bigger number that takes a beat to compare against its
+            // neighbors.
+            const maxAllowed = Math.max(1, ...["WR","TE","RB","QB"].map(pos => def.allowedByPosition[pos]?.tds || 0));
+            return (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
             {["WR", "TE", "RB", "QB"].map(pos => {
               const d = def.allowedByPosition[pos];
@@ -3549,6 +3623,9 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
                     {isWeak && <span style={{ fontSize: 8.5, color: ACCENT.rose, fontWeight: 800, border: `1px solid ${ACCENT.rose}55`, borderRadius: 6, padding: "1px 6px" }}>⚠ WEAKNESS</span>}
                   </div>
                   <div style={{ fontSize: 26, fontWeight: 800, color: isWeak ? ACCENT.rose : "var(--text-body)", fontFamily: "'JetBrains Mono', monospace" }}>{d.tds}</div>
+                  <div style={{ height: 5, background: "var(--overlay-3)", borderRadius: 3, overflow: "hidden", margin: "6px 0" }}>
+                    <div className="bar-fill" style={{ height: "100%", width: `${Math.max(4,(d.tds/maxAllowed)*100)}%`, background: isWeak ? "linear-gradient(90deg,#8C2B45,#FF3D71)" : "linear-gradient(90deg,#6B5A66,#B08C99)" }} />
+                  </div>
                   <div style={{ fontSize: 10, color: "var(--text-tertiary)" }}>
                     {pos === "QB"
                       ? <>rushing TDs allowed · #{d.rank} of 32 · {d.rushAtt} real rush att faced</>
@@ -3558,6 +3635,8 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
               );
             })}
           </div>
+            );
+          })()}
           <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginTop: 8 }}>
             Real season totals — TD counts alone can be a small sample over a season, so weigh alongside the yards/game rank too, not TDs in isolation.
             {def.allowedByPosition.QB && " QB reflects real rushing scores allowed (scrambles, goal-line sneaks), not passing."}
@@ -3570,6 +3649,9 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
           <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
             🏆 TDs Scored by Position
           </div>
+          {(() => {
+            const maxScored = Math.max(1, ...["WR","TE","RB","QB"].map(pos => activeOff.tdsByPosition[pos]?.tds || 0));
+            return (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
             {["WR", "TE", "RB", "QB"].map(pos => {
               const d = activeOff.tdsByPosition[pos];
@@ -3582,6 +3664,9 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
                     {isPrimary && <span style={{ fontSize: 8.5, color: ACCENT.teal, fontWeight: 800, border: `1px solid ${ACCENT.teal}55`, borderRadius: 6, padding: "1px 6px" }}>★ TOP SOURCE</span>}
                   </div>
                   <div style={{ fontSize: 26, fontWeight: 800, color: isPrimary ? ACCENT.teal : "var(--text-body)", fontFamily: "'JetBrains Mono', monospace" }}>{d.tds}</div>
+                  <div style={{ height: 5, background: "var(--overlay-3)", borderRadius: 3, overflow: "hidden", margin: "6px 0" }}>
+                    <div className="bar-fill" style={{ height: "100%", width: `${Math.max(4,(d.tds/maxScored)*100)}%`, background: isPrimary ? "linear-gradient(90deg,#0D6E7A,#00E5FF)" : "linear-gradient(90deg,#5A6B6E,#8CB0B8)" }} />
+                  </div>
                   <div style={{ fontSize: 10, color: "var(--text-tertiary)" }}>
                     {fmt(d.pct,0)}% of team TDs · {d.receivingTDs} rec / {d.rushingTDs} rush · {fmt(d.perGame,2)}/gm
                   </div>
@@ -3589,6 +3674,8 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
               );
             })}
           </div>
+            );
+          })()}
           <div style={{ fontSize: 9.5, color: "var(--text-tertiary)", marginTop: 8 }}>
             The offense's own side of the panel above — real receiving TDs credited to the receiver's position, real rushing TDs credited to the rusher's (including QB scrambles/sneaks). {activeOff.totalTDs} total real TDs over {activeOff.gamesPlayed} game{activeOff.gamesPlayed===1?"":"s"}.
           </div>
@@ -3652,6 +3739,114 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+// =====================================================================
+// RESEARCH — scheme weakness x real player fit
+// =====================================================================
+// NFL only: this is the one sport with per-play coverage classification, so it's the only
+// one where "this defense's scheme is weak here, and this player's own stats prove he fits
+// it" can be said with real numbers rather than a guess. Reuses the exact same building
+// blocks the single-player "Matchup Signal" callout already uses (TEAM_DEFENSE[team].scheme,
+// NFL_UPCOMING, p.coverages) -- this view just aggregates that same logic across every
+// player on both offenses for every game on the board at once, instead of one player at a
+// time only when you happen to already be on his detail page.
+function researchMatchupsForGame(offTeam, defTeam) {
+  const oppDef = TEAM_DEFENSE[defTeam];
+  const primaryCov = oppDef?.scheme?.primaryCoverage;
+  const primaryPct = oppDef?.scheme?.primaryCoveragePct;
+  if (!primaryCov || !primaryPct || primaryPct < 38) {
+    return { primaryCov: null, primaryPct: null, scouting: null, players: [], noVolume: false };
+  }
+  const scouting = COVERAGE_SCOUTING[primaryCov] || null;
+  const candidates = [
+    ...RECEIVERS.filter(p => p.team === offTeam).map(p => ({ p, kind: "skill" })),
+    ...QBS.filter(p => p.team === offTeam).map(p => ({ p, kind: "qb" })),
+  ];
+  const rows = [];
+  for (const { p, kind } of candidates) {
+    const split = p.coverages?.[primaryCov];
+    const vol = kind === "qb" ? split?.attempts : split?.targets;
+    if (!split || !vol || vol < 5) continue; // same real-volume bar as the single-player Matchup Signal
+    const overallRate = kind === "qb" ? p.overall?.yptAtt : p.overall?.yptTarget;
+    const splitRate = kind === "qb" ? split.yptAtt : split.yptTarget;
+    const epa = kind === "qb" ? split.epaPerAtt : split.epaPerTarget;
+    if (overallRate == null || splitRate == null) continue;
+    rows.push({ name: p.name, pos: p.pos, kind, vol, splitRate, overallRate, epa, diff: splitRate - overallRate });
+  }
+  const positive = rows.filter(r => r.diff > 0.01).sort((a,b) => b.diff - a.diff).slice(0, 5);
+  return { primaryCov, primaryPct, scouting, players: positive, noVolume: rows.length === 0 };
+}
+
+function ResearchView({ onSelectPlayer }) {
+  const games = useMemo(() => {
+    const seen = new Set();
+    const list = [];
+    for (const [team, info] of Object.entries(NFL_UPCOMING)) {
+      if (!info || !info.opp) continue;
+      const key = [team, info.opp].sort().join("_");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const home = info.isHome ? team : info.opp;
+      const away = info.isHome ? info.opp : team;
+      list.push({ home, away, week: info.week, date: info.date });
+    }
+    return list.sort((a,b) => (a.week||0)-(b.week||0) || String(a.date||"").localeCompare(String(b.date||"")));
+  }, []);
+
+  return (
+    <div className="fade-in">
+      <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>Scheme Matchups</div>
+      <div style={{ fontSize: 12, color: "var(--text-secondary-a)", marginBottom: 18, lineHeight: 1.55, maxWidth: 760 }}>
+        For every defense playing one coverage clearly enough to call it a real tendency (38%+ of snaps), the textbook reason that shell is exploitable, next to the offensive players whose own real per-coverage stats this season back it up. Real target/attempt volume against that specific look — not a projection.
+      </div>
+      {games.length === 0 && <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>No upcoming games scheduled yet.</Glass>}
+      {games.map(g => (
+        <Glass key={g.home + g.away} hover={false} style={{ padding: "18px 20px", marginBottom: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14, flexWrap: "wrap", gap: 6 }}>
+            <div style={{ fontSize: 15, fontWeight: 800 }}>{TEAM_NAMES[g.away] || g.away} @ {TEAM_NAMES[g.home] || g.home}</div>
+            <div style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>{g.week ? `Week ${g.week}` : ""}{g.date ? ` · ${g.date}` : ""}</div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
+            {[{ off: g.away, def: g.home }, { off: g.home, def: g.away }].map(({ off, def }) => {
+              const r = researchMatchupsForGame(off, def);
+              return (
+                <div key={off} style={{ background: "var(--overlay-2)", borderRadius: 10, padding: "12px 14px" }}>
+                  <div style={{ fontSize: 11.5, fontWeight: 700, marginBottom: 8 }}>{TEAM_NAMES[off] || off} offense <span style={{ color: "var(--text-tertiary)", fontWeight: 500 }}>vs</span> {TEAM_NAMES[def] || def} defense</div>
+                  {!r.primaryCov && <div style={{ fontSize: 11, color: "var(--text-tertiary)" }}>No coverage clear enough to call a real tendency — too mixed a scheme to key on.</div>}
+                  {r.primaryCov && (
+                    <>
+                      <div style={{ fontSize: 11.5, marginBottom: 6 }}>Plays <b>{COVERAGE_LABEL[r.primaryCov] || r.primaryCov}</b> <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--text-secondary-b)" }}>{fmt(r.primaryPct,0)}%</span> of snaps</div>
+                      {r.scouting && (
+                        <div style={{ fontSize: 10.5, color: "var(--text-secondary-a)", marginBottom: 10, lineHeight: 1.5, paddingBottom: 10, borderBottom: "1px solid var(--overlay-3)" }}>
+                          <b style={{ color: "var(--text-body)" }}>Weakness:</b> {r.scouting.weakness}<br/>
+                          <b style={{ color: "var(--text-body)" }}>Beaten by:</b> {r.scouting.beaters.join(", ")}
+                        </div>
+                      )}
+                      {r.players.length === 0 && (
+                        <div style={{ fontSize: 11, color: "var(--text-tertiary)" }}>
+                          {r.noVolume ? "No player has enough real volume against this specific look yet." : "Nobody on this offense shows a real statistical edge against this specific look."}
+                        </div>
+                      )}
+                      {r.players.map(pl => (
+                        <div key={pl.name} onClick={() => onSelectPlayer(pl.name)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderTop: "1px solid var(--overlay-3)", cursor: "pointer" }} className="bounce-in">
+                          <span style={{ fontSize: 11.5 }}>{pl.name} <span style={{ color: "var(--text-tertiary)" }}>({pl.pos})</span></span>
+                          <span style={{ textAlign: "right" }}>
+                            <div style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: ACCENT.green }}>{fmt(pl.splitRate,1)} <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>vs {fmt(pl.overallRate,1)} {pl.kind==="qb"?"ypa":"ypt"}</span></div>
+                            <div style={{ fontSize: 9, color: "var(--text-tertiary)" }}>{pl.vol} {pl.kind==="qb"?"att":"tgt"} · {fmt(pl.epa,2)} EPA/{pl.kind==="qb"?"att":"tgt"}</div>
+                          </span>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </Glass>
+      ))}
     </div>
   );
 }
@@ -4449,6 +4644,7 @@ function App() {
   useEffect(() => { setSelectedTeam(null); setPosFilter("all"); }, [tab]);
   useEffect(() => { setSelected(null); setSelectedTeam(null); setSearch(""); setPosFilter("all"); setTeam("all"); setMatchupFilter(null); }, [sport]);
   useEffect(() => { if (sport === "cfb" && (tab === "locks" || tab === "matchup" || tab === "market")) setTab("dashboard"); }, [sport, tab]);
+  useEffect(() => { if (sport !== "nfl" && tab === "research") setTab("dashboard"); }, [sport, tab]);
 
   const [themeOverride, setThemeOverride] = useState(null); // null = auto (local time), "day", or "night"
 
@@ -4482,6 +4678,13 @@ function App() {
     // even the 3:1 floor for large text). Day mode gets a deeper forest green with the
     // same "this is live/current" meaning at a real ~5:1 contrast instead.
     "--accent-current": isDay ? "#0C7A3D" : "#7CFFB2",
+    // Trend up/down (sparklines) — the stock ACCENT.green (#00E676) used site-wide only hits
+    // ~1.6:1 contrast on the cream day background, same underlying issue as the pale mint
+    // above. Since sparklines are about to appear widely (cards + detail pages), give them
+    // their own day-safe pair rather than inheriting that; night keeps the familiar bright
+    // green/rose used everywhere else.
+    "--trend-up": isDay ? "#0C7A3D" : "#00E676",
+    "--trend-down": isDay ? "#D42A5E" : "#FF3D71",
   };
 
   return (
@@ -4562,6 +4765,7 @@ function App() {
           {sport!=="cfb" && <Pill active={tab==="market"} onClick={()=>{setTab("market");setSelected(null);}} accent={ACCENT.amber}>Market Pulse · Kalshi</Pill>}
           {sport!=="cfb" && <Pill active={tab==="locks"} onClick={()=>{setTab("locks");setSelected(null);}} accent={ACCENT.green}>🎯 Prop Floors + Parlay</Pill>}
           {sport!=="cfb" && <Pill active={tab==="matchup"} onClick={()=>{setTab("matchup");setSelected(null);}} accent={ACCENT.rose}>🏟️ Matchup</Pill>}
+          {sport==="nfl" && <Pill active={tab==="research"} onClick={()=>{setTab("research");setSelected(null);}} accent={ACCENT.violet}>🔬 Research</Pill>}
           <Pill active={tab==="teams"} onClick={()=>{setTab("teams");setSelected(null);}} accent="#6EC9F2">🏛️ Teams</Pill>
           <Pill active={tab==="tracking"} onClick={()=>{setTab("tracking");setSelected(null);}} accent="#FFD54A">🏆 Tracking</Pill>
         </div>
@@ -4575,6 +4779,10 @@ function App() {
         {tab==="market" && sport!=="cfb" && <MarketPulseView sport={sport} />}
         {tab==="locks" && <PropFloorsView sport={sport} slip={slip} setSlip={setSlip} stake={stake} setStake={setStake} aiSuggestion={aiSuggestion} setAiSuggestion={setAiSuggestion} dataTick={dataTick} sportDataStatus={sportDataStatus} matchupFilter={matchupFilter} setMatchupFilter={setMatchupFilter} />}
         {tab==="matchup" && <MatchupView slip={slip} setSlip={setSlip} />}
+        {tab==="research" && sport==="nfl" && <ResearchView onSelectPlayer={(playerName)=>{
+          const found = findPlayerRecordForNav(sport, playerName);
+          if (found) { setSelected(found.player); setTab(found.tab); }
+        }} />}
         {tab==="teams" && !selectedTeam && (
           <div className="fade-in">
             {sport !== "nfl" && sportDataStatus[sport] === "loading" && (
@@ -4735,9 +4943,12 @@ function App() {
         {selected && sport==="nfl" && tab==="defense" && <DefenseDetail d={selected} onClose={()=>setSelected(null)} />}
 
         <div style={{ borderTop: "1px solid var(--overlay-4)", marginTop: 34, paddingTop: 16, fontSize: 11, color: "var(--text-tertiary)", lineHeight: 1.6 }}>
-          Data: 2024 + 2025 NFL play-by-play + Next Gen Stats participation (nflverse), joined per-play. Front and
-          coverage are derived from actual on-field personnel/tracking for that snap. Locks methodology and Kalshi
-          snapshot detailed in their respective tabs.
+          {sport === "nfl" && <>Data: 2024 + 2025 NFL play-by-play + Next Gen Stats participation (nflverse), joined per-play. Front and
+          coverage are derived from actual on-field personnel/tracking for that snap. </>}
+          {sport === "wnba" && <>Data: WNBA play-by-play (ESPN, via sportsdataverse). </>}
+          {sport === "mlb" && <>Data: official MLB Stats API (statsapi.mlb.com). </>}
+          {sport === "cfb" && <>Data: FBS games, lines, and team ratings from CollegeFootballData.com. </>}
+          Locks methodology and Kalshi snapshot detailed in their respective tabs.
         </div>
       </div>
     </div>
