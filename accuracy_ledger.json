@@ -4127,24 +4127,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871049,
-      "homeTeam": "New Mexico State",
-      "awayTeam": "Western Kentucky",
-      "predictedMargin": 8.6,
-      "predictedTotal": 53.4,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862786,
-      "homeTeam": "Tulsa",
-      "awayTeam": "North Texas",
-      "predictedMargin": -8.7,
-      "predictedTotal": 59.1,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401871050,
       "homeTeam": "Delaware",
       "awayTeam": "Liberty",
@@ -6455,26 +6437,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Jerry Jeudy",
-      "stat": "Receptions",
-      "p25": 3.0,
-      "p50": 5.0,
-      "p75": 6.0,
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jerry Jeudy",
-      "stat": "Receiving Yards",
-      "p25": 29.0,
-      "p50": 72.0,
-      "p75": 85.0,
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
       "player": "Keenan Allen",
       "stat": "Receptions",
       "p25": 3.0,
@@ -6705,26 +6667,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Michael Pittman",
-      "stat": "Receptions",
-      "p25": 3.0,
-      "p50": 4.0,
-      "p75": 6.0,
-      "gamelogLenAtSnapshot": 35,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
-      "player": "Michael Pittman",
-      "stat": "Receiving Yards",
-      "p25": 28.0,
-      "p50": 39.0,
-      "p75": 65.0,
-      "gamelogLenAtSnapshot": 35,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
       "player": "Jauan Jennings",
       "stat": "Receptions",
       "p25": 3.0,
@@ -6761,16 +6703,6 @@
       "p50": 57.0,
       "p75": 90.0,
       "gamelogLenAtSnapshot": 27,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
-      "player": "DK Metcalf",
-      "stat": "Receiving Yards",
-      "p25": 48.0,
-      "p50": 57.0,
-      "p75": 84.0,
-      "gamelogLenAtSnapshot": 34,
       "snapshotDate": "2026-09-29"
     },
     {
@@ -7665,26 +7597,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Pat Freiermuth",
-      "stat": "Receptions",
-      "p25": 3.0,
-      "p50": 3.0,
-      "p75": 4.0,
-      "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
-      "player": "Pat Freiermuth",
-      "stat": "Receiving Yards",
-      "p25": 17.0,
-      "p50": 30.0,
-      "p75": 55.0,
-      "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
       "player": "Sam LaPorta",
       "stat": "Receptions",
       "p25": 2.0,
@@ -8395,26 +8307,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Jaylen Warren",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 2.0,
-      "p75": 4.0,
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jaylen Warren",
-      "stat": "Rush Attempts",
-      "p25": 3.0,
-      "p50": 9.0,
-      "p75": 11.0,
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
       "player": "Chuba Hubbard",
       "stat": "Rush Attempts",
       "p25": 12.0,
@@ -8895,26 +8787,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Jaleel McLaughlin",
-      "stat": "Rush Attempts",
-      "p25": 4.0,
-      "p50": 6.0,
-      "p75": 9.0,
-      "gamelogLenAtSnapshot": 28,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jaleel McLaughlin",
-      "stat": "Rush Yards",
-      "p25": 10.0,
-      "p50": 22.0,
-      "p75": 44.0,
-      "gamelogLenAtSnapshot": 28,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
       "player": "Emanuel Wilson",
       "stat": "Rush Attempts",
       "p25": 3.0,
@@ -9070,16 +8942,6 @@
       "p25": 117.0,
       "p50": 206.0,
       "p75": 243.0,
-      "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-09-29"
-    },
-    {
-      "sport": "nfl",
-      "player": "Aaron Rodgers",
-      "stat": "Passing Yards",
-      "p25": 184.0,
-      "p50": 233.0,
-      "p75": 276.0,
       "gamelogLenAtSnapshot": 37,
       "snapshotDate": "2026-09-29"
     },
@@ -9283,6 +9145,126 @@
       "predictedMargin": 10.0,
       "predictedTotal": 50.0,
       "snapshotDate": "2026-09-30"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jerry Jeudy",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jerry Jeudy",
+      "stat": "Receiving Yards",
+      "p25": 29.0,
+      "p50": 72.0,
+      "p75": 85.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Michael Pittman",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Michael Pittman",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 39.0,
+      "p75": 65.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "DK Metcalf",
+      "stat": "Receiving Yards",
+      "p25": 48.0,
+      "p50": 57.0,
+      "p75": 84.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Pat Freiermuth",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Pat Freiermuth",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 30.0,
+      "p75": 55.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Warren",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Warren",
+      "stat": "Rush Attempts",
+      "p25": 3.0,
+      "p50": 9.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Attempts",
+      "p25": 4.0,
+      "p50": 6.0,
+      "p75": 9.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Yards",
+      "p25": 10.0,
+      "p50": 22.0,
+      "p75": 44.0,
+      "gamelogLenAtSnapshot": 29,
+      "snapshotDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Aaron Rodgers",
+      "stat": "Passing Yards",
+      "p25": 184.0,
+      "p50": 233.0,
+      "p75": 276.0,
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-10-02"
     }
   ],
   "graded": [
@@ -21924,32 +21906,472 @@
       "hit": false,
       "snapshotDate": "2026-09-16",
       "gradedDate": "2026-09-29"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jerry Jeudy",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jerry Jeudy",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 3.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jerry Jeudy",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 3.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jerry Jeudy",
+      "stat": "Receiving Yards",
+      "line": 29.0,
+      "actual": 36.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jerry Jeudy",
+      "stat": "Receiving Yards",
+      "line": 72.0,
+      "actual": 36.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jerry Jeudy",
+      "stat": "Receiving Yards",
+      "line": 85.0,
+      "actual": 36.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Michael Pittman",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Michael Pittman",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Michael Pittman",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Michael Pittman",
+      "stat": "Receiving Yards",
+      "line": 28.0,
+      "actual": 15.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Michael Pittman",
+      "stat": "Receiving Yards",
+      "line": 39.0,
+      "actual": 15.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Michael Pittman",
+      "stat": "Receiving Yards",
+      "line": 65.0,
+      "actual": 15.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "DK Metcalf",
+      "stat": "Receiving Yards",
+      "line": 48.0,
+      "actual": 115.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "DK Metcalf",
+      "stat": "Receiving Yards",
+      "line": 57.0,
+      "actual": 115.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "DK Metcalf",
+      "stat": "Receiving Yards",
+      "line": 84.0,
+      "actual": 115.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Pat Freiermuth",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Pat Freiermuth",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Pat Freiermuth",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 3.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Pat Freiermuth",
+      "stat": "Receiving Yards",
+      "line": 17.0,
+      "actual": 17.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Pat Freiermuth",
+      "stat": "Receiving Yards",
+      "line": 30.0,
+      "actual": 17.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Pat Freiermuth",
+      "stat": "Receiving Yards",
+      "line": 55.0,
+      "actual": 17.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jaylen Warren",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jaylen Warren",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jaylen Warren",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 3.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jaylen Warren",
+      "stat": "Rush Attempts",
+      "line": 3.0,
+      "actual": 17.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jaylen Warren",
+      "stat": "Rush Attempts",
+      "line": 9.0,
+      "actual": 17.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jaylen Warren",
+      "stat": "Rush Attempts",
+      "line": 11.0,
+      "actual": 17.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Attempts",
+      "line": 4.0,
+      "actual": 1.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Attempts",
+      "line": 6.0,
+      "actual": 1.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Attempts",
+      "line": 9.0,
+      "actual": 1.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Yards",
+      "line": 10.0,
+      "actual": 28.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Yards",
+      "line": 22.0,
+      "actual": 28.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jaleel McLaughlin",
+      "stat": "Rush Yards",
+      "line": 44.0,
+      "actual": 28.0,
+      "hit": false,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Aaron Rodgers",
+      "stat": "Passing Yards",
+      "line": 184.0,
+      "actual": 299.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Aaron Rodgers",
+      "stat": "Passing Yards",
+      "line": 233.0,
+      "actual": 299.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Aaron Rodgers",
+      "stat": "Passing Yards",
+      "line": 276.0,
+      "actual": 299.0,
+      "hit": true,
+      "snapshotDate": "2026-09-29",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Western Kentucky @ New Mexico State",
+      "stat": "spread",
+      "line": 8.6,
+      "actual": 21,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Western Kentucky @ New Mexico State",
+      "stat": "total",
+      "line": 53.4,
+      "actual": 47,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "North Texas @ Tulsa",
+      "stat": "spread",
+      "line": -8.7,
+      "actual": -1,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "North Texas @ Tulsa",
+      "stat": "total",
+      "line": 59.1,
+      "actual": 89,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-02"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 126,
-      "hits": 91,
-      "rate": 72.2
+      "graded": 128,
+      "hits": 93,
+      "rate": 72.7
     },
     "cfb_total": {
-      "graded": 126,
+      "graded": 128,
       "hits": 21,
-      "rate": 16.7
+      "rate": 16.4
     },
     "nfl_p25": {
-      "graded": 299,
-      "hits": 212,
-      "rate": 70.9
+      "graded": 311,
+      "hits": 221,
+      "rate": 71.1
     },
     "nfl_p50": {
-      "graded": 299,
-      "hits": 144,
+      "graded": 311,
+      "hits": 150,
       "rate": 48.2
     },
     "nfl_p75": {
-      "graded": 299,
-      "hits": 75,
+      "graded": 311,
+      "hits": 78,
       "rate": 25.1
     }
   }
