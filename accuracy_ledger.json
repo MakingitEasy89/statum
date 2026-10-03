@@ -4127,33 +4127,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871050,
-      "homeTeam": "Delaware",
-      "awayTeam": "Liberty",
-      "predictedMargin": 12.8,
-      "predictedTotal": 55.9,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858245,
-      "homeTeam": "Virginia Tech",
-      "awayTeam": "Pittsburgh",
-      "predictedMargin": -1.1,
-      "predictedTotal": 55.6,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858476,
-      "homeTeam": "Northwestern",
-      "awayTeam": "Penn State",
-      "predictedMargin": 1.4,
-      "predictedTotal": 47.8,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401869932,
       "homeTeam": "Louisiana",
       "awayTeam": "Arkansas State",
@@ -22346,18 +22319,84 @@
       "hit": false,
       "snapshotDate": "2026-09-19",
       "gradedDate": "2026-10-02"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Liberty @ Delaware",
+      "stat": "spread",
+      "line": 12.8,
+      "actual": -16,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Liberty @ Delaware",
+      "stat": "total",
+      "line": 55.9,
+      "actual": 44,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Pittsburgh @ Virginia Tech",
+      "stat": "spread",
+      "line": -1.1,
+      "actual": -2,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Pittsburgh @ Virginia Tech",
+      "stat": "total",
+      "line": 55.6,
+      "actual": 68,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Penn State @ Northwestern",
+      "stat": "spread",
+      "line": 1.4,
+      "actual": 21,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Penn State @ Northwestern",
+      "stat": "total",
+      "line": 47.8,
+      "actual": 47,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-03"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 128,
-      "hits": 93,
-      "rate": 72.7
+      "graded": 131,
+      "hits": 95,
+      "rate": 72.5
     },
     "cfb_total": {
-      "graded": 128,
-      "hits": 21,
-      "rate": 16.4
+      "graded": 131,
+      "hits": 22,
+      "rate": 16.8
     },
     "nfl_p25": {
       "graded": 311,
