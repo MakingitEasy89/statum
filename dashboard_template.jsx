@@ -2245,6 +2245,27 @@ function MarketLineComparator({ e }) {
   );
 }
 
+// XGBoost lean — a SUPPLEMENTARY signal layered on top of the real percentile ladder above,
+// never a replacement for it (the real P25/P50/P75 numbers above this always stay put no
+// matter what this shows). Only ever appears when the backend measured it genuinely beating
+// a naive baseline on real held-out games for this exact stat — see update_dashboard.py's
+// build_xgboost_lean_models() for the full honesty contract (pooled training, real
+// train/test split by season, per-stat baseline gate).
+function ModelLeanBadge({ lean }) {
+  if (!lean) return null;
+  const over = lean.leanProb >= 55;
+  const under = lean.leanProb <= 45;
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 10.5, marginTop: 2, marginBottom: 8, flexWrap: "wrap" }}>
+      <span style={{ fontWeight: 800, color: ACCENT.violet }}>🤖 Model lean:</span>
+      <span style={{ fontWeight: 700, color: ACCENT.violet }}>{fmt(lean.leanProb, 0)}%</span>
+      <span style={{ color: "var(--text-secondary-b)" }}>
+        to clear P50 {over ? "(leaning Over)" : under ? "(leaning Under)" : "(no strong lean)"} · recent form {fmt(lean.trailing3, 0)}/gm
+      </span>
+    </div>
+  );
+}
+
 function LadderCard({ e, onAdd, inSlipTranches }) {
   return (
     <Glass hover={false} style={{ padding: "14px 16px" }} className="glass bounce-in">
@@ -2265,6 +2286,7 @@ function LadderCard({ e, onAdd, inSlipTranches }) {
         <span style={{ color: TRANCHE_COLOR.p50 }}>P50: {fmt(e.p50.line,0)} <span style={{color:"var(--text-secondary-b)"}}>({fmt(e.p50.testHit,0)}%)</span></span>
         <span style={{ color: TRANCHE_COLOR.p75 }}>P75: {fmt(e.p75.line,0)} <span style={{color:"var(--text-secondary-b)"}}>({fmt(e.p75.testHit,0)}%)</span></span>
       </div>
+      <ModelLeanBadge lean={e.modelLean} />
       {e.note && <div style={{ fontSize: 10.5, color: "var(--text-label)", marginBottom: 10, fontStyle: "italic" }}>📋 {e.note}</div>}
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         {["p25","p50","p75"].map(tr => (
@@ -2316,6 +2338,7 @@ function PlayerPoolGroup({ player, entries, onAdd, inSlipTranchesFor }) {
                   <span style={{ color: TRANCHE_COLOR.p50 }}>P50: {fmt(e.p50.line,0)} <span style={{color:"var(--text-secondary-b)"}}>({fmt(e.p50.testHit,0)}%)</span></span>
                   <span style={{ color: TRANCHE_COLOR.p75 }}>P75: {fmt(e.p75.line,0)} <span style={{color:"var(--text-secondary-b)"}}>({fmt(e.p75.testHit,0)}%)</span></span>
                 </div>
+                <ModelLeanBadge lean={e.modelLean} />
                 <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
                   {["p25","p50","p75"].map(tr => (
                     <AddButton key={tr} inSlip={inSlip.includes(tr)} onClick={()=>onAdd(e, tr)} tranche={tr} compact />

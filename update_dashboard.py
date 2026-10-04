@@ -486,94 +486,52 @@ def build_usage_bump_analysis(receivers, injury_df):
     return out
 
 
-def build_xgboost_lean_model(baseline, current, full_pool, receivers):
-    """A supplementary, model-based signal — NOT a replacement for the real percentile
-    system, which stays the primary, transparent display. This combines recent form,
-    home/away, and opponent strength into one learned probability of clearing a player's
-    own real P50 line, trained on real historical games.
+def _train_lean_model(per_game, pid_to_name, pid_to_team, p_line_by_name, opp_rank, upcoming, label):
+    """Shared engine behind every per-stat XGBoost lean model (see build_xgboost_lean_models()
+    below for the full honesty/safety contract this runs under). Trains a classifier that
+    predicts P(this player clears their own real P50 line in this game), pooled across every
+    player for ONE stat at a time.
 
-    Scope for this first version: Receiving Yards only (the highest-volume, most-bet
-    prop) — extending to other stats/positions is a natural next step once this is
-    validated with real usage, not attempted all at once here.
-
-    Honest limitations, disclosed rather than hidden:
-    - Trained on POOLED data across all players, not per-player — a single player has
-      nowhere near enough games (30-40) to train an individual model on; pooling many
-      players' games together is what makes a model like this workable at all here.
-    - Opponent strength uses that opponent's END-OF-BASELINE defensive rank as a stand-in
-      for their strength "at the time" of each historical game, not a true week-by-week
-      rolling value — a standard, disclosed simplification for a lightweight model like
-      this, not a claim of perfect historical precision.
-    - Real accuracy is measured below on real held-out games, not assumed — if it doesn't
-      meaningfully beat a naive baseline, that gets reported honestly, not hidden."""
-    try:
-        import xgboost as xgb
-    except ImportError:
-        # This is a supplementary diagnostic, never a required part of the pipeline (it was
-        # never wired into any real prop entry even when it WAS installed, since historically
-        # it didn't beat the naive baseline) -- a missing optional dependency here must never
-        # take down the whole update (real game data, props, team stats, etc. still need to
-        # ship). Run `pip install xgboost` locally to enable this diagnostic; the GitHub
-        # Actions workflow already installs it, so this only shows up on a local run without it.
-        print("  XGBoost lean model: 'xgboost' package not installed locally -- skipping this diagnostic "
-              "(run `pip install xgboost` to enable it; everything else is unaffected)")
-        return {}, None
-
-    # Match by player ID via the already-built receivers list, not the raw play-by-play
-    # name column — raw names are often abbreviated ("T.Hill") while full_pool uses the
-    # properly resolved roster name ("Tyreek Hill"). Matching on name directly was a real
-    # bug that silently produced zero rows the first time this was built.
-    pid_to_name = {r['id']: r['name'] for r in receivers}
-
-    combined = pd.concat([baseline, current]) if len(current) else baseline
-    rec = combined[combined['receiver_player_id'].notna()].copy()
-    if len(rec) == 0:
-        return {}, None
-
-    per_game = rec.groupby(['receiver_player_id', 'season', 'game_id']).agg(
-        yards=('yards_gained', 'sum'), is_home=('is_home', 'first'), defteam=('defteam', 'first'), week=('week', 'first')
-    ).reset_index().sort_values(['receiver_player_id', 'season', 'week'])
-
-    # end-of-baseline defensive rank vs WR/TE/RB receiving yards allowed, per team — used
-    # as the "opponent strength" feature (see the disclosed simplification above)
-    team_ypg_allowed = rec.groupby(['defteam', 'game_id'])['yards_gained'].sum().reset_index().groupby('defteam')['yards_gained'].mean()
-    opp_rank = team_ypg_allowed.rank(ascending=False).to_dict()  # rank 1 = allows the most yards (weakest defense)
-
-    # P50 lines already computed for the real prop pool — used as this model's real,
-    # existing target threshold rather than inventing a separate one
-    p50_by_name = {e['player']: e['p50']['line'] for e in full_pool if e['stat'] == 'Receiving Yards' and e['kind'] == 'ladder'}
+    `per_game` needs one row per player-game: pid, season, week, is_home, defteam, value
+    (whatever this stat means for that single game -- summed yards, a raw count, etc).
+    `opp_rank` is a {team: rank} dict, 1 = allows the most of this stat (pass {} to skip this
+    feature for stats where a defensive proxy doesn't really apply, e.g. kicking). `upcoming`
+    is NFL_UPCOMING-shaped ({team: {opp, isHome, ...}}) -- used only so the CURRENT lean (the
+    one actually shown) reflects the real next opponent/home-away instead of a neutral guess;
+    it never touches the historical training rows, which already have the real thing."""
+    import xgboost as xgb
 
     rows, targets, meta = [], [], []
-    for pid, grp in per_game.groupby('receiver_player_id'):
+    for pid, grp in per_game.sort_values(['season', 'week']).groupby('pid'):
         name = pid_to_name.get(pid)
-        p50 = p50_by_name.get(name) if name else None
+        p50 = p_line_by_name.get(name) if name else None
         if p50 is None:
             continue
-        yards_hist = []
+        hist = []
         for _, row in grp.iterrows():
-            if len(yards_hist) >= 3:  # only once there's real trailing history to compute from -- no leakage
-                trailing_3 = np.mean(yards_hist[-3:])
-                season_avg = np.mean(yards_hist)
-                opp_r = opp_rank.get(row['defteam'], np.median(list(opp_rank.values())) if opp_rank else 16)
+            if len(hist) >= 3:  # only once there's real trailing history to compute from -- no leakage
+                trailing_3 = np.mean(hist[-3:])
+                season_avg = np.mean(hist)
+                opp_r = opp_rank.get(row['defteam'], np.median(list(opp_rank.values())) if opp_rank else 16.0)
                 rows.append([trailing_3, season_avg, 1.0 if row['is_home'] else 0.0, opp_r])
-                targets.append(1 if row['yards'] >= p50 else 0)
-                meta.append({'name': name, 'season': row['season'], 'week': row['week']})
-            yards_hist.append(row['yards'])
+                targets.append(1 if row['value'] >= p50 else 0)
+                meta.append({'name': name, 'season': row['season']})
+            hist.append(row['value'])
 
     if len(rows) < 200:  # not enough pooled real data yet to train something trustworthy
-        print(f"  XGBoost lean model: only {len(rows)} real training rows available — skipping (needs 200+)")
+        print(f"  XGBoost lean model [{label}]: only {len(rows)} real training rows -- skipping (needs 200+)")
         return {}, None
 
     X = np.array(rows)
     y = np.array(targets)
-    # real train/test split by SEASON, not randomly — the model is tested on games from a
-    # season it never trained on, matching the same real backtest discipline used
-    # everywhere else in this app rather than a random shuffle that could leak information
+    # real train/test split by SEASON, not randomly -- tested on a season it never trained
+    # on, matching the same real backtest discipline used everywhere else in this app rather
+    # than a random shuffle that could leak information
     seasons = np.array([m['season'] for m in meta])
     train_mask = seasons < seasons.max()
     test_mask = ~train_mask
     if train_mask.sum() < 100 or test_mask.sum() < 30:
-        print(f"  XGBoost lean model: not enough real rows in both a train and a held-out test season yet — skipping")
+        print(f"  XGBoost lean model [{label}]: not enough real rows in both a train and a held-out test season -- skipping")
         return {}, None
 
     model = xgb.XGBClassifier(n_estimators=60, max_depth=3, learning_rate=0.1, eval_metric='logloss')
@@ -581,28 +539,140 @@ def build_xgboost_lean_model(baseline, current, full_pool, receivers):
     preds = model.predict(X[test_mask])
     real_accuracy = float((preds == y[test_mask]).mean()) * 100
     naive_baseline = float(max(y[test_mask].mean(), 1 - y[test_mask].mean())) * 100  # "always guess the majority class"
-    print(f"  XGBoost lean model: {len(rows)} real pooled training rows, {test_mask.sum()} held-out real test games")
-    print(f"  Real measured accuracy: {real_accuracy:.1f}% (naive always-guess-majority baseline: {naive_baseline:.1f}%)")
+    print(f"  XGBoost lean model [{label}]: {len(rows)} pooled training rows, {int(test_mask.sum())} held-out test games -- "
+          f"{real_accuracy:.1f}% real accuracy (naive baseline {naive_baseline:.1f}%)")
 
-    # retrain on ALL real data (train+test) for the version actually used on current games —
+    # retrain on ALL real data (train+test) for the version actually used on current games --
     # the held-out split above was only to honestly measure real accuracy first
     model.fit(X, y)
 
-    # build current lean scores for players with enough real trailing history right now
+    # build current lean scores for players with enough real trailing history right now,
+    # using their REAL upcoming opponent/home-away when it's known rather than a neutral guess
+    med_rank = float(np.median(list(opp_rank.values()))) if opp_rank else 16.0
     leans = {}
-    for pid, grp in per_game.groupby('receiver_player_id'):
+    for pid, grp in per_game.sort_values(['season', 'week']).groupby('pid'):
         name = pid_to_name.get(pid)
-        if not name or name not in p50_by_name or len(grp) < 3:
+        if not name or name not in p_line_by_name or len(grp) < 3:
             continue
-        recent = grp['yards'].values
+        recent = grp['value'].values
         trailing_3 = float(np.mean(recent[-3:]))
         season_avg = float(np.mean(recent))
-        is_home_guess = 0.5  # unknown for a future game at this point in the pipeline -- neutral
-        opp_r = float(np.median(list(opp_rank.values()))) if opp_rank else 16.0
+        up = upcoming.get(pid_to_team.get(pid))
+        is_home_guess = (1.0 if up['isHome'] else 0.0) if up else 0.5
+        opp_r = opp_rank.get(up['opp'], med_rank) if up else med_rank
         prob = float(model.predict_proba([[trailing_3, season_avg, is_home_guess, opp_r]])[0][1])
         leans[name] = {'leanProb': round(prob * 100, 1), 'trailing3': round(trailing_3, 1)}
 
-    return leans, {'accuracy': round(real_accuracy, 1), 'baseline': round(naive_baseline, 1), 'trainingRows': len(rows), 'testGames': int(test_mask.sum())}
+    return leans, {'accuracy': round(real_accuracy, 1), 'baseline': round(naive_baseline, 1),
+                   'trainingRows': len(rows), 'testGames': int(test_mask.sum())}
+
+
+def build_xgboost_lean_models(baseline, current, full_pool, receivers, qbs, kickers, games_all):
+    """Supplementary, model-based signal layered ON TOP OF the real percentile ladders --
+    never a replacement for them (those stay the primary, transparent display; see
+    dashboard_template.jsx, which always shows a ladder's real p25/p50/p75 regardless of
+    anything here). Originally shipped for Receiving Yards only; this generalizes the same
+    engine to every real ladder stat (receiving, rushing, passing, kicking), training and
+    grading each one independently -- a stat that doesn't clear the naive-baseline bar is
+    skipped for THAT stat alone, never for the others.
+
+    Honest limitations (unchanged from the original, true for every stat below):
+    - Pooled across players, not per-player -- no single player has 30-40 games to train an
+      individual model on; pooling many players' games together is what makes this workable.
+    - Opponent strength is that team's END-OF-BASELINE average allowed, not a true
+      week-by-week rolling value -- a disclosed simplification, not a claim of perfect
+      historical precision.
+    - Real accuracy is measured on real held-out games every time (train on the older
+      baseline season, test on the newer one), never assumed."""
+    try:
+        import xgboost  # noqa: F401 -- import-check only; _train_lean_model imports its own copy
+    except ImportError:
+        # Never a required part of the pipeline -- real game data, props, team stats, etc.
+        # all still need to ship with or without this. Run `pip install xgboost` locally to
+        # enable it; the GitHub Actions workflow already installs it.
+        print("  XGBoost lean models: 'xgboost' package not installed locally -- skipping entirely "
+              "(run `pip install xgboost` to enable; everything else is unaffected)")
+        return {}, {}
+
+    # Real next opponent/home-away per team -- used only so the CURRENT lean (never the
+    # historical training rows, which already have the real thing) reflects the real
+    # upcoming matchup instead of a neutral guess. Safe to compute again here (pure function
+    # of the already-loaded schedule) even though the main pipeline also builds this later.
+    upcoming = build_nfl_upcoming(games_all)
+
+    def p_lines(stat):
+        return {e['player']: e['p50']['line'] for e in full_pool if e['stat'] == stat and e['kind'] == 'ladder'}
+
+    def opp_rank_for(df, value_col):
+        if len(df) == 0:
+            return {}
+        per_team_game = df.groupby(['defteam', 'game_id'])[value_col].sum().reset_index()
+        avg_allowed = per_team_game.groupby('defteam')[value_col].mean()
+        return avg_allowed.rank(ascending=False).to_dict()  # rank 1 = allows the most (weakest D)
+
+    # Match by player ID via the already-built player lists, not the raw play-by-play name
+    # column -- raw names are often abbreviated ("T.Hill") while full_pool uses the properly
+    # resolved roster name ("Tyreek Hill"). Matching on name directly was a real bug that
+    # silently produced zero rows the first time this was built.
+    combined = pd.concat([baseline, current]) if len(current) else baseline
+    rec = combined[combined['receiver_player_id'].notna()]
+    rush = combined[combined['rusher_player_id'].notna()]
+    passes = combined[combined['passer_player_id'].notna()]
+    try:
+        fgs = combined[combined['field_goal_attempt'] == 1].copy()
+        if len(fgs):
+            fgs['made'] = (fgs['field_goal_result'] == 'made').astype(int)
+            fgs['made3'] = fgs['made'] * 3  # per-attempt-row value that sums correctly to real game points
+    except Exception as e:
+        # kicker-specific setup failing (e.g. a column quirk) must not take the receiving/
+        # rushing/passing stats below down with it -- an empty frame just skips FG Made/
+        # Kicking Points via the `if len(fgs):` guard further down, same as having no data.
+        print(f"  [!] XGBoost lean models: kicker data setup raised an unexpected error ({e}) -- skipping FG/kicking stats only")
+        fgs = combined.iloc[0:0]
+
+    pass_def_rank = opp_rank_for(rec, 'yards_gained')
+    rush_def_rank = opp_rank_for(rush, 'rushing_yards')
+
+    rec_pid_to_name = {r['id']: r['name'] for r in receivers}
+    rec_pid_to_team = {r['id']: r['team'] for r in receivers}
+    qb_pid_to_name = {q['id']: q['name'] for q in qbs}
+    qb_pid_to_team = {q['id']: q['team'] for q in qbs}
+    k_pid_to_name = {k['id']: k['name'] for k in kickers}
+    k_pid_to_team = {k['id']: k['team'] for k in kickers}
+
+    all_leans, all_meta = {}, {}
+
+    def run(df, pid_col, value_agg, pid_to_name, pid_to_team, stat_label, opp_rank):
+        if len(df) == 0:
+            return
+        try:
+            per_game = df.groupby([pid_col, 'season', 'game_id']).agg(
+                value=value_agg, is_home=('is_home', 'first'), defteam=('defteam', 'first'), week=('week', 'first')
+            ).reset_index().rename(columns={pid_col: 'pid'})
+            leans, meta = _train_lean_model(per_game, pid_to_name, pid_to_team, p_lines(stat_label), opp_rank, upcoming, stat_label)
+            if leans:
+                all_leans[stat_label] = leans
+            if meta:
+                all_meta[stat_label] = meta
+        except Exception as e:
+            # one stat's own training hiccup (a library quirk, a numpy edge case) must never
+            # take the other stats down with it
+            print(f"  [!] XGBoost lean model [{stat_label}] raised an unexpected error ({e}) -- skipping this stat only")
+
+    run(rec, 'receiver_player_id', ('yards_gained', 'sum'), rec_pid_to_name, rec_pid_to_team, 'Receiving Yards', pass_def_rank)
+    run(rec, 'receiver_player_id', ('complete_pass', 'sum'), rec_pid_to_name, rec_pid_to_team, 'Receptions', pass_def_rank)
+    run(rec, 'receiver_player_id', ('week', 'count'), rec_pid_to_name, rec_pid_to_team, 'Targets', pass_def_rank)
+    run(rush, 'rusher_player_id', ('rush_attempt', 'sum'), rec_pid_to_name, rec_pid_to_team, 'Rush Attempts', rush_def_rank)
+    run(rush, 'rusher_player_id', ('rushing_yards', 'sum'), rec_pid_to_name, rec_pid_to_team, 'Rush Yards', rush_def_rank)
+    run(rush, 'rusher_player_id', ('rushing_yards', 'sum'), qb_pid_to_name, qb_pid_to_team, 'QB Rush Yards', rush_def_rank)
+    run(passes, 'passer_player_id', ('passing_yards', 'sum'), qb_pid_to_name, qb_pid_to_team, 'Passing Yards', pass_def_rank)
+    run(passes, 'passer_player_id', ('complete_pass', 'sum'), qb_pid_to_name, qb_pid_to_team, 'Completions', pass_def_rank)
+    run(passes, 'passer_player_id', ('pass_touchdown', 'sum'), qb_pid_to_name, qb_pid_to_team, 'Passing Touchdowns', pass_def_rank)
+    if len(fgs):
+        run(fgs, 'kicker_player_id', ('made', 'sum'), k_pid_to_name, k_pid_to_team, 'FG Made', {})
+        run(fgs, 'kicker_player_id', ('made3', 'sum'), k_pid_to_name, k_pid_to_team, 'Kicking Points', {})
+
+    return all_leans, all_meta
 
 
 def build_atd_pool(baseline, current, receivers, qbs=None):
@@ -891,8 +961,10 @@ CANDIDATE_CURRENT_SEASONS = [2026, 2027]  # script auto-detects whichever of the
 # Re-enabled (2026-09-28) now that a missing local `xgboost` install can no longer crash the
 # pipeline: the import itself is wrapped in try/except (prints a one-line skip notice and
 # returns cleanly if the package isn't there), and the call site below is also wrapped in
-# try/except as a second layer. It only ever attaches to a real prop entry if it genuinely
-# beats the naive baseline by 3+ points -- otherwise it's just a printed, tracked number.
+# try/except as a second layer. Extended (2026-10-03) from Receiving Yards only to every
+# real ladder stat (receiving, rushing, passing, kicking) -- each one is trained and graded
+# independently, and only ever attaches to a real prop entry if IT genuinely beats its own
+# naive baseline by 3+ points; a stat that doesn't is just a printed, tracked number.
 ENABLE_XGBOOST_DIAGNOSTIC = True
 
 # Shrinkage constant for blending current-season-to-date with the historical baseline.
@@ -2765,34 +2837,44 @@ def main():
     print(f"  {len(full_pool)} prop pool entries built")
 
     # Defense-in-depth: this diagnostic already handles a missing xgboost install gracefully
-    # internally, but it must never be able to crash the whole update for ANY reason (a
-    # library version quirk, a numpy edge case, etc.) -- everything below it (team stats,
-    # TEAM_DEFENSE/TEAM_OFFENSE, the JSX injection, the git push) still needs to run either way.
+    # internally, and now handles a single stat's own training error internally too (each
+    # stat is independent -- one failing must never take the others down with it), but the
+    # whole call is still wrapped here as a second layer. It must never be able to crash the
+    # whole update for ANY reason -- everything below it (team stats, TEAM_DEFENSE/TEAM_OFFENSE,
+    # the JSX injection, the git push) still needs to run either way.
     if not ENABLE_XGBOOST_DIAGNOSTIC:
-        print("  XGBoost lean model: paused (ENABLE_XGBOOST_DIAGNOSTIC = False) -- skipping entirely")
-        xgb_leans, xgb_meta = {}, None
+        print("  XGBoost lean models: paused (ENABLE_XGBOOST_DIAGNOSTIC = False) -- skipping entirely")
+        xgb_leans, xgb_meta = {}, {}
     else:
         try:
-            xgb_leans, xgb_meta = build_xgboost_lean_model(baseline, current, full_pool, receivers)
+            xgb_leans, xgb_meta = build_xgboost_lean_models(baseline, current, full_pool, receivers, qbs, kickers, games_all)
         except Exception as e:
-            print(f"  [!] XGBoost lean model raised an unexpected error ({e}) -- skipping this diagnostic, rest of the update continues")
-            xgb_leans, xgb_meta = {}, None
-    if xgb_meta:
-        print(f"  XGBoost lean model result: {xgb_meta['accuracy']}% real accuracy vs {xgb_meta['baseline']}% naive baseline")
-        if xgb_meta['accuracy'] > xgb_meta['baseline'] + 3:
-            # only attach it to real entries if it genuinely, meaningfully beats a trivial
-            # baseline -- a model that doesn't clear this bar has no business being shown
-            # as a signal, since "worse than always guessing the majority class" is worse
-            # than useless, not just unhelpful
-            matched = 0
-            for entry in full_pool:
-                if entry['stat'] == 'Receiving Yards' and entry['kind'] == 'ladder' and entry['player'] in xgb_leans:
-                    entry['modelLean'] = xgb_leans[entry['player']]
-                    matched += 1
-            print(f"  Genuinely beats baseline -- attached to {matched} Receiving Yards entries")
-        else:
-            print(f"  Does NOT meaningfully beat the naive baseline -- not attached to any entries. "
+            print(f"  [!] XGBoost lean models raised an unexpected error ({e}) -- skipping this diagnostic, rest of the update continues")
+            xgb_leans, xgb_meta = {}, {}
+
+    attached_total = 0
+    for stat_label, meta in xgb_meta.items():
+        print(f"  [{stat_label}] XGBoost lean model: {meta['accuracy']}% real accuracy vs {meta['baseline']}% naive baseline")
+        if meta['accuracy'] <= meta['baseline'] + 3:
+            # only attach a stat's model if it genuinely, meaningfully beats a trivial
+            # baseline FOR THAT STAT -- a model that doesn't clear this bar has no business
+            # being shown as a signal, since "worse than always guessing the majority class"
+            # is worse than useless, not just unhelpful. Each stat is judged on its own real
+            # numbers, independent of how the others did.
+            print(f"  [{stat_label}] does NOT meaningfully beat its naive baseline -- not attached to any entries. "
                   f"Kept as a measured, tracked result rather than shipped as a real signal.")
+            continue
+        leans = xgb_leans.get(stat_label, {})
+        matched = 0
+        for entry in full_pool:
+            if entry['stat'] == stat_label and entry['kind'] == 'ladder' and entry['player'] in leans:
+                entry['modelLean'] = leans[entry['player']]
+                matched += 1
+        print(f"  [{stat_label}] genuinely beats baseline -- attached to {matched} entries")
+        attached_total += matched
+    if xgb_meta:
+        print(f"  XGBoost lean models: {attached_total} total ladder entries carry a model signal, "
+              f"across {len(xgb_meta)} stat(s) evaluated")
 
     best = {}
     for e in full_pool:
