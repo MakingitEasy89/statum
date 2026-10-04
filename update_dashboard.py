@@ -249,9 +249,6 @@ def build_redzone_tendencies(baseline, current):
     return out
 
 
-QB_RUSH_TD_MIN_ATT = 8  # real min sample before an opposing QB's rushing production factors into a defense's "allowed by position" read -- teams don't face many QB rush attempts in a season, so this stays low relative to the WR/TE/RB thresholds elsewhere in this file
-
-
 def compute_team_defense(games_df, pbp_df, pos_map, min_games=1):
     """Team defense profile (points allowed/scored, scheme tendencies, TDs allowed by
     position group) computed from WHATEVER games+pbp slice is passed in -- this is what
@@ -262,7 +259,15 @@ def compute_team_defense(games_df, pbp_df, pos_map, min_games=1):
     OPPOSING quarterbacks (goal-line sneaks, scrambles) -- previously this only covered
     WR/TE/RB via receiving, which meant a defense's real vulnerability to a mobile QB in
     the red zone (Hurts-style sneaks, e.g.) was invisible here even though the site tracks
-    that same QB rushing production everywhere else (Anytime TD, prop ladders)."""
+    that same QB rushing production everywhere else (Anytime TD, prop ladders).
+
+    QB is shown on the same footing as WR/TE/RB -- any real rush attempt/TD data at all is
+    enough to appear, no separate minimum-sample gate. A real rushing TD against a defense
+    is a real rushing TD regardless of how many QB rush attempts it has faced on the season;
+    this used to require 8+ cumulative attempts before the QB row would even render, which
+    silently hid real events (e.g. two real rushing TDs) for a team only a few games into a
+    season. The small-sample context (rush attempts faced, games played) is still shown
+    right alongside the number in the UI, same as every other position here."""
     if len(games_df) == 0:
         return {}
     pa_rows = []
@@ -308,8 +313,9 @@ def compute_team_defense(games_df, pbp_df, pos_map, min_games=1):
         )
         qb_rush_allowed = qb_rush_allowed.join(games_played_by_def.rename('gp'))
         qb_rush_allowed['ypg'] = qb_rush_allowed['rushYards'] / qb_rush_allowed['gp']
-        qualified = qb_rush_allowed[qb_rush_allowed['rushAtt'] >= QB_RUSH_TD_MIN_ATT]
-        qb_rush_allowed['rank'] = qualified['tds'].rank(ascending=False).astype(int) if len(qualified) else pd.Series(dtype=int)
+        # ranked across every team that has faced ANY opposing QB rush attempt -- no minimum
+        # sample gate, same as WR/TE/RB below (see the docstring for why)
+        qb_rush_allowed['rank'] = qb_rush_allowed['tds'].rank(ascending=False).astype(int)
 
     def_plays = pbp_df[pbp_df['defteam'].notna() & (pbp_df['pass'] == 1)]
     out = {}
@@ -332,9 +338,8 @@ def compute_team_defense(games_df, pbp_df, pos_map, min_games=1):
                                           'epaPerTgt': round(r['epaPerTgt'], 3)} for _, r in pos_rows.iterrows()}
         if len(qb_rush_allowed) and team in qb_rush_allowed.index:
             qr = qb_rush_allowed.loc[team]
-            if qr['rushAtt'] >= QB_RUSH_TD_MIN_ATT and not pd.isna(qr.get('rank', np.nan)):
-                pos_by_group['QB'] = {'ypg': round(float(qr['ypg']), 1), 'rank': int(qr['rank']), 'tds': int(qr['tds']),
-                                        'rushAtt': int(qr['rushAtt']), 'targets': None, 'catches': None, 'epaPerTgt': None}
+            pos_by_group['QB'] = {'ypg': round(float(qr['ypg']), 1), 'rank': int(qr['rank']), 'tds': int(qr['tds']),
+                                    'rushAtt': int(qr['rushAtt']), 'targets': None, 'catches': None, 'epaPerTgt': None}
         weakest = max(pos_by_group.items(), key=lambda kv: -kv[1]['rank']) if pos_by_group else None
         out[team] = {
             'pointsAllowedPerGame': round(float(pa_row['ppgAllowed']), 1) if pa_row is not None else None,

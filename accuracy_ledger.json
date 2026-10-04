@@ -9094,6 +9094,87 @@
       "predictedMargin": 22.4,
       "predictedTotal": 54.1,
       "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858507,
+      "homeTeam": "Rutgers",
+      "awayTeam": "Michigan",
+      "predictedMargin": 0.6,
+      "predictedTotal": 52.5,
+      "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858503,
+      "homeTeam": "Maryland",
+      "awayTeam": "Illinois",
+      "predictedMargin": 4.1,
+      "predictedTotal": 53.5,
+      "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858508,
+      "homeTeam": "UCLA",
+      "awayTeam": "Nevada",
+      "predictedMargin": 13.6,
+      "predictedTotal": 50.6,
+      "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862814,
+      "homeTeam": "Memphis",
+      "awayTeam": "Army",
+      "predictedMargin": 21.5,
+      "predictedTotal": 52.5,
+      "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871095,
+      "homeTeam": "UL Monroe",
+      "awayTeam": "Southern Miss",
+      "predictedMargin": -5.6,
+      "predictedTotal": 55.4,
+      "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858506,
+      "homeTeam": "Penn State",
+      "awayTeam": "Purdue",
+      "predictedMargin": 34.5,
+      "predictedTotal": 53.3,
+      "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856843,
+      "homeTeam": "BYU",
+      "awayTeam": "Arizona State",
+      "predictedMargin": 23.0,
+      "predictedTotal": 50.8,
+      "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864529,
+      "homeTeam": "San Jos\u00e9 State",
+      "awayTeam": "New Mexico",
+      "predictedMargin": -10.9,
+      "predictedTotal": 52.3,
+      "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856733,
+      "homeTeam": "Arkansas",
+      "awayTeam": "Missouri",
+      "predictedMargin": -5.5,
+      "predictedTotal": 57.3,
+      "snapshotDate": "2026-10-03"
     }
   ],
   "graded": [
