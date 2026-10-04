@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-04T14:20:31+00:00",
+ "lastRun": "2026-10-04T15:12:52+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -64,27 +64,27 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-04T14:20:31+00:00",
+   "fetchedAt": "2026-10-04T15:12:52+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "New York": 18.0,
+    "New York": 19.0,
     "Las Vegas": 33.0,
-    "Golden State": 20.0,
+    "Golden State": 22.0,
     "Atlanta": 24.0
    },
-   "fetchedAt": "2026-10-04T14:20:31+00:00",
+   "fetchedAt": "2026-10-04T15:12:52+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 27.0,
-    "Golden State": 20.6,
+    "Golden State": 20.5,
     "Las Vegas": 32.5,
     "New York": 17.2
    },
-   "fetchedAt": "2026-10-04T14:20:31+00:00",
+   "fetchedAt": "2026-10-04T15:12:52+00:00",
    "stale": false
   },
   "mlbChampPoly": {
@@ -92,13 +92,13 @@
     "New York Yankees": 10.5,
     "Tampa Bay Rays": 14.4,
     "Cleveland Guardians": 4.5,
-    "Chicago White Sox": 6.8,
-    "Atlanta Braves": 4.2,
-    "Milwaukee Brewers": 17.9,
+    "Chicago White Sox": 6.5,
+    "Atlanta Braves": 3.4,
+    "Milwaukee Brewers": 17.8,
     "Los Angeles Dodgers": 36.5,
-    "San Diego Padres": 5.5
+    "San Diego Padres": 5.7
    },
-   "fetchedAt": "2026-10-04T14:20:31+00:00",
+   "fetchedAt": "2026-10-04T15:12:52+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -146,7 +146,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 20.0,
+     "price": 22.0,
      "depth": null,
      "flow": {
       "totalVolume": 231693.69,
@@ -164,7 +164,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-04T14:20:31+00:00",
+   "fetchedAt": "2026-10-04T15:12:52+00:00",
    "stale": false
   }
  }

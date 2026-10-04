@@ -9448,6 +9448,33 @@
       "predictedMargin": 20.9,
       "predictedTotal": 55.9,
       "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862816,
+      "homeTeam": "South Florida",
+      "awayTeam": "UAB",
+      "predictedMargin": 37.4,
+      "predictedTotal": 59.3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858277,
+      "homeTeam": "NC State",
+      "awayTeam": "California",
+      "predictedMargin": 17.1,
+      "predictedTotal": 56.0,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858502,
+      "homeTeam": "Iowa",
+      "awayTeam": "Wisconsin",
+      "predictedMargin": 28.1,
+      "predictedTotal": 40.9,
+      "snapshotDate": "2026-10-04"
     }
   ],
   "graded": [

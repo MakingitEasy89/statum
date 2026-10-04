@@ -2836,8 +2836,11 @@ def build_strong_picks(full_pool, receivers, qbs, kickers, team_defense, upcomin
         for p in group:
             by_name.setdefault(p['name'], p)
 
-    scored = []
+    scored, errors = [], 0
     for e in full_pool:
+      # Isolated per line, for the same reason as the TD loop below: one player with an
+      # unexpected field shape should cost you that one line, not the entire feature.
+      try:
         if e.get('kind') != 'ladder':
             continue
         if e.get('testGames', 0) < STRONG_PICK_MIN_TEST_GAMES:
@@ -2892,6 +2895,13 @@ def build_strong_picks(full_pool, receivers, qbs, kickers, team_defense, upcomin
             'opponent': opp, 'isHome': up.get('isHome'), 'gameWeek': up.get('week'),
             'gameDate': up.get('date'),
         })
+      except Exception as ex:
+        errors += 1
+        if errors <= 5:
+            print(f"  [!] Strong Picks: skipped {e.get('player')} / {e.get('stat')} — "
+                  f"{type(ex).__name__}: {ex}")
+    if errors:
+        print(f"  [!] Strong Picks: {errors} line(s) skipped on scoring errors; the rest scored normally")
 
     # Attach the score back onto the live pool entries so the UI can sort/filter by it
     score_by_id = {s['id']: s for s in scored}
@@ -3092,27 +3102,64 @@ def _player_td_mix(player_obj):
     return rec_td / total
 
 
-def score_td_usage(player_obj):
+def _touch_profile(player_obj, current_season):
+    """Per-game touches and real Anytime-TD-eligible scores, read from the gamelog.
+
+    The gamelog is the right source for both of these, and the only one that works for
+    skill players and QBs alike: it carries real per-game rows tagged by season, with
+    targets, rush_att, rush_td and tds on each. Two things went wrong reading
+    currentSeasonBlend instead:
+
+      · its *PerGame entries are blend_stat() dicts ({'value', 'weight_current', ...}),
+        not numbers — adding one to a float raises TypeError, which is what emptied the
+        whole generator;
+      · a QB's currentSeasonStats['tds'] is PASSING touchdowns. A quarterback doesn't
+        score on a touchdown pass, so counting those toward an Anytime-TD bet inflates
+        every mobile QB on the board. Only his own rushing scores count.
+
+    Returns None when there's no usable gamelog, so the caller stays neutral rather than
+    scoring against zeros."""
+    gl = (player_obj or {}).get('gamelog') or []
+    if not gl:
+        return None
+    is_qb = (player_obj.get('pos') == 'QB')
+
+    def touches(r):
+        return float(r.get('targets') or 0) + float(r.get('rush_att') or 0)
+
+    def scoring_tds(r):
+        rush = float(r.get('rush_td') or 0)
+        return rush if is_qb else rush + float(r.get('tds') or 0)
+
+    if current_season is not None:
+        cur_rows = [r for r in gl if r.get('season') == current_season]
+        hist_rows = [r for r in gl if r.get('season') != current_season]
+    else:
+        cur_rows, hist_rows = [], list(gl)
+    # A new-to-the-dataset player has only current-season rows; judge them against
+    # themselves rather than against an empty baseline.
+    if not hist_rows:
+        hist_rows = list(gl)
+
+    hist_games = max(len(hist_rows), 1)
+    return {
+        'histTouchesPg': sum(touches(r) for r in hist_rows) / hist_games,
+        'curTouchesPg': (sum(touches(r) for r in cur_rows) / len(cur_rows)) if cur_rows else None,
+        'curTds': sum(scoring_tds(r) for r in cur_rows),
+        'curGames': len(cur_rows),
+    }
+
+
+def score_td_usage(player_obj, current_season=None):
     """Usage now vs. their own historical usage, plus absolute volume. Touches per game is
     the thing that creates scoring chances, so a real usage increase matters more here than
     a good TD rate from a smaller role."""
-    if not player_obj:
+    prof = _touch_profile(player_obj, current_season)
+    if not prof:
         return 50.0, None
-    blend = player_obj.get('currentSeasonBlend') or {}
-    overall = player_obj.get('overall') or {}
-    gl = player_obj.get('gamelog') or []
-    hist_games = max(len(gl), 1)
-
-    hist_touches_pg = ((overall.get('targets') or 0) + (overall.get('rushAtt') or 0)) / hist_games
-    cur_games = blend.get('currentSeasonGames') or 0
-    cur = blend.get('currentSeasonStats') or {}
-    cur_touches_pg = None
-    if cur_games > 0:
-        cur_targets = cur.get('targets') or 0
-        # rushAttPerGame is already per-game and already blended; use the raw current rush
-        # rate when it's there, otherwise fall back to the blended figure
-        cur_rush_pg = blend.get('rushAttPerGame') or 0
-        cur_touches_pg = (cur_targets / cur_games) + cur_rush_pg
+    hist_touches_pg = prof['histTouchesPg']
+    cur_touches_pg = prof['curTouchesPg']
+    cur_games = prof['curGames']
 
     # Absolute volume: ~8 touches/gm is a real role, ~16 is a featured one.
     volume_ref = cur_touches_pg if cur_touches_pg is not None else hist_touches_pg
@@ -3179,7 +3226,7 @@ def score_rz_matchup(player_obj, own_team, opp, redzone, team_names=None):
 
 
 def build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming, injuries,
-                        team_names=None, limit=15):
+                        team_names=None, limit=15, current_season=None):
     """Score every Anytime-TD line on rate + usage + red-zone matchup + TDs actually
     scored this season. Out/Doubtful players are dropped outright."""
     by_name = {}
@@ -3188,8 +3235,12 @@ def build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming, injuries,
             by_name.setdefault(p['name'], p)
 
     out = []
-    skipped = {'injured': 0, 'thinSample': 0, 'noRate': 0}
+    skipped = {'injured': 0, 'thinSample': 0, 'noRate': 0, 'error': 0}
     for e in (atd_pool or []):
+      # One malformed player must not be able to empty the whole feature. A single
+      # TypeError in here previously propagated all the way up, main() caught it, and the
+      # Quad Box shipped empty with no indication which player caused it.
+      try:
         name = e['player']
         if _is_unplayable(name, injuries):
             skipped['injured'] += 1
@@ -3219,15 +3270,14 @@ def build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming, injuries,
         # ~45% is an elite Anytime-TD rate; scale against that rather than 100%.
         rate_score = _clamp((rate / 45.0) * 100.0)
 
-        usage_score, usage_why = score_td_usage(player_obj)
+        usage_score, usage_why = score_td_usage(player_obj, current_season)
         rz_score, rz_why = score_rz_matchup(player_obj, e.get('team'), opp, redzone, team_names)
 
         # TDs actually scored this season — a direct recency check on the rate above.
-        cur_tds = 0
-        if player_obj:
-            cur_blend = (player_obj.get('currentSeasonBlend') or {})
-            cur_stats = cur_blend.get('currentSeasonStats') or {}
-            cur_tds = (cur_stats.get('tds') or 0)
+        # Counted from the gamelog so a QB's passing touchdowns don't register as his own
+        # scores (see _touch_profile); an Anytime TD only pays on a player scoring himself.
+        prof = _touch_profile(player_obj, current_season)
+        cur_tds = prof['curTds'] if prof else 0
         cur_td_score = _clamp((cur_tds / 6.0) * 100.0)
 
         w = QUAD_TD_WEIGHTS
@@ -3259,10 +3309,13 @@ def build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming, injuries,
             'currentSeasonTds': int(cur_tds),
             'isRookie': e.get('isRookie', False),
         })
+      except Exception as ex:
+        skipped['error'] += 1
+        _qlog(f"  [!] TD leg skipped — {e.get('player')}: {type(ex).__name__}: {ex}")
     out.sort(key=lambda x: -x['score'])
     _qlog(f"  TD legs: {len(out)} candidates from {len(atd_pool or [])} Anytime-TD pool entries · skipped "
           f"{skipped['injured']} Out/Doubtful, {skipped['thinSample']} under 3 games, "
-          f"{skipped['noRate']} with no usable TD rate")
+          f"{skipped['noRate']} with no usable TD rate, {skipped['error']} on a scoring error")
     return out[:limit]
 
 
@@ -3393,7 +3446,7 @@ def assemble_quad_box(ladder_candidates, td_candidates, name, blurb,
 
 
 def build_quad_box(full_pool, atd_pool, receivers, qbs, redzone, upcoming, injuries,
-                   team_names=None, week=None):
+                   team_names=None, week=None, current_season=None):
     # `injuries` has to reach the floor-leg builder too. It used to be safe not to pass it,
     # because only playable players ever received a pickScore and the builder required one.
     # The hit-rate fallback added above removed that implicit protection, so the Out/Doubtful
@@ -3406,7 +3459,8 @@ def build_quad_box(full_pool, atd_pool, receivers, qbs, redzone, upcoming, injur
     # rather than loosening the rule, and gives the custom builder more to work with.
     ladder_candidates = build_ladder_candidates(full_pool, limit=60, injuries=injuries)
     td_candidates = build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming,
-                                        injuries, team_names, limit=15)
+                                        injuries, team_names, limit=15,
+                                        current_season=current_season)
 
     presets = []
     if ladder_candidates and td_candidates:
@@ -4902,7 +4956,8 @@ def main():
     try:
         QUAD_LOG.clear()
         quad_box = build_quad_box(full_pool, atd_pool, receivers, qbs, redzone_tendencies,
-                                  nfl_upcoming, injury_status, week=strong_picks.get('week'))
+                                  nfl_upcoming, injury_status, week=strong_picks.get('week'),
+                                  current_season=current_season)
         for line in QUAD_LOG:
             print(line)
         print(f"  {len(quad_box['ladderCandidates'])} P25 legs and {len(quad_box['tdCandidates'])} "
