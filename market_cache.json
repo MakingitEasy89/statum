@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-04T15:12:52+00:00",
+ "lastRun": "2026-10-04T18:01:53+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 43.0
+       "pct": 45.0
       },
       {
        "name": "Chris Olave",
-       "pct": 16.0
+       "pct": 17.0
       },
       {
-       "name": "Amon-Ra St. Brown",
-       "pct": 12.0
+       "name": "Garrett Wilson",
+       "pct": 11.0
       }
      ],
      "totalMarkets": 27
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Tyler Shough",
-       "pct": 20.0
+       "pct": 19.0
       },
       {
        "name": "Jordan Love",
@@ -64,41 +64,41 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-04T15:12:52+00:00",
+   "fetchedAt": "2026-10-04T18:01:53+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "New York": 19.0,
-    "Las Vegas": 33.0,
+    "Las Vegas": 34.0,
     "Golden State": 22.0,
-    "Atlanta": 24.0
+    "Atlanta": 28.0
    },
-   "fetchedAt": "2026-10-04T15:12:52+00:00",
+   "fetchedAt": "2026-10-04T18:01:53+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 27.0,
-    "Golden State": 20.5,
-    "Las Vegas": 32.5,
-    "New York": 17.2
+    "Atlanta": 26.5,
+    "Golden State": 21.3,
+    "Las Vegas": 32.0,
+    "New York": 18.0
    },
-   "fetchedAt": "2026-10-04T15:12:52+00:00",
+   "fetchedAt": "2026-10-04T18:01:53+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "New York Yankees": 10.5,
-    "Tampa Bay Rays": 14.4,
-    "Cleveland Guardians": 4.5,
-    "Chicago White Sox": 6.5,
-    "Atlanta Braves": 3.4,
-    "Milwaukee Brewers": 17.8,
+    "New York Yankees": 9.5,
+    "Tampa Bay Rays": 14.5,
+    "Cleveland Guardians": 4.6,
+    "Chicago White Sox": 6.6,
+    "Atlanta Braves": 4.0,
+    "Milwaukee Brewers": 18.0,
     "Los Angeles Dodgers": 36.5,
-    "San Diego Padres": 5.7
+    "San Diego Padres": 6.0
    },
-   "fetchedAt": "2026-10-04T15:12:52+00:00",
+   "fetchedAt": "2026-10-04T18:01:53+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -106,7 +106,7 @@
     {
      "ticker": "KXWNBA-26-LV",
      "name": "Las Vegas",
-     "price": 33.0,
+     "price": 34.0,
      "depth": null,
      "flow": {
       "totalVolume": 225222.05,
@@ -126,7 +126,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 24.0,
+     "price": 28.0,
      "depth": null,
      "flow": {
       "totalVolume": 172928.32,
@@ -164,7 +164,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-04T15:12:52+00:00",
+   "fetchedAt": "2026-10-04T18:01:53+00:00",
    "stale": false
   }
  }
