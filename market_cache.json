@@ -1,0 +1,171 @@
+{
+ "lastRun": "2026-10-04T13:29:18+00:00",
+ "sections": {
+  "nflLeaders": {
+   "data": [
+    {
+     "category": "Receiving Yards Leader",
+     "source": "kalshi",
+     "ticker": "KXLEADERNFLRYDS",
+     "options": [
+      {
+       "name": "Jaxon Smith-Njigba",
+       "pct": 43.0
+      },
+      {
+       "name": "Chris Olave",
+       "pct": 16.0
+      },
+      {
+       "name": "Amon-Ra St. Brown",
+       "pct": 12.0
+      }
+     ],
+     "totalMarkets": 27
+    },
+    {
+     "category": "Passing Yards Leader",
+     "source": "kalshi",
+     "ticker": "KXLEADERNFLPYDS",
+     "options": [
+      {
+       "name": "Tyler Shough",
+       "pct": 20.0
+      },
+      {
+       "name": "Jordan Love",
+       "pct": 13.0
+      },
+      {
+       "name": "Jared Goff",
+       "pct": 11.0
+      }
+     ],
+     "totalMarkets": 28
+    },
+    {
+     "category": "Interceptions Leader",
+     "source": "kalshi",
+     "ticker": "KXLEADERNFLINT",
+     "options": [
+      {
+       "name": "Derek Stingley Jr.",
+       "pct": 14.0
+      },
+      {
+       "name": "Xavier Watts",
+       "pct": 9.0
+      },
+      {
+       "name": "Kevin Byard III",
+       "pct": 9.0
+      }
+     ],
+     "totalMarkets": 24
+    }
+   ],
+   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "stale": false
+  },
+  "wnbaChampKalshi": {
+   "data": {
+    "New York": 17.0,
+    "Las Vegas": 31.0,
+    "Golden State": 22.0,
+    "Atlanta": 29.0
+   },
+   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "stale": false
+  },
+  "wnbaChampPoly": {
+   "data": {
+    "Atlanta": 27.5,
+    "Golden State": 20.9,
+    "Las Vegas": 32.5,
+    "New York": 17.8
+   },
+   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "stale": false
+  },
+  "mlbChampPoly": {
+   "data": {
+    "New York Yankees": 9.5,
+    "Tampa Bay Rays": 14.4,
+    "Cleveland Guardians": 4.3,
+    "Chicago White Sox": 6.8,
+    "Atlanta Braves": 4.2,
+    "Milwaukee Brewers": 19.9,
+    "Los Angeles Dodgers": 36.5,
+    "San Diego Padres": 5.5
+   },
+   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "stale": false
+  },
+  "wnbaDepthFlow": {
+   "data": [
+    {
+     "ticker": "KXWNBA-26-LV",
+     "name": "Las Vegas",
+     "price": 31.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 225222.05,
+      "latestOI": 473948.61,
+      "oiChange": 118123.33999999997,
+      "oiSeries": [
+       355825.27,
+       399006.12,
+       417336.9,
+       423920.96,
+       423066.05,
+       457883.58,
+       473948.61
+      ]
+     }
+    },
+    {
+     "ticker": "KXWNBA-26-ATL",
+     "name": "Atlanta",
+     "price": 29.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 172928.32,
+      "latestOI": 607262.43,
+      "oiChange": 107276.82000000007,
+      "oiSeries": [
+       499985.61,
+       530910.26,
+       576866.91,
+       581880.82,
+       596704.9,
+       604350.37,
+       607262.43
+      ]
+     }
+    },
+    {
+     "ticker": "KXWNBA-26-GS",
+     "name": "Golden State",
+     "price": 22.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 231693.69,
+      "latestOI": 622605.11,
+      "oiChange": 74475.38,
+      "oiSeries": [
+       548129.73,
+       553953.0,
+       566106.56,
+       582934.42,
+       591707.93,
+       623171.11,
+       622605.11
+      ]
+     }
+    }
+   ],
+   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "stale": false
+  }
+ }
+}

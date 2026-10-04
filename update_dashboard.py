@@ -1893,11 +1893,20 @@ def build_injury_status(inj_path):
     recent = real[real.week == latest_week]
     status_map = {}
     for _, row in recent.iterrows():
+        # A missing injury description comes through as NaN, which json.dumps writes as a
+        # bare NaN literal — fine inline in JS, but invalid JSON anywhere it gets parsed.
+        detail = row.get('report_primary_injury')
+        if detail is None or (isinstance(detail, float) and math.isnan(detail)):
+            detail = None
         status_map[row['full_name']] = {
-            'status': row['report_status'],
-            'injury': row.get('report_primary_injury'),
+            'status': str(row['report_status']),
+            'injury': detail,
             'week': int(latest_week),
         }
+    out_count = sum(1 for v in status_map.values() if str(v['status']).lower().startswith('out'))
+    doubt_count = sum(1 for v in status_map.values() if 'doubtful' in str(v['status']).lower())
+    print(f"  Week {int(latest_week)} injury report: {len(status_map)} designations "
+          f"({out_count} Out, {doubt_count} Doubtful)")
     return status_map
 
 
@@ -2010,6 +2019,1328 @@ def build_merged(season, games_all):
     merged['weather'] = merged.apply(weather_bucket, axis=1)
     merged['season'] = season
     return merged
+
+
+# =====================================================================
+# PREDICTION MARKETS (Kalshi + Polymarket) — FETCHED SERVER-SIDE
+# =====================================================================
+# Why this lives here now instead of in the browser: the dashboard used to
+# fetch Kalshi/Polymarket client-side on page load. That fails in production —
+# a static GitHub Pages origin calling those APIs gets blocked (CORS/origin
+# policy), the fetch throws, and the catch silently served a hardcoded
+# snapshot that was months old. Every other data source on the site is pulled
+# here and baked into the page, so these now work the same way: fetched on the
+# GitHub Actions schedule (2x/day baseline + game-day crons), timestamped, and
+# cached so one bad run keeps the previous good values instead of falling all
+# the way back to a stale constant.
+#
+# Two things make this self-healing rather than another set of guesses:
+#   1. Every ticker is TRIED, not assumed — and whatever actually works gets
+#      printed in the Actions log, so a rename shows up as a log line.
+#   2. If the known tickers yield nothing, it falls back to DISCOVERY: scan
+#      open events and keyword-match titles. That survives Kalshi renaming a
+#      series, which is the most likely cause of a silent, permanent failure.
+# =====================================================================
+KALSHI_API = "https://api.elections.kalshi.com/trade-api/v2"
+POLY_GAMMA_API = "https://gamma-api.polymarket.com"
+MARKET_CACHE_PATH = SCRIPT_DIR / "market_cache.json"
+MARKET_HTTP_TIMEOUT = 20
+
+# Diagnostics collected during the market step and printed in one block at the
+# end, so a single real Actions run tells you exactly which feed broke and why.
+MARKET_LOG = []
+
+
+def _mklog(msg):
+    MARKET_LOG.append(msg)
+
+
+def kalshi_get(path, params=None, timeout=MARKET_HTTP_TIMEOUT):
+    """GET against Kalshi's public market-data API. Returns (json|None, status_note)."""
+    url = f"{KALSHI_API}{path}"
+    try:
+        r = requests.get(url, params=params or {}, timeout=timeout,
+                         headers={'Accept': 'application/json', 'User-Agent': 'statum-dashboard/1.0'})
+        if r.status_code != 200:
+            return None, f"HTTP {r.status_code}"
+        return r.json(), "ok"
+    except requests.RequestException as e:
+        return None, f"{type(e).__name__}"
+
+
+def poly_get(path, params=None, timeout=MARKET_HTTP_TIMEOUT):
+    """GET against Polymarket's public Gamma API. Returns (json|None, status_note)."""
+    url = f"{POLY_GAMMA_API}{path}"
+    try:
+        r = requests.get(url, params=params or {}, timeout=timeout,
+                         headers={'Accept': 'application/json', 'User-Agent': 'statum-dashboard/1.0'})
+        if r.status_code != 200:
+            return None, f"HTTP {r.status_code}"
+        return r.json(), "ok"
+    except requests.RequestException as e:
+        return None, f"{type(e).__name__}"
+
+
+def _kalshi_price_pct(m):
+    """Kalshi returns prices as integer cents on most fields and dollars on the
+    *_dollars variants. Take whichever is present, in the order that's most
+    likely to be a real traded price rather than a stale resting quote."""
+    for field, scale in (('last_price_dollars', 100.0), ('yes_bid_dollars', 100.0),
+                         ('last_price', 1.0), ('yes_bid', 1.0)):
+        v = m.get(field)
+        if v in (None, ""):
+            continue
+        try:
+            pct = float(v) * scale
+        except (TypeError, ValueError):
+            continue
+        if 0 < pct <= 100:
+            return round(pct, 1)
+    return None
+
+
+def kalshi_markets_for_series(series_ticker, limit=60, status="open"):
+    """Every open market in one Kalshi series (e.g. all players in a leader race)."""
+    data, note = kalshi_get("/markets", {"series_ticker": series_ticker, "status": status, "limit": limit})
+    if not data:
+        return [], note
+    markets = data.get('markets') or []
+    return markets, ("ok" if markets else "no open markets")
+
+
+def kalshi_series_top(series_ticker, top=3):
+    """Top N outcomes in a series by implied probability — the shape the leader-race cards want."""
+    markets, note = kalshi_markets_for_series(series_ticker)
+    if not markets:
+        return None, note
+    options = []
+    for m in markets:
+        name = m.get('yes_sub_title') or m.get('title')
+        pct = _kalshi_price_pct(m)
+        if name and pct is not None:
+            options.append({'name': name, 'pct': pct})
+    if not options:
+        return None, "no priceable markets"
+    options.sort(key=lambda o: -o['pct'])
+    return {'options': options[:top], 'totalMarkets': len(markets)}, "ok"
+
+
+def kalshi_discover_open_events(max_pages=8, page_size=200):
+    """Page through Kalshi's open events (with their markets nested) so we can
+    keyword-match real, currently-listed markets instead of relying on ticker
+    names staying stable. Capped so a pathological response can't stall a run."""
+    events, cursor, pages = [], None, 0
+    while pages < max_pages:
+        params = {'status': 'open', 'with_nested_markets': 'true', 'limit': page_size}
+        if cursor:
+            params['cursor'] = cursor
+        data, note = kalshi_get("/events", params)
+        if not data:
+            _mklog(f"  discovery: events page {pages + 1} failed ({note})")
+            break
+        batch = data.get('events') or []
+        events.extend(batch)
+        cursor = data.get('cursor')
+        pages += 1
+        if not cursor or not batch:
+            break
+    return events
+
+
+def _event_markets(ev):
+    return ev.get('markets') or ev.get('nested_markets') or []
+
+
+def kalshi_match_events(events, include_terms, exclude_terms=(), limit=6):
+    """Find open events whose title matches all/any of some keywords. Used as the
+    fallback path when a hardcoded series ticker stops resolving."""
+    out = []
+    for ev in events:
+        title = (ev.get('title') or "") + " " + (ev.get('sub_title') or "")
+        low = title.lower()
+        if not any(t.lower() in low for t in include_terms):
+            continue
+        if any(t.lower() in low for t in exclude_terms):
+            continue
+        markets = _event_markets(ev)
+        if not markets:
+            continue
+        options = []
+        for m in markets:
+            name = m.get('yes_sub_title') or m.get('title')
+            pct = _kalshi_price_pct(m)
+            if name and pct is not None:
+                options.append({'name': name, 'pct': pct})
+        if not options:
+            continue
+        options.sort(key=lambda o: -o['pct'])
+        out.append({'title': ev.get('title') or ev.get('event_ticker'),
+                    'eventTicker': ev.get('event_ticker'),
+                    'seriesTicker': ev.get('series_ticker'),
+                    'options': options[:3],
+                    'totalMarkets': len(markets)})
+        if len(out) >= limit:
+            break
+    return out
+
+
+# ---- NFL ----
+KALSHI_LEADER_SERIES = [
+    ("Receiving Yards Leader", "KXLEADERNFLRYDS", ["receiving yards leader", "most receiving yards"]),
+    ("Passing Yards Leader", "KXLEADERNFLPYDS", ["passing yards leader", "most passing yards"]),
+    ("Rushing Yards Leader", "KXLEADERNFLRSHYDS", ["rushing yards leader", "most rushing yards"]),
+    ("Sacks Leader", "KXLEADERNFLSACK", ["sacks leader", "most sacks"]),
+    ("Interceptions Leader", "KXLEADERNFLINT", ["interceptions leader", "most interceptions"]),
+]
+NFL_CHAMP_TICKERS = ["KXNFLCHAMP", "KXSBCHAMP", "KXSUPERBOWL", "KXNFLGAME-CHAMP"]
+WNBA_CHAMP_TICKERS = ["KXWNBA", "KXWNBACHAMP"]
+MLB_CHAMP_TICKERS = ["KXMLBWS", "KXMLBWORLDSERIES", "KXWORLDSERIES"]
+
+
+def fetch_kalshi_leaders(discovered_events=None):
+    """The five NFL season-long leader races. Tries the known series ticker first,
+    then keyword discovery, so a Kalshi rename degrades to 'found it anyway'."""
+    out, live_count = [], 0
+    for label, ticker, search_terms in KALSHI_LEADER_SERIES:
+        card, note = kalshi_series_top(ticker)
+        if card:
+            out.append({'category': label, 'source': 'kalshi', 'ticker': ticker, **card})
+            live_count += 1
+            _mklog(f"  NFL leaders · {label}: live via {ticker} ({card['totalMarkets']} markets)")
+            continue
+        found = None
+        if discovered_events:
+            matches = kalshi_match_events(discovered_events, search_terms, limit=1)
+            if matches:
+                found = matches[0]
+        if found:
+            out.append({'category': label, 'source': 'kalshi-discovered',
+                        'ticker': found.get('seriesTicker') or found.get('eventTicker'),
+                        'options': found['options'], 'totalMarkets': found['totalMarkets']})
+            live_count += 1
+            _mklog(f"  NFL leaders · {label}: ticker {ticker} dead ({note}) — DISCOVERED as "
+                   f"{found.get('seriesTicker')} / event {found.get('eventTicker')}")
+        else:
+            _mklog(f"  NFL leaders · {label}: unavailable ({note}, discovery found nothing)")
+    return out, live_count
+
+
+# Nickname -> code, so a Kalshi/Polymarket outcome label ("Chiefs", "Kansas City Chiefs")
+# can be matched back to our team codes. Mirrors TEAM_NAMES in dashboard_template.jsx.
+NFL_NICKNAME_TO_CODE = {
+    'chargers': 'LAC', 'ravens': 'BAL', 'panthers': 'CAR', 'steelers': 'PIT', 'browns': 'CLE',
+    'broncos': 'DEN', 'saints': 'NO', 'dolphins': 'MIA', 'rams': 'LA', 'chiefs': 'KC',
+    'titans': 'TEN', 'bengals': 'CIN', 'packers': 'GB', 'vikings': 'MIN', 'jets': 'NYJ',
+    'texans': 'HOU', 'cowboys': 'DAL', 'jaguars': 'JAX', 'buccaneers': 'TB', 'seahawks': 'SEA',
+    'falcons': 'ATL', 'bills': 'BUF', 'colts': 'IND', 'patriots': 'NE', '49ers': 'SF',
+    'cardinals': 'ARI', 'lions': 'DET', 'eagles': 'PHI', 'commanders': 'WAS', 'giants': 'NYG',
+    'bears': 'CHI', 'raiders': 'LV',
+}
+
+
+def nfl_code_from_label(label):
+    low = str(label or "").lower()
+    for nick, code in NFL_NICKNAME_TO_CODE.items():
+        if nick in low:
+            return code
+    return None
+
+
+def fetch_nfl_win_totals(discovered_events, limit=24):
+    """Season win-total markets, one card per team. These were the hardcoded 'SNAPSHOT'
+    cards on Market Pulse — there's no stable series ticker to fetch them by, so they come
+    from the discovery pass: any open event whose title names a team and talks about wins."""
+    if not discovered_events:
+        return []
+    by_team = {}
+    for ev in discovered_events:
+        title = ((ev.get('title') or "") + " " + (ev.get('sub_title') or ""))
+        low = title.lower()
+        if 'win' not in low:
+            continue
+        if any(t in low for t in ('super bowl', 'division', 'conference', 'champion', 'mvp', 'playoff')):
+            continue
+        code = nfl_code_from_label(title)
+        if not code:
+            continue
+        options = []
+        for m in _event_markets(ev):
+            name = m.get('yes_sub_title') or m.get('title')
+            pct = _kalshi_price_pct(m)
+            if name and pct is not None:
+                options.append({'line': name, 'pct': pct})
+        if not options:
+            continue
+        options.sort(key=lambda o: -o['pct'])
+        # Keep the three closest to a coin flip — those are the ones with real information
+        # in them; a 2%-or-98% line tells you nothing you didn't already know.
+        options.sort(key=lambda o: abs(o['pct'] - 50))
+        prev = by_team.get(code)
+        if prev is None or len(options) > len(prev['options']):
+            by_team[code] = {'team': code, 'options': options[:3],
+                             'eventTicker': ev.get('event_ticker'), 'totalMarkets': len(_event_markets(ev))}
+    out = list(by_team.values())[:limit]
+    if out:
+        _mklog(f"  NFL win totals: {len(out)} teams found via discovery")
+    else:
+        _mklog("  NFL win totals: none found in open events — keeping the manual snapshot")
+    return out
+
+
+# Season-long player threshold markets ("75+ receptions", "1,200+ rushing yards"). Same
+# situation as win totals: no stable ticker, so keyword discovery is the only honest route.
+_THRESHOLD_TERMS = ['receptions', 'receiving yards', 'rushing yards', 'passing yards',
+                    'touchdowns', 'sacks', 'interceptions', 'field goals']
+_THRESHOLD_EXCLUDE = ['leader', 'most ', 'champion', 'mvp', 'super bowl']
+
+
+def fetch_nfl_player_thresholds(discovered_events, limit=6):
+    if not discovered_events:
+        return []
+    cards = []
+    for ev in discovered_events:
+        title = (ev.get('title') or "")
+        low = title.lower()
+        if not any(t in low for t in _THRESHOLD_TERMS):
+            continue
+        if any(t in low for t in _THRESHOLD_EXCLUDE):
+            continue
+        # A threshold market has a number in it ("75+", "1,000 or more")
+        if not re.search(r'\d', title):
+            continue
+        options = []
+        for m in _event_markets(ev):
+            name = m.get('yes_sub_title') or m.get('title')
+            pct = _kalshi_price_pct(m)
+            if name and pct is not None:
+                options.append({'name': name, 'pct': pct})
+        if not options:
+            continue
+        options.sort(key=lambda o: -o['pct'])
+        cards.append({'title': title, 'options': options[:3],
+                      'totalMarkets': len(_event_markets(ev)),
+                      'eventTicker': ev.get('event_ticker')})
+        if len(cards) >= limit:
+            break
+    if cards:
+        _mklog(f"  NFL player thresholds: {len(cards)} markets found via discovery")
+    else:
+        _mklog("  NFL player thresholds: none found in open events — keeping the manual snapshot")
+    return cards
+
+
+def fetch_kalshi_championship(tickers, discovered_events=None, search_terms=(), exclude_terms=()):
+    """Multi-outcome championship market -> {outcome_name: pct}. Outcome names come
+    back exactly as Kalshi labels them; the JSX matches them to our team naming."""
+    for ticker in tickers:
+        markets, note = kalshi_markets_for_series(ticker, limit=60)
+        if not markets:
+            continue
+        out = {}
+        for m in markets:
+            name = m.get('yes_sub_title') or m.get('title')
+            pct = _kalshi_price_pct(m)
+            if name and pct is not None:
+                out[name] = pct
+        if out:
+            _mklog(f"  championship: live via {ticker} ({len(out)} outcomes)")
+            return out, ticker
+    if discovered_events and search_terms:
+        matches = kalshi_match_events(discovered_events, search_terms, exclude_terms, limit=1)
+        if matches:
+            ev = matches[0]
+            # re-pull the full outcome set for the discovered event, not just top 3
+            data, _ = kalshi_get("/markets", {"event_ticker": ev['eventTicker'], "status": "open", "limit": 60})
+            markets = (data or {}).get('markets') or []
+            out = {}
+            for m in markets:
+                name = m.get('yes_sub_title') or m.get('title')
+                pct = _kalshi_price_pct(m)
+                if name and pct is not None:
+                    out[name] = pct
+            if out:
+                _mklog(f"  championship: tickers {tickers} all dead — DISCOVERED as "
+                       f"{ev.get('seriesTicker')} / event {ev.get('eventTicker')} ({len(out)} outcomes)")
+                return out, ev.get('seriesTicker') or ev.get('eventTicker')
+    _mklog(f"  championship: unavailable (tried {tickers}, discovery found nothing)")
+    return None, None
+
+
+def fetch_poly_event_prices(slug, strip_suffix_re=None):
+    """One Polymarket multi-outcome event -> {outcome_name: pct}."""
+    data, note = poly_get("/events", {"slug": slug})
+    if not data:
+        return None, note
+    event = data[0] if isinstance(data, list) and data else data
+    if not isinstance(event, dict) or not event.get('markets'):
+        return None, "no markets in response"
+    out = {}
+    for m in event['markets']:
+        title = (m.get('groupItemTitle') or m.get('question') or "").strip()
+        if strip_suffix_re:
+            title = re.sub(strip_suffix_re, "", title, flags=re.I).strip()
+        price = None
+        raw = m.get('outcomePrices')
+        try:
+            prices = json.loads(raw) if isinstance(raw, str) else (raw or [])
+            if prices:
+                price = float(prices[0]) * 100
+        except (ValueError, TypeError):
+            price = None
+        if title and price is not None and 0 < price <= 100:
+            out[title] = round(price, 1)
+    if not out:
+        return None, "no outcomes parsed"
+    return out, "ok"
+
+
+def fetch_poly_discover(search_terms, limit=200):
+    """Fallback when a Polymarket slug 404s (they get renamed/re-slugged every season):
+    pull the highest-volume open events and keyword-match the title."""
+    data, note = poly_get("/events", {"closed": "false", "order": "volume",
+                                      "ascending": "false", "limit": limit})
+    if not isinstance(data, list):
+        return None, None, note
+    for ev in data:
+        title = (ev.get('title') or "").lower()
+        if any(t.lower() in title for t in search_terms):
+            slug = ev.get('slug')
+            if not slug:
+                continue
+            prices, pnote = fetch_poly_event_prices(slug)
+            if prices:
+                return prices, slug, "ok"
+    return None, None, "no matching open event"
+
+
+def fetch_poly_with_fallback(slug, search_terms, strip_suffix_re=None, label=""):
+    prices, note = fetch_poly_event_prices(slug, strip_suffix_re)
+    if prices:
+        _mklog(f"  {label} Polymarket: live via slug {slug} ({len(prices)} outcomes)")
+        return prices, slug
+    prices, found_slug, dnote = fetch_poly_discover(search_terms)
+    if prices:
+        _mklog(f"  {label} Polymarket: slug {slug} dead ({note}) — DISCOVERED as slug {found_slug}")
+        return prices, found_slug
+    _mklog(f"  {label} Polymarket: unavailable (slug {slug}: {note}; discovery: {dnote})")
+    return None, None
+
+
+# ---- GEX-style depth & flow ----
+def fetch_market_depth(ticker):
+    """Resting order-book size by side — where the real 'gravity walls' sit."""
+    data, note = kalshi_get(f"/markets/{ticker}/orderbook")
+    if not data:
+        return None
+    ob = data.get('orderbook') or data
+    yes_levels, no_levels = ob.get('yes') or [], ob.get('no') or []
+    if not yes_levels and not no_levels:
+        return None
+
+    def size_of(lvl):
+        if isinstance(lvl, (list, tuple)):
+            return float(lvl[1]) if len(lvl) > 1 else 0.0
+        return float(lvl.get('count') or lvl.get('size') or 0)
+
+    def price_of(lvl):
+        if isinstance(lvl, (list, tuple)):
+            return float(lvl[0]) if lvl else None
+        return lvl.get('price')
+
+    def top(levels):
+        return max(levels, key=size_of) if levels else None
+
+    yes_top, no_top = top(yes_levels), top(no_levels)
+    return {
+        'yesTotal': int(sum(size_of(l) for l in yes_levels)),
+        'noTotal': int(sum(size_of(l) for l in no_levels)),
+        'yesTopPrice': price_of(yes_top) if yes_top else None,
+        'yesTopSize': int(size_of(yes_top)) if yes_top else None,
+        'noTopPrice': price_of(no_top) if no_top else None,
+        'noTopSize': int(size_of(no_top)) if no_top else None,
+    }
+
+
+def fetch_market_flow(ticker, series_ticker=None):
+    """7 days of daily candles -> volume traded and the open-interest trend.
+    Kalshi's documented path is /series/{series}/markets/{ticker}/candlesticks;
+    the older flat /markets/{ticker}/candlesticks shape is tried as a fallback
+    because that's what this used to call (and which may be why it never worked)."""
+    end = int(time.time())
+    start = end - 7 * 24 * 3600
+    params = {'start_ts': start, 'end_ts': end, 'period_interval': 1440}
+    paths = []
+    if series_ticker:
+        paths.append(f"/series/{series_ticker}/markets/{ticker}/candlesticks")
+    paths.append(f"/markets/{ticker}/candlesticks")
+    candles = []
+    for p in paths:
+        data, note = kalshi_get(p, params)
+        if data:
+            candles = data.get('candlesticks') or []
+            if candles:
+                break
+    if not candles:
+        return None
+
+    def num(c, *keys):
+        for k in keys:
+            v = c.get(k)
+            if isinstance(v, dict):
+                v = v.get('close') or v.get('mean')
+            if v not in (None, ""):
+                try:
+                    return float(v)
+                except (TypeError, ValueError):
+                    continue
+        return 0.0
+
+    oi_series = [num(c, 'open_interest_fp', 'open_interest') for c in candles]
+    return {
+        'totalVolume': sum(num(c, 'volume_fp', 'volume') for c in candles),
+        'latestOI': oi_series[-1] if oi_series else 0,
+        'oiChange': (oi_series[-1] - oi_series[0]) if len(oi_series) > 1 else 0,
+        'oiSeries': oi_series,
+    }
+
+
+def fetch_depth_flow_panel(series_tickers, limit=3):
+    """Depth + flow for the top few markets in whichever of these series resolves."""
+    for series_ticker in series_tickers:
+        markets, note = kalshi_markets_for_series(series_ticker, limit=20)
+        if not markets:
+            continue
+        scored = []
+        for m in markets:
+            pct = _kalshi_price_pct(m)
+            if m.get('ticker') and pct is not None:
+                scored.append({'ticker': m['ticker'], 'name': m.get('yes_sub_title') or m.get('title'), 'price': pct})
+        scored.sort(key=lambda m: -m['price'])
+        rows = []
+        for m in scored[:limit]:
+            depth = fetch_market_depth(m['ticker'])
+            flow = fetch_market_flow(m['ticker'], series_ticker)
+            if depth or flow:
+                rows.append({**m, 'depth': depth, 'flow': flow})
+        if rows:
+            _mklog(f"  depth/flow: {len(rows)} markets via {series_ticker}")
+            return rows
+        _mklog(f"  depth/flow: {series_ticker} listed markets but orderbook/candles both empty "
+               f"(these endpoints may require an authenticated Kalshi key)")
+    _mklog(f"  depth/flow: unavailable (tried {series_tickers})")
+    return None
+
+
+def load_market_cache():
+    if MARKET_CACHE_PATH.exists():
+        try:
+            return json.loads(MARKET_CACHE_PATH.read_text(encoding='utf-8'))
+        except (json.JSONDecodeError, OSError):
+            return {}
+    return {}
+
+
+def save_market_cache(cache):
+    try:
+        MARKET_CACHE_PATH.write_text(json.dumps(cache, indent=1), encoding='utf-8')
+    except OSError as e:
+        print(f"  [!] Couldn't write {MARKET_CACHE_PATH.name}: {e}")
+
+
+def build_market_live():
+    """Fetch every prediction market feed, falling back per-section to the last
+    successful fetch (from market_cache.json) rather than to a stale constant.
+    Every section carries its own fetchedAt so the UI can show real age."""
+    now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')
+    cache = load_market_cache()
+    sections = cache.get('sections', {})
+
+    def commit(key, value):
+        """Store a fresh value, or keep the cached one (with its original age) on failure."""
+        if value:
+            sections[key] = {'data': value, 'fetchedAt': now_iso, 'stale': False}
+            return True
+        prev = sections.get(key)
+        if prev:
+            prev['stale'] = True
+            _mklog(f"  → {key}: keeping cached value from {prev.get('fetchedAt')}")
+        return False
+
+    # One discovery pass, shared by every section that needs a fallback.
+    discovered = kalshi_discover_open_events()
+    if discovered:
+        _mklog(f"  discovery: {len(discovered)} open Kalshi events available for keyword fallback")
+    else:
+        _mklog("  discovery: no open events retrieved — Kalshi may be unreachable from this runner")
+
+    leaders, live_leaders = fetch_kalshi_leaders(discovered)
+    commit('nflLeaders', leaders)
+    commit('nflWinTotals', fetch_nfl_win_totals(discovered))
+    commit('nflThresholds', fetch_nfl_player_thresholds(discovered))
+
+    nfl_k, nfl_k_ticker = fetch_kalshi_championship(
+        NFL_CHAMP_TICKERS, discovered,
+        search_terms=["super bowl champion", "nfl champion", "win the super bowl"],
+        exclude_terms=["mvp", "coach"])
+    commit('nflChampKalshi', nfl_k)
+    nfl_p, _ = fetch_poly_with_fallback("big-game-champion-2027",
+                                        ["super bowl champion", "nfl champion"], label="NFL")
+    commit('nflChampPoly', nfl_p)
+
+    wnba_k, _ = fetch_kalshi_championship(
+        WNBA_CHAMP_TICKERS, discovered,
+        search_terms=["wnba champion", "wnba finals"], exclude_terms=["mvp"])
+    commit('wnbaChampKalshi', wnba_k)
+    wnba_p, _ = fetch_poly_with_fallback(
+        "wnba-2026-champion-464", ["wnba champion"],
+        strip_suffix_re=r"\s+(Lynx|Liberty|Aces|Dream|Fever|Wings|Valkyries|Sparks|Mercury|Tempo|Mystics|Fire|Storm|Sky|Sun)$",
+        label="WNBA")
+    commit('wnbaChampPoly', wnba_p)
+
+    mlb_k, _ = fetch_kalshi_championship(
+        MLB_CHAMP_TICKERS, discovered,
+        search_terms=["world series champion", "win the world series"], exclude_terms=["mvp"])
+    commit('mlbChampKalshi', mlb_k)
+    mlb_p, _ = fetch_poly_with_fallback("mlb-world-series-champion-2026",
+                                        ["world series champion"], label="MLB")
+    commit('mlbChampPoly', mlb_p)
+
+    commit('nflDepthFlow', fetch_depth_flow_panel(
+        [t for t in ([nfl_k_ticker] if nfl_k_ticker else []) + NFL_CHAMP_TICKERS]))
+    commit('wnbaDepthFlow', fetch_depth_flow_panel(WNBA_CHAMP_TICKERS))
+
+    cache = {'lastRun': now_iso, 'sections': sections}
+    save_market_cache(cache)
+
+    # Flatten to the shape the JSX consumes: value + the age of that value.
+    payload = {'generatedAt': now_iso, 'liveLeaderCount': live_leaders,
+               'leaderSeriesCount': len(KALSHI_LEADER_SERIES)}
+    for key, entry in sections.items():
+        payload[key] = entry.get('data')
+        payload[key + 'At'] = entry.get('fetchedAt')
+        payload[key + 'Stale'] = bool(entry.get('stale'))
+    return payload
+
+
+# =====================================================================
+# STRONG PICKS — composite weekly ranking
+# =====================================================================
+# What this replaces: the old "Top 5 Strong Picks" widget sorted the pool by one number,
+# season-long P50 hit rate. That number barely moves from one week to the next, so the
+# widget showed effectively the same five names all season and had no idea who those
+# players were actually about to line up against.
+#
+# This scores each line on five independent things instead, three of which are specific to
+# the week being played — which is what makes the list genuinely turn over week to week:
+#
+#   1. RELIABILITY (40%) — the real backtested hit rate, floor-weighted. A line's P25 is
+#      the one you'd actually bet, so its hit rate counts double the P50's.
+#   2. COVERAGE MATCHUP (20%) — this player's own real yards-per-target against the exact
+#      coverage shell their next opponent plays most, versus their own overall average.
+#      Weighted by how often that opponent actually plays it.
+#   3. POSITION MATCHUP (15%) — where that defense ranks in production allowed to this
+#      player's position (1 = most generous).
+#   4. XGBOOST LEAN (15%) — the trained model's P(clears their P50 this game), which
+#      already accounts for the real upcoming opponent and home/away.
+#   5. CURRENT FORM (10%) — trailing-3-game average against the line itself.
+#
+# Sample size shrinks the whole score toward neutral rather than being a hard cutoff, and
+# anyone listed Out or Doubtful is removed outright — a 95% hit rate is irrelevant if the
+# player isn't dressing. Every pick carries the reasons it scored well, so the list is
+# inspectable rather than a black box.
+# =====================================================================
+STRONG_PICK_WEIGHTS = {'reliability': 0.40, 'coverage': 0.20, 'position': 0.15, 'model': 0.15, 'form': 0.10}
+STRONG_PICK_MIN_TEST_GAMES = 4      # below this a hit rate is noise, not a signal
+STRONG_PICK_SHRINK_GAMES = 10       # full trust at this many real held-out games
+
+
+def _clamp(v, lo=0.0, hi=100.0):
+    return max(lo, min(hi, v))
+
+
+def _is_unplayable(name, injuries):
+    """Out and Doubtful mean there's no line to bet, whatever the history says."""
+    inj = (injuries or {}).get(name)
+    if not inj:
+        return False
+    s = str(inj.get('status', '')).lower()
+    return ('out' in s) or ('doubtful' in s) or ('injured reserve' in s)
+
+
+def _injury_note(name, injuries):
+    inj = (injuries or {}).get(name)
+    if not inj:
+        return None
+    s = str(inj.get('status', '')).lower()
+    if 'question' in s:
+        return f"Questionable ({inj.get('injury') or 'no detail'}) — discounted"
+    return None
+
+
+# Which per-coverage rate to compare, per stat. Receiving/rushing volume stats read the
+# receiver's yards-per-target split; passing stats read the QB's yards-per-attempt split.
+_COVERAGE_RATE_FIELD = {
+    'Receiving Yards': ('coverages', 'yptTarget', 'targets'),
+    'Receptions': ('coverages', 'catchRate', 'targets'),
+    'Targets': ('coverages', 'targets', 'targets'),
+    'Passing Yards': ('coverages', 'yptAtt', 'attempts'),
+    'Completions': ('coverages', 'compPct', 'attempts'),
+    'Passing Touchdowns': ('coverages', 'tds', 'attempts'),
+}
+
+
+def score_coverage_matchup(player_obj, opp_def, stat):
+    """This player's real production against the shell the next opponent plays most, as a
+    0-100 score where 50 is 'exactly their own average'. Returns (score, explanation|None).
+    None explanation means there wasn't enough real data to say anything, and the caller
+    treats it as neutral rather than inventing a number."""
+    if not player_obj or not opp_def:
+        return 50.0, None
+    spec = _COVERAGE_RATE_FIELD.get(stat)
+    if not spec:
+        return 50.0, None
+    bucket_key, rate_field, sample_field = spec
+    scheme = (opp_def.get('scheme') or {})
+    cov = scheme.get('primaryCoverage')
+    cov_pct = scheme.get('primaryCoveragePct') or 0
+    if not cov or cov == 'Unknown':
+        return 50.0, None
+    buckets = player_obj.get(bucket_key) or {}
+    vs = buckets.get(cov)
+    overall = player_obj.get('overall') or {}
+    if not vs or not overall:
+        return 50.0, None
+    vs_rate = vs.get(rate_field)
+    base_rate = overall.get(rate_field)
+    sample = vs.get(sample_field) or 0
+    if vs_rate in (None, 0) or base_rate in (None, 0) or sample < 8:
+        return 50.0, None
+    ratio = float(vs_rate) / float(base_rate)
+    # +/-40% vs their own average maps to the full 0-100 range; then scaled down by how
+    # much of the game that shell actually represents (a 35%-usage shell shouldn't swing
+    # the score as hard as an 80%-usage one).
+    raw = 50.0 + (ratio - 1.0) * 125.0
+    usage_weight = _clamp(cov_pct / 60.0, 0.25, 1.0)
+    score = 50.0 + (_clamp(raw) - 50.0) * usage_weight
+    direction = "better" if ratio > 1.02 else "worse" if ratio < 0.98 else "even"
+    if direction == "even":
+        return score, None
+    pct = abs(ratio - 1.0) * 100
+    return score, (f"{pct:.0f}% {direction} than his own average vs {COVERAGE_LABEL_PY.get(cov, cov)}, "
+                   f"which {opp_def.get('_teamLabel', 'this defense')} plays {cov_pct:.0f}% of the time "
+                   f"({int(sample)} real reps)")
+
+
+COVERAGE_LABEL_PY = {
+    'COVER_0': 'Cover 0', 'COVER_1': 'Cover 1', 'COVER_2': 'Cover 2', 'COVER_3': 'Cover 3',
+    'COVER_4': 'Cover 4', 'COVER_6': 'Cover 6', 'COVER_9': 'Cover 9', '2_MAN': '2-Man',
+    'COMBO': 'Combo', 'BLOWN': 'Blown Coverage', 'Unknown': 'Unlabeled',
+}
+
+
+def score_position_matchup(opp_def, pos):
+    """Where the next opponent ranks in production allowed to this position (1 = most
+    generous, 32 = stingiest). Returns (score, explanation|None)."""
+    if not opp_def or not pos:
+        return 50.0, None
+    allowed = (opp_def.get('allowedByPosition') or {}).get(pos)
+    if not allowed or allowed.get('rank') in (None, 0):
+        return 50.0, None
+    rank = int(allowed['rank'])
+    n = 32.0
+    score = _clamp((n - rank) / (n - 1) * 100.0)
+    if rank <= 10:
+        return score, (f"{opp_def.get('_teamLabel', 'opponent')} allows the {_ordinal(rank)}-most "
+                       f"production to {pos}s ({allowed.get('ypg')} yds/gm)")
+    if rank >= 24:
+        return score, (f"tough spot — {opp_def.get('_teamLabel', 'opponent')} is {_ordinal(33 - rank)}-stingiest "
+                       f"against {pos}s")
+    return score, None
+
+
+def _ordinal(n):
+    n = int(n)
+    if 10 <= n % 100 <= 20:
+        suffix = 'th'
+    else:
+        suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
+    return f"{n}{suffix}"
+
+
+def score_reliability(entry):
+    """Floor-weighted real backtest hit rate. The P25 line is the one most people actually
+    bet, so it carries the most weight; P75 is included but discounted as the reach."""
+    p25 = entry['p25']['testHit']
+    p50 = entry['p50']['testHit']
+    p75 = entry['p75']['testHit']
+    return _clamp((p25 * 0.5) + (p50 * 0.35) + (p75 * 0.15)), p25, p50
+
+
+def score_model_lean(entry):
+    lean = entry.get('modelLean') or {}
+    prob = lean.get('leanProb')
+    if prob is None:
+        return 50.0, None
+    score = _clamp(float(prob))
+    if prob >= 65:
+        return score, f"model gives {prob:.0f}% to clear the P50 in this specific matchup"
+    if prob <= 35:
+        return score, f"model only gives {prob:.0f}% to clear the P50 here"
+    return score, None
+
+
+def score_current_form(entry):
+    """Trailing-3-game average against this line's own P50. Comes from the same model
+    feature set, so it's real per-game production, not a vibe."""
+    lean = entry.get('modelLean') or {}
+    t3 = lean.get('trailing3')
+    p50_line = entry['p50']['line']
+    if t3 is None or not p50_line:
+        return 50.0, None
+    ratio = float(t3) / float(p50_line)
+    score = _clamp(50.0 + (ratio - 1.0) * 100.0)
+    if ratio >= 1.15:
+        return score, f"last 3 games averaging {t3:.1f} against a {p50_line:.0f} line"
+    if ratio <= 0.85:
+        return score, f"cooling off — last 3 games averaging {t3:.1f} against a {p50_line:.0f} line"
+    return score, None
+
+
+def build_strong_picks(full_pool, receivers, qbs, kickers, team_defense, upcoming,
+                       injuries, top_n=5, team_names=None):
+    """Score every NFL ladder line, attach the score + reasoning to the entry, and return
+    the top N as a ready-to-render list. Position-diversified so the list isn't five
+    receiving-yards props off the same kind of matchup."""
+    by_name = {}
+    for group in (receivers or []), (qbs or []), (kickers or []):
+        for p in group:
+            by_name.setdefault(p['name'], p)
+
+    scored = []
+    for e in full_pool:
+        if e.get('kind') != 'ladder':
+            continue
+        if e.get('testGames', 0) < STRONG_PICK_MIN_TEST_GAMES:
+            continue
+        if _is_unplayable(e['player'], injuries):
+            continue
+
+        up = (upcoming or {}).get(e.get('team')) or {}
+        opp = up.get('opp')
+        opp_def = dict(team_defense.get(opp) or {}) if opp else {}
+        if opp_def:
+            opp_def['_teamLabel'] = (team_names or {}).get(opp, opp)
+
+        player_obj = by_name.get(e['player'])
+        reliability, p25_hit, p50_hit = score_reliability(e)
+        cov_score, cov_why = score_coverage_matchup(player_obj, opp_def, e['stat'])
+        pos_score, pos_why = score_position_matchup(opp_def, e.get('pos'))
+        model_score, model_why = score_model_lean(e)
+        form_score, form_why = score_current_form(e)
+
+        w = STRONG_PICK_WEIGHTS
+        raw = (reliability * w['reliability'] + cov_score * w['coverage'] + pos_score * w['position']
+               + model_score * w['model'] + form_score * w['form'])
+
+        # Thin held-out samples get pulled toward neutral instead of being trusted or
+        # excluded outright -- the same shrinkage logic used on the stat blends elsewhere.
+        games = e.get('testGames', 0)
+        trust = _clamp(games / STRONG_PICK_SHRINK_GAMES, 0.0, 1.0)
+        score = 50.0 + (raw - 50.0) * trust
+
+        inj_note = _injury_note(e['player'], injuries)
+        if inj_note:
+            score -= 6.0  # Questionable is a real discount, not a disqualification
+
+        why = [x for x in [cov_why, pos_why, model_why, form_why] if x]
+        why.insert(0, f"hit its P25 line in {p25_hit:.0f}% of {games} real held-out games")
+        if inj_note:
+            # Second, not last: `why` is capped at 4 entries for display, and a line with
+            # four good reasons would otherwise push the injury caveat off the card — which
+            # is precisely the one thing the reader must not miss.
+            why.insert(1, inj_note)
+
+        scored.append({
+            **{k: v for k, v in e.items() if not k.startswith('_')},
+            'pickScore': round(score, 1),
+            'pickWhy': why[:4],
+            'pickComponents': {
+                'reliability': round(reliability, 1), 'coverage': round(cov_score, 1),
+                'position': round(pos_score, 1), 'model': round(model_score, 1),
+                'form': round(form_score, 1), 'sampleTrust': round(trust * 100),
+            },
+            'opponent': opp, 'isHome': up.get('isHome'), 'gameWeek': up.get('week'),
+            'gameDate': up.get('date'),
+        })
+
+    # Attach the score back onto the live pool entries so the UI can sort/filter by it
+    score_by_id = {s['id']: s for s in scored}
+    for e in full_pool:
+        s = score_by_id.get(e.get('id'))
+        if s:
+            e['pickScore'] = s['pickScore']
+            e['pickWhy'] = s['pickWhy']
+            e['pickComponents'] = s['pickComponents']
+            e['pickOpponent'] = s.get('opponent')
+
+    # One line per player (their best), then cap any single position at 2 of 5 so the list
+    # spreads across the slate instead of stacking one matchup type.
+    best_per_player = {}
+    for s in scored:
+        cur = best_per_player.get(s['player'])
+        if cur is None or s['pickScore'] > cur['pickScore']:
+            best_per_player[s['player']] = s
+    ranked = sorted(best_per_player.values(), key=lambda s: (-s['pickScore'], -s['testGames']))
+
+    picks, pos_count = [], {}
+    for s in ranked:
+        pos = s.get('pos') or '?'
+        if pos_count.get(pos, 0) >= 2:
+            continue
+        picks.append(s)
+        pos_count[pos] = pos_count.get(pos, 0) + 1
+        if len(picks) >= top_n:
+            break
+    # If position diversity left us short -- a thin pool early in the season, or a slate
+    # where one position dominates -- top up by raw score rather than shipping a list of
+    # three. The relaxation is recorded so the UI can say the cap was lifted instead of
+    # quietly presenting a stacked list as a diversified one.
+    diversity_relaxed = False
+    if len(picks) < top_n:
+        have = {p['id'] for p in picks}
+        for s in ranked:
+            if s['id'] not in have:
+                picks.append(s)
+                diversity_relaxed = True
+                if len(picks) >= top_n:
+                    break
+
+    week = None
+    for u in (upcoming or {}).values():
+        if u.get('week'):
+            week = u['week'] if week is None else min(week, u['week'])
+    return {
+        'picks': picks,
+        'week': week,
+        'generatedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
+        'scoredCount': len(scored),
+        'weights': STRONG_PICK_WEIGHTS,
+        'diversityRelaxed': diversity_relaxed,
+        'excludedInjured': sum(1 for e in full_pool
+                               if e.get('kind') == 'ladder' and _is_unplayable(e['player'], injuries)),
+    }
+
+
+def build_simple_strong_picks(pool, players, team_defense, upcoming, top_n=5, sport='wnba'):
+    """WNBA/MLB version. There's no coverage-scheme data in either feed (ESPN's WNBA
+    play-by-play has no defender/zone tracking at all, and MLB's equivalent isn't
+    comparable), so this scores on what IS real for those sports: the backtested hit
+    rate, form, and the specific next opponent's points/runs allowed."""
+    by_name = {}
+    for p in (players or []):
+        by_name.setdefault(p['name'], p)
+
+    # opponent generosity, ranked -- 1 = allows the most
+    allowed = {}
+    for t in (team_defense or []):
+        name = t.get('team') if isinstance(t, dict) else None
+        val = (t.get('ppgAllowed') if isinstance(t, dict) else None)
+        if name and val is not None:
+            allowed[name] = float(val)
+    ranked_teams = sorted(allowed, key=lambda k: -allowed[k])
+    opp_rank = {t: i + 1 for i, t in enumerate(ranked_teams)}
+    n_teams = max(len(ranked_teams), 2)
+
+    scored = []
+    for e in pool:
+        if e.get('kind') != 'ladder' or e.get('testGames', 0) < STRONG_PICK_MIN_TEST_GAMES:
+            continue
+        reliability, p25_hit, p50_hit = score_reliability(e)
+        player_obj = by_name.get(e['player'])
+        team = (player_obj or {}).get('team')
+        up = (upcoming or {}).get(team) if isinstance(upcoming, dict) else None
+        opp = (up or {}).get('opp')
+
+        pos_score, pos_why = 50.0, None
+        if opp and opp in opp_rank:
+            r = opp_rank[opp]
+            pos_score = _clamp((n_teams - r) / max(n_teams - 1, 1) * 100.0)
+            if r <= max(3, n_teams // 4):
+                pos_why = f"{opp} allows the {_ordinal(r)}-most points in the league"
+            elif r >= n_teams - max(2, n_teams // 4):
+                pos_why = f"tough spot — {opp} is {_ordinal(n_teams - r + 1)}-stingiest"
+
+        # form: this player's real production in their own most recent games vs the line
+        form_score, form_why = 50.0, None
+        gl = (player_obj or {}).get('gamelog') or []
+        stat_key = {'Points': 'pts', 'Rebounds': 'reb', 'Assists': 'ast', 'Steals': 'stl',
+                    'Blocks': 'blk', 'Three-Pointers Made': 'tpm'}.get(e['stat'])
+        if stat_key and len(gl) >= 3:
+            recent = [g.get(stat_key) for g in gl[-3:] if g.get(stat_key) is not None]
+            if recent and e['p50']['line']:
+                t3 = sum(recent) / len(recent)
+                ratio = t3 / float(e['p50']['line'])
+                form_score = _clamp(50.0 + (ratio - 1.0) * 100.0)
+                if ratio >= 1.15:
+                    form_why = f"last 3 games averaging {t3:.1f} against a {e['p50']['line']:.0f} line"
+                elif ratio <= 0.85:
+                    form_why = f"cooling off — {t3:.1f} over the last 3 against a {e['p50']['line']:.0f} line"
+
+        raw = reliability * 0.55 + pos_score * 0.25 + form_score * 0.20
+        trust = _clamp(e.get('testGames', 0) / STRONG_PICK_SHRINK_GAMES, 0.0, 1.0)
+        score = 50.0 + (raw - 50.0) * trust
+        why = [f"hit its P25 line in {p25_hit:.0f}% of {e.get('testGames', 0)} real held-out games"]
+        why += [x for x in [pos_why, form_why] if x]
+        scored.append({**e, 'pickScore': round(score, 1), 'pickWhy': why[:4], 'opponent': opp,
+                       'pickComponents': {'reliability': round(reliability, 1), 'position': round(pos_score, 1),
+                                          'form': round(form_score, 1), 'sampleTrust': round(trust * 100)}})
+
+    score_by_id = {s['id']: s for s in scored}
+    for e in pool:
+        s = score_by_id.get(e.get('id'))
+        if s:
+            e['pickScore'] = s['pickScore']
+            e['pickWhy'] = s['pickWhy']
+            e['pickComponents'] = s['pickComponents']
+
+    best = {}
+    for s in scored:
+        if s['player'] not in best or s['pickScore'] > best[s['player']]['pickScore']:
+            best[s['player']] = s
+    picks = sorted(best.values(), key=lambda s: (-s['pickScore'], -s['testGames']))[:top_n]
+    return {'picks': picks, 'scoredCount': len(scored),
+            'generatedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')}
+
+
+# =====================================================================
+# QUAD BOX — 4-leg card: 3 P25 legs + 1 Anytime TD scorer
+# =====================================================================
+# The shape: three floor-tranche (P25) legs off strong-performing players, plus exactly one
+# Anytime-TD leg. The P25 legs come straight out of the Strong Picks scoring above, which is
+# what "that same criteria" means. The TD leg is scored on its own terms, because an Anytime
+# TD is a different kind of bet than a yardage floor and the things that predict it are
+# different:
+#
+#   · TD RATE (35%)   — real share of games with a TD, current season weighted over baseline
+#   · USAGE (30%)     — targets + carries per game now vs. their own historical rate; volume
+#                       is what actually creates scoring chances, and a usage trend up is the
+#                       single most predictive thing available here
+#   · RZ MATCHUP(25%) — the opponent's real red-zone TD rate allowed, matched to HOW this
+#                       player scores (through the air vs on the ground), plus their own
+#                       offense's real red-zone conversion rate
+#   · CURRENT TDs(10%)— TDs actually scored this season, as a direct recency check on the rate
+#
+# Three presets are generated (Safest / Balanced / Upside) and the full scored candidate
+# lists ship too, so the UI can build custom boxes without another round trip.
+#
+# One thing stated plainly and never fudged: the combined probability multiplies the legs,
+# which assumes they're independent. They are not — same-game legs correlate, and a blowout
+# or a weather game moves several at once. The real number is lower than the math says. The
+# UI says this on the card rather than burying it.
+# =====================================================================
+QUAD_TD_WEIGHTS = {'tdRate': 0.35, 'usage': 0.30, 'rzMatchup': 0.25, 'currentTds': 0.10}
+
+
+def prob_to_american(p):
+    if p is None or p <= 0 or p >= 1:
+        return None
+    if p >= 0.5:
+        return int(round(-100 * p / (1 - p)))
+    return int(round(100 * (1 - p) / p))
+
+
+def _player_td_mix(player_obj):
+    """Does this player score through the air or on the ground? Returns the receiving share
+    of their real touchdowns (0 = all rushing, 1 = all receiving), or None if they have none."""
+    if not player_obj:
+        return None
+    overall = player_obj.get('overall') or {}
+    rec_td = overall.get('tds') or 0
+    rush_td = overall.get('rushTD') or 0
+    total = rec_td + rush_td
+    if total == 0:
+        return None
+    return rec_td / total
+
+
+def score_td_usage(player_obj):
+    """Usage now vs. their own historical usage, plus absolute volume. Touches per game is
+    the thing that creates scoring chances, so a real usage increase matters more here than
+    a good TD rate from a smaller role."""
+    if not player_obj:
+        return 50.0, None
+    blend = player_obj.get('currentSeasonBlend') or {}
+    overall = player_obj.get('overall') or {}
+    gl = player_obj.get('gamelog') or []
+    hist_games = max(len(gl), 1)
+
+    hist_touches_pg = ((overall.get('targets') or 0) + (overall.get('rushAtt') or 0)) / hist_games
+    cur_games = blend.get('currentSeasonGames') or 0
+    cur = blend.get('currentSeasonStats') or {}
+    cur_touches_pg = None
+    if cur_games > 0:
+        cur_targets = cur.get('targets') or 0
+        # rushAttPerGame is already per-game and already blended; use the raw current rush
+        # rate when it's there, otherwise fall back to the blended figure
+        cur_rush_pg = blend.get('rushAttPerGame') or 0
+        cur_touches_pg = (cur_targets / cur_games) + cur_rush_pg
+
+    # Absolute volume: ~8 touches/gm is a real role, ~16 is a featured one.
+    volume_ref = cur_touches_pg if cur_touches_pg is not None else hist_touches_pg
+    volume_score = _clamp((volume_ref / 16.0) * 100.0)
+
+    if cur_touches_pg is None or hist_touches_pg <= 0:
+        return volume_score, (f"{volume_ref:.1f} touches/gm" if volume_ref >= 6 else None)
+
+    trend = cur_touches_pg / hist_touches_pg
+    trend_score = _clamp(50.0 + (trend - 1.0) * 125.0)
+    score = volume_score * 0.5 + trend_score * 0.5
+    if trend >= 1.15:
+        return score, (f"usage up — {cur_touches_pg:.1f} touches/gm this season vs "
+                       f"{hist_touches_pg:.1f} historically ({cur_games} games)")
+    if trend <= 0.85:
+        return score, (f"usage down — {cur_touches_pg:.1f} touches/gm this season vs "
+                       f"{hist_touches_pg:.1f} historically")
+    return score, (f"steady {cur_touches_pg:.1f} touches/gm" if cur_touches_pg >= 8 else None)
+
+
+def score_rz_matchup(player_obj, own_team, opp, redzone, team_names=None):
+    """Opponent's real red-zone TD rate allowed, matched to how this player scores, plus
+    their own offense's real red-zone conversion rate."""
+    if not opp or not redzone:
+        return 50.0, None
+    opp_rz = redzone.get(opp) or {}
+    own_rz = redzone.get(own_team) or {}
+    mix = _player_td_mix(player_obj)
+
+    pass_rate = opp_rz.get('defPassTDRate')
+    run_rate = opp_rz.get('defRunTDRate')
+    if pass_rate is None and run_rate is None:
+        return 50.0, None
+    if mix is None:
+        relevant = [r for r in (pass_rate, run_rate) if r is not None]
+        allowed = sum(relevant) / len(relevant)
+        how = "in the red zone"
+    elif mix >= 0.65 and pass_rate is not None:
+        allowed, how = pass_rate, "on red-zone passes"
+    elif mix <= 0.35 and run_rate is not None:
+        allowed, how = run_rate, "on red-zone runs"
+    else:
+        relevant = [r for r in (pass_rate, run_rate) if r is not None]
+        allowed = sum(relevant) / len(relevant)
+        how = "in the red zone"
+
+    # League red-zone TD rates per play sit around 18-22%; centre the scale there.
+    score = _clamp(50.0 + (allowed - 20.0) * 4.0)
+    opp_label = (team_names or {}).get(opp, opp)
+    parts = []
+    if allowed >= 24:
+        parts.append(f"{opp_label} allows a TD on {allowed:.0f}% of plays {how}")
+    elif allowed <= 15:
+        parts.append(f"tough red zone — {opp_label} allows just {allowed:.0f}% {how}")
+
+    own_conv = own_rz.get('offConversionRate')
+    if own_conv is not None:
+        score = score * 0.75 + _clamp(50.0 + (own_conv - 55.0) * 2.0) * 0.25
+        if own_conv >= 65:
+            parts.append(f"his offense converts {own_conv:.0f}% of red-zone drives into TDs")
+        elif own_conv <= 45:
+            parts.append(f"his offense only converts {own_conv:.0f}% of red-zone drives")
+    return score, ("; ".join(parts) if parts else None)
+
+
+def build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming, injuries,
+                        team_names=None, limit=15):
+    """Score every Anytime-TD line on rate + usage + red-zone matchup + TDs actually
+    scored this season. Out/Doubtful players are dropped outright."""
+    by_name = {}
+    for group in (receivers or []), (qbs or []):
+        for p in group:
+            by_name.setdefault(p['name'], p)
+
+    out = []
+    for e in (atd_pool or []):
+        name = e['player']
+        if _is_unplayable(name, injuries):
+            continue
+        if e.get('testGames', 0) < 3:
+            continue
+        player_obj = by_name.get(name)
+        up = (upcoming or {}).get(e.get('team')) or {}
+        opp = up.get('opp')
+
+        # Rate: lean on the current-season rate, but don't let a 3-game sample swing it
+        # fully away from a two-season baseline.
+        cur_rate = e.get('testRate')
+        base_rate = e.get('baselineRate')
+        games = e.get('testGames', 0)
+        if base_rate is None:
+            rate = cur_rate
+        else:
+            w = _clamp(games / 8.0, 0.0, 1.0)
+            rate = cur_rate * w + base_rate * (1 - w)
+        # ~45% is an elite Anytime-TD rate; scale against that rather than 100%.
+        rate_score = _clamp((rate / 45.0) * 100.0)
+
+        usage_score, usage_why = score_td_usage(player_obj)
+        rz_score, rz_why = score_rz_matchup(player_obj, e.get('team'), opp, redzone, team_names)
+
+        # TDs actually scored this season — a direct recency check on the rate above.
+        cur_tds = 0
+        if player_obj:
+            cur_blend = (player_obj.get('currentSeasonBlend') or {})
+            cur_stats = cur_blend.get('currentSeasonStats') or {}
+            cur_tds = (cur_stats.get('tds') or 0)
+        cur_td_score = _clamp((cur_tds / 6.0) * 100.0)
+
+        w = QUAD_TD_WEIGHTS
+        raw = (rate_score * w['tdRate'] + usage_score * w['usage']
+               + rz_score * w['rzMatchup'] + cur_td_score * w['currentTds'])
+        inj_note = _injury_note(name, injuries)
+        if inj_note:
+            raw -= 6.0
+
+        why = [f"scored in {rate:.0f}% of his real games ({games} this season)"]
+        if inj_note:
+            why.append(inj_note)   # before the flattering reasons, for the same reason as above
+        if cur_tds:
+            why.append(f"{int(cur_tds)} TD{'s' if cur_tds != 1 else ''} already this season")
+        why += [x for x in [usage_why, rz_why] if x]
+        # Cap at 5, not 4: there are four scoring components here plus a possible injury
+        # caveat, and a 4-entry cap silently dropped the red-zone matchup — one of the
+        # components the score is actually built from.
+
+        out.append({
+            'id': e['id'], 'player': name, 'pos': e.get('pos'), 'team': e.get('team'),
+            'stat': 'Anytime TD', 'kind': 'binary', 'line': None,
+            'hitPct': round(rate, 1), 'testGames': games,
+            'realOdds': e.get('realOdds'),
+            'score': round(_clamp(raw), 1), 'why': why[:5],
+            'opponent': opp, 'isHome': up.get('isHome'),
+            'components': {'tdRate': round(rate_score, 1), 'usage': round(usage_score, 1),
+                           'rzMatchup': round(rz_score, 1), 'currentTds': round(cur_td_score, 1)},
+            'currentSeasonTds': int(cur_tds),
+            'isRookie': e.get('isRookie', False),
+        })
+    out.sort(key=lambda x: -x['score'])
+    return out[:limit]
+
+
+def build_ladder_candidates(full_pool, limit=30):
+    """The P25 legs available to a quad box: already carry pickScore from the Strong Picks
+    pass, one entry per player (their best-scoring line)."""
+    best = {}
+    for e in full_pool:
+        if e.get('kind') != 'ladder' or e.get('pickScore') is None:
+            continue
+        if not e['p25'].get('line'):
+            continue
+        cur = best.get(e['player'])
+        if cur is None or e['pickScore'] > cur['pickScore']:
+            best[e['player']] = e
+    out = []
+    for e in sorted(best.values(), key=lambda x: -x['pickScore'])[:limit]:
+        out.append({
+            'id': e['id'], 'player': e['player'], 'pos': e.get('pos'), 'team': e.get('team'),
+            'stat': e['stat'], 'kind': 'ladder', 'tranche': 'p25',
+            'line': e['p25']['line'], 'hitPct': e['p25']['testHit'], 'testGames': e.get('testGames'),
+            'score': e['pickScore'], 'why': e.get('pickWhy') or [],
+            'components': e.get('pickComponents'),
+            'opponent': e.get('pickOpponent'),
+            'isRookie': e.get('isRookie', False),
+            'realLines': e.get('realLines'),
+        })
+    return out
+
+
+def assemble_quad_box(ladder_candidates, td_candidates, name, blurb,
+                      ladder_pool_slice, td_index, max_per_pos=2, max_per_team=2):
+    """Build one 4-leg card: 3 P25 legs + exactly 1 TD leg. Enforces distinct players and
+    caps how much of the card can ride on one position or one team, so a 'diversified' box
+    isn't secretly four legs on the same drive."""
+    td_pool = td_candidates[td_index:] if td_index < len(td_candidates) else td_candidates
+    if not td_pool or len(ladder_candidates) < 3:
+        return None
+    td_leg = td_pool[0]
+
+    used_players = {td_leg['player']}
+    pos_count = {td_leg.get('pos') or '?': 1}
+    team_count = {td_leg.get('team') or '?': 1}
+    legs = []
+    for c in ladder_pool_slice:
+        if c['player'] in used_players:
+            continue
+        pos = c.get('pos') or '?'
+        team = c.get('team') or '?'
+        if pos_count.get(pos, 0) >= max_per_pos or team_count.get(team, 0) >= max_per_team:
+            continue
+        legs.append(c)
+        used_players.add(c['player'])
+        pos_count[pos] = pos_count.get(pos, 0) + 1
+        team_count[team] = team_count.get(team, 0) + 1
+        if len(legs) == 3:
+            break
+    if len(legs) < 3:
+        return None
+
+    all_legs = legs + [td_leg]
+    probs = [(l['hitPct'] or 0) / 100.0 for l in all_legs]
+    combined = 1.0
+    for p in probs:
+        combined *= p
+    avg_score = sum(l['score'] for l in all_legs) / len(all_legs)
+    return {
+        'name': name, 'blurb': blurb, 'legs': all_legs,
+        'combinedProb': round(combined * 100, 2),
+        'americanOdds': prob_to_american(combined),
+        'decimalOdds': round(1 / combined, 2) if combined > 0 else None,
+        'avgScore': round(avg_score, 1),
+        'weakestLeg': min(all_legs, key=lambda l: l['hitPct'] or 0)['player'],
+    }
+
+
+def build_quad_box(full_pool, atd_pool, receivers, qbs, redzone, upcoming, injuries,
+                   team_names=None, week=None):
+    ladder_candidates = build_ladder_candidates(full_pool, limit=30)
+    td_candidates = build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming,
+                                        injuries, team_names, limit=15)
+
+    presets = []
+    if ladder_candidates and td_candidates:
+        # Safest: highest P25 hit rates available, paired with the most reliable TD scorer.
+        safest_ladders = sorted(ladder_candidates, key=lambda c: -(c['hitPct'] or 0))
+        safest_td = sorted(td_candidates, key=lambda c: -(c['hitPct'] or 0))
+        box = assemble_quad_box(ladder_candidates, safest_td, "Safest",
+                                "Highest real hit rates on the board, paired with the most "
+                                "consistent TD scorer. Lowest payout, best chance of cashing.",
+                                safest_ladders, 0)
+        if box:
+            presets.append(box)
+        # Balanced: straight composite score order on both sides.
+        box = assemble_quad_box(ladder_candidates, td_candidates, "Balanced",
+                                "Top composite scores on both sides — the hit rate, this "
+                                "week's matchup, the model lean and usage all weighted together.",
+                                ladder_candidates, 0)
+        if box:
+            presets.append(box)
+        # Upside: the best-scoring lines whose hit rate is lower, which is where the price is.
+        upside_ladders = [c for c in ladder_candidates if (c['hitPct'] or 0) < 70] or ladder_candidates
+        upside_td = [c for c in td_candidates if (c['hitPct'] or 0) < 45] or td_candidates
+        box = assemble_quad_box(ladder_candidates, upside_td, "Upside",
+                                "Strong-scoring lines that the hit rate alone would pass over — "
+                                "where the matchup and usage signals are doing the work. Bigger price, more variance.",
+                                upside_ladders, 0)
+        if box:
+            presets.append(box)
+
+    return {
+        'presets': presets,
+        'ladderCandidates': ladder_candidates,
+        'tdCandidates': td_candidates,
+        'week': week,
+        'generatedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
+        'tdWeights': QUAD_TD_WEIGHTS,
+    }
 
 
 # =====================================================================
@@ -3431,6 +4762,43 @@ def main():
     nfl_upcoming = build_nfl_upcoming(games_all)
     print(f"  {len(nfl_upcoming)} NFL teams with a scheduled next game")
 
+    # ---- Strong Picks: composite weekly ranking (replaces the old sort-by-one-number) ----
+    print("\n[5.8/8] Scoring Strong Picks (reliability + coverage matchup + position matchup + XGBoost + form)...")
+    try:
+        strong_picks = build_strong_picks(full_pool, receivers, qbs, kickers, team_defense,
+                                          nfl_upcoming, injury_status, top_n=5)
+        print(f"  {strong_picks['scoredCount']} lines scored for Week {strong_picks['week']} "
+              f"({strong_picks['excludedInjured']} excluded as Out/Doubtful)")
+        for i, p in enumerate(strong_picks['picks'], 1):
+            print(f"    {i}. {p['player']} ({p['pos']}) {p['stat']} P25 {p['p25']['line']:.0f} "
+                  f"— score {p['pickScore']}" + (f" vs {p['opponent']}" if p.get('opponent') else ""))
+            for reason in p['pickWhy']:
+                print(f"         · {reason}")
+    except Exception as e:
+        print(f"  [!] Strong Picks scoring error: {e} — the widget falls back to hit-rate order, nothing else affected.")
+        strong_picks = {'picks': [], 'week': None, 'scoredCount': 0,
+                        'weights': STRONG_PICK_WEIGHTS, 'excludedInjured': 0}
+
+    # ---- Quad Box: 3 P25 legs + 1 Anytime TD scorer ----
+    print("\n[5.85/8] Building Quad Box cards (3 P25 legs + 1 Anytime TD)...")
+    try:
+        quad_box = build_quad_box(full_pool, atd_pool, receivers, qbs, redzone_tendencies,
+                                  nfl_upcoming, injury_status, week=strong_picks.get('week'))
+        print(f"  {len(quad_box['ladderCandidates'])} P25 legs and {len(quad_box['tdCandidates'])} "
+              f"TD legs qualified; {len(quad_box['presets'])} preset cards built")
+        for box in quad_box['presets']:
+            legs = " + ".join(f"{l['player']} {l['stat']}"
+                              + (f" {l['line']:.0f}" if l.get('line') else "") for l in box['legs'])
+            odds = f"+{box['americanOdds']}" if (box['americanOdds'] or 0) > 0 else box['americanOdds']
+            print(f"    [{box['name']}] {box['combinedProb']}% ({odds}) — {legs}")
+        if quad_box['tdCandidates']:
+            t = quad_box['tdCandidates'][0]
+            print(f"    Top TD scorer: {t['player']} ({t['pos']}, score {t['score']}) — {t['why'][0]}")
+    except Exception as e:
+        print(f"  [!] Quad Box error: {e} — the generator ships empty and the UI says so, nothing else affected.")
+        quad_box = {'presets': [], 'ladderCandidates': [], 'tdCandidates': [],
+                    'week': None, 'tdWeights': QUAD_TD_WEIGHTS}
+
     # Accuracy ledger — backend-only tracking, never shown in the UI. See the function
     # docstrings above for how the snapshot/grade cycle works.
     accuracy_ledger = load_accuracy_ledger()
@@ -3560,6 +4928,26 @@ def main():
     else:
         print("\n[5.95/8] No cfbd_api_key.txt found — skipping College Football (get a free key at collegefootballdata.com/key).")
 
+    # ---- Prediction markets (Kalshi + Polymarket), fetched here instead of in the browser ----
+    print("\n[5.97/8] Fetching prediction markets (Kalshi + Polymarket)...")
+    try:
+        market_live = build_market_live()
+        for line in MARKET_LOG:
+            print(line)
+        fresh = [k for k in market_live if k.endswith('Stale') and market_live[k] is False]
+        stale = [k.replace('Stale', '') for k in market_live if k.endswith('Stale') and market_live[k] is True]
+        print(f"  {len(fresh)} feed(s) fetched fresh this run"
+              + (f"; {len(stale)} served from cache ({', '.join(stale)})" if stale else ""))
+    except Exception as e:
+        print(f"  Market fetch error: {e} — shipping last cached market data, everything else unaffected.")
+        cached = load_market_cache()
+        market_live = {'generatedAt': cached.get('lastRun'), 'liveLeaderCount': 0,
+                       'leaderSeriesCount': len(KALSHI_LEADER_SERIES)}
+        for key, entry in (cached.get('sections') or {}).items():
+            market_live[key] = entry.get('data')
+            market_live[key + 'At'] = entry.get('fetchedAt')
+            market_live[key + 'Stale'] = True
+
     # ---- 6. Assemble final data payload ----
     print("\n[6/8] Assembling data payload...")
     # NFL stays embedded (it's the default sport shown on load). WNBA/MLB are written as
@@ -3583,10 +4971,28 @@ def main():
         'REDZONE': redzone_tendencies,
         'USAGE_BUMP': usage_bump,
         'XGB_MODEL_INFO': xgb_meta,
+        'MARKET_LIVE': market_live,  # Kalshi/Polymarket, now fetched here rather than in the browser
+        'STRONG_PICKS': strong_picks,  # composite weekly ranking, scored server-side
+        'QUAD_BOX': quad_box,          # generated 4-leg cards (3 P25 legs + 1 Anytime TD)
     }
 
-    wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming, 'defenseProfile': wnba_defense_profile}
-    mlb_bundle = {'players': mlb_players, 'pool': mlb_pool, 'teamDefense': mlb_team_defense, 'upcoming': mlb_upcoming}
+    # Same composite Strong-Picks scoring for the other two sports, on the signals that are
+    # genuinely available there (no coverage scheme data exists in either feed).
+    try:
+        wnba_strong = build_simple_strong_picks(wnba_pool, wnba_players, wnba_team_defense, wnba_upcoming, sport='wnba')
+        print(f"  WNBA Strong Picks: {wnba_strong['scoredCount']} lines scored, top {len(wnba_strong['picks'])} selected")
+    except Exception as e:
+        print(f"  [!] WNBA Strong Picks error: {e} — widget falls back to hit-rate order there.")
+        wnba_strong = {'picks': [], 'scoredCount': 0}
+    try:
+        mlb_strong = build_simple_strong_picks(mlb_pool, mlb_players, mlb_team_defense, mlb_upcoming, sport='mlb')
+        print(f"  MLB Strong Picks: {mlb_strong['scoredCount']} lines scored, top {len(mlb_strong['picks'])} selected")
+    except Exception as e:
+        print(f"  [!] MLB Strong Picks error: {e} — widget falls back to hit-rate order there.")
+        mlb_strong = {'picks': [], 'scoredCount': 0}
+
+    wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming, 'defenseProfile': wnba_defense_profile, 'strongPicks': wnba_strong}
+    mlb_bundle = {'players': mlb_players, 'pool': mlb_pool, 'teamDefense': mlb_team_defense, 'upcoming': mlb_upcoming, 'strongPicks': mlb_strong}
     cfb_bundle = {'teams': cfb_teams, 'upcoming': cfb_upcoming, 'backtest': cfb_backtest, 'homeField': cfb_home_field}
     wnba_json_path = SCRIPT_DIR / "data-wnba.json"
     mlb_json_path = SCRIPT_DIR / "data-mlb.json"
@@ -3667,8 +5073,13 @@ def main():
         # Source files get pushed too now, not just the generated output — saves the
         # separate "also upload to GitHub" step. Only added if actually present, since
         # not every setup necessarily has all three.
-        files_to_add = ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'accuracy_ledger.json']
-        for source_file in ['update_dashboard.py', 'dashboard_template.jsx', 'guide.html']:
+        # market_cache.json rides along so the last good Kalshi/Polymarket values survive
+        # between Actions runs — a transient API failure then costs you hours of freshness,
+        # not a fall-back-to-a-months-old-constant.
+        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json',
+                                    'accuracy_ledger.json', 'market_cache.json']
+                        if (SCRIPT_DIR / f).exists()]
+        for source_file in ['update_dashboard.py', 'dashboard_template.jsx', 'guide.html', 'market_probe.py']:
             if (SCRIPT_DIR / source_file).exists():
                 files_to_add.append(source_file)
 
