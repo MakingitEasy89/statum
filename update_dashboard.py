@@ -2677,15 +2677,23 @@ def _injury_note(name, injuries):
     return None
 
 
-# Which per-coverage rate to compare, per stat. Receiving/rushing volume stats read the
-# receiver's yards-per-target split; passing stats read the QB's yards-per-attempt split.
+# Which per-coverage RATE to compare, per stat. This has to be a rate, not a count: the
+# per-coverage split covers a subset of a player's snaps while `overall` covers all of them,
+# so dividing one count by the other measures how often the opponent plays that shell, not
+# how well the player does against it. 'Targets' vs 'targets' was exactly that mistake —
+# it produced a ratio near 0.3 for everyone, clamped to a coverage score of ~0, and
+# silently docked every Targets prop about 20 points of composite score.
+#   (bucket, numerator, denominator|None, sample_field)
+# denominator=None means the numerator is already a rate; otherwise the rate is derived as
+# numerator/denominator on both sides before comparing. 'Targets' is absent on purpose:
+# raw target volume has no per-coverage denominator in this data, so it scores neutral
+# rather than being given a fabricated number.
 _COVERAGE_RATE_FIELD = {
-    'Receiving Yards': ('coverages', 'yptTarget', 'targets'),
-    'Receptions': ('coverages', 'catchRate', 'targets'),
-    'Targets': ('coverages', 'targets', 'targets'),
-    'Passing Yards': ('coverages', 'yptAtt', 'attempts'),
-    'Completions': ('coverages', 'compPct', 'attempts'),
-    'Passing Touchdowns': ('coverages', 'tds', 'attempts'),
+    'Receiving Yards': ('coverages', 'yptTarget', None, 'targets'),
+    'Receptions': ('coverages', 'catchRate', None, 'targets'),
+    'Passing Yards': ('coverages', 'yptAtt', None, 'attempts'),
+    'Completions': ('coverages', 'compPct', None, 'attempts'),
+    'Passing Touchdowns': ('coverages', 'tds', 'attempts', 'attempts'),
 }
 
 
@@ -2699,7 +2707,7 @@ def score_coverage_matchup(player_obj, opp_def, stat):
     spec = _COVERAGE_RATE_FIELD.get(stat)
     if not spec:
         return 50.0, None
-    bucket_key, rate_field, sample_field = spec
+    bucket_key, num_field, den_field, sample_field = spec
     scheme = (opp_def.get('scheme') or {})
     cov = scheme.get('primaryCoverage')
     cov_pct = scheme.get('primaryCoveragePct') or 0
@@ -2710,10 +2718,22 @@ def score_coverage_matchup(player_obj, opp_def, stat):
     overall = player_obj.get('overall') or {}
     if not vs or not overall:
         return 50.0, None
-    vs_rate = vs.get(rate_field)
-    base_rate = overall.get(rate_field)
+
+    def rate_of(d):
+        num = d.get(num_field)
+        if num is None:
+            return None
+        if den_field is None:
+            return float(num)
+        den = d.get(den_field)
+        if not den:
+            return None
+        return float(num) / float(den)
+
+    vs_rate = rate_of(vs)
+    base_rate = rate_of(overall)
     sample = vs.get(sample_field) or 0
-    if vs_rate in (None, 0) or base_rate in (None, 0) or sample < 8:
+    if not vs_rate or not base_rate or sample < 8:
         return 50.0, None
     ratio = float(vs_rate) / float(base_rate)
     # +/-40% vs their own average maps to the full 0-100 range; then scaled down by how
@@ -3040,6 +3060,15 @@ def build_simple_strong_picks(pool, players, team_defense, upcoming, top_n=5, sp
 # =====================================================================
 QUAD_TD_WEIGHTS = {'tdRate': 0.35, 'usage': 0.30, 'rzMatchup': 0.25, 'currentTds': 0.10}
 
+# Gate-by-gate diagnostics for the Quad Box. "It didn't populate" is a useless symptom
+# without knowing WHICH gate ate the candidates, so every filter reports its own count and
+# the whole block is printed in the run log and shipped to the UI.
+QUAD_LOG = []
+
+
+def _qlog(msg):
+    QUAD_LOG.append(msg)
+
 
 def prob_to_american(p):
     if p is None or p <= 0 or p >= 1:
@@ -3159,11 +3188,14 @@ def build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming, injuries,
             by_name.setdefault(p['name'], p)
 
     out = []
+    skipped = {'injured': 0, 'thinSample': 0, 'noRate': 0}
     for e in (atd_pool or []):
         name = e['player']
         if _is_unplayable(name, injuries):
+            skipped['injured'] += 1
             continue
         if e.get('testGames', 0) < 3:
+            skipped['thinSample'] += 1
             continue
         player_obj = by_name.get(name)
         up = (upcoming or {}).get(e.get('team')) or {}
@@ -3174,8 +3206,13 @@ def build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming, injuries,
         cur_rate = e.get('testRate')
         base_rate = e.get('baselineRate')
         games = e.get('testGames', 0)
+        if cur_rate is None and base_rate is None:
+            skipped['noRate'] += 1   # nothing real to score against; never a fabricated 0
+            continue
         if base_rate is None:
             rate = cur_rate
+        elif cur_rate is None:
+            rate = base_rate
         else:
             w = _clamp(games / 8.0, 0.0, 1.0)
             rate = cur_rate * w + base_rate * (1 - w)
@@ -3223,33 +3260,66 @@ def build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming, injuries,
             'isRookie': e.get('isRookie', False),
         })
     out.sort(key=lambda x: -x['score'])
+    _qlog(f"  TD legs: {len(out)} candidates from {len(atd_pool or [])} Anytime-TD pool entries · skipped "
+          f"{skipped['injured']} Out/Doubtful, {skipped['thinSample']} under 3 games, "
+          f"{skipped['noRate']} with no usable TD rate")
     return out[:limit]
 
 
-def build_ladder_candidates(full_pool, limit=30):
-    """The P25 legs available to a quad box: already carry pickScore from the Strong Picks
-    pass, one entry per player (their best-scoring line)."""
-    best = {}
+def build_ladder_candidates(full_pool, limit=30, min_test_games=STRONG_PICK_MIN_TEST_GAMES,
+                            injuries=None):
+    """The P25 legs available to a quad box: one entry per player, their best line.
+
+    Normally these carry pickScore from the Strong Picks pass. They don't have to. If that
+    pass failed or was skipped, scoring here falls back to the P25 hit rate alone, the same
+    way the Top 5 widget falls back client-side. That matters because the two features used
+    to be coupled: a single exception inside build_strong_picks left every pool entry without
+    a pickScore, which emptied this list, which made the Quad Box render its "not enough
+    qualifying lines" state -- while the Top 5 quietly fell back and looked perfectly fine.
+    One failure, two very different symptoms, and nothing on the page said why."""
+    scored_available = any(e.get('pickScore') is not None for e in full_pool)
+    best, skipped = {}, {'kind': 0, 'noLine': 0, 'thinSample': 0, 'injured': 0}
     for e in full_pool:
-        if e.get('kind') != 'ladder' or e.get('pickScore') is None:
+        if e.get('kind') != 'ladder':
+            skipped['kind'] += 1
             continue
-        if not e['p25'].get('line'):
+        if not e.get('p25', {}).get('line'):
+            skipped['noLine'] += 1
             continue
+        if (e.get('testGames') or 0) < min_test_games:
+            skipped['thinSample'] += 1
+            continue
+        if _is_unplayable(e['player'], injuries):
+            skipped['injured'] += 1
+            continue
+        # Fall back to the real backtested floor hit rate when there's no composite score.
+        score = e.get('pickScore')
+        if score is None:
+            score = e['p25']['testHit']
         cur = best.get(e['player'])
-        if cur is None or e['pickScore'] > cur['pickScore']:
-            best[e['player']] = e
+        if cur is None or score > cur[0]:
+            best[e['player']] = (score, e)
     out = []
-    for e in sorted(best.values(), key=lambda x: -x['pickScore'])[:limit]:
+    for score, e in sorted(best.values(), key=lambda x: -x[0])[:limit]:
+        why = e.get('pickWhy') or [
+            f"hit its P25 line in {e['p25']['testHit']:.0f}% of {e.get('testGames', 0)} real held-out games"]
         out.append({
             'id': e['id'], 'player': e['player'], 'pos': e.get('pos'), 'team': e.get('team'),
             'stat': e['stat'], 'kind': 'ladder', 'tranche': 'p25',
             'line': e['p25']['line'], 'hitPct': e['p25']['testHit'], 'testGames': e.get('testGames'),
-            'score': e['pickScore'], 'why': e.get('pickWhy') or [],
+            'score': round(float(score), 1), 'why': why,
             'components': e.get('pickComponents'),
             'opponent': e.get('pickOpponent'),
             'isRookie': e.get('isRookie', False),
             'realLines': e.get('realLines'),
+            'scoreIsFallback': not scored_available,
         })
+    if not scored_available:
+        _qlog("  [!] No pickScore on any pool entry — Strong Picks scoring didn't run or failed. "
+              "Ranking Quad Box legs by P25 hit rate instead (degraded, but populated).")
+    _qlog(f"  P25 legs: {len(out)} candidates from {len(best)} eligible players · skipped "
+          f"{skipped['kind']} non-ladder, {skipped['noLine']} with no P25 line, "
+          f"{skipped['thinSample']} under {min_test_games} test games, {skipped['injured']} Out/Doubtful")
     return out
 
 
@@ -3259,28 +3329,50 @@ def assemble_quad_box(ladder_candidates, td_candidates, name, blurb,
     caps how much of the card can ride on one position or one team, so a 'diversified' box
     isn't secretly four legs on the same drive."""
     td_pool = td_candidates[td_index:] if td_index < len(td_candidates) else td_candidates
-    if not td_pool or len(ladder_candidates) < 3:
+    if not td_pool:
+        _qlog(f"  [{name}] not built: no Anytime-TD candidate available")
+        return None
+    if len(ladder_candidates) < 3:
+        _qlog(f"  [{name}] not built: only {len(ladder_candidates)} P25 legs available, needs 3")
         return None
     td_leg = td_pool[0]
 
-    used_players = {td_leg['player']}
-    pos_count = {td_leg.get('pos') or '?': 1}
-    team_count = {td_leg.get('team') or '?': 1}
-    legs = []
-    for c in ladder_pool_slice:
-        if c['player'] in used_players:
-            continue
-        pos = c.get('pos') or '?'
-        team = c.get('team') or '?'
-        if pos_count.get(pos, 0) >= max_per_pos or team_count.get(team, 0) >= max_per_team:
-            continue
-        legs.append(c)
-        used_players.add(c['player'])
-        pos_count[pos] = pos_count.get(pos, 0) + 1
-        team_count[team] = team_count.get(team, 0) + 1
-        if len(legs) == 3:
-            break
+    def pick_legs(pos_cap, team_cap):
+        used = {td_leg['player']}
+        pos_count = {td_leg.get('pos') or '?': 1}
+        team_count = {td_leg.get('team') or '?': 1}
+        chosen = []
+        for c in ladder_pool_slice:
+            if c['player'] in used:
+                continue
+            pos = c.get('pos') or '?'
+            team = c.get('team') or '?'
+            if pos_count.get(pos, 0) >= pos_cap or team_count.get(team, 0) >= team_cap:
+                continue
+            chosen.append(c)
+            used.add(c['player'])
+            pos_count[pos] = pos_count.get(pos, 0) + 1
+            team_count[team] = team_count.get(team, 0) + 1
+            if len(chosen) == 3:
+                break
+        return chosen
+
+    legs = pick_legs(max_per_pos, max_per_team)
+    relaxed = False
     if len(legs) < 3:
+        # The candidate list is one line per player ranked by score, and at NFL scale the top
+        # of it skews heavily to one position (there are simply more WRs posting receiving
+        # lines than there are QBs or kickers). A 2-per-position cap can therefore starve the
+        # card even with 30 candidates on hand. Shipping three legs instead of four, or
+        # nothing at all, is worse than shipping a less diversified card and labelling it.
+        legs = pick_legs(3, 3)
+        relaxed = len(legs) >= 3
+        if relaxed:
+            _qlog(f"  [{name}] position/team caps relaxed to 3 — the candidate pool was too "
+                  f"concentrated to fill the card at 2")
+    if len(legs) < 3:
+        _qlog(f"  [{name}] not built: could only fill {len(legs)} of 3 P25 legs from "
+              f"{len(ladder_pool_slice)} candidates without repeating a player")
         return None
 
     all_legs = legs + [td_leg]
@@ -3296,42 +3388,62 @@ def assemble_quad_box(ladder_candidates, td_candidates, name, blurb,
         'decimalOdds': round(1 / combined, 2) if combined > 0 else None,
         'avgScore': round(avg_score, 1),
         'weakestLeg': min(all_legs, key=lambda l: l['hitPct'] or 0)['player'],
+        'diversityRelaxed': relaxed,
     }
 
 
 def build_quad_box(full_pool, atd_pool, receivers, qbs, redzone, upcoming, injuries,
                    team_names=None, week=None):
-    ladder_candidates = build_ladder_candidates(full_pool, limit=30)
+    # `injuries` has to reach the floor-leg builder too. It used to be safe not to pass it,
+    # because only playable players ever received a pickScore and the builder required one.
+    # The hit-rate fallback added above removed that implicit protection, so the Out/Doubtful
+    # filter now has to be explicit here or an unavailable player can land on a card.
+    #
+    # limit=60, not 30: the candidate list is one line per player ranked by score, and at
+    # real scale the top of that list is almost entirely WR receiving lines. At 30 there
+    # weren't enough non-WR candidates left for the 2-per-position cap to be satisfiable,
+    # so every card had to fall back to the relaxed cap. A deeper list fixes the cause
+    # rather than loosening the rule, and gives the custom builder more to work with.
+    ladder_candidates = build_ladder_candidates(full_pool, limit=60, injuries=injuries)
     td_candidates = build_td_candidates(atd_pool, receivers, qbs, redzone, upcoming,
                                         injuries, team_names, limit=15)
 
     presets = []
     if ladder_candidates and td_candidates:
+
+        def build_preset(name, blurb, ladder_slice, td_slice):
+            """Try the narrowed slice this preset is meant to express; if the slice can't
+            fill a legal card, retry against the full candidate list before giving up.
+            Counting the slice first isn't sufficient — the caps need positional variety,
+            not just three bodies, so four same-position candidates still can't build."""
+            box = assemble_quad_box(ladder_candidates, td_slice, name, blurb, ladder_slice, 0)
+            if box is None and ladder_slice is not ladder_candidates:
+                _qlog(f"  [{name}] narrowed slice couldn't fill a card — retrying on the full pool")
+                box = assemble_quad_box(ladder_candidates, td_slice, name, blurb, ladder_candidates, 0)
+            if box:
+                presets.append(box)
+
         # Safest: highest P25 hit rates available, paired with the most reliable TD scorer.
-        safest_ladders = sorted(ladder_candidates, key=lambda c: -(c['hitPct'] or 0))
-        safest_td = sorted(td_candidates, key=lambda c: -(c['hitPct'] or 0))
-        box = assemble_quad_box(ladder_candidates, safest_td, "Safest",
-                                "Highest real hit rates on the board, paired with the most "
-                                "consistent TD scorer. Lowest payout, best chance of cashing.",
-                                safest_ladders, 0)
-        if box:
-            presets.append(box)
+        build_preset("Safest",
+                     "Highest real hit rates on the board, paired with the most consistent "
+                     "TD scorer. Lowest payout, best chance of cashing.",
+                     sorted(ladder_candidates, key=lambda c: -(c['hitPct'] or 0)),
+                     sorted(td_candidates, key=lambda c: -(c['hitPct'] or 0)))
         # Balanced: straight composite score order on both sides.
-        box = assemble_quad_box(ladder_candidates, td_candidates, "Balanced",
-                                "Top composite scores on both sides — the hit rate, this "
-                                "week's matchup, the model lean and usage all weighted together.",
-                                ladder_candidates, 0)
-        if box:
-            presets.append(box)
+        build_preset("Balanced",
+                     "Top composite scores on both sides — the hit rate, this week's matchup, "
+                     "the model lean and usage all weighted together.",
+                     ladder_candidates, td_candidates)
         # Upside: the best-scoring lines whose hit rate is lower, which is where the price is.
-        upside_ladders = [c for c in ladder_candidates if (c['hitPct'] or 0) < 70] or ladder_candidates
-        upside_td = [c for c in td_candidates if (c['hitPct'] or 0) < 45] or td_candidates
-        box = assemble_quad_box(ladder_candidates, upside_td, "Upside",
-                                "Strong-scoring lines that the hit rate alone would pass over — "
-                                "where the matchup and usage signals are doing the work. Bigger price, more variance.",
-                                upside_ladders, 0)
-        if box:
-            presets.append(box)
+        build_preset("Upside",
+                     "Strong-scoring lines that the hit rate alone would pass over — where the "
+                     "matchup and usage signals are doing the work. Bigger price, more variance.",
+                     [c for c in ladder_candidates if (c['hitPct'] or 0) < 70] or ladder_candidates,
+                     [c for c in td_candidates if (c['hitPct'] or 0) < 45] or td_candidates)
+
+    if not presets:
+        _qlog("  No preset cards built — see the gate counts above for which filter emptied "
+              "the pool. The UI shows these same counts instead of a generic empty message.")
 
     return {
         'presets': presets,
@@ -3340,6 +3452,12 @@ def build_quad_box(full_pool, atd_pool, receivers, qbs, redzone, upcoming, injur
         'week': week,
         'generatedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
         'tdWeights': QUAD_TD_WEIGHTS,
+        # Shipped to the browser on purpose: when the generator comes up empty, the page
+        # should say which gate did it rather than making you read the Actions log.
+        'diagnostics': list(QUAD_LOG),
+        'poolSize': sum(1 for e in full_pool if e.get('kind') == 'ladder'),
+        'atdPoolSize': len(atd_pool or []),
+        'scoredAvailable': any(e.get('pickScore') is not None for e in full_pool),
     }
 
 
@@ -4782,8 +4900,11 @@ def main():
     # ---- Quad Box: 3 P25 legs + 1 Anytime TD scorer ----
     print("\n[5.85/8] Building Quad Box cards (3 P25 legs + 1 Anytime TD)...")
     try:
+        QUAD_LOG.clear()
         quad_box = build_quad_box(full_pool, atd_pool, receivers, qbs, redzone_tendencies,
                                   nfl_upcoming, injury_status, week=strong_picks.get('week'))
+        for line in QUAD_LOG:
+            print(line)
         print(f"  {len(quad_box['ladderCandidates'])} P25 legs and {len(quad_box['tdCandidates'])} "
               f"TD legs qualified; {len(quad_box['presets'])} preset cards built")
         for box in quad_box['presets']:

@@ -2868,18 +2868,51 @@ function QuadBoxView({ slip, setSlip, stake, setStake, onSelectPlayer }) {
 
   const sentCount = box ? box.legs.filter(l => slip.some(s => s.entry.id === l.id)).length : 0;
 
+  // When there's nothing to build, say exactly which gate emptied the pool. A generic
+  // "not enough qualifying lines" is unactionable — these are the real counts from the
+  // pipeline run, so the cause is visible here instead of only in the Actions log.
   if (!ladderCandidates.length || !tdCandidates.length) {
+    const missingBoth = !ladderCandidates.length && !tdCandidates.length;
     return (
       <div className="fade-in">
         <Glass hover={false} style={{ padding: "22px 24px" }}>
-          <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>🎲 Quad Box</div>
-          <div style={{ fontSize: 12.5, color: "var(--text-secondary-b)", lineHeight: 1.6 }}>
-            Not enough qualifying lines to build a card yet. This needs both a scored pool of P25 floors
-            {ladderCandidates.length ? ` (${ladderCandidates.length} available)` : " (none available)"} and
-            at least one Anytime-TD candidate
-            {tdCandidates.length ? ` (${tdCandidates.length} available)` : " (none available)"}.
-            Early in a season there usually aren't enough real games played yet for either to qualify — it fills in
-            on its own as games are played.
+          <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 10 }}>🎲 Quad Box — nothing to build</div>
+          <div style={{ fontSize: 12.5, color: "var(--text-secondary-b)", lineHeight: 1.6, marginBottom: 12 }}>
+            A card needs three P25 floor legs and one Anytime-TD leg. Right now there are{" "}
+            <b style={{ color: ladderCandidates.length ? ACCENT.teal : ACCENT.rose }}>{ladderCandidates.length} floor legs</b>
+            {" "}and <b style={{ color: tdCandidates.length ? ACCENT.teal : ACCENT.rose }}>{tdCandidates.length} TD legs</b>{" "}
+            available
+            {data.poolSize !== undefined && <> (out of {data.poolSize} ladder entries and {data.atdPoolSize} Anytime-TD entries in the pool)</>}.
+          </div>
+          {data.scoredAvailable === false && (
+            <div style={{
+              fontSize: 11.5, color: ACCENT.amber, background: `${ACCENT.amber}14`,
+              border: `1px solid ${ACCENT.amber}33`, borderRadius: 9, padding: "9px 11px", marginBottom: 12, lineHeight: 1.55
+            }}>
+              <b>Strong Picks scoring didn't run.</b> That's the upstream cause — the Quad Box ranks legs by that
+              score. Check the pipeline output for a line starting <code>[!] Strong Picks scoring error</code>.
+            </div>
+          )}
+          {data.diagnostics?.length > 0 && (
+            <>
+              <div style={{ fontSize: 10, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700, marginBottom: 6 }}>Where the candidates went</div>
+              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 11.5, color: "var(--text-secondary-a)", lineHeight: 1.6 }}>
+                {data.diagnostics.map((d, i) => <li key={i}>{d.replace(/^\s*(\[!\]\s*)?/, "")}</li>)}
+              </ul>
+            </>
+          )}
+          {!data.diagnostics?.length && (
+            <div style={{ fontSize: 11.5, color: "var(--text-tertiary)", lineHeight: 1.6 }}>
+              No diagnostics were shipped with this build, which means the data refresh predates this feature —
+              re-run <code>update_dashboard.py</code> and this panel will show the per-gate counts.
+            </div>
+          )}
+          <div style={{ fontSize: 11, color: "var(--text-tertiary)", marginTop: 12, lineHeight: 1.55 }}>
+            {missingBoth
+              ? "Both sides being empty usually means the pool itself hasn't been built yet for this season."
+              : !tdCandidates.length
+                ? "The Anytime-TD side is the blocker. That pool needs players with 12+ games of 2024-25 history (or 3+ games this season), and anyone Out or Doubtful is removed."
+                : "The floor-leg side is the blocker. Those need a P25 line with at least four real held-out games behind it."}
           </div>
         </Glass>
       </div>
@@ -2929,6 +2962,18 @@ function QuadBoxView({ slip, setSlip, stake, setStake, onSelectPlayer }) {
               </div>
             </div>
             <div style={{ fontSize: 11.5, color: "var(--text-secondary-b)", marginBottom: 8 }}>{box.blurb}</div>
+            {ladderCandidates[0]?.scoreIsFallback && (
+              <div style={{ fontSize: 10.5, color: ACCENT.amber, marginBottom: 8, lineHeight: 1.5 }}>
+                Legs ranked by P25 hit rate alone — the composite score (coverage matchup, model lean, form) wasn't
+                available on this build, so matchup context isn't factored into this card.
+              </div>
+            )}
+            {box.diversityRelaxed && (
+              <div style={{ fontSize: 10.5, color: "var(--text-tertiary)", marginBottom: 8, lineHeight: 1.5 }}>
+                Position/team caps were loosened to 3 to fill this card — the top of the candidate pool was
+                concentrated in one position, so this card is less diversified than the usual 2-per rule.
+              </div>
+            )}
 
             {box.legs.map((leg, i) => (
               <QuadLegRow key={leg.id} leg={leg} index={i} locked={lockedIds.has(leg.id)}

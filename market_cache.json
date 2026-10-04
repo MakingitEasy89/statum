@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-04T13:29:18+00:00",
+ "lastRun": "2026-10-04T14:20:31+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -64,41 +64,41 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "fetchedAt": "2026-10-04T14:20:31+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "New York": 17.0,
-    "Las Vegas": 31.0,
-    "Golden State": 22.0,
-    "Atlanta": 29.0
+    "New York": 18.0,
+    "Las Vegas": 33.0,
+    "Golden State": 20.0,
+    "Atlanta": 24.0
    },
-   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "fetchedAt": "2026-10-04T14:20:31+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 27.5,
-    "Golden State": 20.9,
+    "Atlanta": 27.0,
+    "Golden State": 20.6,
     "Las Vegas": 32.5,
-    "New York": 17.8
+    "New York": 17.2
    },
-   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "fetchedAt": "2026-10-04T14:20:31+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "New York Yankees": 9.5,
+    "New York Yankees": 10.5,
     "Tampa Bay Rays": 14.4,
-    "Cleveland Guardians": 4.3,
+    "Cleveland Guardians": 4.5,
     "Chicago White Sox": 6.8,
     "Atlanta Braves": 4.2,
-    "Milwaukee Brewers": 19.9,
+    "Milwaukee Brewers": 17.9,
     "Los Angeles Dodgers": 36.5,
     "San Diego Padres": 5.5
    },
-   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "fetchedAt": "2026-10-04T14:20:31+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -106,7 +106,7 @@
     {
      "ticker": "KXWNBA-26-LV",
      "name": "Las Vegas",
-     "price": 31.0,
+     "price": 33.0,
      "depth": null,
      "flow": {
       "totalVolume": 225222.05,
@@ -126,7 +126,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 29.0,
+     "price": 24.0,
      "depth": null,
      "flow": {
       "totalVolume": 172928.32,
@@ -146,7 +146,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 22.0,
+     "price": 20.0,
      "depth": null,
      "flow": {
       "totalVolume": 231693.69,
@@ -164,7 +164,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-04T13:29:18+00:00",
+   "fetchedAt": "2026-10-04T14:20:31+00:00",
    "stale": false
   }
  }
