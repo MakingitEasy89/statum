@@ -4145,15 +4145,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401860921,
-      "homeTeam": "Washington State",
-      "awayTeam": "Fresno State",
-      "predictedMargin": 4.5,
-      "predictedTotal": 43.7,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401860900,
       "homeTeam": "San Diego State",
       "awayTeam": "Texas State",
@@ -9175,6 +9166,261 @@
       "predictedMargin": -5.5,
       "predictedTotal": 57.3,
       "snapshotDate": "2026-10-03"
+    },
+    {
+      "sport": "nfl",
+      "player": "KC Concepcion",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 4,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "KC Concepcion",
+      "stat": "Receiving Yards",
+      "p25": 18.0,
+      "p50": 28.0,
+      "p75": 35.0,
+      "gamelogLenAtSnapshot": 4,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "KC Concepcion",
+      "stat": "Targets",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 4,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Denzel Boston",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 4,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Denzel Boston",
+      "stat": "Receiving Yards",
+      "p25": 51.0,
+      "p50": 59.0,
+      "p75": 77.0,
+      "gamelogLenAtSnapshot": 4,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Denzel Boston",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 4,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Carnell Tate",
+      "stat": "Receiving Yards",
+      "p25": 29.0,
+      "p50": 32.0,
+      "p75": 35.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ted Hurst III",
+      "stat": "Receiving Yards",
+      "p25": 29.0,
+      "p50": 31.0,
+      "p75": 33.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ted Hurst III",
+      "stat": "Targets",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jeremiyah Love",
+      "stat": "Rush Yards",
+      "p25": 32.0,
+      "p50": 35.0,
+      "p75": 38.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Malachi Fields",
+      "stat": "Receiving Yards",
+      "p25": 26.0,
+      "p50": 27.0,
+      "p75": 28.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "p25": 34.0,
+      "p50": 44.0,
+      "p75": 54.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Germie Bernard",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Germie Bernard",
+      "stat": "Receiving Yards",
+      "p25": 19.0,
+      "p50": 24.0,
+      "p75": 29.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Germie Bernard",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bryce Lance",
+      "stat": "Receiving Yards",
+      "p25": 16.0,
+      "p50": 25.0,
+      "p75": 33.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bryce Lance",
+      "stat": "Targets",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jadarian Price",
+      "stat": "Rush Attempts",
+      "p25": 10.0,
+      "p50": 11.0,
+      "p75": 12.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Laquon Treadwell",
+      "stat": "Receiving Yards",
+      "p25": 15.0,
+      "p50": 30.0,
+      "p75": 45.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Trey Smack",
+      "stat": "Kicking Points",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "nfl",
+      "player": "Drew Stevens",
+      "stat": "Kicking Points",
+      "p25": 3.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858504,
+      "homeTeam": "Nebraska",
+      "awayTeam": "Washington",
+      "predictedMargin": 12.4,
+      "predictedTotal": 52.3,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858284,
+      "homeTeam": "Wake Forest",
+      "awayTeam": "Virginia",
+      "predictedMargin": 6.8,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869944,
+      "homeTeam": "Georgia State",
+      "awayTeam": "Coastal Carolina",
+      "predictedMargin": 12.9,
+      "predictedTotal": 56.2,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401860924,
+      "homeTeam": "Fresno State",
+      "awayTeam": "Oregon State",
+      "predictedMargin": 23.6,
+      "predictedTotal": 48.6,
+      "snapshotDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869846,
+      "homeTeam": "Georgia Southern",
+      "awayTeam": "App State",
+      "predictedMargin": 7.9,
+      "predictedTotal": 56.8,
+      "snapshotDate": "2026-10-04"
     }
   ],
   "graded": [
@@ -23334,18 +23580,40 @@
       "hit": false,
       "snapshotDate": "2026-09-20",
       "gradedDate": "2026-10-03"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Fresno State @ Washington State",
+      "stat": "spread",
+      "line": 4.5,
+      "actual": -20,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-04"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Fresno State @ Washington State",
+      "stat": "total",
+      "line": 43.7,
+      "actual": 32,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-04"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 177,
+      "graded": 178,
       "hits": 129,
-      "rate": 72.9
+      "rate": 72.5
     },
     "cfb_total": {
-      "graded": 177,
+      "graded": 178,
       "hits": 29,
-      "rate": 16.4
+      "rate": 16.3
     },
     "nfl_p25": {
       "graded": 311,

@@ -710,6 +710,21 @@ def build_atd_pool(baseline, current, receivers, qbs=None):
     pool = []
     for r in receivers + (qbs or []):
         pid = r['id']
+        if r.get('isRookie'):
+            # New-to-the-dataset player (see receivers/QBs build in main()) -- there is no
+            # baseline TD history to fall back to at all, so judge them purely on their own
+            # real current-season games, once there are enough to say anything real.
+            if pid not in cur_stats.index or cur_stats.loc[pid, 'count'] < ROOKIE_MIN_GAMES:
+                continue
+            test_rate = float(cur_stats.loc[pid, 'mean']) * 100
+            test_games = int(cur_stats.loc[pid, 'count'])
+            pool.append({
+                'id': f"atd_{pid}", 'player': r['name'], 'pos': r['pos'], 'team': r['team'],
+                'stat': 'Anytime TD', 'kind': 'binary',
+                'testRate': round(test_rate, 1), 'testGames': test_games,
+                'baselineRate': None, 'baselineGames': 0, 'isRookie': True,
+            })
+            continue
         if pid not in base_stats.index or base_stats.loc[pid, 'count'] < 12:
             continue
         baseline_rate = float(base_stats.loc[pid, 'mean']) * 100
@@ -723,6 +738,7 @@ def build_atd_pool(baseline, current, receivers, qbs=None):
             'stat': 'Anytime TD', 'kind': 'binary',
             'testRate': round(test_rate, 1), 'testGames': test_games,
             'baselineRate': round(baseline_rate, 1), 'baselineGames': int(base_stats.loc[pid, 'count']),
+            'isRookie': False,
         })
     pool.sort(key=lambda p: -p['testRate'])
     return pool
@@ -976,6 +992,15 @@ ENABLE_XGBOOST_DIAGNOSTIC = True
 # weight_current = games_this_season / (games_this_season + SHRINKAGE_K)
 # e.g. with K=4: 2 games in -> 33% current-season weight, 8 games in -> 67%, 16 games in -> 80%
 SHRINKAGE_K = 4
+
+# Minimum real current-season games before a player with ZERO 2024-25 baseline history
+# (a true rookie, a practice-squad call-up now starting, anyone new to the dataset) gets
+# their own entry at all -- receivers/QBs/kickers/sacks/Anytime-TD/prop-ladder pools are
+# all otherwise built by iterating the baseline season's players ONLY, which makes a
+# brand-new player 100% invisible no matter how much real production they have this
+# season. This is the single knob controlling how early that player shows up once real
+# data exists for them.
+ROOKIE_MIN_GAMES = 3
 
 NFLVERSE_BASE = "https://github.com/nflverse/nflverse-data/releases/download"
 
@@ -1263,6 +1288,38 @@ def build_wnba_players(gl_train, gl_test, team_names):
             'away': {'pts': round(away_g.pts.mean(), 1) if len(away_g) else None, 'games': int(len(away_g))},
             'gamelog': test_g[['game_id', 'pts', 'reb', 'ast', 'stl', 'blk', 'fga', 'fgm', 'tpa', 'tpm', 'opp_team_name', 'game_date', 'is_home']].to_dict('records'),
             'vsOpp': vs_opp,
+            'isRookie': False,
+        })
+
+    # New-to-the-dataset players -- a WNBA rookie, or anyone who didn't play enough (or at
+    # all) in the WNBA_TRAIN_SEASON baseline -- are otherwise invisible here no matter how
+    # many real games they've played this season, same root issue as the NFL pools above.
+    train_players = set(gl_train.player.unique())
+    for player in gl_test.player.unique():
+        if player in train_players:
+            continue
+        test_g = gl_test[gl_test.player == player]
+        if len(test_g) < ROOKIE_MIN_GAMES:
+            continue
+        team_id = test_g.team_id.mode().iloc[0] if len(test_g) else None
+        team_name = team_names.get(team_id, str(team_id))
+        overall = {
+            'games': int(len(test_g)), 'pts': round(test_g.pts.mean(), 1), 'reb': round(test_g.reb.mean(), 1),
+            'ast': round(test_g.ast.mean(), 1), 'stl': round(test_g.stl.mean(), 1), 'blk': round(test_g.blk.mean(), 1),
+            'tov': round(test_g.tov.mean(), 1) if 'tov' in test_g.columns else None,
+            'fgPct': round(100 * test_g.fgm.sum() / max(test_g.fga.sum(), 1), 1),
+            'tpPct': round(100 * test_g.tpm.sum() / max(test_g.tpa.sum(), 1), 1),
+            'usage': round(test_g.usage_raw.mean(), 1) if test_g.usage_raw.notna().any() else None,
+        }
+        home_g = test_g[test_g.is_home == True]; away_g = test_g[test_g.is_home == False]
+        vs_opp = {opp: agg_wnba_opponent_games(gg) for opp, gg in test_g.groupby('opp_team_name') if len(gg) >= 2}
+        players.append({
+            'name': player, 'team': team_name, 'overall': overall,
+            'home': {'pts': round(home_g.pts.mean(), 1) if len(home_g) else None, 'games': int(len(home_g))},
+            'away': {'pts': round(away_g.pts.mean(), 1) if len(away_g) else None, 'games': int(len(away_g))},
+            'gamelog': test_g[['game_id', 'pts', 'reb', 'ast', 'stl', 'blk', 'fga', 'fgm', 'tpa', 'tpm', 'opp_team_name', 'game_date', 'is_home']].to_dict('records'),
+            'vsOpp': vs_opp,
+            'isRookie': True,
         })
     players.sort(key=lambda p: -p['overall']['pts'])
     return players
@@ -1282,8 +1339,28 @@ def build_wnba_pool(gl_train, gl_test):
         return {'p25': {'line': float(p25), 'testHit': hit(p25)}, 'p50': {'line': float(p50), 'testHit': hit(p50)},
                 'p75': {'line': float(p75), 'testHit': hit(p75)}, 'trainGames': int(len(train_vals)), 'testGames': int(len(test_vals))}
 
+    def ladder_rookie(ordered_vals, label, min_games=ROOKIE_MIN_GAMES):
+        """Same math as ladder(), but split WITHIN this season's own games for a player
+        with no WNBA_TRAIN_SEASON baseline at all -- see pctile_ladder_rookie in the NFL
+        section above for the full reasoning (held-out test slice, never self-graded)."""
+        n = len(ordered_vals)
+        if n < min_games:
+            return None
+        test_n = max(1, n // 3)
+        train_vals = np.array(ordered_vals[:-test_n], dtype=float)
+        test_vals = np.array(ordered_vals[-test_n:], dtype=float)
+        if len(train_vals) == 0:
+            return None
+        p25 = np.floor(np.percentile(train_vals, 25)); p50 = np.floor(np.percentile(train_vals, 50)); p75 = np.floor(np.percentile(train_vals, 75))
+        if p25 < MIN25[label] or p50 < MIN50[label] or p75 <= p50:
+            return None
+        def hit(line): return round(float((test_vals >= line).mean()) * 100, 1)
+        return {'p25': {'line': float(p25), 'testHit': hit(p25)}, 'p50': {'line': float(p50), 'testHit': hit(p50)},
+                'p75': {'line': float(p75), 'testHit': hit(p75)}, 'trainGames': int(len(train_vals)), 'testGames': int(len(test_vals))}
+
     stat_map = [('pts', 'Points'), ('reb', 'Rebounds'), ('ast', 'Assists'), ('stl', 'Steals'), ('blk', 'Blocks'), ('tpm', 'Three-Pointers Made')]
     pool = []
+    train_players = set(gl_train.player.unique())
     for player in gl_train.player.unique():
         train_g = gl_train[gl_train.player == player]
         test_g = gl_test[gl_test.player == player]
@@ -1292,7 +1369,22 @@ def build_wnba_pool(gl_train, gl_test):
         for key, label in stat_map:
             l = ladder(train_g[key].values, test_g[key].values, label)
             if l:
-                pool.append({'player': player, 'stat': label, 'kind': 'ladder', **l, 'id': f"{player}|{label}".replace(' ', '_')})
+                pool.append({'player': player, 'stat': label, 'kind': 'ladder', **l, 'isRookie': False,
+                             'id': f"{player}|{label}".replace(' ', '_')})
+
+    # New-to-the-dataset players (see build_wnba_players above) -- no WNBA_TRAIN_SEASON
+    # baseline to split against, so the line comes from this season's own games alone.
+    for player in gl_test.player.unique():
+        if player in train_players:
+            continue
+        test_g = gl_test[gl_test.player == player].sort_values('game_date')
+        if len(test_g) < ROOKIE_MIN_GAMES:
+            continue
+        for key, label in stat_map:
+            l = ladder_rookie(test_g[key].values, label)
+            if l:
+                pool.append({'player': player, 'stat': label, 'kind': 'ladder', **l, 'isRookie': True,
+                             'id': f"{player}|{label}".replace(' ', '_')})
     return pool
 
 
@@ -1531,6 +1623,71 @@ def build_mlb_players(train_season, test_season, team_names):
                 'overall': overall,
                 'home': {'games': len(home_log)}, 'away': {'games': len(away_log)},
                 'gamelog': test_log,
+                'isRookie': False,
+            })
+
+        # New-to-the-dataset players -- a true MLB rookie, or anyone who didn't qualify
+        # for the train_season leaderboard, never shows up above no matter how much
+        # real production they have THIS season, because `qualified` only ever comes
+        # from the train_season leaderboard call. Pull the same leaderboard for the
+        # test/current season too, and give anyone who only shows up there their own
+        # entry built entirely from their own real test_season game log.
+        qualified_train_ids = {p['id'] for p in qualified}
+        qualified_test = fetch_mlb_qualified_players(test_season, group)
+        print(f"    {len(qualified_test)} qualified {group} players from {test_season} leaderboard "
+              f"({sum(1 for p in qualified_test if p['id'] not in qualified_train_ids)} new-to-the-dataset)")
+        for p in qualified_test:
+            if p['id'] in qualified_train_ids:
+                continue  # already covered above (qualifies in both seasons)
+            try:
+                test_log = fetch_mlb_game_log(p['id'], test_season, group)
+            except Exception:
+                continue
+            if len(test_log) < ROOKIE_MIN_GAMES:
+                continue
+
+            def avg(key, log=test_log):
+                vals = [g.get(key, 0) for g in log]
+                return round(sum(vals) / len(vals), 2) if vals else None
+
+            overall = {'games': len(test_log), 'group': group}
+            if group == 'hitting':
+                total_ab = sum(g.get('ab', 0) for g in test_log)
+                total_hits = sum(g.get('hits', 0) for g in test_log)
+                total_bb = sum(g.get('bb', 0) for g in test_log)
+                total_tb = sum(g.get('tb', 0) for g in test_log)
+                total_sb = sum(g.get('sb', 0) for g in test_log)
+                obp = round((total_hits + total_bb) / (total_ab + total_bb), 3) if (total_ab + total_bb) else None
+                slg = round(total_tb / total_ab, 3) if total_ab else None
+                overall.update({
+                    'avg_hits': avg('hits'), 'avg_hr': avg('hr'), 'avg_rbi': avg('rbi'), 'avg_runs': avg('runs'),
+                    'battingAvg': round(total_hits / total_ab, 3) if total_ab else None,
+                    'totalHR': sum(g.get('hr', 0) for g in test_log), 'totalRBI': sum(g.get('rbi', 0) for g in test_log),
+                    'totalSB': total_sb, 'obp': obp, 'slg': slg, 'ops': round(obp + slg, 3) if (obp is not None and slg is not None) else None,
+                })
+            else:
+                total_ip = sum(g.get('ip', 0) for g in test_log)
+                total_er = sum(g.get('er', 0) for g in test_log)
+                total_bb = sum(g.get('bb', 0) for g in test_log)
+                total_hits_allowed = sum(g.get('hitsAllowed', 0) for g in test_log)
+                total_so = sum(g.get('so', 0) for g in test_log)
+                whip = round((total_bb + total_hits_allowed) / total_ip, 2) if total_ip else None
+                k9 = round((total_so * 9) / total_ip, 2) if total_ip else None
+                overall.update({
+                    'avg_so': avg('so'), 'avg_ip': avg('ip'),
+                    'era': round((total_er * 9) / total_ip, 2) if total_ip else None,
+                    'totalWins': sum(g.get('wins', 0) for g in test_log), 'totalSaves': sum(g.get('saves', 0) for g in test_log),
+                    'whip': whip, 'k9': k9,
+                })
+
+            home_log = [g for g in test_log if g.get('isHome')]
+            away_log = [g for g in test_log if not g.get('isHome')]
+            players.append({
+                'name': p['name'], 'team': team_names.get(p['teamId'], p.get('teamName', '?')), 'group': group,
+                'overall': overall,
+                'home': {'games': len(home_log)}, 'away': {'games': len(away_log)},
+                'gamelog': test_log,
+                'isRookie': True,
             })
     players.sort(key=lambda p: -(p['overall'].get('totalHR', 0) if p['group']=='hitting' else p['overall'].get('totalSaves', 0)))
     return players
@@ -1551,11 +1708,32 @@ def build_mlb_pool(train_season, test_season, team_names):
         return {'p25': {'line': float(p25), 'testHit': hit(p25)}, 'p50': {'line': float(p50), 'testHit': hit(p50)},
                 'p75': {'line': float(p75), 'testHit': hit(p75)}, 'trainGames': int(len(train_vals)), 'testGames': int(len(test_vals))}
 
+    def ladder_rookie(ordered_vals, label, min_games=ROOKIE_MIN_GAMES):
+        """Same math as ladder(), but split WITHIN this season's own games for a player
+        with no train_season qualified-leaderboard history at all -- see
+        pctile_ladder_rookie in the NFL section above for the full reasoning."""
+        n = len(ordered_vals)
+        if n < min_games:
+            return None
+        test_n = max(1, n // 3)
+        train_vals = np.array(ordered_vals[:-test_n], dtype=float)
+        test_vals = np.array(ordered_vals[-test_n:], dtype=float)
+        if len(train_vals) == 0:
+            return None
+        p25 = math.floor(np.percentile(train_vals, 25)); p50 = math.floor(np.percentile(train_vals, 50)); p75 = math.floor(np.percentile(train_vals, 75))
+        if p25 < MIN25.get(label, 0) or p50 < MIN50.get(label, 0) or p75 <= p50:
+            return None
+        def hit(line): return round(float((test_vals >= line).mean()) * 100, 1)
+        return {'p25': {'line': float(p25), 'testHit': hit(p25)}, 'p50': {'line': float(p50), 'testHit': hit(p50)},
+                'p75': {'line': float(p75), 'testHit': hit(p75)}, 'trainGames': int(len(train_vals)), 'testGames': int(len(test_vals))}
+
     pool = []
     hit_stat_map = [('hits','Hits'), ('hr','HR'), ('rbi','RBI'), ('runs','Runs'), ('tb','Total Bases')]
     pitch_stat_map = [('so','Strikeouts')]
     qualified_hit = fetch_mlb_qualified_players(train_season, 'hitting')
     qualified_pitch = fetch_mlb_qualified_players(train_season, 'pitching')
+    qualified_hit_ids = {p['id'] for p in qualified_hit}
+    qualified_pitch_ids = {p['id'] for p in qualified_pitch}
 
     for p in qualified_hit:
         try:
@@ -1570,7 +1748,7 @@ def build_mlb_pool(train_season, test_season, team_names):
             test_vals = np.array([g.get(key, 0) for g in test_log], dtype=float)
             l = ladder(train_vals, test_vals, label)
             if l:
-                pool.append({'player': p['name'], 'stat': label, 'kind': 'ladder', **l,
+                pool.append({'player': p['name'], 'stat': label, 'kind': 'ladder', **l, 'isRookie': False,
                              'id': f"{p['name']}|{label}".replace(' ', '_')})
 
     for p in qualified_pitch:
@@ -1586,7 +1764,41 @@ def build_mlb_pool(train_season, test_season, team_names):
             test_vals = np.array([g.get(key, 0) for g in test_log], dtype=float)
             l = ladder(train_vals, test_vals, label)
             if l:
-                pool.append({'player': p['name'], 'stat': label, 'kind': 'ladder', **l,
+                pool.append({'player': p['name'], 'stat': label, 'kind': 'ladder', **l, 'isRookie': False,
+                             'id': f"{p['name']}|{label}".replace(' ', '_')})
+
+    # New-to-the-dataset players (see build_mlb_players above) -- no train_season
+    # qualified-leaderboard history to split against, so the line comes from this
+    # season's own games alone, once there are enough of them.
+    for p in fetch_mlb_qualified_players(test_season, 'hitting'):
+        if p['id'] in qualified_hit_ids:
+            continue
+        try:
+            test_log = fetch_mlb_game_log(p['id'], test_season, 'hitting')
+        except Exception:
+            continue
+        if len(test_log) < ROOKIE_MIN_GAMES:
+            continue
+        for key, label in hit_stat_map:
+            vals = [g.get(key, 0) for g in test_log]
+            l = ladder_rookie(vals, label)
+            if l:
+                pool.append({'player': p['name'], 'stat': label, 'kind': 'ladder', **l, 'isRookie': True,
+                             'id': f"{p['name']}|{label}".replace(' ', '_')})
+    for p in fetch_mlb_qualified_players(test_season, 'pitching'):
+        if p['id'] in qualified_pitch_ids:
+            continue
+        try:
+            test_log = fetch_mlb_game_log(p['id'], test_season, 'pitching')
+        except Exception:
+            continue
+        if len(test_log) < ROOKIE_MIN_GAMES:
+            continue
+        for key, label in pitch_stat_map:
+            vals = [g.get(key, 0) for g in test_log]
+            l = ladder_rookie(vals, label)
+            if l:
+                pool.append({'player': p['name'], 'stat': label, 'kind': 'ladder', **l, 'isRookie': True,
                              'id': f"{p['name']}|{label}".replace(' ', '_')})
     return pool
 
@@ -2513,9 +2725,64 @@ def main():
                      'coverage': t['coverage'], 'yards': float(t['yards_gained'])} for t in td_plays],
             'gamelog': gl.to_dict('records'),
             'currentSeasonBlend': blend,
+            'isRookie': False,
         })
+
+    # New-to-the-dataset players -- true rookies, practice-squad call-ups now starting,
+    # anyone with zero 2024-25 targets -- are otherwise 100% invisible: the loop above
+    # only ever iterates pids present in targets_baseline. A real target/catch/yard this
+    # season is real regardless of whether the player has baseline history, so give them
+    # their own path, built entirely from this season's own games. Flagged isRookie so
+    # the ladder step below knows to use a single-season split instead of the normal
+    # 2024-train/2025-test one (see pctile_ladder_rookie). ROOKIE_MIN_GAMES is a
+    # module-level constant (see its definition up top) so build_atd_pool can honor the
+    # same bar for a rookie's Anytime-TD eligibility.
+    baseline_receiver_pids = set(targets_baseline['receiver_player_id'].unique()) if len(targets_baseline) else set()
+    if len(targets_current):
+        for pid, cg in targets_current.groupby('receiver_player_id'):
+            if pid in baseline_receiver_pids:
+                continue  # already covered above (has real baseline history too)
+            cur_games = cg['game_id'].nunique()
+            if cur_games < ROOKIE_MIN_GAMES:
+                continue  # too early this season to say anything real yet
+            name = roster_map.get(pid, cg['receiver_player_name'].iloc[0])
+            pos = cg['position'].iloc[0]
+            team = espn_current_teams.get(name) or current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, cg['posteam'].mode().iloc[0])
+            overall = agg_receiving(cg)
+            home = agg_receiving(cg[cg.is_home]) or {}
+            away = agg_receiving(cg[~cg.is_home]) or {}
+            gl = cg.groupby(['season', 'game_id']).agg(
+                targets=('week', 'count'), catches=('complete_pass', 'sum'), yards=('yards_gained', 'sum'), tds=('pass_touchdown', 'sum')
+            ).reset_index()
+            rb = rush_current[rush_current.rusher_player_id == pid] if len(rush_current) else rush_current
+            if len(rb):
+                rush_gl = rb.groupby(['season', 'game_id']).agg(
+                    rush_att=('rush_attempt', 'sum'), rush_yards=('rushing_yards', 'sum'), rush_td=('rush_touchdown', 'sum')
+                ).reset_index()
+                if rb['rush_attempt'].sum() > 0:
+                    overall['rushAtt'] = int(rb['rush_attempt'].sum())
+                    overall['rushYards'] = float(rb['rushing_yards'].sum())
+                    overall['rushTD'] = int(rb['rush_touchdown'].sum())
+                    overall['ypc'] = round(overall['rushYards'] / overall['rushAtt'], 2) if overall['rushAtt'] else None
+                    overall['scrimmageYards'] = overall['yards'] + overall['rushYards']
+                gl = gl.merge(rush_gl, on=['season', 'game_id'], how='outer').fillna(0)
+            td_plays = cg[cg.pass_touchdown == 1][['week', 'season', 'defteam', 'front', 'coverage', 'yards_gained']].to_dict('records')
+            n_gl = max(len(gl), 1)
+            receivers.append({
+                'id': pid, 'shortName': cg['receiver_player_name'].iloc[0], 'name': name, 'pos': pos, 'team': team,
+                'overall': overall, 'home': home, 'away': away, 'fronts': {}, 'coverages': {}, 'weather': {},
+                'tds': [{'week': int(t['week']), 'season': int(t['season']), 'opp': t['defteam'], 'front': t['front'],
+                         'coverage': t['coverage'], 'yards': float(t['yards_gained'])} for t in td_plays],
+                'gamelog': gl.to_dict('records'),
+                'currentSeasonBlend': {
+                    'targetsPerGame': {'value': round(overall['targets'] / n_gl, 2), 'weight_current': 1.0, 'games_this_season': cur_games},
+                    'yardsPerGame': {'value': round(overall['yards'] / n_gl, 2), 'weight_current': 1.0, 'games_this_season': cur_games},
+                    'currentSeasonGames': cur_games, 'currentSeasonStats': overall,
+                },
+                'isRookie': True,
+            })
     receivers.sort(key=lambda p: -p['overall']['targets'])
-    print(f"  {len(receivers)} skill players")
+    print(f"  {len(receivers)} skill players ({sum(1 for r in receivers if r['isRookie'])} new-to-the-dataset this season)")
 
     # Target Share % — real metric (this player's targets ÷ their team's total targets over the same window)
     team_total_targets = targets_baseline.groupby('posteam').size().to_dict()
@@ -2629,9 +2896,57 @@ def main():
             'tds': [{'week': int(t['week']), 'season': int(t['season']), 'opp': t['defteam'], 'front': t['front'], 'coverage': t['coverage']} for t in td_plays],
             'gamelog': gl.to_dict('records'),
             'currentSeasonBlend': blend,
+            'isRookie': False,
         })
+
+    # Same new-to-the-dataset path as receivers above -- a real rookie/new-starter QB
+    # with zero 2024-25 baseline attempts is otherwise invisible no matter how many
+    # real pass attempts he's thrown this season.
+    baseline_qb_pids = set(passes_baseline['passer_player_id'].unique()) if len(passes_baseline) else set()
+    if len(passes_current):
+        for pid, cg in passes_current.groupby('passer_player_id'):
+            if pid in baseline_qb_pids:
+                continue
+            cur_games = cg['game_id'].nunique()
+            if cur_games < ROOKIE_MIN_GAMES:
+                continue
+            name = roster_map.get(pid, cg['passer_player_name'].iloc[0])
+            team = espn_current_teams.get(name) or current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, cg['posteam'].mode().iloc[0])
+            overall = agg_qb(cg)
+            home = agg_qb(cg[cg.is_home]) or {}
+            away = agg_qb(cg[~cg.is_home]) or {}
+            gl = cg.groupby(['season', 'game_id']).agg(
+                attempts=('week', 'count'), completions=('complete_pass', 'sum'), yards=('passing_yards', 'sum'),
+                tds=('pass_touchdown', 'sum'), ints=('interception', 'sum')
+            ).reset_index()
+            rb = rush_current[rush_current.rusher_player_id == pid] if len(rush_current) else rush_current
+            if len(rb):
+                rush_gl = rb.groupby(['season', 'game_id']).agg(
+                    rush_att=('rush_attempt', 'sum'), rush_yards=('rushing_yards', 'sum'), rush_td=('rush_touchdown', 'sum')
+                ).reset_index()
+                overall['rushAtt'] = int(rb['rush_attempt'].sum())
+                overall['rushYards'] = float(rb['rushing_yards'].sum())
+                overall['rushTD'] = int(rb['rush_touchdown'].sum())
+                overall['totalYards'] = overall['yards'] + overall['rushYards']
+                gl = gl.merge(rush_gl, on=['season', 'game_id'], how='left').fillna(0)
+            else:
+                gl['rush_att'] = 0; gl['rush_yards'] = 0.0; gl['rush_td'] = 0
+            td_plays = cg[cg.pass_touchdown == 1][['week', 'season', 'defteam', 'front', 'coverage']].to_dict('records')
+            n_gl = max(len(gl), 1)
+            qbs.append({
+                'id': pid, 'shortName': cg['passer_player_name'].iloc[0], 'name': name, 'pos': 'QB', 'team': team,
+                'overall': overall, 'home': home, 'away': away, 'fronts': {}, 'coverages': {}, 'weather': {},
+                'tds': [{'week': int(t['week']), 'season': int(t['season']), 'opp': t['defteam'], 'front': t['front'], 'coverage': t['coverage']} for t in td_plays],
+                'gamelog': gl.to_dict('records'),
+                'currentSeasonBlend': {
+                    'passYardsPerGame': {'value': round(overall['yards'] / n_gl, 2), 'weight_current': 1.0, 'games_this_season': cur_games},
+                    'rushYardsPerGame': {'value': round(overall.get('rushYards', 0) / n_gl, 2), 'weight_current': 1.0, 'games_this_season': cur_games},
+                    'currentSeasonGames': cur_games, 'currentSeasonStats': overall,
+                },
+                'isRookie': True,
+            })
     qbs.sort(key=lambda p: -p['overall']['yards'])
-    print(f"  {len(qbs)} QBs (with rushing merged in)")
+    print(f"  {len(qbs)} QBs (with rushing merged in) ({sum(1 for q in qbs if q['isRookie'])} new-to-the-dataset this season)")
 
     atd_pool = build_atd_pool(baseline, current, receivers, qbs)
     print(f"  {len(atd_pool)} players with real Anytime TD rates computed (skill positions + QB rushing)")
@@ -2692,9 +3007,42 @@ def main():
             'overall': overall, 'home': home, 'away': away, 'distance': dist, 'weather': weathers,
             'xpMade': xp_made, 'xpAtt': xp_att, 'gamelog': fg_gl.to_dict('records'),
             'currentSeasonBlend': blend,
+            'isRookie': False,
         })
+
+    # Same new-to-the-dataset path as receivers/QBs above.
+    baseline_kicker_pids = set(fgs_baseline['kicker_player_id'].dropna().unique()) if len(fgs_baseline) else set()
+    if len(fgs_current):
+        for pid, cg in fgs_current.groupby('kicker_player_id'):
+            if pd.isna(pid) or pid in baseline_kicker_pids:
+                continue
+            cur_games = cg['game_id'].nunique()
+            if cur_games < ROOKIE_MIN_GAMES:
+                continue
+            name = roster_map.get(pid, cg['kicker_player_name'].iloc[0])
+            team = espn_current_teams.get(name) or current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, cg['posteam'].mode().iloc[0])
+            overall = agg_k(cg)
+            home = agg_k(cg[cg.is_home]) or {}
+            away = agg_k(cg[~cg.is_home]) or {}
+            cg = cg.copy()
+            cg['dist_bucket'] = cg['kick_distance'].apply(
+                lambda d: 'Unknown' if pd.isna(d) else ('<30' if d < 30 else '30-39' if d < 40 else '40-49' if d < 50 else '50+'))
+            dist = {db: agg_k(gg) for db, gg in cg.groupby('dist_bucket')}
+            fg_gl = cg.groupby(['season', 'game_id']).agg(attempts=('made', 'count'), made=('made', 'sum')).reset_index()
+            fg_gl['points'] = fg_gl['made'] * 3
+            n_gl = max(len(fg_gl), 1)
+            kickers.append({
+                'id': pid, 'shortName': cg['kicker_player_name'].iloc[0], 'name': name, 'pos': 'K', 'team': team,
+                'overall': overall, 'home': home, 'away': away, 'distance': dist, 'weather': {},
+                'xpMade': 0, 'xpAtt': 0, 'gamelog': fg_gl.to_dict('records'),
+                'currentSeasonBlend': {
+                    'fgMadePerGame': {'value': round(overall['made'] / n_gl, 2), 'weight_current': 1.0, 'games_this_season': cur_games},
+                    'currentSeasonGames': cur_games, 'currentSeasonStats': overall,
+                },
+                'isRookie': True,
+            })
     kickers.sort(key=lambda p: -p['overall']['made'])
-    print(f"  {len(kickers)} kickers")
+    print(f"  {len(kickers)} kickers ({sum(1 for k in kickers if k['isRookie'])} new-to-the-dataset this season)")
 
     # ---- Sacks (defenders) ----
     def build_sack_rows(df):
@@ -2769,9 +3117,48 @@ def main():
                            'togo': (int(p['ydsToGo']) if pd.notna(p['ydsToGo']) else None), 'val': p['val']} for p in plays],
                 'gamelog': gl.to_dict('records'),
                 'currentSeasonBlend': blend,
+                'isRookie': False,
             })
-        sacks.sort(key=lambda d: -d['totalSacks'])
-    print(f"  {len(sacks)} pass rushers")
+
+    # Same new-to-the-dataset path as receivers/QBs/kickers above -- a rookie or
+    # newly-signed pass rusher with zero 2024-25 baseline sacks was otherwise invisible
+    # on the Sacks page no matter how many real sacks he has this season.
+    baseline_sack_pids = set(sdf['pid'].unique()) if len(sdf) else set()
+    if len(sdf_current):
+        for pid, cg in sdf_current.groupby('pid'):
+            if pid in baseline_sack_pids:
+                continue
+            cur_games = cg['game_id'].nunique()
+            total = cg['val'].sum()
+            if cur_games < ROOKIE_MIN_GAMES or total < 1.5:
+                continue
+            name = roster_map.get(pid, pid)
+            pos = pos_map.get(pid, '?')
+            team = espn_current_teams.get(name) or current_team_by_pid.get(pid) or latest_team_by_pid.get(pid, cg['defteam'].mode().iloc[0])
+            home_sacks = cg[cg.is_home]['val'].sum()
+            away_sacks = cg[~cg.is_home]['val'].sum()
+            front_breakdown = cg.groupby('front')['val'].sum().sort_values(ascending=False).to_dict()
+            weather_breakdown = cg.groupby('weather')['val'].sum().to_dict()
+            gl = cg.groupby(['season', 'game_id'])['val'].sum().reset_index().rename(columns={'val': 'sacks'})
+            plays = cg[['week', 'season', 'posteam', 'front', 'coverage', 'qb', 'down', 'ydsToGo', 'val']].sort_values(['season', 'week']).to_dict('records')
+            sacks.append({
+                'id': pid, 'name': name, 'pos': pos, 'team': team, 'totalSacks': round(float(total), 1),
+                'homeSacks': round(float(home_sacks), 1), 'awaySacks': round(float(away_sacks), 1),
+                'avgPassRushers': None,
+                'frontBreakdown': {k: round(float(v), 1) for k, v in front_breakdown.items()},
+                'weatherBreakdown': {k: round(float(v), 1) for k, v in weather_breakdown.items()},
+                'plays': [{'week': int(p['week']), 'season': int(p['season']), 'opp': p['posteam'], 'front': p['front'],
+                           'coverage': p['coverage'], 'qb': p['qb'], 'down': (int(p['down']) if pd.notna(p['down']) else None),
+                           'togo': (int(p['ydsToGo']) if pd.notna(p['ydsToGo']) else None), 'val': p['val']} for p in plays],
+                'gamelog': gl.to_dict('records'),
+                'currentSeasonBlend': {
+                    'sacksPerGame': {'value': round(float(total) / max(len(gl), 1), 2), 'weight_current': 1.0, 'games_this_season': cur_games},
+                    'currentSeasonGames': cur_games, 'currentSeasonStats': {'sacks': round(float(total), 1), 'games': cur_games},
+                },
+                'isRookie': True,
+            })
+    sacks.sort(key=lambda d: -d['totalSacks'])
+    print(f"  {len(sacks)} pass rushers ({sum(1 for s in sacks if s['isRookie'])} new-to-the-dataset this season)")
 
     # ---- Prop pool (P25/P50/P75 ladders, train=baseline[0] test=baseline[1]) ----
     def pctile_ladder(train_vals, test_vals, min25, min50):
@@ -2787,59 +3174,104 @@ def main():
         return {'p25': {'line': float(p25), 'testHit': hit(p25)}, 'p50': {'line': float(p50), 'testHit': hit(p50)},
                 'p75': {'line': float(p75), 'testHit': hit(p75)}, 'trainGames': int(len(train_vals)), 'testGames': int(len(test_vals))}
 
+    def pctile_ladder_rookie(ordered_vals, min25, min50, min_games=ROOKIE_MIN_GAMES):
+        """Same P25/P50/P75 math as pctile_ladder, but for a player with NO 2024-25
+        baseline at all (isRookie=True) -- split WITHIN this season's own games instead
+        of across two full seasons, so the line still comes from one slice of real games
+        and the hit-rate is still checked against a different, held-out slice, never the
+        same games used to set the line. Inherently a much smaller, noisier split than
+        the normal 8-train/6-test one -- that's exactly why every entry built this way
+        carries isRookie=True (the UI shows a ROOKIE badge) and why the existing
+        ConfidenceBadge, which already reads real testGames, will show "Limited" rather
+        than implying this is as solid as a full two-season read."""
+        n = len(ordered_vals)
+        if n < min_games:
+            return None
+        test_n = max(1, n // 3)
+        train_vals = np.array(ordered_vals[:-test_n], dtype=float)
+        test_vals = np.array(ordered_vals[-test_n:], dtype=float)
+        if len(train_vals) == 0:
+            return None
+        p25 = np.floor(np.percentile(train_vals, 25))
+        p50 = np.floor(np.percentile(train_vals, 50))
+        p75 = np.floor(np.percentile(train_vals, 75))
+        if p25 < min25 or p50 < min50 or p75 <= p50:
+            return None
+        def hit(line):
+            return round(float((test_vals >= line).mean()) * 100, 1)
+        return {'p25': {'line': float(p25), 'testHit': hit(p25)}, 'p50': {'line': float(p50), 'testHit': hit(p50)},
+                'p75': {'line': float(p75), 'testHit': hit(p75)}, 'trainGames': int(len(train_vals)), 'testGames': int(len(test_vals))}
+
+    def build_ladder(p, gl, key, min25, min50):
+        """Dispatches to the right split depending on whether this player has a real
+        2024-25 baseline (normal two-season train/test) or not (single-season rookie
+        split) -- the one place that decides which math every stat/position uses."""
+        if p.get('isRookie'):
+            ordered = sorted(gl, key=lambda x: (x['season'], x['game_id']))
+            vals = [x.get(key, 0) for x in ordered]
+            return pctile_ladder_rookie(vals, min25, min50)
+        train = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[0]], dtype=float)
+        test = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[1]], dtype=float)
+        return pctile_ladder(train, test, min25, min50)
+
     full_pool = []
     for p in receivers:
         gl = p['gamelog']
         change = team_change_map.get(p['name'], {})
         for key, label, min25, min50 in [('catches', 'Receptions', 1, 2), ('yards', 'Receiving Yards', 10, 20), ('targets', 'Targets', 2, 3)]:
-            train = np.array([x[key] for x in gl if x['season'] == BASELINE_SEASONS[0]], dtype=float)
-            test = np.array([x[key] for x in gl if x['season'] == BASELINE_SEASONS[1]], dtype=float)
-            ladder = pctile_ladder(train, test, min25, min50)
+            ladder = build_ladder(p, gl, key, min25, min50)
             if ladder:
                 full_pool.append({'player': p['name'], 'pos': p['pos'], 'team': p['team'], 'stat': label, 'kind': 'ladder',
                                    **ladder, 'teamChanged': change.get('changed', False), 'team2024': change.get('team2024'),
-                                   'team2025': change.get('team2025'), 'note': None, 'isRookie': False,
+                                   'team2025': change.get('team2025'), 'note': None, 'isRookie': p.get('isRookie', False),
                                    'id': f"{p['name']}|{label}".replace(' ', '_')})
-        # rushing props (workhorse RBs primarily, but also jet-sweep WRs with real volume)
+        # rushing props (workhorse RBs primarily, but also jet-sweep WRs with real volume).
+        # The "does this player rush enough to bother" check stays scoped to whichever
+        # games actually feed the ladder below -- 2024 train games normally, or this
+        # player's own current-season games for a rookie -- exactly like before, just no
+        # longer assuming every player has 2024 rows to check.
         for key, label, min25, min50 in [('rush_att', 'Rush Attempts', 2, 4), ('rush_yards', 'Rush Yards', 10, 20)]:
-            train = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[0]], dtype=float)
-            test = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[1]], dtype=float)
-            if len(train) == 0 or train.mean() < 1:
+            if p.get('isRookie'):
+                check_vals = [x.get(key, 0) for x in gl]
+            else:
+                check_vals = [x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[0]]
+            if len(check_vals) == 0 or np.mean(check_vals) < 1:
                 continue
-            ladder = pctile_ladder(train, test, min25, min50)
+            ladder = build_ladder(p, gl, key, min25, min50)
             if ladder:
                 full_pool.append({'player': p['name'], 'pos': p['pos'], 'team': p['team'], 'stat': label, 'kind': 'ladder',
                                    **ladder, 'teamChanged': change.get('changed', False), 'team2024': change.get('team2024'),
-                                   'team2025': change.get('team2025'), 'note': None, 'isRookie': False,
+                                   'team2025': change.get('team2025'), 'note': None, 'isRookie': p.get('isRookie', False),
                                    'id': f"{p['name']}|{label}".replace(' ', '_')})
     for p in qbs:
         gl = p['gamelog']
         change = team_change_map.get(p['name'], {})
         for key, label, min25, min50 in [('yards', 'Passing Yards', 60, 120), ('completions', 'Completions', 6, 10),
                                           ('tds', 'Passing Touchdowns', 0, 1), ('rush_yards', 'QB Rush Yards', 0, 5)]:
-            train = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[0]], dtype=float)
-            test = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[1]], dtype=float)
-            if key == 'rush_yards' and train.mean() < 8:
-                continue
-            ladder = pctile_ladder(train, test, min25, min50)
+            if key == 'rush_yards':
+                if p.get('isRookie'):
+                    check_vals = [x.get(key, 0) for x in gl]
+                else:
+                    check_vals = [x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[0]]
+                if len(check_vals) == 0 or np.mean(check_vals) < 8:
+                    continue
+            ladder = build_ladder(p, gl, key, min25, min50)
             if ladder:
                 full_pool.append({'player': p['name'], 'pos': 'QB', 'team': p['team'], 'stat': label, 'kind': 'ladder',
                                    **ladder, 'teamChanged': change.get('changed', False), 'team2024': change.get('team2024'),
-                                   'team2025': change.get('team2025'), 'note': None, 'isRookie': False,
+                                   'team2025': change.get('team2025'), 'note': None, 'isRookie': p.get('isRookie', False),
                                    'id': f"{p['name']}|{label}".replace(' ', '_')})
     for p in kickers:
         gl = p['gamelog']
         change = team_change_map.get(p['name'], {})
         for key, label, min25, min50 in [('made', 'FG Made', 1, 1), ('points', 'Kicking Points', 1, 3)]:
-            train = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[0]], dtype=float)
-            test = np.array([x.get(key, 0) for x in gl if x['season'] == BASELINE_SEASONS[1]], dtype=float)
-            ladder = pctile_ladder(train, test, min25, min50)
+            ladder = build_ladder(p, gl, key, min25, min50)
             if ladder:
                 full_pool.append({'player': p['name'], 'pos': 'K', 'team': p['team'], 'stat': label, 'kind': 'ladder',
                                    **ladder, 'teamChanged': change.get('changed', False), 'team2024': change.get('team2024'),
-                                   'team2025': change.get('team2025'), 'note': None, 'isRookie': False,
+                                   'team2025': change.get('team2025'), 'note': None, 'isRookie': p.get('isRookie', False),
                                    'id': f"{p['name']}|{label}".replace(' ', '_')})
-    print(f"  {len(full_pool)} prop pool entries built")
+    print(f"  {len(full_pool)} prop pool entries built ({sum(1 for e in full_pool if e['isRookie'])} from new-to-the-dataset players)")
 
     # Defense-in-depth: this diagnostic already handles a missing xgboost install gracefully
     # internally, and now handles a single stat's own training error internally too (each

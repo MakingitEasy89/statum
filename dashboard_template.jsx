@@ -2274,7 +2274,7 @@ function LadderCard({ e, onAdd, inSlipTranches }) {
           <div style={{ fontSize: 14.5, fontWeight: 800, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
             {e.player}
             {e.teamChanged && <span title={`${e.team2024} → ${e.team2025}`} style={{ fontSize: 9, color: ACCENT.rose, border: `1px solid ${ACCENT.rose}55`, borderRadius: 8, padding: "1px 6px", fontWeight: 700 }}>TEAM CHANGE</span>}
-            {e.isRookie && <span title="Single-season 2025 sample — no 2024 baseline to validate against" style={{ fontSize: 9, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 8, padding: "1px 6px", fontWeight: 700 }}>ROOKIE</span>}
+            {e.isRookie && <span title="New to the dataset — this line is built from this season's own games only (no 2024-25 baseline to blend with)" style={{ fontSize: 9, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 8, padding: "1px 6px", fontWeight: 700 }}>ROOKIE</span>}
           </div>
         </div>
         <ConfidenceBadge testGames={e.testGames} />
