@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-04T22:14:55+00:00",
+ "lastRun": "2026-10-05T00:06:20+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -64,41 +64,41 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-04T22:14:55+00:00",
+   "fetchedAt": "2026-10-05T00:06:20+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "New York": 18.0,
-    "Las Vegas": 20.0,
-    "Golden State": 30.0,
-    "Atlanta": 36.0
+    "New York": 11.0,
+    "Las Vegas": 25.0,
+    "Golden State": 32.0,
+    "Atlanta": 33.0
    },
-   "fetchedAt": "2026-10-04T22:14:55+00:00",
+   "fetchedAt": "2026-10-05T00:06:20+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 35.0,
-    "Golden State": 29.2,
-    "Las Vegas": 22.0,
-    "New York": 17.8
+    "Atlanta": 34.5,
+    "Golden State": 31.2,
+    "Las Vegas": 23.0,
+    "New York": 12.5
    },
-   "fetchedAt": "2026-10-04T22:14:55+00:00",
+   "fetchedAt": "2026-10-05T00:06:20+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "New York Yankees": 10.5,
-    "Tampa Bay Rays": 14.8,
+    "New York Yankees": 9.5,
+    "Tampa Bay Rays": 12.4,
     "Cleveland Guardians": 4.5,
-    "Chicago White Sox": 6.0,
-    "Atlanta Braves": 4.0,
-    "Milwaukee Brewers": 17.7,
+    "Chicago White Sox": 5.9,
+    "Atlanta Braves": 3.8,
+    "Milwaukee Brewers": 22.1,
     "Los Angeles Dodgers": 36.5,
-    "San Diego Padres": 8.8
+    "San Diego Padres": 2.9
    },
-   "fetchedAt": "2026-10-04T22:14:55+00:00",
+   "fetchedAt": "2026-10-05T00:06:20+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -106,7 +106,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 36.0,
+     "price": 33.0,
      "depth": null,
      "flow": {
       "totalVolume": 172928.32,
@@ -126,7 +126,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 30.0,
+     "price": 32.0,
      "depth": null,
      "flow": {
       "totalVolume": 231693.69,
@@ -146,7 +146,7 @@
     {
      "ticker": "KXWNBA-26-LV",
      "name": "Las Vegas",
-     "price": 20.0,
+     "price": 25.0,
      "depth": null,
      "flow": {
       "totalVolume": 225222.05,
@@ -164,7 +164,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-04T22:14:55+00:00",
+   "fetchedAt": "2026-10-05T00:06:20+00:00",
    "stale": false
   }
  }
