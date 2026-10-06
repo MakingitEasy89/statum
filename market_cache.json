@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-06T08:35:24+00:00",
+ "lastRun": "2026-10-06T19:22:43+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -9,16 +9,16 @@
      "ticker": "KXLEADERNFLRYDS",
      "options": [
       {
+       "name": "Chris Olave",
+       "pct": 67.0
+      },
+      {
        "name": "Jaxon Smith-Njigba",
-       "pct": 45.0
+       "pct": 41.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 18.0
-      },
-      {
-       "name": "Chris Olave",
-       "pct": 12.0
+       "pct": 27.0
       }
      ],
      "totalMarkets": 27
@@ -33,12 +33,12 @@
        "pct": 51.0
       },
       {
-       "name": "Dak Prescott",
-       "pct": 19.0
+       "name": "Tyler Shough",
+       "pct": 16.0
       },
       {
        "name": "Bryce Young",
-       "pct": 19.0
+       "pct": 16.0
       }
      ],
      "totalMarkets": 28
@@ -64,41 +64,41 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-06T08:35:24+00:00",
+   "fetchedAt": "2026-10-06T19:22:43+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "New York": 14.0,
-    "Las Vegas": 21.0,
-    "Golden State": 34.0,
-    "Atlanta": 35.0
+    "New York": 13.0,
+    "Las Vegas": 22.0,
+    "Golden State": 32.0,
+    "Atlanta": 34.0
    },
-   "fetchedAt": "2026-10-06T08:35:24+00:00",
+   "fetchedAt": "2026-10-06T19:22:43+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 32.5,
-    "Golden State": 32.6,
-    "Las Vegas": 22.5,
-    "New York": 12.0
+    "Golden State": 32.2,
+    "Las Vegas": 22.0,
+    "New York": 14.4
    },
-   "fetchedAt": "2026-10-06T08:35:24+00:00",
+   "fetchedAt": "2026-10-06T19:22:43+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "New York Yankees": 4.0,
-    "Tampa Bay Rays": 19.9,
+    "New York Yankees": 3.9,
+    "Tampa Bay Rays": 19.6,
     "Cleveland Guardians": 1.5,
-    "Chicago White Sox": 9.5,
-    "Atlanta Braves": 8.9,
-    "Milwaukee Brewers": 26.6,
+    "Chicago White Sox": 10.8,
+    "Atlanta Braves": 9.6,
+    "Milwaukee Brewers": 25.1,
     "Los Angeles Dodgers": 28.5,
-    "San Diego Padres": 2.4
+    "San Diego Padres": 2.9
    },
-   "fetchedAt": "2026-10-06T08:35:24+00:00",
+   "fetchedAt": "2026-10-06T19:22:43+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -106,7 +106,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 35.0,
+     "price": 34.0,
      "depth": null,
      "flow": {
       "totalVolume": 139817.15,
@@ -126,7 +126,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 34.0,
+     "price": 32.0,
      "depth": null,
      "flow": {
       "totalVolume": 208381.44,
@@ -146,7 +146,7 @@
     {
      "ticker": "KXWNBA-26-LV",
      "name": "Las Vegas",
-     "price": 21.0,
+     "price": 22.0,
      "depth": null,
      "flow": {
       "totalVolume": 219566.66999999998,
@@ -164,7 +164,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-06T08:35:24+00:00",
+   "fetchedAt": "2026-10-06T19:22:43+00:00",
    "stale": false
   }
  }
