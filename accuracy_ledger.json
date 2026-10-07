@@ -4097,15 +4097,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871090,
-      "homeTeam": "Troy",
-      "awayTeam": "Southern Miss",
-      "predictedMargin": 10.5,
-      "predictedTotal": 52.5,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401871051,
       "homeTeam": "Kennesaw State",
       "awayTeam": "Jacksonville State",
@@ -31939,18 +31930,40 @@
       "hit": false,
       "snapshotDate": "2026-10-04",
       "gradedDate": "2026-10-06"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Southern Miss @ Troy",
+      "stat": "spread",
+      "line": 10.5,
+      "actual": 21,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Southern Miss @ Troy",
+      "stat": "total",
+      "line": 52.5,
+      "actual": 89,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-07"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 182,
-      "hits": 131,
-      "rate": 72.0
+      "graded": 183,
+      "hits": 132,
+      "rate": 72.1
     },
     "cfb_total": {
-      "graded": 182,
+      "graded": 183,
       "hits": 29,
-      "rate": 15.9
+      "rate": 15.8
     },
     "nfl_p25": {
       "graded": 556,

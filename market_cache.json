@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-06T19:22:43+00:00",
+ "lastRun": "2026-10-07T19:48:14+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -9,16 +9,16 @@
      "ticker": "KXLEADERNFLRYDS",
      "options": [
       {
-       "name": "Chris Olave",
-       "pct": 67.0
-      },
-      {
        "name": "Jaxon Smith-Njigba",
-       "pct": 41.0
+       "pct": 42.0
       },
       {
        "name": "CeeDee Lamb",
        "pct": 27.0
+      },
+      {
+       "name": "Chris Olave",
+       "pct": 16.0
       }
      ],
      "totalMarkets": 27
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "Drake Maye",
-       "pct": 51.0
-      },
-      {
        "name": "Tyler Shough",
-       "pct": 16.0
+       "pct": 14.0
       },
       {
        "name": "Bryce Young",
-       "pct": 16.0
+       "pct": 14.0
+      },
+      {
+       "name": "Matthew Stafford",
+       "pct": 13.0
       }
      ],
      "totalMarkets": 28
@@ -64,107 +64,107 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-06T19:22:43+00:00",
+   "fetchedAt": "2026-10-07T19:48:14+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "New York": 13.0,
-    "Las Vegas": 22.0,
-    "Golden State": 32.0,
-    "Atlanta": 34.0
+    "New York": 14.0,
+    "Las Vegas": 20.0,
+    "Golden State": 33.0,
+    "Atlanta": 33.0
    },
-   "fetchedAt": "2026-10-06T19:22:43+00:00",
+   "fetchedAt": "2026-10-07T19:48:14+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 32.5,
-    "Golden State": 32.2,
-    "Las Vegas": 22.0,
-    "New York": 14.4
+    "Golden State": 32.0,
+    "Las Vegas": 22.5,
+    "New York": 13.6
    },
-   "fetchedAt": "2026-10-06T19:22:43+00:00",
+   "fetchedAt": "2026-10-07T19:48:14+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "New York Yankees": 3.9,
-    "Tampa Bay Rays": 19.6,
-    "Cleveland Guardians": 1.5,
-    "Chicago White Sox": 10.8,
-    "Atlanta Braves": 9.6,
-    "Milwaukee Brewers": 25.1,
-    "Los Angeles Dodgers": 28.5,
-    "San Diego Padres": 2.9
+    "New York Yankees": 4.9,
+    "Tampa Bay Rays": 18.8,
+    "Cleveland Guardians": 1.4,
+    "Chicago White Sox": 10.5,
+    "Atlanta Braves": 3.6,
+    "Milwaukee Brewers": 20.4,
+    "Los Angeles Dodgers": 37.5,
+    "San Diego Padres": 5.6
    },
-   "fetchedAt": "2026-10-06T19:22:43+00:00",
+   "fetchedAt": "2026-10-07T19:48:14+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
    "data": [
     {
-     "ticker": "KXWNBA-26-ATL",
-     "name": "Atlanta",
-     "price": 34.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 139817.15,
-      "latestOI": 609450.48,
-      "oiChange": 32583.56999999995,
-      "oiSeries": [
-       576866.91,
-       581880.82,
-       596704.9,
-       604350.37,
-       607262.43,
-       610695.27,
-       609450.48
-      ]
-     }
-    },
-    {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 32.0,
+     "price": 33.0,
      "depth": null,
      "flow": {
-      "totalVolume": 208381.44,
-      "latestOI": 631511.01,
-      "oiChange": 65404.44999999995,
+      "totalVolume": 189230.25,
+      "latestOI": 624377.68,
+      "oiChange": 41443.26000000001,
       "oiSeries": [
-       566106.56,
        582934.42,
        591707.93,
        623171.11,
        622605.11,
        628859.93,
-       631511.01
+       631511.01,
+       624377.68
+      ]
+     }
+    },
+    {
+     "ticker": "KXWNBA-26-ATL",
+     "name": "Atlanta",
+     "price": 33.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 69278.95999999999,
+      "latestOI": 612761.48,
+      "oiChange": 30880.660000000033,
+      "oiSeries": [
+       581880.82,
+       596704.9,
+       604350.37,
+       607262.43,
+       610695.27,
+       609450.48,
+       612761.48
       ]
      }
     },
     {
      "ticker": "KXWNBA-26-LV",
      "name": "Las Vegas",
-     "price": 22.0,
+     "price": 20.0,
      "depth": null,
      "flow": {
-      "totalVolume": 219566.66999999998,
-      "latestOI": 470842.05,
-      "oiChange": 53505.149999999965,
+      "totalVolume": 209777.9,
+      "latestOI": 471501.19,
+      "oiChange": 47580.22999999998,
       "oiSeries": [
-       417336.9,
        423920.96,
        423066.05,
        457883.58,
        473948.61,
        484180.25,
-       470842.05
+       470842.05,
+       471501.19
       ]
      }
     }
    ],
-   "fetchedAt": "2026-10-06T19:22:43+00:00",
+   "fetchedAt": "2026-10-07T19:48:14+00:00",
    "stale": false
   }
  }
