@@ -4097,51 +4097,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401858254,
-      "homeTeam": "Louisville",
-      "awayTeam": "Florida State",
-      "predictedMargin": 12.5,
-      "predictedTotal": 54.5,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858487,
-      "homeTeam": "Washington",
-      "awayTeam": "Iowa",
-      "predictedMargin": 10.7,
-      "predictedTotal": 46.5,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401864519,
-      "homeTeam": "San Jos\u00e9 State",
-      "awayTeam": "Wyoming",
-      "predictedMargin": 8.1,
-      "predictedTotal": 45.7,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401860922,
-      "homeTeam": "Utah State",
-      "awayTeam": "Washington State",
-      "predictedMargin": 15.8,
-      "predictedTotal": 49.0,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856826,
-      "homeTeam": "BYU",
-      "awayTeam": "Iowa State",
-      "predictedMargin": 19.8,
-      "predictedTotal": 49.0,
-      "snapshotDate": "2026-09-19"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401856827,
       "homeTeam": "Utah",
       "awayTeam": "Kansas",
@@ -32601,18 +32556,128 @@
       "hit": false,
       "snapshotDate": "2026-09-19",
       "gradedDate": "2026-10-09"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Florida State @ Louisville",
+      "stat": "spread",
+      "line": 12.5,
+      "actual": 24,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Florida State @ Louisville",
+      "stat": "total",
+      "line": 54.5,
+      "actual": 64,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Iowa @ Washington",
+      "stat": "spread",
+      "line": 10.7,
+      "actual": -17,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Iowa @ Washington",
+      "stat": "total",
+      "line": 46.5,
+      "actual": 65,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Wyoming @ San Jos\u00e9 State",
+      "stat": "spread",
+      "line": 8.1,
+      "actual": -3,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Wyoming @ San Jos\u00e9 State",
+      "stat": "total",
+      "line": 45.7,
+      "actual": 29,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Washington State @ Utah State",
+      "stat": "spread",
+      "line": 15.8,
+      "actual": 1,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Washington State @ Utah State",
+      "stat": "total",
+      "line": 49.0,
+      "actual": 33,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Iowa State @ BYU",
+      "stat": "spread",
+      "line": 19.8,
+      "actual": 14,
+      "hit": true,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Iowa State @ BYU",
+      "stat": "total",
+      "line": 49.0,
+      "actual": 34,
+      "hit": false,
+      "snapshotDate": "2026-09-19",
+      "gradedDate": "2026-10-10"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 189,
-      "hits": 136,
-      "rate": 72.0
+      "graded": 194,
+      "hits": 139,
+      "rate": 71.6
     },
     "cfb_total": {
-      "graded": 189,
+      "graded": 194,
       "hits": 30,
-      "rate": 15.9
+      "rate": 15.5
     },
     "nfl_p25": {
       "graded": 573,
