@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-10T08:08:40+00:00",
+ "lastRun": "2026-10-10T18:16:48+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 30.0
+       "pct": 47.0
       },
       {
        "name": "Chris Olave",
@@ -33,12 +33,12 @@
        "pct": 17.0
       },
       {
-       "name": "Jared Goff",
+       "name": "Patrick Mahomes",
        "pct": 14.0
       },
       {
-       "name": "Brock Purdy",
-       "pct": 13.0
+       "name": "Jared Goff",
+       "pct": 14.0
       }
      ],
      "totalMarkets": 28
@@ -64,36 +64,34 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-10T08:08:40+00:00",
+   "fetchedAt": "2026-10-10T18:16:48+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "New York": 1.0,
-    "Las Vegas": 1.0,
-    "Golden State": 55.0,
-    "Atlanta": 45.0
+    "Golden State": 53.0,
+    "Atlanta": 49.0
    },
-   "fetchedAt": "2026-10-10T08:08:40+00:00",
+   "fetchedAt": "2026-10-10T18:16:48+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 47.5,
-    "Golden State": 53.1
+    "Golden State": 50.3
    },
-   "fetchedAt": "2026-10-10T08:08:40+00:00",
+   "fetchedAt": "2026-10-10T18:16:48+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Tampa Bay Rays": 23.2,
-    "Cleveland Guardians": 6.1,
+    "Cleveland Guardians": 6.2,
     "Chicago White Sox": 4.7,
-    "Milwaukee Brewers": 24.1,
-    "Los Angeles Dodgers": 42.5
+    "Milwaukee Brewers": 23.9,
+    "Los Angeles Dodgers": 43.0
    },
-   "fetchedAt": "2026-10-10T08:08:40+00:00",
+   "fetchedAt": "2026-10-10T18:16:48+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -101,7 +99,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 55.0,
+     "price": 53.0,
      "depth": null,
      "flow": {
       "totalVolume": 197713.44,
@@ -121,7 +119,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 45.0,
+     "price": 49.0,
      "depth": null,
      "flow": {
       "totalVolume": 176959.93,
@@ -139,7 +137,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-10T08:08:40+00:00",
+   "fetchedAt": "2026-10-10T18:16:48+00:00",
    "stale": false
   }
  }
