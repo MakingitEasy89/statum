@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-11T19:47:54+00:00",
+ "lastRun": "2026-10-11T22:44:13+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 37.0
+       "pct": 64.0
       },
       {
        "name": "Chris Olave",
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
+       "name": "Brock Purdy",
+       "pct": 15.0
+      },
+      {
        "name": "Jared Goff",
        "pct": 14.0
       },
       {
        "name": "Matthew Stafford",
        "pct": 11.0
-      },
-      {
-       "name": "Bryce Young",
-       "pct": 10.0
       }
      ],
      "totalMarkets": 28
@@ -64,23 +64,23 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-11T19:47:54+00:00",
+   "fetchedAt": "2026-10-11T22:44:13+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 51.0,
+    "Golden State": 52.0,
     "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-11T19:47:54+00:00",
+   "fetchedAt": "2026-10-11T22:44:13+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 47.5,
-    "Golden State": 52.4
+    "Golden State": 52.1
    },
-   "fetchedAt": "2026-10-11T19:47:54+00:00",
+   "fetchedAt": "2026-10-11T22:44:13+00:00",
    "stale": false
   },
   "mlbChampPoly": {
@@ -88,9 +88,9 @@
     "Tampa Bay Rays": 22.2,
     "Cleveland Guardians": 9.4,
     "Milwaukee Brewers": 25.7,
-    "Los Angeles Dodgers": 43.0
+    "Los Angeles Dodgers": 43.5
    },
-   "fetchedAt": "2026-10-11T19:47:54+00:00",
+   "fetchedAt": "2026-10-11T22:44:13+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -98,7 +98,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 51.0,
+     "price": 52.0,
      "depth": null,
      "flow": {
       "totalVolume": 242202.48,
@@ -136,7 +136,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-11T19:47:54+00:00",
+   "fetchedAt": "2026-10-11T22:44:13+00:00",
    "stale": false
   }
  }
