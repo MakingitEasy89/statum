@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-11T08:20:29+00:00",
+ "lastRun": "2026-10-11T18:40:45+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
+       "name": "Patrick Mahomes",
+       "pct": 17.0
+      },
+      {
        "name": "Jared Goff",
        "pct": 14.0
       },
       {
        "name": "Bryce Young",
        "pct": 14.0
-      },
-      {
-       "name": "Tyler Shough",
-       "pct": 9.0
       }
      ],
      "totalMarkets": 28
@@ -64,7 +64,7 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-11T08:20:29+00:00",
+   "fetchedAt": "2026-10-11T18:40:45+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -72,7 +72,7 @@
     "Golden State": 52.0,
     "Atlanta": 49.0
    },
-   "fetchedAt": "2026-10-11T08:20:29+00:00",
+   "fetchedAt": "2026-10-11T18:40:45+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
@@ -80,17 +80,17 @@
     "Atlanta": 47.5,
     "Golden State": 52.4
    },
-   "fetchedAt": "2026-10-11T08:20:29+00:00",
+   "fetchedAt": "2026-10-11T18:40:45+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 21.5,
-    "Cleveland Guardians": 10.4,
-    "Milwaukee Brewers": 25.9,
-    "Los Angeles Dodgers": 43.5
+    "Tampa Bay Rays": 22.2,
+    "Cleveland Guardians": 8.6,
+    "Milwaukee Brewers": 25.5,
+    "Los Angeles Dodgers": 43.0
    },
-   "fetchedAt": "2026-10-11T08:20:29+00:00",
+   "fetchedAt": "2026-10-11T18:40:45+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -136,7 +136,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-11T08:20:29+00:00",
+   "fetchedAt": "2026-10-11T18:40:45+00:00",
    "stale": false
   }
  }

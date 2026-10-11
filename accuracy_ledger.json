@@ -9424,6 +9424,87 @@
       "predictedMargin": -0.2,
       "predictedTotal": 51.8,
       "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858516,
+      "homeTeam": "Washington",
+      "awayTeam": "Penn State",
+      "predictedMargin": 11.5,
+      "predictedTotal": 51.6,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856856,
+      "homeTeam": "Texas Tech",
+      "awayTeam": "West Virginia",
+      "predictedMargin": 44.3,
+      "predictedTotal": 55.3,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862822,
+      "homeTeam": "Tulane",
+      "awayTeam": "Tulsa",
+      "predictedMargin": 17.4,
+      "predictedTotal": 50.2,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856738,
+      "homeTeam": "Auburn",
+      "awayTeam": "Arkansas",
+      "predictedMargin": 20.8,
+      "predictedTotal": 53.9,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858512,
+      "homeTeam": "Minnesota",
+      "awayTeam": "UCLA",
+      "predictedMargin": 18.3,
+      "predictedTotal": 50.7,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869927,
+      "homeTeam": "App State",
+      "awayTeam": "Georgia State",
+      "predictedMargin": 17.6,
+      "predictedTotal": 55.4,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871098,
+      "homeTeam": "Troy",
+      "awayTeam": "Louisiana Tech",
+      "predictedMargin": 6.3,
+      "predictedTotal": 51.6,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858517,
+      "homeTeam": "Wisconsin",
+      "awayTeam": "Rutgers",
+      "predictedMargin": 12.6,
+      "predictedTotal": 49.8,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862821,
+      "homeTeam": "North Texas",
+      "awayTeam": "Rice",
+      "predictedMargin": 41.0,
+      "predictedTotal": 59.9,
+      "snapshotDate": "2026-10-11"
     }
   ],
   "graded": [
