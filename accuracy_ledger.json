@@ -9505,6 +9505,60 @@
       "predictedMargin": 41.0,
       "predictedTotal": 59.9,
       "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864532,
+      "homeTeam": "UTEP",
+      "awayTeam": "Hawai'i",
+      "predictedMargin": -1.4,
+      "predictedTotal": 51.5,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858286,
+      "homeTeam": "NC State",
+      "awayTeam": "Duke",
+      "predictedMargin": 4.9,
+      "predictedTotal": 59.1,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856743,
+      "homeTeam": "Missouri",
+      "awayTeam": "Texas",
+      "predictedMargin": 14.6,
+      "predictedTotal": 50.5,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856739,
+      "homeTeam": "Florida",
+      "awayTeam": "Oklahoma",
+      "predictedMargin": 3.7,
+      "predictedTotal": 47.2,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856744,
+      "homeTeam": "South Carolina",
+      "awayTeam": "Texas A&M",
+      "predictedMargin": 3.8,
+      "predictedTotal": 52.8,
+      "snapshotDate": "2026-10-11"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856852,
+      "homeTeam": "Arizona State",
+      "awayTeam": "Colorado",
+      "predictedMargin": 22.9,
+      "predictedTotal": 50.3,
+      "snapshotDate": "2026-10-11"
     }
   ],
   "graded": [
