@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-12T08:37:51+00:00",
+ "lastRun": "2026-10-12T22:02:31+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 64.0
+       "pct": 33.0
       },
       {
        "name": "Chris Olave",
-       "pct": 15.0
+       "pct": 14.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 14.0
+       "pct": 13.0
       }
      ],
      "totalMarkets": 27
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "Brock Purdy",
-       "pct": 20.0
-      },
-      {
-       "name": "Drake Maye",
-       "pct": 15.0
+       "name": "Dak Prescott",
+       "pct": 21.0
       },
       {
        "name": "Jared Goff",
-       "pct": 12.0
+       "pct": 18.0
+      },
+      {
+       "name": "Matthew Stafford",
+       "pct": 14.0
       }
      ],
      "totalMarkets": 28
@@ -64,33 +64,33 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-12T08:37:51+00:00",
+   "fetchedAt": "2026-10-12T22:02:31+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 51.0,
+    "Golden State": 52.0,
     "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-12T08:37:51+00:00",
+   "fetchedAt": "2026-10-12T22:02:31+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 45.5,
-    "Golden State": 53.3
+    "Golden State": 52.7
    },
-   "fetchedAt": "2026-10-12T08:37:51+00:00",
+   "fetchedAt": "2026-10-12T22:02:31+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 22.4,
-    "Cleveland Guardians": 9.8,
-    "Milwaukee Brewers": 33.2,
-    "Los Angeles Dodgers": 34.5
+    "Tampa Bay Rays": 24.0,
+    "Cleveland Guardians": 8.9,
+    "Milwaukee Brewers": 27.9,
+    "Los Angeles Dodgers": 39.5
    },
-   "fetchedAt": "2026-10-12T08:37:51+00:00",
+   "fetchedAt": "2026-10-12T22:02:31+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -101,17 +101,17 @@
      "price": 52.0,
      "depth": null,
      "flow": {
-      "totalVolume": 242202.48,
-      "latestOI": 689002.46,
-      "oiChange": 60142.52999999991,
+      "totalVolume": 241370.4,
+      "latestOI": 697657.77,
+      "oiChange": 66146.76000000001,
       "oiSeries": [
-       628859.93,
        631511.01,
        624377.68,
        641990.32,
        649271.91,
        669768.2,
-       689002.46
+       689002.46,
+       697657.77
       ]
      }
     },
@@ -121,23 +121,23 @@
      "price": 48.0,
      "depth": null,
      "flow": {
-      "totalVolume": 191001.76,
-      "latestOI": 682439.92,
-      "oiChange": 71744.65000000002,
+      "totalVolume": 183088.93,
+      "latestOI": 683946.97,
+      "oiChange": 74496.48999999999,
       "oiSeries": [
-       610695.27,
        609450.48,
        612761.48,
        673713.03,
        674561.51,
        677510.21,
-       682439.92
+       682439.92,
+       683946.97
       ]
      }
     }
    ],
-   "fetchedAt": "2026-10-12T02:11:27+00:00",
-   "stale": true
+   "fetchedAt": "2026-10-12T22:02:31+00:00",
+   "stale": false
   }
  }
 }

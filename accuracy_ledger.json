@@ -9616,6 +9616,15 @@
       "p75": 324.0,
       "gamelogLenAtSnapshot": 26,
       "snapshotDate": "2026-10-12"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856851,
+      "homeTeam": "Houston",
+      "awayTeam": "Cincinnati",
+      "predictedMargin": 14.8,
+      "predictedTotal": 55.0,
+      "snapshotDate": "2026-10-12"
     }
   ],
   "graded": [
