@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-11T22:44:13+00:00",
+ "lastRun": "2026-10-12T00:43:52+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
+       "name": "Drake Maye",
+       "pct": 15.0
+      },
+      {
        "name": "Brock Purdy",
        "pct": 15.0
       },
       {
        "name": "Jared Goff",
-       "pct": 14.0
-      },
-      {
-       "name": "Matthew Stafford",
-       "pct": 11.0
+       "pct": 12.0
       }
      ],
      "totalMarkets": 28
@@ -64,7 +64,7 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-11T22:44:13+00:00",
+   "fetchedAt": "2026-10-12T00:43:52+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -72,25 +72,25 @@
     "Golden State": 52.0,
     "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-11T22:44:13+00:00",
+   "fetchedAt": "2026-10-12T00:43:52+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 47.5,
-    "Golden State": 52.1
+    "Golden State": 52.0
    },
-   "fetchedAt": "2026-10-11T22:44:13+00:00",
+   "fetchedAt": "2026-10-12T00:43:52+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 22.2,
-    "Cleveland Guardians": 9.4,
-    "Milwaukee Brewers": 25.7,
-    "Los Angeles Dodgers": 43.5
+    "Tampa Bay Rays": 22.3,
+    "Cleveland Guardians": 8.8,
+    "Milwaukee Brewers": 25.3,
+    "Los Angeles Dodgers": 43.0
    },
-   "fetchedAt": "2026-10-11T22:44:13+00:00",
+   "fetchedAt": "2026-10-12T00:43:52+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -136,7 +136,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-11T22:44:13+00:00",
+   "fetchedAt": "2026-10-12T00:43:52+00:00",
    "stale": false
   }
  }
