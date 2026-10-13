@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-13T08:58:33+00:00",
+ "lastRun": "2026-10-13T20:08:34+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -13,12 +13,12 @@
        "pct": 45.0
       },
       {
-       "name": "Chris Olave",
-       "pct": 23.0
+       "name": "CeeDee Lamb",
+       "pct": 18.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 17.0
+       "name": "Chris Olave",
+       "pct": 14.0
       }
      ],
      "totalMarkets": 27
@@ -37,7 +37,7 @@
        "pct": 20.0
       },
       {
-       "name": "Jordan Love",
+       "name": "Dak Prescott",
        "pct": 13.0
       }
      ],
@@ -64,33 +64,33 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-13T08:58:33+00:00",
+   "fetchedAt": "2026-10-13T20:08:34+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Golden State": 52.0,
-    "Atlanta": 49.0
+    "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-13T08:58:33+00:00",
+   "fetchedAt": "2026-10-13T20:08:34+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 46.5,
-    "Golden State": 52.5
+    "Golden State": 52.8
    },
-   "fetchedAt": "2026-10-13T08:58:33+00:00",
+   "fetchedAt": "2026-10-13T20:08:34+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 16.7,
-    "Cleveland Guardians": 15.8,
-    "Milwaukee Brewers": 45.5,
+    "Tampa Bay Rays": 17.3,
+    "Cleveland Guardians": 16.8,
+    "Milwaukee Brewers": 44.9,
     "Los Angeles Dodgers": 21.5
    },
-   "fetchedAt": "2026-10-13T08:58:33+00:00",
+   "fetchedAt": "2026-10-13T20:08:34+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -98,7 +98,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 49.0,
+     "price": 48.0,
      "depth": null,
      "flow": {
       "totalVolume": 182093.58000000002,
@@ -116,7 +116,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-13T08:58:33+00:00",
+   "fetchedAt": "2026-10-13T20:08:34+00:00",
    "stale": false
   }
  }
