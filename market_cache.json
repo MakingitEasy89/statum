@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-12T22:02:31+00:00",
+ "lastRun": "2026-10-13T02:42:37+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 33.0
+       "pct": 40.0
       },
       {
        "name": "Chris Olave",
-       "pct": 14.0
+       "pct": 17.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 13.0
+       "pct": 17.0
       }
      ],
      "totalMarkets": 27
@@ -34,7 +34,7 @@
       },
       {
        "name": "Jared Goff",
-       "pct": 18.0
+       "pct": 17.0
       },
       {
        "name": "Matthew Stafford",
@@ -64,33 +64,33 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-12T22:02:31+00:00",
+   "fetchedAt": "2026-10-13T02:42:37+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 52.0,
-    "Atlanta": 48.0
+    "Golden State": 51.0,
+    "Atlanta": 49.0
    },
-   "fetchedAt": "2026-10-12T22:02:31+00:00",
+   "fetchedAt": "2026-10-13T02:42:37+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 45.5,
-    "Golden State": 52.7
+    "Golden State": 52.5
    },
-   "fetchedAt": "2026-10-12T22:02:31+00:00",
+   "fetchedAt": "2026-10-13T02:42:37+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 24.0,
-    "Cleveland Guardians": 8.9,
-    "Milwaukee Brewers": 27.9,
-    "Los Angeles Dodgers": 39.5
+    "Tampa Bay Rays": 19.2,
+    "Cleveland Guardians": 13.9,
+    "Milwaukee Brewers": 43.9,
+    "Los Angeles Dodgers": 21.5
    },
-   "fetchedAt": "2026-10-12T22:02:31+00:00",
+   "fetchedAt": "2026-10-13T02:42:37+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -137,7 +137,7 @@
     }
    ],
    "fetchedAt": "2026-10-12T22:02:31+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
