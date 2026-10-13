@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-13T02:42:37+00:00",
+ "lastRun": "2026-10-13T03:11:50+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -13,12 +13,12 @@
        "pct": 40.0
       },
       {
-       "name": "Chris Olave",
+       "name": "CeeDee Lamb",
        "pct": 17.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 17.0
+       "name": "Chris Olave",
+       "pct": 13.0
       }
      ],
      "totalMarkets": 27
@@ -64,15 +64,15 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-13T02:42:37+00:00",
+   "fetchedAt": "2026-10-13T03:11:50+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 51.0,
-    "Atlanta": 49.0
+    "Golden State": 52.0,
+    "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-13T02:42:37+00:00",
+   "fetchedAt": "2026-10-13T03:11:50+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
@@ -80,17 +80,17 @@
     "Atlanta": 45.5,
     "Golden State": 52.5
    },
-   "fetchedAt": "2026-10-13T02:42:37+00:00",
+   "fetchedAt": "2026-10-13T03:11:50+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 19.2,
-    "Cleveland Guardians": 13.9,
-    "Milwaukee Brewers": 43.9,
-    "Los Angeles Dodgers": 21.5
+    "Tampa Bay Rays": 16.9,
+    "Cleveland Guardians": 14.0,
+    "Milwaukee Brewers": 43.4,
+    "Los Angeles Dodgers": 22.0
    },
-   "fetchedAt": "2026-10-13T02:42:37+00:00",
+   "fetchedAt": "2026-10-13T03:11:50+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -136,8 +136,8 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-12T22:02:31+00:00",
-   "stale": true
+   "fetchedAt": "2026-10-13T03:11:50+00:00",
+   "stale": false
   }
  }
 }
