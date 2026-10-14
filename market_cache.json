@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-13T20:08:34+00:00",
+ "lastRun": "2026-10-14T07:08:03+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 45.0
+       "pct": 43.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 18.0
+       "pct": 21.0
       },
       {
        "name": "Chris Olave",
-       "pct": 14.0
+       "pct": 11.0
       }
      ],
      "totalMarkets": 27
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "Jared Goff",
-       "pct": 41.0
-      },
-      {
        "name": "Matthew Stafford",
        "pct": 20.0
       },
       {
+       "name": "Jared Goff",
+       "pct": 18.0
+      },
+      {
        "name": "Dak Prescott",
-       "pct": 13.0
+       "pct": 14.0
       }
      ],
      "totalMarkets": 28
@@ -64,33 +64,33 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-13T20:08:34+00:00",
+   "fetchedAt": "2026-10-14T07:08:03+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Golden State": 52.0,
-    "Atlanta": 48.0
+    "Atlanta": 49.0
    },
-   "fetchedAt": "2026-10-13T20:08:34+00:00",
+   "fetchedAt": "2026-10-14T07:08:03+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 46.5,
+    "Atlanta": 46.0,
     "Golden State": 52.8
    },
-   "fetchedAt": "2026-10-13T20:08:34+00:00",
+   "fetchedAt": "2026-10-14T07:08:03+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 17.3,
-    "Cleveland Guardians": 16.8,
-    "Milwaukee Brewers": 44.9,
+    "Tampa Bay Rays": 22.4,
+    "Cleveland Guardians": 13.0,
+    "Milwaukee Brewers": 43.2,
     "Los Angeles Dodgers": 21.5
    },
-   "fetchedAt": "2026-10-13T20:08:34+00:00",
+   "fetchedAt": "2026-10-14T07:08:03+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -117,7 +117,7 @@
     }
    ],
    "fetchedAt": "2026-10-13T20:08:34+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }

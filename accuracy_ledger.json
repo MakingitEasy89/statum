@@ -4017,24 +4017,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871067,
-      "homeTeam": "Middle Tennessee",
-      "awayTeam": "Delaware",
-      "predictedMargin": 7.5,
-      "predictedTotal": 56.2,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871053,
-      "homeTeam": "Jacksonville State",
-      "awayTeam": "Florida International",
-      "predictedMargin": 14.6,
-      "predictedTotal": 53.7,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401871054,
       "homeTeam": "Missouri State",
       "awayTeam": "Kennesaw State",
@@ -41406,18 +41388,62 @@
       "hit": false,
       "snapshotDate": "2026-10-04",
       "gradedDate": "2026-10-13"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Delaware @ Middle Tennessee",
+      "stat": "spread",
+      "line": 7.5,
+      "actual": 3,
+      "hit": true,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Delaware @ Middle Tennessee",
+      "stat": "total",
+      "line": 56.2,
+      "actual": 63,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Florida International @ Jacksonville State",
+      "stat": "spread",
+      "line": 14.6,
+      "actual": 3,
+      "hit": true,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Florida International @ Jacksonville State",
+      "stat": "total",
+      "line": 53.7,
+      "actual": 51,
+      "hit": true,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-14"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 240,
-      "hits": 166,
-      "rate": 69.2
+      "graded": 242,
+      "hits": 168,
+      "rate": 69.4
     },
     "cfb_total": {
-      "graded": 240,
-      "hits": 35,
-      "rate": 14.6
+      "graded": 242,
+      "hits": 36,
+      "rate": 14.9
     },
     "nfl_p25": {
       "graded": 803,
