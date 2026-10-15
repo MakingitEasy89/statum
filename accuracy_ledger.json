@@ -4017,24 +4017,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871054,
-      "homeTeam": "Missouri State",
-      "awayTeam": "Kennesaw State",
-      "predictedMargin": 5.3,
-      "predictedTotal": 52.9,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871068,
-      "homeTeam": "Sam Houston",
-      "awayTeam": "Western Kentucky",
-      "predictedMargin": 2.8,
-      "predictedTotal": 54.7,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401862800,
       "homeTeam": "UAB",
       "awayTeam": "East Carolina",
@@ -41432,18 +41414,62 @@
       "hit": true,
       "snapshotDate": "2026-09-20",
       "gradedDate": "2026-10-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Kennesaw State @ Missouri State",
+      "stat": "spread",
+      "line": 5.3,
+      "actual": 3,
+      "hit": true,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-15"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Kennesaw State @ Missouri State",
+      "stat": "total",
+      "line": 52.9,
+      "actual": 45,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-15"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Western Kentucky @ Sam Houston",
+      "stat": "spread",
+      "line": 2.8,
+      "actual": -13,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-15"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Western Kentucky @ Sam Houston",
+      "stat": "total",
+      "line": 54.7,
+      "actual": 19,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-15"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 242,
-      "hits": 168,
-      "rate": 69.4
+      "graded": 244,
+      "hits": 169,
+      "rate": 69.3
     },
     "cfb_total": {
-      "graded": 242,
+      "graded": 244,
       "hits": 36,
-      "rate": 14.9
+      "rate": 14.8
     },
     "nfl_p25": {
       "graded": 803,
