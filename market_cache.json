@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-15T07:00:55+00:00",
+ "lastRun": "2026-10-15T18:04:07+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 41.0
-      },
-      {
-       "name": "CeeDee Lamb",
-       "pct": 15.0
+       "pct": 42.0
       },
       {
        "name": "Chris Olave",
-       "pct": 12.0
+       "pct": 16.0
+      },
+      {
+       "name": "CeeDee Lamb",
+       "pct": 16.0
       }
      ],
      "totalMarkets": 27
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Matthew Stafford",
-       "pct": 22.0
+       "pct": 28.0
       },
       {
        "name": "Jared Goff",
-       "pct": 20.0
+       "pct": 17.0
       },
       {
-       "name": "Dak Prescott",
-       "pct": 13.0
+       "name": "Jordan Love",
+       "pct": 10.0
       }
      ],
      "totalMarkets": 28
@@ -49,48 +49,48 @@
      "ticker": "KXLEADERNFLINT",
      "options": [
       {
-       "name": "Derek Stingley Jr.",
-       "pct": 14.0
-      },
-      {
        "name": "Xavier Watts",
        "pct": 9.0
       },
       {
        "name": "Kevin Byard III",
        "pct": 9.0
+      },
+      {
+       "name": "Kyle Hamilton",
+       "pct": 8.0
       }
      ],
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-15T07:00:55+00:00",
+   "fetchedAt": "2026-10-15T18:04:07+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Golden State": 53.0,
-    "Atlanta": 47.0
+    "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-15T07:00:55+00:00",
+   "fetchedAt": "2026-10-15T18:04:07+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 46.0,
-    "Golden State": 52.6
+    "Golden State": 52.7
    },
-   "fetchedAt": "2026-10-15T07:00:55+00:00",
+   "fetchedAt": "2026-10-15T18:04:07+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 23.2,
-    "Cleveland Guardians": 13.0,
-    "Milwaukee Brewers": 56.9,
+    "Tampa Bay Rays": 21.1,
+    "Cleveland Guardians": 14.6,
+    "Milwaukee Brewers": 56.4,
     "Los Angeles Dodgers": 6.5
    },
-   "fetchedAt": "2026-10-15T07:00:55+00:00",
+   "fetchedAt": "2026-10-15T18:04:07+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -118,7 +118,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 47.0,
+     "price": 48.0,
      "depth": null,
      "flow": {
       "totalVolume": 54980.71,
@@ -136,7 +136,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-15T07:00:55+00:00",
+   "fetchedAt": "2026-10-15T18:04:07+00:00",
    "stale": false
   }
  }
