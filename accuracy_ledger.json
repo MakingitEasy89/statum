@@ -4017,33 +4017,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401862800,
-      "homeTeam": "UAB",
-      "awayTeam": "East Carolina",
-      "predictedMargin": -6.4,
-      "predictedTotal": 57.1,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401869950,
-      "homeTeam": "Old Dominion",
-      "awayTeam": "Georgia Southern",
-      "predictedMargin": 27.1,
-      "predictedTotal": 54.2,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401860923,
-      "homeTeam": "Texas State",
-      "awayTeam": "Colorado State",
-      "predictedMargin": 21.2,
-      "predictedTotal": 59.8,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401862801,
       "homeTeam": "Tulane",
       "awayTeam": "Memphis",
@@ -8733,26 +8706,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Jaxon Smith-Njigba",
-      "stat": "Receptions",
-      "p25": 4.0,
-      "p50": 5.0,
-      "p75": 8.0,
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jaxon Smith-Njigba",
-      "stat": "Receiving Yards",
-      "p25": 39.0,
-      "p50": 69.0,
-      "p75": 83.0,
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
       "player": "Amon-Ra St. Brown",
       "stat": "Receptions",
       "p25": 5.0,
@@ -8788,46 +8741,6 @@
       "p25": 47.0,
       "p50": 68.0,
       "p75": 96.0,
-      "gamelogLenAtSnapshot": 38,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Courtland Sutton",
-      "stat": "Receptions",
-      "p25": 4.0,
-      "p50": 5.0,
-      "p75": 7.0,
-      "gamelogLenAtSnapshot": 41,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Courtland Sutton",
-      "stat": "Receiving Yards",
-      "p25": 50.0,
-      "p50": 68.0,
-      "p75": 97.0,
-      "gamelogLenAtSnapshot": 41,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Cooper Kupp",
-      "stat": "Receptions",
-      "p25": 3.0,
-      "p50": 5.0,
-      "p75": 6.0,
-      "gamelogLenAtSnapshot": 38,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Cooper Kupp",
-      "stat": "Receiving Yards",
-      "p25": 29.0,
-      "p50": 55.0,
-      "p75": 89.0,
       "gamelogLenAtSnapshot": 38,
       "snapshotDate": "2026-10-12"
     },
@@ -8869,16 +8782,6 @@
       "p50": 58.0,
       "p75": 80.0,
       "gamelogLenAtSnapshot": 38,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jaylen Waddle",
-      "stat": "Receiving Yards",
-      "p25": 31.0,
-      "p50": 44.0,
-      "p75": 56.0,
-      "gamelogLenAtSnapshot": 36,
       "snapshotDate": "2026-10-12"
     },
     {
@@ -8973,26 +8876,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Evan Engram",
-      "stat": "Receptions",
-      "p25": 4.0,
-      "p50": 5.0,
-      "p75": 6.0,
-      "gamelogLenAtSnapshot": 32,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Evan Engram",
-      "stat": "Receiving Yards",
-      "p25": 33.0,
-      "p50": 36.0,
-      "p75": 41.0,
-      "gamelogLenAtSnapshot": 32,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
       "player": "Sam LaPorta",
       "stat": "Receptions",
       "p25": 2.0,
@@ -9009,16 +8892,6 @@
       "p50": 48.0,
       "p75": 54.0,
       "gamelogLenAtSnapshot": 31,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Marvin Mims Jr.",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 2.0,
-      "p75": 3.0,
-      "gamelogLenAtSnapshot": 36,
       "snapshotDate": "2026-10-12"
     },
     {
@@ -9049,36 +8922,6 @@
       "p50": 2.0,
       "p75": 3.0,
       "gamelogLenAtSnapshot": 25,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "J.K. Dobbins",
-      "stat": "Rush Attempts",
-      "p25": 11.0,
-      "p50": 14.0,
-      "p75": 17.0,
-      "gamelogLenAtSnapshot": 29,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "J.K. Dobbins",
-      "stat": "Rush Yards",
-      "p25": 41.0,
-      "p50": 56.0,
-      "p75": 82.0,
-      "gamelogLenAtSnapshot": 29,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Emanuel Wilson",
-      "stat": "Rush Attempts",
-      "p25": 3.0,
-      "p50": 5.0,
-      "p75": 7.0,
-      "gamelogLenAtSnapshot": 40,
       "snapshotDate": "2026-10-12"
     },
     {
@@ -9149,26 +8992,6 @@
       "p50": 281.0,
       "p75": 311.0,
       "gamelogLenAtSnapshot": 40,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Sam Darnold",
-      "stat": "Passing Yards",
-      "p25": 232.0,
-      "p50": 245.0,
-      "p75": 273.0,
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-10-12"
-    },
-    {
-      "sport": "nfl",
-      "player": "Bo Nix",
-      "stat": "Passing Yards",
-      "p25": 174.0,
-      "p50": 217.0,
-      "p75": 270.0,
-      "gamelogLenAtSnapshot": 41,
       "snapshotDate": "2026-10-12"
     },
     {
@@ -9589,6 +9412,156 @@
       "p75": 276.0,
       "gamelogLenAtSnapshot": 42,
       "snapshotDate": "2026-10-13"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receiving Yards",
+      "p25": 39.0,
+      "p50": 69.0,
+      "p75": 83.0,
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Courtland Sutton",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 42,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Courtland Sutton",
+      "stat": "Receiving Yards",
+      "p25": 50.0,
+      "p50": 68.0,
+      "p75": 97.0,
+      "gamelogLenAtSnapshot": 42,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cooper Kupp",
+      "stat": "Receptions",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 39,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cooper Kupp",
+      "stat": "Receiving Yards",
+      "p25": 29.0,
+      "p50": 55.0,
+      "p75": 89.0,
+      "gamelogLenAtSnapshot": 39,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jaylen Waddle",
+      "stat": "Receiving Yards",
+      "p25": 31.0,
+      "p50": 44.0,
+      "p75": 56.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Evan Engram",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Evan Engram",
+      "stat": "Receiving Yards",
+      "p25": 33.0,
+      "p50": 36.0,
+      "p75": 41.0,
+      "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Marvin Mims Jr.",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Attempts",
+      "p25": 11.0,
+      "p50": 14.0,
+      "p75": 17.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Yards",
+      "p25": 41.0,
+      "p50": 56.0,
+      "p75": 82.0,
+      "gamelogLenAtSnapshot": 30,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Emanuel Wilson",
+      "stat": "Rush Attempts",
+      "p25": 3.0,
+      "p50": 5.0,
+      "p75": 7.0,
+      "gamelogLenAtSnapshot": 41,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam Darnold",
+      "stat": "Passing Yards",
+      "p25": 232.0,
+      "p50": 245.0,
+      "p75": 273.0,
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bo Nix",
+      "stat": "Passing Yards",
+      "p25": 174.0,
+      "p50": 217.0,
+      "p75": 270.0,
+      "gamelogLenAtSnapshot": 42,
+      "snapshotDate": "2026-10-16"
     }
   ],
   "graded": [
@@ -41458,33 +41431,594 @@
       "hit": false,
       "snapshotDate": "2026-09-20",
       "gradedDate": "2026-10-15"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 12.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 12.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receptions",
+      "line": 8.0,
+      "actual": 12.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receiving Yards",
+      "line": 39.0,
+      "actual": 134.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receiving Yards",
+      "line": 69.0,
+      "actual": 134.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jaxon Smith-Njigba",
+      "stat": "Receiving Yards",
+      "line": 83.0,
+      "actual": 134.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Courtland Sutton",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Courtland Sutton",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Courtland Sutton",
+      "stat": "Receptions",
+      "line": 7.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Courtland Sutton",
+      "stat": "Receiving Yards",
+      "line": 50.0,
+      "actual": 19.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Courtland Sutton",
+      "stat": "Receiving Yards",
+      "line": 68.0,
+      "actual": 19.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Courtland Sutton",
+      "stat": "Receiving Yards",
+      "line": 97.0,
+      "actual": 19.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Cooper Kupp",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Cooper Kupp",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Cooper Kupp",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 5.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Cooper Kupp",
+      "stat": "Receiving Yards",
+      "line": 29.0,
+      "actual": 50.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Cooper Kupp",
+      "stat": "Receiving Yards",
+      "line": 55.0,
+      "actual": 50.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Cooper Kupp",
+      "stat": "Receiving Yards",
+      "line": 89.0,
+      "actual": 50.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jaylen Waddle",
+      "stat": "Receiving Yards",
+      "line": 31.0,
+      "actual": 24.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jaylen Waddle",
+      "stat": "Receiving Yards",
+      "line": 44.0,
+      "actual": 24.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jaylen Waddle",
+      "stat": "Receiving Yards",
+      "line": 56.0,
+      "actual": 24.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Evan Engram",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Evan Engram",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Evan Engram",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Evan Engram",
+      "stat": "Receiving Yards",
+      "line": 33.0,
+      "actual": 13.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Evan Engram",
+      "stat": "Receiving Yards",
+      "line": 36.0,
+      "actual": 13.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Evan Engram",
+      "stat": "Receiving Yards",
+      "line": 41.0,
+      "actual": 13.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Marvin Mims Jr.",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 2.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Marvin Mims Jr.",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 2.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Marvin Mims Jr.",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Attempts",
+      "line": 11.0,
+      "actual": 17.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Attempts",
+      "line": 14.0,
+      "actual": 17.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Attempts",
+      "line": 17.0,
+      "actual": 17.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Yards",
+      "line": 41.0,
+      "actual": 41.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Yards",
+      "line": 56.0,
+      "actual": 41.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "J.K. Dobbins",
+      "stat": "Rush Yards",
+      "line": 82.0,
+      "actual": 41.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Emanuel Wilson",
+      "stat": "Rush Attempts",
+      "line": 3.0,
+      "actual": 14.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Emanuel Wilson",
+      "stat": "Rush Attempts",
+      "line": 5.0,
+      "actual": 14.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Emanuel Wilson",
+      "stat": "Rush Attempts",
+      "line": 7.0,
+      "actual": 14.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Sam Darnold",
+      "stat": "Passing Yards",
+      "line": 232.0,
+      "actual": 278.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Sam Darnold",
+      "stat": "Passing Yards",
+      "line": 245.0,
+      "actual": 278.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Sam Darnold",
+      "stat": "Passing Yards",
+      "line": 273.0,
+      "actual": 278.0,
+      "hit": true,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Bo Nix",
+      "stat": "Passing Yards",
+      "line": 174.0,
+      "actual": 107.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Bo Nix",
+      "stat": "Passing Yards",
+      "line": 217.0,
+      "actual": 107.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Bo Nix",
+      "stat": "Passing Yards",
+      "line": 270.0,
+      "actual": 107.0,
+      "hit": false,
+      "snapshotDate": "2026-10-12",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "East Carolina @ UAB",
+      "stat": "spread",
+      "line": -6.4,
+      "actual": 13,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "East Carolina @ UAB",
+      "stat": "total",
+      "line": 57.1,
+      "actual": 47,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Georgia Southern @ Old Dominion",
+      "stat": "spread",
+      "line": 27.1,
+      "actual": -8,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Georgia Southern @ Old Dominion",
+      "stat": "total",
+      "line": 54.2,
+      "actual": 38,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Colorado State @ Texas State",
+      "stat": "spread",
+      "line": 21.2,
+      "actual": 39,
+      "hit": true,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Colorado State @ Texas State",
+      "stat": "total",
+      "line": 59.8,
+      "actual": 93,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-16"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 244,
-      "hits": 169,
-      "rate": 69.3
+      "graded": 247,
+      "hits": 170,
+      "rate": 68.8
     },
     "cfb_total": {
-      "graded": 244,
+      "graded": 247,
       "hits": 36,
-      "rate": 14.8
+      "rate": 14.6
     },
     "nfl_p25": {
-      "graded": 803,
-      "hits": 550,
-      "rate": 68.5
+      "graded": 818,
+      "hits": 559,
+      "rate": 68.3
     },
     "nfl_p50": {
-      "graded": 803,
-      "hits": 397,
+      "graded": 818,
+      "hits": 404,
       "rate": 49.4
     },
     "nfl_p75": {
-      "graded": 803,
-      "hits": 230,
-      "rate": 28.6
+      "graded": 818,
+      "hits": 235,
+      "rate": 28.7
     }
   }
 }

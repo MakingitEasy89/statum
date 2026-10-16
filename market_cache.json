@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-16T00:42:13+00:00",
+ "lastRun": "2026-10-16T06:46:41+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 49.0
+       "pct": 66.0
       },
       {
        "name": "CeeDee Lamb",
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Matthew Stafford",
-       "pct": 28.0
+       "pct": 27.0
       },
       {
        "name": "Jared Goff",
        "pct": 16.0
       },
       {
-       "name": "Dak Prescott",
-       "pct": 14.0
+       "name": "Jordan Love",
+       "pct": 10.0
       }
      ],
      "totalMarkets": 28
@@ -49,30 +49,30 @@
      "ticker": "KXLEADERNFLINT",
      "options": [
       {
+       "name": "Derek Stingley Jr.",
+       "pct": 25.0
+      },
+      {
        "name": "Xavier Watts",
        "pct": 9.0
       },
       {
        "name": "Kevin Byard III",
        "pct": 9.0
-      },
-      {
-       "name": "Kyle Hamilton",
-       "pct": 8.0
       }
      ],
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-16T00:42:13+00:00",
+   "fetchedAt": "2026-10-16T06:46:41+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 52.0,
+    "Golden State": 53.0,
     "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-16T00:42:13+00:00",
+   "fetchedAt": "2026-10-16T06:46:41+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
@@ -80,17 +80,16 @@
     "Atlanta": 46.5,
     "Golden State": 52.5
    },
-   "fetchedAt": "2026-10-16T00:42:13+00:00",
+   "fetchedAt": "2026-10-16T06:46:41+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 16.1,
-    "Cleveland Guardians": 17.9,
-    "Milwaukee Brewers": 57.0,
-    "Los Angeles Dodgers": 9.5
+    "Tampa Bay Rays": 15.0,
+    "Cleveland Guardians": 19.9,
+    "Milwaukee Brewers": 64.0
    },
-   "fetchedAt": "2026-10-16T00:42:13+00:00",
+   "fetchedAt": "2026-10-16T06:46:41+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -137,7 +136,7 @@
     }
    ],
    "fetchedAt": "2026-10-16T00:42:13+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
