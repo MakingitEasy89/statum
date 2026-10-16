@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-15T18:04:07+00:00",
+ "lastRun": "2026-10-16T00:42:13+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 42.0
-      },
-      {
-       "name": "Chris Olave",
-       "pct": 16.0
+       "pct": 49.0
       },
       {
        "name": "CeeDee Lamb",
        "pct": 16.0
+      },
+      {
+       "name": "Chris Olave",
+       "pct": 15.0
       }
      ],
      "totalMarkets": 27
@@ -34,11 +34,11 @@
       },
       {
        "name": "Jared Goff",
-       "pct": 17.0
+       "pct": 16.0
       },
       {
-       "name": "Jordan Love",
-       "pct": 10.0
+       "name": "Dak Prescott",
+       "pct": 14.0
       }
      ],
      "totalMarkets": 28
@@ -64,33 +64,33 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-15T18:04:07+00:00",
+   "fetchedAt": "2026-10-16T00:42:13+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 53.0,
+    "Golden State": 52.0,
     "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-15T18:04:07+00:00",
+   "fetchedAt": "2026-10-16T00:42:13+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 46.0,
-    "Golden State": 52.7
+    "Atlanta": 46.5,
+    "Golden State": 52.5
    },
-   "fetchedAt": "2026-10-15T18:04:07+00:00",
+   "fetchedAt": "2026-10-16T00:42:13+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 21.1,
-    "Cleveland Guardians": 14.6,
-    "Milwaukee Brewers": 56.4,
-    "Los Angeles Dodgers": 6.5
+    "Tampa Bay Rays": 16.1,
+    "Cleveland Guardians": 17.9,
+    "Milwaukee Brewers": 57.0,
+    "Los Angeles Dodgers": 9.5
    },
-   "fetchedAt": "2026-10-15T18:04:07+00:00",
+   "fetchedAt": "2026-10-16T00:42:13+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -98,7 +98,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 53.0,
+     "price": 52.0,
      "depth": null,
      "flow": {
       "totalVolume": 274738.44,
@@ -136,7 +136,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-15T18:04:07+00:00",
+   "fetchedAt": "2026-10-16T00:42:13+00:00",
    "stale": false
   }
  }
