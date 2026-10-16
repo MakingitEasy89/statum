@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-16T06:46:41+00:00",
+ "lastRun": "2026-10-16T17:52:47+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 66.0
+       "pct": 54.0
       },
       {
        "name": "CeeDee Lamb",
@@ -18,7 +18,7 @@
       },
       {
        "name": "Chris Olave",
-       "pct": 15.0
+       "pct": 12.0
       }
      ],
      "totalMarkets": 27
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Matthew Stafford",
-       "pct": 27.0
+       "pct": 28.0
       },
       {
        "name": "Jared Goff",
        "pct": 16.0
       },
       {
-       "name": "Jordan Love",
-       "pct": 10.0
+       "name": "Bryce Young",
+       "pct": 13.0
       }
      ],
      "totalMarkets": 28
@@ -64,32 +64,32 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-16T06:46:41+00:00",
+   "fetchedAt": "2026-10-16T17:52:47+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 53.0,
-    "Atlanta": 48.0
+    "Golden State": 55.0,
+    "Atlanta": 45.0
    },
-   "fetchedAt": "2026-10-16T06:46:41+00:00",
+   "fetchedAt": "2026-10-16T17:52:47+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 46.5,
-    "Golden State": 52.5
+    "Atlanta": 47.5,
+    "Golden State": 52.3
    },
-   "fetchedAt": "2026-10-16T06:46:41+00:00",
+   "fetchedAt": "2026-10-16T17:52:47+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 15.0,
-    "Cleveland Guardians": 19.9,
-    "Milwaukee Brewers": 64.0
+    "Tampa Bay Rays": 15.2,
+    "Cleveland Guardians": 19.4,
+    "Milwaukee Brewers": 65.4
    },
-   "fetchedAt": "2026-10-16T06:46:41+00:00",
+   "fetchedAt": "2026-10-16T17:52:47+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -97,46 +97,46 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 52.0,
+     "price": 55.0,
      "depth": null,
      "flow": {
-      "totalVolume": 274738.44,
-      "latestOI": 784702.09,
-      "oiChange": 135430.17999999993,
+      "totalVolume": 292536.64,
+      "latestOI": 801546.0,
+      "oiChange": 131777.80000000005,
       "oiSeries": [
-       649271.91,
        669768.2,
        689002.46,
        697657.77,
        728187.86,
        733656.05,
-       784702.09
+       784702.09,
+       801546.0
       ]
      }
     },
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 48.0,
+     "price": 45.0,
      "depth": null,
      "flow": {
-      "totalVolume": 54980.71,
-      "latestOI": 683987.78,
-      "oiChange": 9426.270000000019,
+      "totalVolume": 52487.1,
+      "latestOI": 682333.07,
+      "oiChange": 4822.859999999986,
       "oiSeries": [
-       674561.51,
        677510.21,
        682439.92,
        683946.97,
        684362.69,
        681792.48,
-       683987.78
+       683987.78,
+       682333.07
       ]
      }
     }
    ],
-   "fetchedAt": "2026-10-16T00:42:13+00:00",
-   "stale": true
+   "fetchedAt": "2026-10-16T17:52:47+00:00",
+   "stale": false
   }
  }
 }
