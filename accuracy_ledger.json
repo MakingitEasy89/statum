@@ -4017,33 +4017,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401862801,
-      "homeTeam": "Tulane",
-      "awayTeam": "Memphis",
-      "predictedMargin": 5.4,
-      "predictedTotal": 53.7,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858493,
-      "homeTeam": "Purdue",
-      "awayTeam": "Washington",
-      "predictedMargin": -12.1,
-      "predictedTotal": 53.4,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401869844,
-      "homeTeam": "Coastal Carolina",
-      "awayTeam": "App State",
-      "predictedMargin": 4.7,
-      "predictedTotal": 54.8,
-      "snapshotDate": "2026-09-20"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401866443,
       "homeTeam": "Central Michigan",
       "awayTeam": "Western Michigan",
@@ -41992,18 +41965,84 @@
       "hit": false,
       "snapshotDate": "2026-09-20",
       "gradedDate": "2026-10-16"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Memphis @ Tulane",
+      "stat": "spread",
+      "line": 5.4,
+      "actual": 14,
+      "hit": true,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-17"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Memphis @ Tulane",
+      "stat": "total",
+      "line": 53.7,
+      "actual": 48,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-17"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Washington @ Purdue",
+      "stat": "spread",
+      "line": -12.1,
+      "actual": -12,
+      "hit": true,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-17"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Washington @ Purdue",
+      "stat": "total",
+      "line": 53.4,
+      "actual": 64,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-17"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "App State @ Coastal Carolina",
+      "stat": "spread",
+      "line": 4.7,
+      "actual": -3,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-17"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "App State @ Coastal Carolina",
+      "stat": "total",
+      "line": 54.8,
+      "actual": 67,
+      "hit": false,
+      "snapshotDate": "2026-09-20",
+      "gradedDate": "2026-10-17"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 247,
-      "hits": 170,
+      "graded": 250,
+      "hits": 172,
       "rate": 68.8
     },
     "cfb_total": {
-      "graded": 247,
+      "graded": 250,
       "hits": 36,
-      "rate": 14.6
+      "rate": 14.4
     },
     "nfl_p25": {
       "graded": 818,

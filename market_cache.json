@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-16T17:52:47+00:00",
+ "lastRun": "2026-10-17T06:35:30+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 54.0
-      },
-      {
-       "name": "CeeDee Lamb",
-       "pct": 16.0
+       "pct": 57.0
       },
       {
        "name": "Chris Olave",
-       "pct": 12.0
+       "pct": 14.0
+      },
+      {
+       "name": "CeeDee Lamb",
+       "pct": 13.0
       }
      ],
      "totalMarkets": 27
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Matthew Stafford",
-       "pct": 28.0
+       "pct": 29.0
       },
       {
        "name": "Jared Goff",
-       "pct": 16.0
+       "pct": 15.0
       },
       {
-       "name": "Bryce Young",
-       "pct": 13.0
+       "name": "Dak Prescott",
+       "pct": 15.0
       }
      ],
      "totalMarkets": 28
@@ -64,32 +64,32 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-16T17:52:47+00:00",
+   "fetchedAt": "2026-10-17T06:35:30+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 55.0,
-    "Atlanta": 45.0
+    "Golden State": 56.0,
+    "Atlanta": 47.0
    },
-   "fetchedAt": "2026-10-16T17:52:47+00:00",
+   "fetchedAt": "2026-10-17T06:35:30+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 47.5,
-    "Golden State": 52.3
+    "Atlanta": 46.5,
+    "Golden State": 53.3
    },
-   "fetchedAt": "2026-10-16T17:52:47+00:00",
+   "fetchedAt": "2026-10-17T06:35:30+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 15.2,
-    "Cleveland Guardians": 19.4,
-    "Milwaukee Brewers": 65.4
+    "Tampa Bay Rays": 16.0,
+    "Cleveland Guardians": 19.9,
+    "Milwaukee Brewers": 65.1
    },
-   "fetchedAt": "2026-10-16T17:52:47+00:00",
+   "fetchedAt": "2026-10-17T06:35:30+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -136,7 +136,7 @@
     }
    ],
    "fetchedAt": "2026-10-16T17:52:47+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
