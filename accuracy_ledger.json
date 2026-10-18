@@ -9562,6 +9562,42 @@
       "predictedMargin": 24.8,
       "predictedTotal": 52.2,
       "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858525,
+      "homeTeam": "Rutgers",
+      "awayTeam": "Nebraska",
+      "predictedMargin": -2.5,
+      "predictedTotal": 56.6,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856888,
+      "homeTeam": "Texas A&M",
+      "awayTeam": "Tennessee",
+      "predictedMargin": 10.3,
+      "predictedTotal": 57.8,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858519,
+      "homeTeam": "Iowa",
+      "awayTeam": "Purdue",
+      "predictedMargin": 34.5,
+      "predictedTotal": 50.0,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856858,
+      "homeTeam": "BYU",
+      "awayTeam": "Baylor",
+      "predictedMargin": 21.7,
+      "predictedTotal": 53.8,
+      "snapshotDate": "2026-10-18"
     }
   ],
   "graded": [
