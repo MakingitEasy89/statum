@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-18T20:47:09+00:00",
+ "lastRun": "2026-10-18T21:21:42+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -64,32 +64,32 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-18T20:47:09+00:00",
+   "fetchedAt": "2026-10-18T21:21:42+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 66.0,
-    "Atlanta": 35.0
+    "Golden State": 65.0,
+    "Atlanta": 34.0
    },
-   "fetchedAt": "2026-10-18T20:47:09+00:00",
+   "fetchedAt": "2026-10-18T21:21:42+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 37.0,
-    "Golden State": 62.3
+    "Atlanta": 36.5,
+    "Golden State": 62.2
    },
-   "fetchedAt": "2026-10-18T20:47:09+00:00",
+   "fetchedAt": "2026-10-18T21:21:42+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 22.4,
-    "Cleveland Guardians": 13.2,
-    "Milwaukee Brewers": 63.8
+    "Tampa Bay Rays": 24.2,
+    "Cleveland Guardians": 12.2,
+    "Milwaukee Brewers": 63.9
    },
-   "fetchedAt": "2026-10-18T20:47:09+00:00",
+   "fetchedAt": "2026-10-18T21:21:42+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -136,7 +136,7 @@
     }
    ],
    "fetchedAt": "2026-10-18T20:47:09+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
