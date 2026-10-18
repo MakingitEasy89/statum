@@ -9454,6 +9454,114 @@
       "predictedMargin": 11.9,
       "predictedTotal": 52.5,
       "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871099,
+      "homeTeam": "Louisiana Tech",
+      "awayTeam": "Southern Miss",
+      "predictedMargin": 19.6,
+      "predictedTotal": 54.6,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871100,
+      "homeTeam": "South Alabama",
+      "awayTeam": "Troy",
+      "predictedMargin": 10.5,
+      "predictedTotal": 55.8,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869952,
+      "homeTeam": "Georgia State",
+      "awayTeam": "Georgia Southern",
+      "predictedMargin": 6.8,
+      "predictedTotal": 57.6,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856882,
+      "homeTeam": "Arkansas",
+      "awayTeam": "South Carolina",
+      "predictedMargin": 4.1,
+      "predictedTotal": 55.3,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869937,
+      "homeTeam": "Coastal Carolina",
+      "awayTeam": "Arkansas State",
+      "predictedMargin": 5.8,
+      "predictedTotal": 53.8,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858295,
+      "homeTeam": "Virginia",
+      "awayTeam": "California",
+      "predictedMargin": 24.8,
+      "predictedTotal": 51.5,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864540,
+      "homeTeam": "UTEP",
+      "awayTeam": "Wyoming",
+      "predictedMargin": 2.3,
+      "predictedTotal": 45.3,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858523,
+      "homeTeam": "Oregon",
+      "awayTeam": "Michigan",
+      "predictedMargin": 24.1,
+      "predictedTotal": 49.1,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856885,
+      "homeTeam": "LSU",
+      "awayTeam": "Texas",
+      "predictedMargin": 11.8,
+      "predictedTotal": 47.5,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858524,
+      "homeTeam": "Penn State",
+      "awayTeam": "Minnesota",
+      "predictedMargin": 19.1,
+      "predictedTotal": 49.5,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858521,
+      "homeTeam": "Michigan State",
+      "awayTeam": "Washington",
+      "predictedMargin": -4.7,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858299,
+      "homeTeam": "Virginia Tech",
+      "awayTeam": "Stanford",
+      "predictedMargin": 24.8,
+      "predictedTotal": 52.2,
+      "snapshotDate": "2026-10-18"
     }
   ],
   "graded": [

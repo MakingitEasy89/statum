@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-18T07:01:20+00:00",
+ "lastRun": "2026-10-18T17:08:04+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -33,11 +33,11 @@
        "pct": 28.0
       },
       {
-       "name": "Jared Goff",
-       "pct": 14.0
+       "name": "C.J. Stroud",
+       "pct": 22.0
       },
       {
-       "name": "Dak Prescott",
+       "name": "Jared Goff",
        "pct": 14.0
       }
      ],
@@ -64,32 +64,32 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-18T07:01:20+00:00",
+   "fetchedAt": "2026-10-18T17:08:04+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 66.0,
-    "Atlanta": 34.0
+    "Golden State": 64.0,
+    "Atlanta": 33.0
    },
-   "fetchedAt": "2026-10-18T07:01:20+00:00",
+   "fetchedAt": "2026-10-18T17:08:04+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 35.0,
-    "Golden State": 66.0
+    "Atlanta": 35.5,
+    "Golden State": 64.5
    },
-   "fetchedAt": "2026-10-18T07:01:20+00:00",
+   "fetchedAt": "2026-10-18T17:08:04+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 23.1,
-    "Cleveland Guardians": 14.3,
-    "Milwaukee Brewers": 63.5
+    "Tampa Bay Rays": 22.2,
+    "Cleveland Guardians": 13.2,
+    "Milwaukee Brewers": 63.8
    },
-   "fetchedAt": "2026-10-18T07:01:20+00:00",
+   "fetchedAt": "2026-10-18T17:08:04+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -97,7 +97,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 66.0,
+     "price": 64.0,
      "depth": null,
      "flow": {
       "totalVolume": 349008.12,
@@ -117,7 +117,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 34.0,
+     "price": 33.0,
      "depth": null,
      "flow": {
       "totalVolume": 104037.9,
@@ -135,7 +135,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-18T07:01:20+00:00",
+   "fetchedAt": "2026-10-18T17:08:04+00:00",
    "stale": false
   }
  }
