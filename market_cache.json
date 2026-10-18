@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-18T21:21:42+00:00",
+ "lastRun": "2026-10-18T23:33:22+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -13,12 +13,12 @@
        "pct": 37.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 13.0
-      },
-      {
        "name": "Chris Olave",
        "pct": 10.0
+      },
+      {
+       "name": "CeeDee Lamb",
+       "pct": 9.0
       }
      ],
      "totalMarkets": 27
@@ -29,12 +29,12 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "Matthew Stafford",
-       "pct": 28.0
-      },
-      {
        "name": "C.J. Stroud",
        "pct": 22.0
+      },
+      {
+       "name": "Matthew Stafford",
+       "pct": 18.0
       },
       {
        "name": "Jared Goff",
@@ -64,56 +64,36 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-18T21:21:42+00:00",
+   "fetchedAt": "2026-10-18T23:33:22+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 65.0,
-    "Atlanta": 34.0
+    "Golden State": 63.0,
+    "Atlanta": 35.0
    },
-   "fetchedAt": "2026-10-18T21:21:42+00:00",
+   "fetchedAt": "2026-10-18T23:33:22+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 36.5,
-    "Golden State": 62.2
+    "Atlanta": 37.0,
+    "Golden State": 61.2
    },
-   "fetchedAt": "2026-10-18T21:21:42+00:00",
+   "fetchedAt": "2026-10-18T23:33:22+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 24.2,
-    "Cleveland Guardians": 12.2,
-    "Milwaukee Brewers": 63.9
+    "Tampa Bay Rays": 31.9,
+    "Cleveland Guardians": 7.6,
+    "Milwaukee Brewers": 62.5
    },
-   "fetchedAt": "2026-10-18T21:21:42+00:00",
+   "fetchedAt": "2026-10-18T23:33:22+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
    "data": [
-    {
-     "ticker": "KXWNBA-26-GS",
-     "name": "Golden State",
-     "price": 66.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 349008.12,
-      "latestOI": 890027.91,
-      "oiChange": 192370.14,
-      "oiSeries": [
-       697657.77,
-       728187.86,
-       733656.05,
-       784702.09,
-       801546.0,
-       832797.02,
-       890027.91
-      ]
-     }
-    },
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
@@ -135,8 +115,8 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-18T20:47:09+00:00",
-   "stale": true
+   "fetchedAt": "2026-10-18T23:33:22+00:00",
+   "stale": false
   }
  }
 }

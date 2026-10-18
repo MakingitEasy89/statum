@@ -9584,6 +9584,24 @@
       "predictedMargin": 2.5,
       "predictedTotal": 55.3,
       "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858521,
+      "homeTeam": "Michigan State",
+      "awayTeam": "Washington",
+      "predictedMargin": -4.7,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-10-18"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858524,
+      "homeTeam": "Penn State",
+      "awayTeam": "Minnesota",
+      "predictedMargin": 19.1,
+      "predictedTotal": 49.5,
+      "snapshotDate": "2026-10-18"
     }
   ],
   "graded": [
