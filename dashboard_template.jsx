@@ -18,11 +18,21 @@ const XGB_MODEL_INFO = __XGB_MODEL_INFO__;
 // by update_dashboard.py so they reflect the real upcoming schedule, not just season totals.
 const STRONG_PICKS = __STRONG_PICKS__;
 const QUAD_BOX = __QUAD_BOX__;
+// Per-matchup daily brief: a computed read (coverage, position matchups, red zone, line,
+// availability) plus real headlines matched to that game. Built server-side on every run.
+const DAILY_BRIEFS = __DAILY_BRIEFS__;
 
 // WNBA, MLB, and CFB data are NOT embedded here — they're fetched on demand the first
 // time you switch to that sport, instead of every visitor's browser having to load and
 // parse every sport's data just to see the page. This is the fix for the mobile crash.
-let SportDataCache = { wnba: null, mlb: null, cfb: null };
+let SportDataCache = { wnba: null, mlb: null, cfb: null, nba: null };
+function nbaPlayers() { return SportDataCache.nba?.players || []; }
+function nbaPool() { return SportDataCache.nba?.pool || []; }
+function nbaTeamDefense() { return SportDataCache.nba?.teamDefense || {}; }
+function nbaUpcoming() { return SportDataCache.nba?.upcoming || {}; }
+function nbaMatchupEdges() { return SportDataCache.nba?.matchupEdges || []; }
+function nbaPositionalDefense() { return SportDataCache.nba?.positionalDefense || {}; }
+function nbaMeta() { return SportDataCache.nba?.meta || {}; }
 function wnbaPlayers() { return SportDataCache.wnba?.players || []; }
 function wnbaPool() { return SportDataCache.wnba?.pool || []; }
 function wnbaTeamDefense() { return SportDataCache.wnba?.teamDefense || {}; }
@@ -1114,6 +1124,291 @@ function DefenseDetail({ d, onClose }) {
 // =====================================================================
 // WNBA CARDS + DETAIL
 // =====================================================================
+const NBA_ACCENT = "#F2994A";
+
+// =====================================================================
+// NBA — player cards and the scorer-vs-defender matchup view
+// =====================================================================
+function NBACard({ p, onSelect, idx }) {
+  const d = p.defense;
+  const blend = p.currentSeasonBlend;
+  return (
+    <Glass onClick={() => onSelect(p)} style={{ padding: "14px 16px", animationDelay: `${Math.min(idx,20)*18}ms` }}>
+      <div className="fade-in" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+            {p.name}
+            {p.isRookie && <span style={{ fontSize: 9, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 8, padding: "1px 6px", fontWeight: 700 }}>ROOKIE</span>}
+          </div>
+          <div style={{ fontSize: 11, color: "var(--text-secondary-b)", marginTop: 2 }}>
+            {[p.pos, p.team].filter(Boolean).join(" · ")}
+          </div>
+        </div>
+        <div style={{ textAlign: "right", flexShrink: 0 }}>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 700, color: NBA_ACCENT }}>{fmt(p.overall.pts,1)}</div>
+          <div style={{ fontSize: 9.5, color: "var(--text-label)" }}>pts/gm</div>
+        </div>
+      </div>
+      <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--text-secondary-a)", fontFamily: "'JetBrains Mono', monospace" }}>
+        {fmt(p.overall.reb,1)} reb · {fmt(p.overall.ast,1)} ast · {fmt(p.overall.fgPct,1)}% FG · {p.overall.games} gm
+      </div>
+      {/* In basketball the same player is on both ends, so his own defensive impact belongs
+          on his card — it's what makes him a problem for the other team's card. */}
+      {d && d.defFga > 0 && (
+        <div style={{ marginTop: 6, fontSize: 10.5, fontFamily: "'JetBrains Mono', monospace",
+          color: d.pctPlusMinus <= -1 ? ACCENT.green : d.pctPlusMinus >= 1 ? ACCENT.rose : "var(--text-tertiary)" }}>
+          🛡 opponents shoot {d.pctPlusMinus > 0 ? "+" : ""}{fmt(d.pctPlusMinus,1)} pts vs their norm on him ({d.defFga} contested)
+        </div>
+      )}
+      {blend && (
+        <div style={{ marginTop: 6, fontSize: 10.5, color: "var(--accent-current)", fontFamily: "'JetBrains Mono', monospace" }}>
+          ▲ C: {fmt(blend.currentSeasonStats?.pts,1)} pts/gm over {blend.currentSeasonGames} gm this season
+        </div>
+      )}
+    </Glass>
+  );
+}
+
+function NBADetail({ p, onClose }) {
+  const recent = (p.gamelog || []).slice(-12).reverse();
+  const d = p.defense;
+  return (
+    <div className="fade-in">
+      <button onClick={onClose} className="bubble-btn" style={{ marginBottom: 14, padding: "7px 14px", borderRadius: 999, border: "1px solid var(--overlay-6)", background: "var(--overlay-1)", color: "var(--text-body)", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>← Back</button>
+      <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 4, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+        {p.name}
+        {p.isRookie && <span style={{ fontSize: 10, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 8, padding: "2px 8px", fontWeight: 700 }}>ROOKIE</span>}
+      </h2>
+      <div style={{ fontSize: 12.5, color: "var(--text-secondary-b)", marginBottom: 16 }}>{[p.pos, p.team].filter(Boolean).join(" · ")} · {p.overall.games} games</div>
+
+      <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 14 }}>
+        <div style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
+          <StatChip label="PTS" value={p.overall.pts} decimals={1} accent={NBA_ACCENT} />
+          <StatChip label="REB" value={p.overall.reb} decimals={1} />
+          <StatChip label="AST" value={p.overall.ast} decimals={1} />
+          <StatChip label="STL" value={p.overall.stl} decimals={1} />
+          <StatChip label="BLK" value={p.overall.blk} decimals={1} />
+          <StatChip label="3PM" value={p.overall.tpm} decimals={1} />
+          <StatChip label="FG%" value={p.overall.fgPct} decimals={1} suffix="%" />
+          <StatChip label="MIN" value={p.overall.min} decimals={1} />
+        </div>
+      </Glass>
+
+      {d && (
+        <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 14 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700, marginBottom: 10 }}>🛡 His own defense</div>
+          <div style={{ display: "flex", gap: 22, flexWrap: "wrap", marginBottom: 8 }}>
+            <StatChip label="Opp FG% on him" value={d.dFgPct} decimals={1} suffix="%" />
+            <StatChip label="Their normal FG%" value={d.normalFgPct} decimals={1} suffix="%" />
+            <StatChip label="Difference" value={d.pctPlusMinus} decimals={1} suffix=" pts"
+              accent={d.pctPlusMinus <= -1 ? ACCENT.green : d.pctPlusMinus >= 1 ? ACCENT.rose : undefined} />
+            <StatChip label="Contested FGA" value={d.defFga} />
+          </div>
+          <div style={{ fontSize: 11, color: "var(--text-tertiary)", lineHeight: 1.55 }}>
+            What shooters hit with him as the closest defender, against what those same shooters hit normally.
+            Negative means he drags them below their own baseline — that's a real defender, not a reputation.
+          </div>
+        </Glass>
+      )}
+
+      <Glass hover={false} style={{ padding: "16px 18px" }}>
+        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700, marginBottom: 10 }}>Recent games</div>
+        <div style={{ display: "flex", gap: 14, fontSize: 9.5, color: "var(--text-label)", textTransform: "uppercase", letterSpacing: "0.05em", paddingBottom: 6, borderBottom: "1px solid var(--overlay-5)" }}>
+          <div style={{ width: 86 }}>Date</div><div style={{ width: 54 }}>Opp</div>
+          <div style={{ width: 40 }}>PTS</div><div style={{ width: 40 }}>REB</div>
+          <div style={{ width: 40 }}>AST</div><div style={{ width: 40 }}>3PM</div><div style={{ width: 46 }}>MIN</div>
+        </div>
+        {recent.map((g, i) => (
+          <div key={i} style={{ display: "flex", gap: 14, fontSize: 11.5, padding: "5px 0", fontFamily: "'JetBrains Mono', monospace", borderTop: i ? "1px solid var(--overlay-3)" : "none" }}>
+            <div style={{ width: 86, color: "var(--text-secondary-b)" }}>{g.game_date}</div>
+            <div style={{ width: 54 }}>{g.is_home ? "vs" : "@"} {g.opp || "—"}</div>
+            <div style={{ width: 40, color: NBA_ACCENT, fontWeight: 700 }}>{fmt(g.pts,0)}</div>
+            <div style={{ width: 40 }}>{fmt(g.reb,0)}</div>
+            <div style={{ width: 40 }}>{fmt(g.ast,0)}</div>
+            <div style={{ width: 40 }}>{fmt(g.tpm,0)}</div>
+            <div style={{ width: 46, color: "var(--text-tertiary)" }}>{fmt(g.min,0)}</div>
+          </div>
+        ))}
+        {recent.length === 0 && <div style={{ fontSize: 12, color: "var(--text-tertiary)", paddingTop: 8 }}>No game log available.</div>}
+      </Glass>
+    </div>
+  );
+}
+
+const NBA_VERDICT = {
+  exploit: { label: "EXPLOIT", color: ACCENT.green, blurb: "the matchup favors the scorer" },
+  neutral: { label: "NEUTRAL", color: ACCENT.amber, blurb: "nothing decisive either way" },
+  avoid:   { label: "TOUGH",   color: ACCENT.rose,  blurb: "the defender has the edge" },
+};
+
+function NBAEdgeRow({ e, onSelectPlayer }) {
+  const v = NBA_VERDICT[e.verdict] || NBA_VERDICT.neutral;
+  const d = e.defender;
+  return (
+    <div style={{ padding: "10px 0", borderTop: "1px solid var(--overlay-4)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, flexWrap: "wrap" }}>
+        <div style={{ minWidth: 0, flex: "1 1 240px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap" }}>
+            <span onClick={() => onSelectPlayer && onSelectPlayer(e.player)}
+              style={{ fontSize: 13.5, fontWeight: 800, cursor: onSelectPlayer ? "pointer" : "default",
+                       textDecoration: onSelectPlayer ? "underline" : "none", textDecorationColor: "var(--overlay-6)" }}>
+              {e.player}
+            </span>
+            <span style={{ fontSize: 10, color: "var(--text-tertiary)" }}>{[e.pos, e.team].filter(Boolean).join(" · ")} · {fmt(e.ppg,1)} ppg</span>
+            {!e.tracked && (
+              <span title="These two have no meaningful tracked history together — this is the opponent's likely matchup at the position, not a measured one."
+                style={{ fontSize: 8.5, fontWeight: 800, color: "var(--text-secondary-b)", border: "1px solid var(--overlay-7)", borderRadius: 6, padding: "1px 5px" }}>
+                PROJECTED
+              </span>
+            )}
+          </div>
+          <div style={{ fontSize: 11.5, color: "var(--text-secondary-a)", marginTop: 3 }}>
+            guarded by <b style={{ color: "var(--text-body)" }}>{d ? d.name : "—"}</b>
+            {d && d.pos ? <span style={{ color: "var(--text-tertiary)" }}> ({d.pos})</span> : null}
+            {d && d.qualified && d.rank
+              ? <span style={{ color: "var(--text-tertiary)" }}> · #{d.rank} of {d.rankedOf} defenders</span>
+              : null}
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+          {e.history && (
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700 }}>
+                {e.history.ptsPer100 !== null ? `${fmt(e.history.ptsPer100,0)}` : "—"}
+                <span style={{ fontSize: 9.5, color: "var(--text-tertiary)", fontWeight: 400 }}> /100</span>
+              </div>
+              <div style={{ fontSize: 9, color: "var(--text-tertiary)" }}>{fmt(e.history.poss,0)} poss</div>
+            </div>
+          )}
+          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.05em", color: v.color,
+                         border: `1px solid ${v.color}55`, background: `${v.color}14`,
+                         borderRadius: 7, padding: "3px 7px", whiteSpace: "nowrap" }}>{v.label}</span>
+          <PickScoreChip score={e.score} accent={NBA_ACCENT} />
+        </div>
+      </div>
+      {e.why?.length > 0 && (
+        <ul style={{ margin: "5px 0 0", paddingLeft: 16, fontSize: 10.5, color: "var(--text-tertiary)", lineHeight: 1.55 }}>
+          {e.why.map((w, i) => <li key={i}>{w}</li>)}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function NBAPositionalDefenseStrip({ team, posDefense }) {
+  const d = posDefense[team];
+  if (!d) return null;
+  const buckets = [["G", "Guards"], ["F", "Forwards"], ["C", "Centers"]].filter(([k]) => d[k]);
+  if (!buckets.length) return null;
+  return (
+    <div style={{ display: "flex", gap: 12, flexWrap: "wrap", fontSize: 10.5 }}>
+      {buckets.map(([k, label]) => {
+        const v = d[k];
+        const generous = v.rank && v.rank <= 8;
+        const stingy = v.rank && v.rankedOf && v.rank >= v.rankedOf - 7;
+        const color = generous ? ACCENT.rose : stingy ? ACCENT.green : "var(--text-tertiary)";
+        return (
+          <span key={k} title={`${fmt(v.ptsPer100,1)} points allowed per 100 tracked possessions to ${label.toLowerCase()}, over ${v.poss} possessions`}
+            style={{ color, border: `1px solid ${color}44`, borderRadius: 7, padding: "2px 7px", whiteSpace: "nowrap" }}>
+            {label} {fmt(v.ptsPer100,1)}/100{v.rank ? ` · #${v.rank}` : ""}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+function NBAMatchupsView({ sportDataStatus, onSelectPlayer }) {
+  const games = nbaMatchupEdges();
+  const posDefense = nbaPositionalDefense();
+  const meta = nbaMeta();
+  const [filter, setFilter] = useState("all");
+
+  if (sportDataStatus?.nba === "loading") {
+    return <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading NBA matchup data…</Glass>;
+  }
+  if (!games.length) {
+    return (
+      <div className="fade-in">
+        <Glass hover={false} style={{ padding: "22px 24px" }}>
+          <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>🏀 Matchups — nothing to show</div>
+          <div style={{ fontSize: 12.5, color: "var(--text-secondary-b)", lineHeight: 1.6 }}>
+            This view needs two things: upcoming games on the published schedule, and the NBA's player-tracking
+            matchup data from stats.nba.com.
+            {meta.reachable === false && (
+              <> The last pipeline run <b style={{ color: ACCENT.amber }}>couldn't reach stats.nba.com at all</b>, which is
+              almost always that host refusing the runner's IP rather than a bug. Running <code>market_probe.py</code> from
+              the same machine confirms it in one shot.</>
+            )}
+            {meta.reachable && <> The data fetched, but no upcoming games matched — likely between seasons.</>}
+          </div>
+        </Glass>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fade-in">
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap", marginBottom: 4 }}>
+        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700 }}>🏀 Scorer vs Defender</div>
+        <div style={{ display: "flex", gap: 6 }}>
+          {[["all","All"],["exploit","Exploit"],["avoid","Tough"]].map(([k,label]) => (
+            <span key={k} onClick={() => setFilter(k)} style={{
+              fontSize: 10.5, fontWeight: 700, cursor: "pointer", padding: "3px 10px", borderRadius: 999,
+              border: `1px solid ${filter===k ? NBA_ACCENT : "var(--overlay-6)"}`,
+              background: filter===k ? `${NBA_ACCENT}18` : "transparent",
+              color: filter===k ? NBA_ACCENT : "var(--text-secondary-b)",
+            }}>{label}</span>
+          ))}
+        </div>
+      </div>
+      <div style={{ fontSize: 12, color: "var(--text-secondary-a)", marginBottom: 16, lineHeight: 1.55, maxWidth: 780 }}>
+        Who actually guards whom, and whether that pairing favors the scorer. Two independent inputs, kept separate
+        because they often disagree: <b>head-to-head</b> — what this scorer did on real tracked possessions against
+        this specific defender, versus his own rate against everyone else — and <b>defender quality</b> — how far
+        that defender drags shooters below their normal efficiency league-wide. Head-to-head only outweighs the
+        general read once there are enough possessions behind it.
+        {meta.baselineSeason && <> Matchup history is from the <b>{meta.baselineSeason}</b> season.</>}
+        {meta.currentSeason ? <> Current season: <b>{meta.currentSeason}</b>.</> : <> The new season hasn't produced games yet, so everything here is the completed baseline.</>}
+      </div>
+
+      {games.map(g => {
+        const edges = filter === "all" ? g.edges : g.edges.filter(e => e.verdict === filter);
+        return (
+          <Glass key={`${g.away}@${g.home}`} hover={false} style={{ padding: "16px 18px", marginBottom: 14 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
+              <div style={{ fontSize: 14.5, fontWeight: 800 }}>{g.away} @ {g.home}</div>
+              <div style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>{g.date}</div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10, marginBottom: 6 }}>
+              {[g.away, g.home].map(t => (
+                <div key={t} style={{ background: "var(--overlay-2)", borderRadius: 9, padding: "8px 10px" }}>
+                  <div style={{ fontSize: 10, color: "var(--text-secondary-b)", fontWeight: 700, marginBottom: 4 }}>{t} defense allows</div>
+                  <NBAPositionalDefenseStrip team={t} posDefense={posDefense} />
+                  {!posDefense[t] && <div style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>Not enough tracked possessions to split by position.</div>}
+                </div>
+              ))}
+            </div>
+            {edges.length === 0
+              ? <div style={{ fontSize: 11.5, color: "var(--text-tertiary)", paddingTop: 8 }}>No {filter === "exploit" ? "favorable" : "tough"} matchups in this game.</div>
+              : edges.map(e => <NBAEdgeRow key={`${e.player}-${e.defender?.name || "none"}`} e={e} onSelectPlayer={onSelectPlayer} />)}
+          </Glass>
+        );
+      })}
+
+      <Glass hover={false} style={{ padding: "14px 18px", fontSize: 11.5, color: "var(--text-secondary-a)", lineHeight: 1.65 }}>
+        <b>What the numbers mean.</b> <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>pts/100</span> is points
+        scored per 100 possessions on which that defender was the primary matchup — not per game, so a bench defender
+        with 30 possessions and a starter with 400 are on the same scale. A defender's rank orders everyone with at
+        least {150} contested attempts by how far shooters fall below their own normal FG% against him; a player
+        without that volume is shown but not ranked, because a small sample produces impressive-looking noise.
+        <b> PROJECTED</b> means these two have no real shared history and the pairing is inferred from position —
+        useful, but not measured, and labelled so you can tell the difference.
+      </Glass>
+    </div>
+  );
+}
+
 function WNBACard({ p, onSelect, idx, mode }) {
   const primary = mode === "defense" ? (p.overall.stl + p.overall.blk).toFixed(1) : p.overall.pts;
   const primaryLabel = mode === "defense" ? "stl+blk/gm" : "pts/gm";
@@ -3100,6 +3395,8 @@ const STAT_FIELD_MAP = {
   wnba: { 'Points':'pts', 'Rebounds':'reb', 'Assists':'ast', 'Steals':'stl', 'Blocks':'blk', 'Three-Pointers Made':'tpm' },
   mlb_hit: { 'Hits':'hits', 'HR':'hr', 'RBI':'rbi', 'Runs':'runs', 'Total Bases':'tb' },
   mlb_pitch: { 'Strikeouts':'so' },
+  // NBA shares the WNBA stat vocabulary and the same gamelog field names.
+  nba: { 'Points':'pts', 'Rebounds':'reb', 'Assists':'ast', 'Steals':'stl', 'Blocks':'blk', 'Three-Pointers Made':'tpm' },
 };
 // Real-data verification for Tracking specifically — extends beyond what submitBet's resolveLeg
 // checks, so a leg that resolved via simulation at submission (no exact NFL data, or any WNBA/MLB
@@ -3446,8 +3743,9 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
     const usedIds = new Set(slip.map(s=>s.entry.id));
     const legIsWnba = wnbaPool().some(e => e.id === weakEntry.entry.id);
     const legIsMlb = mlbPool().some(e => e.id === weakEntry.entry.id);
-    const searchPool = legIsWnba ? wnbaPool() : legIsMlb ? mlbPool() : [...FULL_POOL, ...FUTURES_POOL];
-    const alt = searchPool.filter(e => e.kind==="ladder" && !usedIds.has(e.id) && ((legIsWnba || legIsMlb) || e.pos===weakEntry.entry.pos))
+    const legIsNba = nbaPool().some(e => e.id === weakEntry.entry.id);
+    const searchPool = legIsWnba ? wnbaPool() : legIsMlb ? mlbPool() : legIsNba ? nbaPool() : [...FULL_POOL, ...FUTURES_POOL];
+    const alt = searchPool.filter(e => e.kind==="ladder" && !usedIds.has(e.id) && ((legIsWnba || legIsMlb || legIsNba) || e.pos===weakEntry.entry.pos))
       .sort((a,b) => b.p25.testHit - a.p25.testHit)[0];
     if (alt) {
       const newLegs = slip.map((s,idx) => idx===weakest.i ? {entry: alt, tranche:"p25"} : s);
@@ -3464,13 +3762,14 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
   const COMBINED_POOL = useMemo(() => {
     if (sport === "wnba") return wnbaPool();
     if (sport === "mlb") return mlbPool();
+    if (sport === "nba") return nbaPool();
     return [...FULL_POOL, ...FUTURES_POOL, ...ATD_POOL];
   }, [sport, dataTick]);
 
   const activeTop10 = useMemo(() => {
     if (sport === "nfl") return TOP10.ladders;
     // same selection logic as the NFL pre-baked TOP10 — ranked by P50 reliability, position-diversified
-    const sourcePool = sport === "wnba" ? wnbaPool() : mlbPool();
+    const sourcePool = sport === "wnba" ? wnbaPool() : sport === "nba" ? nbaPool() : mlbPool();
     const ladderEntries = sourcePool.filter(e => e.kind === "ladder");
     const best = {};
     ladderEntries.forEach(e => {
@@ -3794,14 +4093,18 @@ function findPlayerRecordForNav(sport, playerName) {
     const p = mlbPlayers().find(x => x.name === playerName);
     return p ? { player: p, tab: p.group === "pitching" ? "defense" : "offense" } : null;
   }
+  if (sport === "nba") {
+    const p = nbaPlayers().find(x => x.name === playerName);
+    return p ? { player: p, tab: "offense" } : null;
+  }
   return null;
 }
 
 function DashboardView({ sport, slip, sportDataStatus, dataTick, onSelectGame, onSelectPlayer }) {
-  const pool = sport==="nfl" ? [...FULL_POOL, ...FUTURES_POOL, ...ATD_POOL] : sport==="wnba" ? wnbaPool() : sport==="mlb" ? mlbPool() : [];
-  const upcoming = sport==="nfl" ? NFL_UPCOMING : sport==="wnba" ? wnbaUpcoming() : sport==="mlb" ? mlbUpcoming() : cfbUpcomingAsTeamMap();
-  const sportLabel = sport==="nfl" ? "NFL" : sport==="wnba" ? "WNBA" : sport==="mlb" ? "MLB" : "CFB";
-  const sportAccent = sport==="nfl" ? ACCENT.teal : sport==="wnba" ? "#FF8A00" : sport==="mlb" ? "#6EC9F2" : "#8B7FD1";
+  const pool = sport==="nfl" ? [...FULL_POOL, ...FUTURES_POOL, ...ATD_POOL] : sport==="wnba" ? wnbaPool() : sport==="mlb" ? mlbPool() : sport==="nba" ? nbaPool() : [];
+  const upcoming = sport==="nfl" ? NFL_UPCOMING : sport==="wnba" ? wnbaUpcoming() : sport==="mlb" ? mlbUpcoming() : sport==="nba" ? nbaUpcoming() : cfbUpcomingAsTeamMap();
+  const sportLabel = sport==="nfl" ? "NFL" : sport==="wnba" ? "WNBA" : sport==="mlb" ? "MLB" : sport==="nba" ? "NBA" : "CFB";
+  const sportAccent = sport==="nfl" ? ACCENT.teal : sport==="wnba" ? "#FF8A00" : sport==="mlb" ? "#6EC9F2" : sport==="nba" ? NBA_ACCENT : "#8B7FD1";
   const isLoadingSportData = sport !== "nfl" && sportDataStatus?.[sport] === "loading";
 
   const [bets, setBets] = useState([]);
@@ -4513,6 +4816,168 @@ function researchMatchupsForGame(offTeam, defTeam) {
   return { primaryCov, primaryPct, scouting, players: positive, noVolume: rows.length === 0 };
 }
 
+// Categories in the order they should be read: what kind of game it'll be, then each
+// offense's matchup, then who might not play, then which lines the model liked here.
+const BRIEF_CAT_ORDER = ["Game script", "Availability", "Best-scoring lines here"];
+const BRIEF_CAT_ACCENT = {
+  "Game script": ACCENT.violet,
+  "Availability": ACCENT.rose,
+  "Best-scoring lines here": ACCENT.green,
+};
+
+function briefCatColor(cat) {
+  return BRIEF_CAT_ACCENT[cat] || ACCENT.teal;   // offense matchup sections
+}
+
+function NewsItem({ item }) {
+  const when = item.published ? new Date(item.published) : null;
+  const age = when && !isNaN(when.getTime())
+    ? (() => {
+        const h = Math.max(0, Math.round((Date.now() - when.getTime()) / 3600000));
+        return h < 1 ? "just now" : h < 48 ? `${h}h ago` : `${Math.round(h / 24)}d ago`;
+      })()
+    : null;
+  return (
+    <a href={item.link} target="_blank" rel="noopener noreferrer"
+      style={{ display: "block", textDecoration: "none", color: "inherit", padding: "7px 0", borderTop: "1px solid var(--overlay-3)" }}
+      className="glass-hover">
+      <div style={{ fontSize: 12, fontWeight: 600, lineHeight: 1.4, marginBottom: 2 }}>{item.title}</div>
+      <div style={{ fontSize: 10, color: "var(--text-tertiary)", display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <span style={{ color: item.kind === "analysis" ? ACCENT.teal : "var(--text-secondary-b)", fontWeight: 700 }}>{item.source}</span>
+        {age && <span>{age}</span>}
+        {item.why?.length > 0 && <span style={{ color: "var(--text-label)" }}>· {item.why.join(" · ")}</span>}
+      </div>
+    </a>
+  );
+}
+
+function DailyBriefCard({ brief }) {
+  const [open, setOpen] = useState(false);
+  const grouped = useMemo(() => {
+    const g = {};
+    (brief.read || []).forEach(b => { (g[b.cat] = g[b.cat] || []).push(b); });
+    const cats = Object.keys(g).sort((a, b) => {
+      const ia = BRIEF_CAT_ORDER.indexOf(a), ib = BRIEF_CAT_ORDER.indexOf(b);
+      // Named categories keep their fixed order; the two per-offense sections fall
+      // between them in whatever order the pipeline emitted (away offense first).
+      return (ia === -1 ? 1 : ia === 0 ? 0 : 2) - (ib === -1 ? 1 : ib === 0 ? 0 : 2);
+    });
+    return cats.map(c => ({ cat: c, items: g[c] }));
+  }, [brief.read]);
+
+  const hasRead = (brief.read || []).length > 0;
+  const hasNews = (brief.news || []).length > 0;
+
+  return (
+    <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 14 }}>
+      <div onClick={() => setOpen(o => !o)} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, flexWrap: "wrap", cursor: "pointer", userSelect: "none" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+          <span style={{ fontSize: 11, color: "var(--text-tertiary)", transform: open ? "rotate(90deg)" : "none", transition: "transform 0.15s", display: "inline-block", width: 10 }}>▸</span>
+          <span style={{ fontSize: 14.5, fontWeight: 800 }}>{TEAM_NAMES[brief.away] || brief.away} @ {TEAM_NAMES[brief.home] || brief.home}</span>
+        </div>
+        <div style={{ fontSize: 10.5, color: "var(--text-tertiary)", display: "flex", gap: 10 }}>
+          {brief.week ? <span>Week {brief.week}</span> : null}
+          {brief.date ? <span>{brief.date}</span> : null}
+          <span style={{ color: hasRead ? ACCENT.teal : "var(--text-tertiary)" }}>{brief.readCount} data points</span>
+          <span style={{ color: hasNews ? ACCENT.amber : "var(--text-tertiary)" }}>{brief.newsCount} stories</span>
+        </div>
+      </div>
+
+      {open && (
+        <div style={{ marginTop: 12 }}>
+          {!hasRead && <div style={{ fontSize: 11.5, color: "var(--text-tertiary)" }}>No computed read for this game yet — the defense needs enough tagged snaps this season to say anything real.</div>}
+          {grouped.map(({ cat, items }) => (
+            <div key={cat} style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 9.5, letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 700, color: briefCatColor(cat), marginBottom: 5 }}>{cat}</div>
+              {items.map((b, i) => (
+                <div key={i} style={{ fontSize: 12, color: "var(--text-body)", lineHeight: 1.5, paddingLeft: 10, borderLeft: `2px solid ${briefCatColor(cat)}44`, marginBottom: 5 }}>
+                  {b.text}
+                  {b.note && <div style={{ fontSize: 9.5, color: "var(--text-tertiary)" }}>{b.note}</div>}
+                </div>
+              ))}
+            </div>
+          ))}
+
+          <div style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--overlay-5)" }}>
+            <div style={{ fontSize: 9.5, letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 700, color: ACCENT.amber, marginBottom: 2 }}>
+              What's being written about it
+              {brief.newsStale && <span style={{ color: "var(--text-tertiary)", fontWeight: 400, textTransform: "none", letterSpacing: 0 }}> · cached, feeds unreachable this run</span>}
+            </div>
+            <div style={{ fontSize: 10, color: "var(--text-tertiary)", marginBottom: 4 }}>
+              Headlines matched to this game by team and player mentions. Linked, not summarized — these are other people's words and opinions, unlike everything above.
+            </div>
+            {hasNews
+              ? brief.news.map((n, i) => <NewsItem key={i} item={n} />)
+              : <div style={{ fontSize: 11.5, color: "var(--text-tertiary)", paddingTop: 6 }}>Nothing matched this game in the current news window.</div>}
+          </div>
+        </div>
+      )}
+    </Glass>
+  );
+}
+
+function DailyBriefSection() {
+  const data = DAILY_BRIEFS || {};
+  const briefs = data.briefs || [];
+  const [showSources, setShowSources] = useState(false);
+  if (!briefs.length) {
+    return (
+      <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 22 }}>
+        <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 6 }}>📋 Daily Brief</div>
+        <div style={{ fontSize: 12, color: "var(--text-secondary-b)", lineHeight: 1.6 }}>
+          No briefs built on the last data refresh. This needs upcoming games on the schedule; the headline layer
+          additionally needs the news feeds to be reachable from wherever the pipeline runs.
+          {data.diagnostics?.length > 0 && (
+            <ul style={{ marginTop: 8, paddingLeft: 18, fontSize: 11, color: "var(--text-tertiary)" }}>
+              {data.diagnostics.slice(0, 6).map((d, i) => <li key={i}>{d.trim()}</li>)}
+            </ul>
+          )}
+        </div>
+      </Glass>
+    );
+  }
+  const liveSources = (data.sources || []).filter(s => s.live);
+  const deadSources = (data.sources || []).filter(s => !s.live);
+  return (
+    <div style={{ marginBottom: 26 }}>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap", marginBottom: 4 }}>
+        <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700 }}>📋 Daily Brief</div>
+        <div style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
+          <FreshStamp iso={data.generatedAt} prefix="built" />
+          <span onClick={() => setShowSources(s => !s)} style={{ fontSize: 10, color: ACCENT.teal, cursor: "pointer" }}>
+            {liveSources.length}/{(data.sources || []).length} sources live
+          </span>
+        </div>
+      </div>
+      <div style={{ fontSize: 12, color: "var(--text-secondary-a)", marginBottom: 12, lineHeight: 1.55, maxWidth: 760 }}>
+        One per upcoming game. The read comes first and is built entirely from numbers computed in this pipeline —
+        coverage tendencies, what each defense allows by position, red-zone rates, the real line, who's out. Beat-writer
+        and analyst coverage sits underneath it as context, linked to the original.
+      </div>
+      {showSources && (
+        <Glass hover={false} style={{ padding: "12px 14px", marginBottom: 12, fontSize: 11, lineHeight: 1.7 }}>
+          <div style={{ color: "var(--text-secondary-b)", marginBottom: 4 }}>
+            {data.totalItems} stories indexed in the last few days.
+          </div>
+          <div><b style={{ color: ACCENT.green }}>Live:</b> <span style={{ color: "var(--text-secondary-a)" }}>{liveSources.map(s => s.name).join(", ") || "none"}</span></div>
+          {deadSources.length > 0 && (
+            <div><b style={{ color: "var(--text-tertiary)" }}>Returned nothing:</b> <span style={{ color: "var(--text-tertiary)" }}>{deadSources.map(s => s.name).join(", ")}</span></div>
+          )}
+          {data.diagnostics?.length > 0 && (
+            <details style={{ marginTop: 6 }}>
+              <summary style={{ cursor: "pointer", color: "var(--text-tertiary)", fontSize: 10.5 }}>per-feed detail</summary>
+              <ul style={{ paddingLeft: 18, margin: "4px 0 0", color: "var(--text-tertiary)", fontSize: 10.5 }}>
+                {data.diagnostics.map((d, i) => <li key={i}>{d.trim()}</li>)}
+              </ul>
+            </details>
+          )}
+        </Glass>
+      )}
+      {briefs.map(b => <DailyBriefCard key={`${b.away}@${b.home}`} brief={b} />)}
+    </div>
+  );
+}
+
 function ResearchView({ onSelectPlayer }) {
   const games = useMemo(() => {
     const seen = new Set();
@@ -4531,6 +4996,7 @@ function ResearchView({ onSelectPlayer }) {
 
   return (
     <div className="fade-in">
+      <DailyBriefSection />
       <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>Scheme Matchups</div>
       <div style={{ fontSize: 12, color: "var(--text-secondary-a)", marginBottom: 18, lineHeight: 1.55, maxWidth: 760 }}>
         For every defense playing one coverage clearly enough to call it a real tendency (38%+ of snaps), the textbook reason that shell is exploitable, next to the offensive players whose own real per-coverage stats this season back it up. Real target/attempt volume against that specific look — not a projection.
@@ -4785,7 +5251,7 @@ function RealGameCheck({ leg }) {
 }
 
 function findCurrentBestBook(player, stat) {
-  const allEntries = [...FULL_POOL, ...wnbaPool(), ...mlbPool()];
+  const allEntries = [...FULL_POOL, ...wnbaPool(), ...mlbPool(), ...nbaPool()];
   const entry = allEntries.find(e => e.player === player && e.stat === stat);
   if (!entry || !entry.realLines || entry.realLines.length === 0) return null;
   return pickBestBook(entry.realLines);
@@ -5372,7 +5838,7 @@ function App() {
   // Lazy-load state for WNBA/MLB data — declared early since several useMemo hooks below
   // depend on dataTick to know when to recompute after a fetch completes.
   const [dataTick, setDataTick] = useState(0); // bumped after a lazy-load completes, to force a re-render
-  const [sportDataStatus, setSportDataStatus] = useState({ wnba: "idle", mlb: "idle", cfb: "idle" });
+  const [sportDataStatus, setSportDataStatus] = useState({ wnba: "idle", mlb: "idle", cfb: "idle", nba: "idle" });
 
   async function loadSportData(key) {
     if (SportDataCache[key] || sportDataStatus[key] === "loading") return;
@@ -5393,6 +5859,7 @@ function App() {
     if (sport === "wnba") loadSportData("wnba");
     if (sport === "mlb") loadSportData("mlb");
     if (sport === "cfb") loadSportData("cfb");
+    if (sport === "nba") loadSportData("nba");
   }, [sport]);
 
   const offensePositions = ["WR","TE","RB","QB","K"];
@@ -5458,9 +5925,33 @@ function App() {
 
   const MLB_TEAMS = useMemo(() => getMlbTeamsList(), [dataTick]);
 
+  const filteredNBA = useMemo(() => {
+    let list = nbaPlayers().filter(p => {
+      if (team !== "all" && p.team !== team) return false;
+      if (posFilter !== "all" && p.posBucket !== posFilter) return false;
+      if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
+      return true;
+    });
+    const key = { yards: p=>p.overall.pts, volume: p=>p.overall.games, tds: p=>p.overall.reb,
+                  epa: p=>-(p.defense?.pctPlusMinus ?? 99) }[sortKey] || (p=>p.overall.pts);
+    return list.sort((a,b) => key(b)-key(a));
+  }, [team, search, sortKey, posFilter, dataTick]);
+
+  const NBA_TEAMS = useMemo(() => {
+    const t = new Set();
+    nbaPlayers().forEach(p => { if (p.team) t.add(p.team); });
+    return [...t].sort();
+  }, [dataTick]);
+
   useEffect(() => { setSelectedTeam(null); setPosFilter("all"); }, [tab]);
   useEffect(() => { setSelected(null); setSelectedTeam(null); setSearch(""); setPosFilter("all"); setTeam("all"); setMatchupFilter(null); }, [sport]);
   useEffect(() => { if (sport === "cfb" && (tab === "locks" || tab === "matchup" || tab === "market")) setTab("dashboard"); }, [sport, tab]);
+  // NBA has no separate defense leaderboard or Kalshi feed; and the Matchups tab only
+  // exists for NBA, so leaving it selected while switching sports would show nothing.
+  useEffect(() => {
+    if (sport === "nba" && (tab === "defense" || tab === "market")) setTab("offense");
+    if (sport !== "nba" && tab === "nbamatchups") setTab("dashboard");
+  }, [sport, tab]);
   useEffect(() => { if (sport !== "nfl" && sport !== "wnba" && tab === "research") setTab("dashboard"); }, [sport, tab]);
 
   const [themeOverride, setThemeOverride] = useState(null); // null = auto (local time), "day", or "night"
@@ -5530,6 +6021,12 @@ function App() {
             color: sport==="mlb" ? "#6EC9F2" : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
             display: "inline-flex", alignItems: "center", gap: 8
           }}><BaseballIcon active={sport==="mlb"} /> MLB</button>
+          <button onClick={()=>setSport("nba")} className="bubble-btn" style={{
+            padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="nba"?NBA_ACCENT:"var(--overlay-6)"}`,
+            background: sport==="nba" ? `${NBA_ACCENT}18` : "var(--overlay-1)",
+            color: sport==="nba" ? NBA_ACCENT : "var(--text-secondary-a)", fontWeight: 800, fontSize: 13, cursor: "pointer",
+            display: "inline-flex", alignItems: "center", gap: 8
+          }}><BasketballIcon active={sport==="nba"} /> NBA</button>
           <button onClick={()=>setSport("cfb")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="cfb"?"#8B7FD1":"var(--overlay-6)"}`,
             background: sport==="cfb" ? "#8B7FD118" : "var(--overlay-1)",
@@ -5549,7 +6046,7 @@ function App() {
         <div style={{ marginBottom: 22, display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10 }}>
           <div>
             <div style={{ fontSize: 11, letterSpacing: "0.18em", color: ACCENT.amber, fontWeight: 700, marginBottom: 6 }}>
-              {sport==="nfl" ? "NFL 2024–25 · MATCHUP INTELLIGENCE" : sport==="wnba" ? "WNBA 2025–26 · MATCHUP INTELLIGENCE" : sport==="mlb" ? "MLB 2025–26 · MATCHUP INTELLIGENCE" : "COLLEGE FOOTBALL · MATCHUP INTELLIGENCE"}
+              {sport==="nfl" ? "NFL 2024–25 · MATCHUP INTELLIGENCE" : sport==="wnba" ? "WNBA 2025–26 · MATCHUP INTELLIGENCE" : sport==="mlb" ? "MLB 2025–26 · MATCHUP INTELLIGENCE" : sport==="nba" ? `NBA ${nbaMeta().baselineSeason || ""} · MATCHUP INTELLIGENCE` : "COLLEGE FOOTBALL · MATCHUP INTELLIGENCE"}
             </div>
             <h1 style={{ fontSize: 32, fontWeight: 800, margin: 0, letterSpacing: "-0.02em", background: `linear-gradient(90deg,${dailyTheme.c1},${dailyTheme.c3} 45%,${dailyTheme.c4})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Statum</h1>
             <div style={{ fontSize: 12.5, color: "var(--text-label)", marginTop: 4 }}>
@@ -5559,6 +6056,8 @@ function App() {
                 ? `${wnbaPlayers().length} players · real box scores parsed from play-by-play · train/test validated prop lines`
                 : sport==="mlb"
                 ? `${mlbPlayers().length} batters & pitchers · official MLB Stats API · train/test validated prop lines`
+                : sport==="nba"
+                ? `${nbaPlayers().length} players · real player-tracking matchup data · who guards whom, measured`
                 : `${cfbTeams().length} FBS teams rated · real historical lines · spread/total/moneyline backtested`}
             </div>
           </div>
@@ -5575,11 +6074,13 @@ function App() {
             <Pill active={tab==="offense"} onClick={()=>{setTab("offense");setSelected(null);}} accent="#8B7FD1"><span style={{display:"inline-flex",alignItems:"center",gap:5}}><FootballIcon size={16} /> Games</span></Pill>
           ) : (
             <>
-              <Pill active={tab==="offense"} onClick={()=>{setTab("offense");setSelected(null);}} accent={ACCENT.teal}>{sport==="nfl" ? "NFL Offense" : sport==="wnba" ? "WNBA Players" : "MLB Batters"}</Pill>
-              <Pill active={tab==="defense"} onClick={()=>{setTab("defense");setSelected(null);}} accent={ACCENT.violet}>{sport==="nfl" ? "NFL Defense · Sacks" : sport==="wnba" ? "WNBA Defense · Stl+Blk" : "MLB Pitchers"}</Pill>
+              <Pill active={tab==="offense"} onClick={()=>{setTab("offense");setSelected(null);}} accent={ACCENT.teal}>{sport==="nfl" ? "NFL Offense" : sport==="wnba" ? "WNBA Players" : sport==="nba" ? "NBA Players" : "MLB Batters"}</Pill>
+              {sport!=="nba" && <Pill active={tab==="defense"} onClick={()=>{setTab("defense");setSelected(null);}} accent={ACCENT.violet}>{sport==="nfl" ? "NFL Defense · Sacks" : sport==="wnba" ? "WNBA Defense · Stl+Blk" : "MLB Pitchers"}</Pill>}
+              {/* NBA's defensive story is the per-matchup one, not a separate leaderboard. */}
+              {sport==="nba" && <Pill active={tab==="nbamatchups"} onClick={()=>{setTab("nbamatchups");setSelected(null);}} accent={NBA_ACCENT}>🏀 Matchups</Pill>}
             </>
           )}
-          {sport!=="cfb" && <Pill active={tab==="market"} onClick={()=>{setTab("market");setSelected(null);}} accent={ACCENT.amber}>Market Pulse · Kalshi</Pill>}
+          {sport!=="cfb" && sport!=="nba" && <Pill active={tab==="market"} onClick={()=>{setTab("market");setSelected(null);}} accent={ACCENT.amber}>Market Pulse · Kalshi</Pill>}
           {sport!=="cfb" && <Pill active={tab==="locks"} onClick={()=>{setTab("locks");setSelected(null);}} accent={ACCENT.green}>🎯 Prop Floors + Parlay</Pill>}
           {/* Quad Box needs an Anytime-TD market, which only NFL has in this dataset. */}
           {sport==="nfl" && <Pill active={tab==="quadbox"} onClick={()=>{setTab("quadbox");setSelected(null);}} accent={ACCENT.green}>🎲 Quad Box</Pill>}
@@ -5595,7 +6096,11 @@ function App() {
             const found = findPlayerRecordForNav(sport, playerName);
             if (found) { setSelected(found.player); setTab(found.tab); }
           }} />}
-        {tab==="market" && sport!=="cfb" && <MarketPulseView sport={sport} />}
+        {tab==="market" && sport!=="cfb" && sport!=="nba" && <MarketPulseView sport={sport} />}
+        {tab==="nbamatchups" && sport==="nba" && <NBAMatchupsView sportDataStatus={sportDataStatus} onSelectPlayer={(playerName)=>{
+          const found = findPlayerRecordForNav(sport, playerName);
+          if (found) { setSelected(found.player); setTab(found.tab); }
+        }} />}
         {tab==="locks" && <PropFloorsView sport={sport} slip={slip} setSlip={setSlip} stake={stake} setStake={setStake} aiSuggestion={aiSuggestion} setAiSuggestion={setAiSuggestion} dataTick={dataTick} sportDataStatus={sportDataStatus} matchupFilter={matchupFilter} setMatchupFilter={setMatchupFilter} />}
         {tab==="quadbox" && sport==="nfl" && <QuadBoxView slip={slip} setSlip={setSlip} stake={stake} setStake={setStake}
           onSelectPlayer={(playerName)=>{
@@ -5761,10 +6266,49 @@ function App() {
           </>
         )}
 
+        {sport==="nba" && tab==="offense" && !selected && (
+          <>
+            {sportDataStatus.nba === "loading" && (
+              <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading NBA data…</Glass>
+            )}
+            {sportDataStatus.nba === "error" && (
+              <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: ACCENT.rose, fontSize: 13 }}>Couldn't load NBA data — switch sports and back, or refresh.</Glass>
+            )}
+            <Glass hover={false} style={{ padding: "14px 16px", marginBottom: 18 }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                <input placeholder="Search NBA players…" value={search} onChange={e=>setSearch(e.target.value)}
+                  style={{ flex: 1, minWidth: 180, background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 8, padding: "11px 12px", color: "var(--text-primary)", fontSize: 15 }} />
+                <select value={team} onChange={e=>setTeam(e.target.value)} style={{ background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 20, color: team==="all" ? "var(--text-secondary-a)" : "var(--text-primary)", fontSize: 13, fontWeight: 600, padding: "10px 14px" }}>
+                  <option value="all">Any Team</option>
+                  {NBA_TEAMS.map(t => <option key={t} value={t}>{t}</option>)}
+                </select>
+                <select value={posFilter} onChange={e=>setPosFilter(e.target.value)} style={{ background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 20, color: posFilter==="all" ? "var(--text-secondary-a)" : "var(--text-primary)", fontSize: 13, fontWeight: 600, padding: "10px 14px" }}>
+                  <option value="all">Any Position</option>
+                  <option value="G">Guards</option>
+                  <option value="F">Forwards</option>
+                  <option value="C">Centers</option>
+                </select>
+                <select value={sortKey} onChange={e=>setSortKey(e.target.value)} style={{ background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 20, color: "var(--text-primary)", fontSize: 13, fontWeight: 600, padding: "10px 14px" }}>
+                  <option value="yards">Sort: Points</option>
+                  <option value="tds">Sort: Rebounds</option>
+                  <option value="volume">Sort: Games</option>
+                  <option value="epa">Sort: Defensive impact</option>
+                </select>
+              </div>
+            </Glass>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 10 }}>
+              {filteredNBA.slice(0,60).map((p,i) => <NBACard key={p.id} p={p} idx={i} onSelect={setSelected} />)}
+            </div>
+            {filteredNBA.length === 0 && sportDataStatus.nba !== "loading" && <div style={{ color: "var(--text-tertiary)", fontSize: 13, padding: 30, textAlign: "center" }}>No matches. Try a different search or filter — or the NBA pipeline may not have run successfully yet.</div>}
+            {filteredNBA.length > 60 && <div style={{ color: "var(--text-tertiary)", fontSize: 11.5, marginTop: 14, textAlign: "center" }}>Showing top 60 — narrow with search to see more.</div>}
+          </>
+        )}
+
         {sport==="cfb" && tab==="offense" && <CFBGamesView sportDataStatus={sportDataStatus} />}
 
         {selected && sport==="mlb" && <MLBDetail p={selected} onClose={()=>setSelected(null)} />}
         {selected && sport==="wnba" && <WNBADetail p={selected} onClose={()=>setSelected(null)} />}
+        {selected && sport==="nba" && <NBADetail p={selected} onClose={()=>setSelected(null)} />}
         {selected && sport==="nfl" && tab==="offense" && selected.kind==="skill" && <SkillDetail p={selected} onClose={()=>setSelected(null)} />}
         {selected && sport==="nfl" && tab==="offense" && selected.kind==="qb" && <QBDetail p={selected} onClose={()=>setSelected(null)} />}
         {selected && tab==="offense" && selected.kind==="k" && <KickerDetail p={selected} onClose={()=>setSelected(null)} />}
@@ -5776,6 +6320,7 @@ function App() {
           {sport === "nfl" && <>2024–25 NFL play-by-play + Next Gen Stats participation (nflverse), joined per-play.</>}
           {sport === "wnba" && <>WNBA play-by-play (ESPN, via sportsdataverse).</>}
           {sport === "mlb" && <>Official MLB Stats API (statsapi.mlb.com).</>}
+          {sport === "nba" && <>NBA player-tracking and matchup data (stats.nba.com); schedule from the NBA's public CDN.</>}
           {sport === "cfb" && <>Games, lines, and team ratings from CollegeFootballData.com.</>}
         </div>
       </div>

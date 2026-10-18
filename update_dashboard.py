@@ -1850,6 +1850,730 @@ def build_mlb_upcoming(test_season, team_names):
     return upcoming
 
 
+# =====================================================================
+# NBA (stats.nba.com)
+# =====================================================================
+# Why this source and not ESPN like the WNBA side: the NBA publishes real player-tracking
+# MATCHUP data — literal possessions of one specific offensive player guarded by one
+# specific defender, with the points, shot attempts and turnovers from those possessions.
+# Nothing else free exposes that. It's the only way to answer "is this scorer walking into
+# a good defender this week" with a measured number instead of a vibe.
+#
+# The cost: stats.nba.com is hostile to datacenter traffic. It demands browser-shaped
+# headers and frequently refuses cloud IP ranges outright, which is exactly what a GitHub
+# Actions runner is. So everything here is built to degrade rather than fail:
+#   · every call carries the full header set the site expects, and retries with backoff
+#   · the schedule comes from the CDN JSON, which is plain static hosting and far more
+#     reliable than the stats API
+#   · a successful pull is cached, so a blocked run serves the last good data with its
+#     real age rather than emptying the tab
+#   · every endpoint's status is printed, so one real run tells you what works from there
+# Run market_probe.py to find out definitively before trusting any of it.
+# =====================================================================
+NBA_STATS_API = "https://stats.nba.com/stats"
+NBA_CDN_SCHEDULE = "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json"
+NBA_BASELINE_SEASON = "2025-26"     # completed season — the matchup history comes from here
+NBA_CANDIDATE_CURRENT = ["2026-27", "2027-28"]
+NBA_CACHE_PATH = SCRIPT_DIR / "nba_cache.json"
+NBA_MIN_POSS = 20          # partial possessions before an O-vs-D sample means anything
+NBA_MIN_DEF_FGA = 150      # contested FGA before a defender's FG% impact means anything
+NBA_HTTP_TIMEOUT = 25
+
+NBA_LOG = []
+
+
+def _nbalog(msg):
+    NBA_LOG.append(msg)
+
+
+def nba_headers():
+    """The header set stats.nba.com expects. Without these it returns an empty body or
+    hangs indefinitely — these aren't optional decoration, they're how the endpoint
+    distinguishes a browser from a scraper."""
+    return {
+        'Host': 'stats.nba.com',
+        'User-Agent': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                       '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'),
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer': 'https://www.nba.com/',
+        'Origin': 'https://www.nba.com',
+        'Connection': 'keep-alive',
+        'x-nba-stats-origin': 'stats',
+        'x-nba-stats-token': 'true',
+    }
+
+
+def nba_get(endpoint, params, timeout=NBA_HTTP_TIMEOUT, retries=3):
+    """One stats.nba.com call. Returns (resultSets_as_dict_of_lists | None, status_note).
+
+    Every stats.nba.com response has the same shape — a list of resultSets, each with its
+    own `headers` list and `rowSet` of positional rows — so this normalizes all of them
+    into {setName: [ {col: val}, ... ]} and nothing downstream has to know about it."""
+    url = f"{NBA_STATS_API}/{endpoint}"
+    last = "unknown"
+    for attempt in range(retries):
+        try:
+            r = requests.get(url, params=params, timeout=timeout, headers=nba_headers())
+            if r.status_code == 200:
+                try:
+                    data = r.json()
+                except ValueError:
+                    last = "200 but body wasn't JSON (likely a block page)"
+                    break
+                out = {}
+                for rs in data.get('resultSets', data.get('resultSet', []) or []):
+                    if not isinstance(rs, dict):
+                        continue
+                    cols = rs.get('headers') or []
+                    out[rs.get('name', 'default')] = [dict(zip(cols, row)) for row in (rs.get('rowSet') or [])]
+                return out, "ok"
+            last = f"HTTP {r.status_code}"
+            if r.status_code in (403, 429):
+                # Being rate-limited or IP-blocked isn't fixed by hammering it.
+                time.sleep(2.0 * (attempt + 1))
+            else:
+                break
+        except requests.RequestException as e:
+            last = type(e).__name__
+            time.sleep(1.5 * (attempt + 1))
+    return None, last
+
+
+def nba_season_has_data(season):
+    """Has this season actually started producing box scores yet? The NBA regular season
+    tips in late October, so for most of the autumn the 'current' season is legitimately
+    empty and the tab should lean entirely on the completed baseline."""
+    data, note = nba_get("leaguedashplayerstats", {
+        'College': '', 'Conference': '', 'Country': '', 'DateFrom': '', 'DateTo': '',
+        'Division': '', 'DraftPick': '', 'DraftYear': '', 'GameScope': '', 'GameSegment': '',
+        'Height': '', 'LastNGames': 0, 'LeagueID': '00', 'Location': '', 'MeasureType': 'Base',
+        'Month': 0, 'OpponentTeamID': 0, 'Outcome': '', 'PORound': 0, 'PaceAdjust': 'N',
+        'PerMode': 'Totals', 'Period': 0, 'PlayerExperience': '', 'PlayerPosition': '',
+        'PlusMinus': 'N', 'Rank': 'N', 'Season': season, 'SeasonSegment': '',
+        'SeasonType': 'Regular Season', 'ShotClockRange': '', 'StarterBench': '',
+        'TeamID': 0, 'TwoWay': 0, 'VsConference': '', 'VsDivision': '', 'Weight': '',
+    })
+    if not data:
+        return False, note
+    rows = data.get('LeagueDashPlayerStats') or []
+    played = sum(1 for r in rows if (r.get('GP') or 0) > 0)
+    return played >= 30, (f"{played} players with a game played" if rows else note)
+
+
+def fetch_nba_player_stats(season, season_type='Regular Season'):
+    """Season totals per player — the base for averages, usage and the player list."""
+    data, note = nba_get("leaguedashplayerstats", {
+        'College': '', 'Conference': '', 'Country': '', 'DateFrom': '', 'DateTo': '',
+        'Division': '', 'DraftPick': '', 'DraftYear': '', 'GameScope': '', 'GameSegment': '',
+        'Height': '', 'LastNGames': 0, 'LeagueID': '00', 'Location': '', 'MeasureType': 'Base',
+        'Month': 0, 'OpponentTeamID': 0, 'Outcome': '', 'PORound': 0, 'PaceAdjust': 'N',
+        'PerMode': 'Totals', 'Period': 0, 'PlayerExperience': '', 'PlayerPosition': '',
+        'PlusMinus': 'N', 'Rank': 'N', 'Season': season, 'SeasonSegment': '',
+        'SeasonType': season_type, 'ShotClockRange': '', 'StarterBench': '',
+        'TeamID': 0, 'TwoWay': 0, 'VsConference': '', 'VsDivision': '', 'Weight': '',
+    })
+    rows = (data or {}).get('LeagueDashPlayerStats') or []
+    _nbalog(f"    player season stats [{season}]: {note}, {len(rows)} players")
+    return rows
+
+
+def fetch_nba_game_logs(season, season_type='Regular Season'):
+    """Every player's every game in one call — this is what the P25/P50/P75 ladders are
+    built from. One request instead of 500 per-player ones."""
+    data, note = nba_get("playergamelogs", {
+        'DateFrom': '', 'DateTo': '', 'GameSegment': '', 'LastNGames': 0, 'LeagueID': '00',
+        'Location': '', 'MeasureType': 'Base', 'Month': 0, 'OppTeamID': 0, 'Outcome': '',
+        'PORound': 0, 'PerMode': 'Totals', 'Period': 0, 'PlayerID': '', 'Season': season,
+        'SeasonSegment': '', 'SeasonType': season_type, 'ShotClockRange': '', 'TeamID': '',
+        'VsConference': '', 'VsDivision': '',
+    })
+    rows = (data or {}).get('PlayerGameLogs') or []
+    _nbalog(f"    game logs [{season}]: {note}, {len(rows)} player-games")
+    return rows
+
+
+def fetch_nba_defender_ratings(season, category='Overall'):
+    """Per-defender opponent shooting impact. D_FG_PCT is what shooters hit with this
+    player as the closest defender; NORMAL_FG_PCT is what those same shooters hit overall.
+    The difference (PCT_PLUSMINUS) is the single cleanest 'is he actually a good defender'
+    number the NBA publishes — negative means he drags shooters below their own norm."""
+    data, note = nba_get("leaguedashptdefend", {
+        'College': '', 'Conference': '', 'Country': '', 'DateFrom': '', 'DateTo': '',
+        'DefenseCategory': category, 'Division': '', 'DraftPick': '', 'DraftYear': '',
+        'GameSegment': '', 'Height': '', 'LastNGames': 0, 'LeagueID': '00', 'Location': '',
+        'Month': 0, 'OpponentTeamID': 0, 'Outcome': '', 'PORound': 0, 'PaceAdjust': 'N',
+        'PerMode': 'Totals', 'Period': 0, 'PlayerExperience': '', 'PlayerPosition': '',
+        'PlusMinus': 'N', 'Rank': 'N', 'Season': season, 'SeasonSegment': '',
+        'SeasonType': 'Regular Season', 'StarterBench': '', 'TeamID': 0,
+        'VsConference': '', 'VsDivision': '', 'Weight': '',
+    })
+    rows = []
+    for name, rs in (data or {}).items():
+        if 'Defend' in name or not rows:
+            rows = rs
+    _nbalog(f"    defender ratings [{season}/{category}]: {note}, {len(rows)} defenders")
+    return rows
+
+
+def fetch_nba_matchups(season, season_type='Regular Season'):
+    """THE endpoint this whole feature exists for: real tracked possessions of one
+    offensive player guarded by one specific defender, with what happened on them."""
+    data, note = nba_get("leagueseasonmatchups", {
+        'LeagueID': '00', 'PerMode': 'Totals', 'Season': season, 'SeasonType': season_type,
+        'OffPlayerID': '', 'DefPlayerID': '', 'OffTeamID': '', 'DefTeamID': '',
+    })
+    rows = []
+    for rs in (data or {}).values():
+        if rs and 'OFF_PLAYER_ID' in (rs[0] or {}):
+            rows = rs
+            break
+    _nbalog(f"    season matchups [{season}]: {note}, {len(rows)} offense-vs-defender pairs")
+    return rows
+
+
+def fetch_nba_rosters(season, team_ids):
+    """Per-team rosters, which is where POSITION lives. Position is a nice-to-have for the
+    positional rollups — the core matchup engine keys on real tracked possessions and works
+    without it — so a failure here degrades the feature rather than stopping it."""
+    out, ok_teams = {}, 0
+    for tid in team_ids:
+        data, note = nba_get("commonteamroster", {'LeagueID': '00', 'Season': season, 'TeamID': tid})
+        rows = (data or {}).get('CommonTeamRoster') or []
+        if rows:
+            ok_teams += 1
+        for r in rows:
+            pid = r.get('PLAYER_ID')
+            if pid:
+                out[pid] = {'pos': (r.get('POSITION') or '').strip(),
+                            'height': r.get('HEIGHT'), 'teamId': tid,
+                            'name': r.get('PLAYER')}
+        time.sleep(0.35)      # courtesy pacing; this endpoint is per-team
+    _nbalog(f"    rosters [{season}]: {ok_teams}/{len(team_ids)} teams, {len(out)} players with a position")
+    return out
+
+
+def fetch_nba_team_defense(season):
+    """Opponent production allowed per team — the team-level complement to the per-player
+    matchup data below."""
+    data, note = nba_get("leaguedashteamstats", {
+        'Conference': '', 'DateFrom': '', 'DateTo': '', 'Division': '', 'GameScope': '',
+        'GameSegment': '', 'LastNGames': 0, 'LeagueID': '00', 'Location': '',
+        'MeasureType': 'Opponent', 'Month': 0, 'OpponentTeamID': 0, 'Outcome': '',
+        'PORound': 0, 'PaceAdjust': 'N', 'PerMode': 'PerGame', 'Period': 0,
+        'PlayerExperience': '', 'PlayerPosition': '', 'PlusMinus': 'N', 'Rank': 'N',
+        'Season': season, 'SeasonSegment': '', 'SeasonType': 'Regular Season',
+        'ShotClockRange': '', 'StarterBench': '', 'TeamID': 0, 'TwoWay': 0,
+        'VsConference': '', 'VsDivision': '',
+    })
+    rows = (data or {}).get('LeagueDashTeamStats') or []
+    _nbalog(f"    team defense [{season}]: {note}, {len(rows)} teams")
+    return rows
+
+
+def fetch_nba_schedule():
+    """Upcoming games from the NBA's static CDN JSON rather than the stats API. This is
+    plain cached hosting with no header games, so it keeps working in environments where
+    the stats endpoints are refused."""
+    try:
+        r = requests.get(NBA_CDN_SCHEDULE, timeout=NBA_HTTP_TIMEOUT,
+                         headers={'User-Agent': 'statum-dashboard/1.0', 'Accept': 'application/json'})
+        if r.status_code != 200:
+            _nbalog(f"    schedule: HTTP {r.status_code}")
+            return []
+        data = r.json()
+    except (requests.RequestException, ValueError) as e:
+        _nbalog(f"    schedule: {type(e).__name__}")
+        return []
+    games = []
+    for gd in ((data.get('leagueSchedule') or {}).get('gameDates') or []):
+        for g in gd.get('games') or []:
+            home, away = g.get('homeTeam') or {}, g.get('awayTeam') or {}
+            if not home.get('teamTricode') or not away.get('teamTricode'):
+                continue
+            games.append({
+                'gameId': g.get('gameId'),
+                'date': (g.get('gameDateTimeUTC') or g.get('gameDateEst') or '')[:10],
+                'home': home.get('teamTricode'), 'away': away.get('teamTricode'),
+                'homeId': home.get('teamId'), 'awayId': away.get('teamId'),
+            })
+    _nbalog(f"    schedule: {len(games)} games on the published calendar")
+    return games
+
+
+def build_nba_upcoming(schedule):
+    """Next scheduled game per team tricode."""
+    today = datetime.date.today().isoformat()
+    upcoming = {}
+    for g in sorted(schedule, key=lambda x: x.get('date') or ''):
+        if not g.get('date') or g['date'] < today:
+            continue
+        for team, opp, is_home in ((g['home'], g['away'], True), (g['away'], g['home'], False)):
+            if team not in upcoming:
+                upcoming[team] = {'opp': opp, 'date': g['date'], 'isHome': is_home,
+                                  'gameId': g.get('gameId')}
+    return upcoming
+
+
+def nba_pos_bucket(raw):
+    """NBA positions come through as 'G', 'F-C', 'Guard', etc. Collapse to G/F/C so a
+    rollup has enough sample per bucket, while the raw string stays for display."""
+    s = str(raw or '').strip().upper()
+    if not s:
+        return None
+    if s.startswith('G') or 'GUARD' in s:
+        return 'G'
+    if s.startswith('C') or 'CENTER' in s:
+        return 'C'
+    if s.startswith('F') or 'FORWARD' in s:
+        return 'F'
+    return None
+
+
+def _nba_num(row, key, default=0.0):
+    v = row.get(key)
+    if v is None or v == '':
+        return default
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return default
+
+
+def build_nba_players(base_stats, cur_stats, base_logs, cur_logs, rosters, defenders):
+    """One record per player: season averages blended baseline-to-current the same way
+    every other sport here does it, their real game log, and — new for NBA — their own
+    defensive impact number, since in basketball the same player is on both ends."""
+    def log_index(logs):
+        out = {}
+        for r in logs:
+            pid = r.get('PLAYER_ID')
+            if pid is None:
+                continue
+            out.setdefault(pid, []).append(r)
+        for pid in out:
+            out[pid].sort(key=lambda x: str(x.get('GAME_DATE') or ''))
+        return out
+
+    base_by_pid, cur_by_pid = log_index(base_logs), log_index(cur_logs)
+    def_by_pid = {d.get('CLOSE_DEF_PERSON_ID'): d for d in (defenders or [])}
+    stat_by_pid = {s.get('PLAYER_ID'): s for s in (base_stats or [])}
+    cur_stat_by_pid = {s.get('PLAYER_ID'): s for s in (cur_stats or [])}
+
+    def per_game(rows, key):
+        vals = [_nba_num(r, key) for r in rows]
+        return (sum(vals) / len(vals)) if vals else None
+
+    def gamelog_rows(rows, season_tag):
+        out = []
+        for r in rows:
+            matchup = str(r.get('MATCHUP') or '')
+            opp = matchup.split()[-1] if matchup else None
+            out.append({
+                'season': season_tag, 'game_id': r.get('GAME_ID'),
+                'game_date': str(r.get('GAME_DATE') or '')[:10],
+                'opp': opp, 'is_home': ' vs. ' in matchup,
+                'min': _nba_num(r, 'MIN'), 'pts': _nba_num(r, 'PTS'), 'reb': _nba_num(r, 'REB'),
+                'ast': _nba_num(r, 'AST'), 'stl': _nba_num(r, 'STL'), 'blk': _nba_num(r, 'BLK'),
+                'tov': _nba_num(r, 'TOV'), 'fgm': _nba_num(r, 'FGM'), 'fga': _nba_num(r, 'FGA'),
+                'tpm': _nba_num(r, 'FG3M'), 'tpa': _nba_num(r, 'FG3A'),
+                'ftm': _nba_num(r, 'FTM'), 'fta': _nba_num(r, 'FTA'),
+            })
+        return out
+
+    players, all_pids = [], set(base_by_pid) | set(cur_by_pid)
+    for pid in all_pids:
+        b_rows, c_rows = base_by_pid.get(pid, []), cur_by_pid.get(pid, [])
+        rows = b_rows + c_rows
+        if len(rows) < 5:
+            continue
+        src = cur_stat_by_pid.get(pid) or stat_by_pid.get(pid) or (c_rows or b_rows)[0]
+        name = src.get('PLAYER_NAME') or (rows[0].get('PLAYER_NAME'))
+        if not name:
+            continue
+        team = (cur_stat_by_pid.get(pid, {}).get('TEAM_ABBREVIATION')
+                or (c_rows[-1].get('TEAM_ABBREVIATION') if c_rows else None)
+                or (rosters.get(pid, {}) or {}).get('teamAbbr')
+                or (b_rows[-1].get('TEAM_ABBREVIATION') if b_rows else None))
+        roster = rosters.get(pid) or {}
+        d = def_by_pid.get(pid) or {}
+        is_rookie = not b_rows          # no baseline season at all
+
+        overall = {
+            'games': len(rows),
+            'min': round(per_game(rows, 'MIN') or 0, 1),
+            'pts': round(per_game(rows, 'PTS') or 0, 1),
+            'reb': round(per_game(rows, 'REB') or 0, 1),
+            'ast': round(per_game(rows, 'AST') or 0, 1),
+            'stl': round(per_game(rows, 'STL') or 0, 1),
+            'blk': round(per_game(rows, 'BLK') or 0, 1),
+            'tov': round(per_game(rows, 'TOV') or 0, 1),
+            'tpm': round(per_game(rows, 'FG3M') or 0, 1),
+            'fgPct': round(100 * sum(_nba_num(r, 'FGM') for r in rows) / max(sum(_nba_num(r, 'FGA') for r in rows), 1), 1),
+            'tpPct': round(100 * sum(_nba_num(r, 'FG3M') for r in rows) / max(sum(_nba_num(r, 'FG3A') for r in rows), 1), 1),
+        }
+        blend = None
+        if c_rows:
+            blend = {
+                'currentSeasonGames': len(c_rows),
+                'ptsPerGame': {'value': round(per_game(c_rows, 'PTS') or 0, 2),
+                               'weight_current': round(len(c_rows) / (len(c_rows) + SHRINKAGE_K), 3),
+                               'games_this_season': len(c_rows)},
+                'currentSeasonStats': {
+                    'pts': round(per_game(c_rows, 'PTS') or 0, 1),
+                    'reb': round(per_game(c_rows, 'REB') or 0, 1),
+                    'ast': round(per_game(c_rows, 'AST') or 0, 1),
+                    'min': round(per_game(c_rows, 'MIN') or 0, 1),
+                },
+            }
+        players.append({
+            'id': pid, 'name': name, 'team': team,
+            'pos': roster.get('pos') or d.get('PLAYER_POSITION') or None,
+            'posBucket': nba_pos_bucket(roster.get('pos') or d.get('PLAYER_POSITION')),
+            'overall': overall,
+            'defense': ({
+                'dFgPct': round(_nba_num(d, 'D_FG_PCT') * 100, 1),
+                'normalFgPct': round(_nba_num(d, 'NORMAL_FG_PCT') * 100, 1),
+                'pctPlusMinus': round(_nba_num(d, 'PCT_PLUSMINUS') * 100, 1),
+                'defFga': int(_nba_num(d, 'D_FGA')),
+            } if d else None),
+            'gamelog': gamelog_rows(b_rows, NBA_BASELINE_SEASON) + gamelog_rows(c_rows, 'current'),
+            'currentSeasonBlend': blend,
+            'isRookie': is_rookie,
+        })
+    players.sort(key=lambda p: -p['overall']['pts'])
+    return players
+
+
+def build_nba_pool(players):
+    """P25/P50/P75 ladders on the same contract as every other sport: the line comes from
+    one slice of real games, the hit rate is graded on a different, held-out slice."""
+    MIN25 = {'Points': 8, 'Rebounds': 2, 'Assists': 1, 'Steals': 0, 'Blocks': 0,
+             'Three-Pointers Made': 0}
+    MIN50 = {'Points': 14, 'Rebounds': 4, 'Assists': 2, 'Steals': 1, 'Blocks': 1,
+             'Three-Pointers Made': 1}
+    stat_map = [('pts', 'Points'), ('reb', 'Rebounds'), ('ast', 'Assists'),
+                ('stl', 'Steals'), ('blk', 'Blocks'), ('tpm', 'Three-Pointers Made')]
+
+    def ladder(train_vals, test_vals, label):
+        if len(train_vals) < 10 or len(test_vals) < 6:
+            return None
+        tr = np.array(train_vals, dtype=float)
+        te = np.array(test_vals, dtype=float)
+        p25, p50, p75 = (np.floor(np.percentile(tr, q)) for q in (25, 50, 75))
+        if p25 < MIN25[label] or p50 < MIN50[label] or p75 <= p50:
+            return None
+        hit = lambda line: round(float((te >= line).mean()) * 100, 1)
+        return {'p25': {'line': float(p25), 'testHit': hit(p25)},
+                'p50': {'line': float(p50), 'testHit': hit(p50)},
+                'p75': {'line': float(p75), 'testHit': hit(p75)},
+                'trainGames': int(len(tr)), 'testGames': int(len(te))}
+
+    pool = []
+    for p in players:
+        gl = p['gamelog']
+        base = [g for g in gl if g['season'] != 'current']
+        cur = [g for g in gl if g['season'] == 'current']
+        for key, label in stat_map:
+            if p['isRookie'] or len(base) < 10:
+                # No completed baseline — split this season's own games instead, exactly
+                # as the NFL/WNBA rookie paths do, and flag it so the UI can say so.
+                vals = [g[key] for g in cur]
+                if len(vals) < ROOKIE_MIN_GAMES:
+                    continue
+                test_n = max(1, len(vals) // 3)
+                l = ladder(vals[:-test_n], vals[-test_n:], label)
+                rookie = True
+            else:
+                l = ladder([g[key] for g in base], [g[key] for g in cur] or [g[key] for g in base[-12:]], label)
+                rookie = False
+            if l:
+                pool.append({'player': p['name'], 'team': p.get('team'), 'pos': p.get('pos'),
+                             'stat': label, 'kind': 'ladder', **l, 'isRookie': rookie,
+                             'id': f"{p['name']}|{label}".replace(' ', '_')})
+    return pool
+
+
+def build_nba_team_defense(rows):
+    """Team-level opponent production, ranked. 1 = allows the most."""
+    out = {}
+    if not rows:
+        return out
+    by_pts = sorted(rows, key=lambda r: -_nba_num(r, 'OPP_PTS'))
+    rank_of = {r.get('TEAM_ABBREVIATION') or r.get('TEAM_NAME'): i + 1 for i, r in enumerate(by_pts)}
+    for r in rows:
+        code = r.get('TEAM_ABBREVIATION') or r.get('TEAM_NAME')
+        if not code:
+            continue
+        out[code] = {
+            'team': code, 'teamName': r.get('TEAM_NAME'),
+            'ppgAllowed': round(_nba_num(r, 'OPP_PTS'), 1),
+            'ppgAllowedRank': rank_of.get(code),
+            'oppFgPct': round(_nba_num(r, 'OPP_FG_PCT') * 100, 1),
+            'oppTpPct': round(_nba_num(r, 'OPP_FG3_PCT') * 100, 1),
+            'oppRebPerGame': round(_nba_num(r, 'OPP_REB'), 1),
+            'oppAstPerGame': round(_nba_num(r, 'OPP_AST'), 1),
+            'gamesPlayed': int(_nba_num(r, 'GP')),
+        }
+    return out
+
+
+# ---------------------------------------------------------------------
+# The matchup engine
+# ---------------------------------------------------------------------
+def build_nba_defender_index(defender_rows):
+    """Defender quality, ranked among players with enough contested attempts to judge.
+
+    PCT_PLUSMINUS is (what shooters hit with him closest) minus (what those same shooters
+    hit normally). Negative is good: he's dragging them below their own baseline. Ranking
+    is restricted to real volume — a bench player with 40 contested attempts can post an
+    absurd number that means nothing."""
+    index = {}
+    qualified = [d for d in (defender_rows or []) if _nba_num(d, 'D_FGA') >= NBA_MIN_DEF_FGA]
+    # most negative plus/minus = best defender = rank 1
+    ranked = sorted(qualified, key=lambda d: _nba_num(d, 'PCT_PLUSMINUS'))
+    rank_by_id = {d.get('CLOSE_DEF_PERSON_ID'): i + 1 for i, d in enumerate(ranked)}
+    n = max(len(ranked), 1)
+    for d in (defender_rows or []):
+        pid = d.get('CLOSE_DEF_PERSON_ID')
+        if pid is None:
+            continue
+        pm = _nba_num(d, 'PCT_PLUSMINUS') * 100          # in percentage points
+        fga = _nba_num(d, 'D_FGA')
+        rank = rank_by_id.get(pid)
+        index[pid] = {
+            'id': pid, 'name': d.get('PLAYER_NAME'),
+            'pos': d.get('PLAYER_POSITION'), 'posBucket': nba_pos_bucket(d.get('PLAYER_POSITION')),
+            'team': d.get('PLAYER_LAST_TEAM_ABBREVIATION'),
+            'dFgPct': round(_nba_num(d, 'D_FG_PCT') * 100, 1),
+            'normalFgPct': round(_nba_num(d, 'NORMAL_FG_PCT') * 100, 1),
+            'pctPlusMinus': round(pm, 1),
+            'defFga': int(fga),
+            'rank': rank, 'rankedOf': n if rank else None,
+            'qualified': fga >= NBA_MIN_DEF_FGA,
+            # 0-100, higher = better defender. +/-6 percentage points spans the scale.
+            'quality': round(_clamp(50.0 - pm * 8.0), 1) if fga >= NBA_MIN_DEF_FGA else 50.0,
+        }
+    return index
+
+
+def build_nba_matchup_history(matchup_rows):
+    """Index the raw season-matchup rows two ways: per offense-defender pair, and per
+    offensive player in aggregate (which is the baseline any single matchup is judged
+    against — his own scoring rate across everyone who guarded him)."""
+    pair, totals = {}, {}
+    for r in (matchup_rows or []):
+        off_id, def_id = r.get('OFF_PLAYER_ID'), r.get('DEF_PLAYER_ID')
+        if off_id is None or def_id is None:
+            continue
+        poss = _nba_num(r, 'PARTIAL_POSS')
+        if poss <= 0:
+            continue
+        rec = {
+            'offId': off_id, 'offName': r.get('OFF_PLAYER_NAME'),
+            'defId': def_id, 'defName': r.get('DEF_PLAYER_NAME'),
+            'games': int(_nba_num(r, 'GP')), 'poss': poss,
+            'pts': _nba_num(r, 'PLAYER_PTS'),
+            'fgm': _nba_num(r, 'MATCHUP_FGM'), 'fga': _nba_num(r, 'MATCHUP_FGA'),
+            'tpm': _nba_num(r, 'MATCHUP_FG3M'), 'tpa': _nba_num(r, 'MATCHUP_FG3A'),
+            'tov': _nba_num(r, 'MATCHUP_TOV'), 'ast': _nba_num(r, 'MATCHUP_AST'),
+        }
+        pair[(off_id, def_id)] = rec
+        t = totals.setdefault(off_id, {'poss': 0.0, 'pts': 0.0, 'fgm': 0.0, 'fga': 0.0,
+                                       'tov': 0.0, 'name': rec['offName']})
+        for k in ('poss', 'pts', 'fgm', 'fga', 'tov'):
+            t[k] += rec[k]
+    for t in totals.values():
+        t['ptsPer100'] = round(100.0 * t['pts'] / t['poss'], 1) if t['poss'] else None
+        t['fgPct'] = round(100.0 * t['fgm'] / t['fga'], 1) if t['fga'] else None
+    return pair, totals
+
+
+def grade_nba_matchup(off_player, defender, pair_rec, off_totals):
+    """Score one scorer-vs-defender pairing 0-100, where 50 is neutral.
+
+    Two independent things decide it, and they're kept separate because they can disagree:
+
+      1. HEAD-TO-HEAD — what this scorer actually did on tracked possessions against this
+         specific defender, relative to his own rate against everyone. This is the most
+         direct evidence available, and also the noisiest; it's shrunk hard by sample size.
+      2. DEFENDER QUALITY — how much this defender suppresses shooters generally. This is
+         the stable signal, and it's what answers the "good defender vs mild scorer" case
+         even when the two have barely shared the floor.
+
+    Returns (score, verdict, reasons). A high score favors the scorer."""
+    reasons = []
+    base_rate = (off_totals or {}).get('ptsPer100')
+    base_fg = (off_totals or {}).get('fgPct')
+
+    h2h_score, poss = 50.0, 0.0
+    if pair_rec and base_rate:
+        poss = pair_rec['poss']
+        rate = 100.0 * pair_rec['pts'] / poss if poss else None
+        if rate is not None:
+            delta = (rate - base_rate) / base_rate
+            h2h_score = _clamp(50.0 + delta * 110.0)
+            fg_vs = (100.0 * pair_rec['fgm'] / pair_rec['fga']) if pair_rec['fga'] else None
+            bits = [f"{rate:.0f} pts/100 poss against him vs {base_rate:.0f} overall"]
+            if fg_vs is not None and base_fg:
+                bits.append(f"{fg_vs:.0f}% shooting vs {base_fg:.0f}%")
+            reasons.append(f"{poss:.0f} tracked possessions: " + ", ".join(bits))
+
+    dq = (defender or {}).get('quality', 50.0)
+    def_score = _clamp(100.0 - dq)       # a better defender lowers the scorer's outlook
+    if defender and defender.get('qualified'):
+        pm = defender['pctPlusMinus']
+        if pm <= -2:
+            reasons.append(f"{defender['name']} holds shooters {abs(pm):.1f} pts below their normal FG% "
+                           f"({_ordinal(defender['rank'])} of {defender['rankedOf']} high-volume defenders)")
+        elif pm >= 2:
+            reasons.append(f"{defender['name']} lets shooters beat their normal FG% by {pm:.1f} points "
+                           f"({defender['defFga']} contested attempts)")
+        else:
+            reasons.append(f"{defender['name']} is roughly neutral on shooter efficiency ({pm:+.1f} pts)")
+    elif defender:
+        reasons.append(f"{defender['name']} hasn't contested enough shots "
+                       f"({defender.get('defFga', 0)}) to grade as a defender")
+
+    # Head-to-head only outweighs the general read once there's real sample behind it.
+    h2h_weight = _clamp(poss / 80.0, 0.0, 0.6)
+    score = h2h_score * h2h_weight + def_score * (1 - h2h_weight)
+
+    if score >= 62:
+        verdict = 'exploit'
+    elif score <= 40:
+        verdict = 'avoid'
+    else:
+        verdict = 'neutral'
+    return round(score, 1), verdict, reasons
+
+
+def build_nba_matchup_edges(upcoming, pair_index, off_totals, defender_index, players,
+                            team_defense, max_per_team=5):
+    """Per upcoming game, who guards whom and whether that favors the scorer.
+
+    Primary defender is whoever actually logged the most tracked possessions against this
+    scorer; when they've never shared the floor, it falls back to the opposing team's
+    best-graded defender at the same position and says so rather than implying it's
+    measured."""
+    by_team = {}
+    for p in players:
+        if p.get('team'):
+            by_team.setdefault(p['team'], []).append(p)
+    def_by_name = {d['name']: d for d in defender_index.values() if d.get('name')}
+
+    games, seen = [], set()
+    for team, info in (upcoming or {}).items():
+        if not info or not info.get('opp'):
+            continue
+        key = tuple(sorted([team, info['opp']]))
+        if key in seen:
+            continue
+        seen.add(key)
+        home = team if info.get('isHome') else info['opp']
+        away = info['opp'] if info.get('isHome') else team
+        games.append({'home': home, 'away': away, 'date': info.get('date')})
+    games.sort(key=lambda g: str(g.get('date') or ''))
+
+    out = []
+    for g in games:
+        edges = []
+        for off_team, def_team in ((g['away'], g['home']), (g['home'], g['away'])):
+            scorers = sorted(by_team.get(off_team, []), key=lambda p: -p['overall']['pts'])[:max_per_team]
+            opp_ids = {p['id'] for p in by_team.get(def_team, [])}
+            for o in scorers:
+                if o['overall']['pts'] < 8:
+                    continue
+                # every tracked pairing of this scorer against anyone now on the other team
+                candidates = [(did, pair_index[(o['id'], did)]) for did in opp_ids
+                              if (o['id'], did) in pair_index]
+                candidates.sort(key=lambda c: -c[1]['poss'])
+                pair_rec, defender, tracked = None, None, False
+                if candidates and candidates[0][1]['poss'] >= NBA_MIN_POSS:
+                    did, pair_rec = candidates[0]
+                    defender = defender_index.get(did)
+                    tracked = True
+                else:
+                    # no real shared history — fall back to the opponent's best-graded
+                    # defender at this scorer's position, clearly labelled as projected
+                    same_pos = [defender_index[p['id']] for p in by_team.get(def_team, [])
+                                if p['id'] in defender_index
+                                and defender_index[p['id']].get('posBucket')
+                                and defender_index[p['id']]['posBucket'] == o.get('posBucket')]
+                    same_pos = [d for d in same_pos if d.get('qualified')]
+                    if same_pos:
+                        defender = min(same_pos, key=lambda d: d['pctPlusMinus'])
+                    if candidates:
+                        did, pair_rec = candidates[0]
+                        defender = defender or defender_index.get(did)
+                if not defender and not pair_rec:
+                    continue
+                score, verdict, reasons = grade_nba_matchup(o, defender, pair_rec if tracked else None,
+                                                            off_totals.get(o['id']))
+                if not tracked:
+                    reasons.insert(0, "no meaningful tracked history between these two — "
+                                      "this is the opponent's likely matchup at the position, not a measured one")
+                edges.append({
+                    'player': o['name'], 'playerId': o['id'], 'team': off_team,
+                    'pos': o.get('pos'), 'posBucket': o.get('posBucket'),
+                    'ppg': o['overall']['pts'],
+                    'defender': ({'name': defender['name'], 'pos': defender.get('pos'),
+                                  'pctPlusMinus': defender['pctPlusMinus'], 'rank': defender.get('rank'),
+                                  'rankedOf': defender.get('rankedOf'), 'defFga': defender.get('defFga'),
+                                  'quality': defender.get('quality'), 'qualified': defender.get('qualified')}
+                                 if defender else None),
+                    'tracked': tracked,
+                    'history': ({'poss': round(pair_rec['poss'], 1), 'games': pair_rec['games'],
+                                 'pts': round(pair_rec['pts'], 1),
+                                 'ptsPer100': round(100.0 * pair_rec['pts'] / pair_rec['poss'], 1) if pair_rec['poss'] else None,
+                                 'fgm': int(pair_rec['fgm']), 'fga': int(pair_rec['fga']),
+                                 'fgPct': round(100.0 * pair_rec['fgm'] / pair_rec['fga'], 1) if pair_rec['fga'] else None,
+                                 'tov': round(pair_rec['tov'], 1)}
+                                if pair_rec else None),
+                    'ownRate': off_totals.get(o['id'], {}).get('ptsPer100'),
+                    'ownFgPct': off_totals.get(o['id'], {}).get('fgPct'),
+                    'score': score, 'verdict': verdict, 'why': reasons[:3],
+                })
+        edges.sort(key=lambda e: -e['score'])
+        out.append({**g, 'edges': edges,
+                    'teamDefense': {g['home']: team_defense.get(g['home']),
+                                    g['away']: team_defense.get(g['away'])}})
+    return out
+
+
+def build_nba_positional_defense(matchup_rows, pos_by_id, team_by_id):
+    """How much each team gives up to each position group, from the same tracked
+    possessions — points allowed per 100 possessions by the position being guarded."""
+    agg = {}
+    for r in (matchup_rows or []):
+        did, oid = r.get('DEF_PLAYER_ID'), r.get('OFF_PLAYER_ID')
+        team = team_by_id.get(did)
+        bucket = pos_by_id.get(oid)
+        poss = _nba_num(r, 'PARTIAL_POSS')
+        if not team or not bucket or poss <= 0:
+            continue
+        slot = agg.setdefault(team, {}).setdefault(bucket, {'poss': 0.0, 'pts': 0.0})
+        slot['poss'] += poss
+        slot['pts'] += _nba_num(r, 'PLAYER_PTS')
+
+    out = {}
+    for team, buckets in agg.items():
+        out[team] = {}
+        for b, v in buckets.items():
+            if v['poss'] < 200:      # too thin to rank a team-position pairing on
+                continue
+            out[team][b] = {'ptsPer100': round(100.0 * v['pts'] / v['poss'], 1),
+                            'poss': int(v['poss'])}
+    # rank within each position bucket: 1 = allows the most
+    for b in ('G', 'F', 'C'):
+        rows = [(t, d[b]['ptsPer100']) for t, d in out.items() if b in d]
+        rows.sort(key=lambda x: -x[1])
+        for i, (t, _) in enumerate(rows):
+            out[t][b]['rank'] = i + 1
+            out[t][b]['rankedOf'] = len(rows)
+    return out
+
+
 def fetch_injuries_and_depthcharts(season):
     """Injury reports and depth charts for a given season. Always re-fetched (both update frequently)."""
     inj_path = CACHE_DIR / f"injuries_{season}.csv"
@@ -3516,6 +4240,420 @@ def build_quad_box(full_pool, atd_pool, receivers, qbs, redzone, upcoming, injur
 
 
 # =====================================================================
+# DAILY BRIEFS — per-matchup read, built from computed data + real news
+# =====================================================================
+# Two clearly separated layers per game, in this order on purpose:
+#
+#   1. THE READ — generated entirely from numbers this pipeline already computes:
+#      the opponent's coverage shell and how often they play it, what they allow to
+#      each position, their red-zone TD rate allowed, the real Vegas spread/total off
+#      the schedule, who's Out or Doubtful, and which of this game's players scored
+#      best in the Strong Picks pass. Every line is checkable against the rest of the
+#      dashboard. Nothing here is a projection or an opinion.
+#
+#   2. THE NEWS — real headlines from beat writers and analysts, fetched by RSS,
+#      matched to the game by team and player mentions, linked and timestamped.
+#      Aggregation, not synthesis: this pipeline has no language model in it, so it
+#      surfaces what was written and who wrote it rather than paraphrasing it.
+#
+# Keeping these apart matters. The read is derived from real play-by-play; the news is
+# somebody's opinion. Blending them into one voice would make it impossible to tell
+# which is which, and the whole point of the former is that you can audit it.
+#
+# Source URLs are best-effort — feeds move and get retired. Every fetch is logged with
+# its status so a dead feed shows up in the run output instead of silently thinning the
+# brief, and the last good pull is cached so one bad run doesn't empty the tab.
+# =====================================================================
+NEWS_CACHE_PATH = SCRIPT_DIR / "news_cache.json"
+NEWS_MAX_AGE_DAYS = 6        # a brief about last week's gameplan is noise
+NEWS_PER_GAME = 5
+NEWS_HTTP_TIMEOUT = 15
+
+# kind: 'news' = reporting/injuries/transactions, 'analysis' = gameplan/scheme/matchup
+# writing. Analysis is ranked above straight news for a brief about what to expect.
+NEWS_SOURCES = [
+    {'name': 'ESPN NFL', 'url': 'https://www.espn.com/espn/rss/nfl/news', 'kind': 'news'},
+    {'name': 'CBS Sports NFL', 'url': 'https://www.cbssports.com/rss/headlines/nfl/', 'kind': 'news'},
+    {'name': 'Yahoo Sports NFL', 'url': 'https://sports.yahoo.com/nfl/rss.xml', 'kind': 'news'},
+    {'name': 'Pro Football Talk', 'url': 'https://profootballtalk.nbcsports.com/feed/', 'kind': 'news'},
+    {'name': 'Pro Football Rumors', 'url': 'https://www.profootballrumors.com/feed', 'kind': 'news'},
+    {'name': 'SB Nation NFL', 'url': 'https://www.sbnation.com/rss/nfl/index.xml', 'kind': 'analysis'},
+    {'name': 'Sharp Football Analysis', 'url': 'https://www.sharpfootballanalysis.com/feed/', 'kind': 'analysis'},
+    {'name': 'RotoWire NFL', 'url': 'https://www.rotowire.com/rss/news.php?sport=NFL', 'kind': 'news'},
+    {'name': 'NFL.com', 'url': 'https://www.nfl.com/feeds/rss/news', 'kind': 'news'},
+    {'name': 'The Ringer NFL', 'url': 'https://www.theringer.com/rss/nfl/index.xml', 'kind': 'analysis'},
+]
+
+NEWS_LOG = []
+
+
+def _nlog(msg):
+    NEWS_LOG.append(msg)
+
+
+def _strip_html(s):
+    if not s:
+        return ""
+    s = re.sub(r'<[^>]+>', ' ', s)
+    s = re.sub(r'&[a-zA-Z#0-9]+;', ' ', s)
+    return re.sub(r'\s+', ' ', s).strip()
+
+
+def _parse_feed_date(raw):
+    """RSS uses RFC 822, Atom uses ISO 8601. Try both, give up quietly."""
+    if not raw:
+        return None
+    raw = raw.strip()
+    try:
+        from email.utils import parsedate_to_datetime
+        dt = parsedate_to_datetime(raw)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=datetime.timezone.utc)
+        return dt
+    except (TypeError, ValueError, IndexError):
+        pass
+    for fmt in ('%Y-%m-%dT%H:%M:%S%z', '%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d'):
+        try:
+            dt = datetime.datetime.strptime(raw.replace('Z', '+0000') if fmt.endswith('%z') else raw, fmt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=datetime.timezone.utc)
+            return dt
+        except ValueError:
+            continue
+    return None
+
+
+def fetch_rss(source, timeout=NEWS_HTTP_TIMEOUT):
+    """Parse one RSS 2.0 or Atom feed with the stdlib — no new dependency for this.
+    Returns (items, status_note)."""
+    import xml.etree.ElementTree as ET
+    try:
+        r = requests.get(source['url'], timeout=timeout,
+                         headers={'User-Agent': 'statum-dashboard/1.0 (+news brief)',
+                                  'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml'})
+        if r.status_code != 200:
+            return [], f"HTTP {r.status_code}"
+        root = ET.fromstring(r.content)
+    except requests.RequestException as e:
+        return [], type(e).__name__
+    except ET.ParseError as e:
+        return [], f"bad XML ({str(e)[:40]})"
+
+    ns = {'atom': 'http://www.w3.org/2005/Atom'}
+    nodes = root.findall('.//item') or root.findall('.//atom:entry', ns)
+    if not nodes:
+        # An error page or an HTML redirect parses as perfectly valid XML and then yields
+        # nothing, which "no items parsed" describes misleadingly — it reads like the feed
+        # was simply quiet. Check the root tag so a feed that moved says so.
+        tag = re.sub(r'^\{.*\}', '', root.tag).lower()
+        if tag not in ('rss', 'feed', 'rdf'):
+            return [], f"not a feed (root <{tag}>, likely an error or redirect page)"
+    items = []
+    for n in nodes:
+        def text(*paths):
+            for p in paths:
+                el = n.find(p, ns) if p.startswith('atom:') else n.find(p)
+                if el is not None:
+                    if el.text and el.text.strip():
+                        return el.text.strip()
+                    if p.startswith('atom:link') and el.get('href'):
+                        return el.get('href')
+            return None
+
+        title = _strip_html(text('title', 'atom:title'))
+        link = text('link', 'atom:link')
+        if not link:
+            el = n.find('atom:link', ns)
+            link = el.get('href') if el is not None else None
+        summary = _strip_html(text('description', 'atom:summary', 'atom:content'))
+        published = _parse_feed_date(text('pubDate', 'atom:published', 'atom:updated',
+                                          '{http://purl.org/dc/elements/1.1/}date'))
+        if not title or not link:
+            continue
+        items.append({
+            'title': title, 'link': link, 'summary': summary[:320],
+            'source': source['name'], 'kind': source['kind'],
+            'published': published.isoformat() if published else None,
+            '_ts': published.timestamp() if published else 0.0,
+        })
+    return items, ("ok" if items else "no items parsed")
+
+
+def build_news_index(sources=None, max_age_days=NEWS_MAX_AGE_DAYS):
+    """Every source, fetched and normalized into one deduped, recency-sorted list."""
+    sources = sources or NEWS_SOURCES
+    cutoff = time.time() - max_age_days * 86400
+    seen_titles, out, live_sources = set(), [], []
+    for src in sources:
+        items, note = fetch_rss(src)
+        kept = 0
+        for it in items:
+            # Undated items are kept — a lot of feeds omit pubDate — but they sort last.
+            if it['_ts'] and it['_ts'] < cutoff:
+                continue
+            key = re.sub(r'[^a-z0-9]', '', it['title'].lower())[:70]
+            if key in seen_titles:
+                continue
+            seen_titles.add(key)
+            out.append(it)
+            kept += 1
+        if kept:
+            live_sources.append(src['name'])
+        _nlog(f"    {src['name']}: {note}" + (f", {kept} recent item(s)" if kept else ""))
+    out.sort(key=lambda i: -i['_ts'])
+    _nlog(f"  {len(out)} unique recent items from {len(live_sources)}/{len(sources)} working sources")
+    return out, live_sources
+
+
+def _mention_terms(code, team_names=None):
+    """Every string that plausibly identifies a team in a headline: nickname, city, code."""
+    nick = None
+    for n, c in NFL_NICKNAME_TO_CODE.items():
+        if c == code:
+            nick = n
+            break
+    terms = set()
+    if nick:
+        terms.add(nick)
+    city = NFL_CODE_TO_CITY.get(code)
+    if city:
+        terms.add(city.lower())
+    return terms
+
+
+NFL_CODE_TO_CITY = {
+    'LAC': 'Chargers', 'BAL': 'Baltimore', 'CAR': 'Carolina', 'PIT': 'Pittsburgh', 'CLE': 'Cleveland',
+    'DEN': 'Denver', 'NO': 'New Orleans', 'MIA': 'Miami', 'LA': 'Rams', 'KC': 'Kansas City',
+    'TEN': 'Tennessee', 'CIN': 'Cincinnati', 'GB': 'Green Bay', 'MIN': 'Minnesota', 'NYJ': 'Jets',
+    'HOU': 'Houston', 'DAL': 'Dallas', 'JAX': 'Jacksonville', 'TB': 'Tampa Bay', 'SEA': 'Seattle',
+    'ATL': 'Atlanta', 'BUF': 'Buffalo', 'IND': 'Indianapolis', 'NE': 'New England', 'SF': 'San Francisco',
+    'ARI': 'Arizona', 'DET': 'Detroit', 'PHI': 'Philadelphia', 'WAS': 'Washington', 'NYG': 'Giants',
+    'CHI': 'Chicago', 'LV': 'Las Vegas',
+}
+
+# Headline words that signal a piece is actually about how a game will be played, which is
+# what was asked for, rather than a transaction note or a power-ranking listicle.
+_GAMEPLAN_WORDS = ('gameplan', 'game plan', 'matchup', 'preview', 'what to watch', 'keys to',
+                   'scheme', 'film', 'breakdown', 'how to attack', 'x-factor', 'strategy',
+                   'defend', 'exploit', 'tendenc')
+_NOISE_WORDS = ('power rankings', 'mock draft', 'fantasy start/sit', 'waiver', 'best bets parlay',
+                'dfs lineup', 'survivor pool')
+
+
+def match_news_to_game(items, home, away, player_names, limit=NEWS_PER_GAME):
+    """Score each item's relevance to one specific game. Team mentions are the strong
+    signal, player names next, gameplan-flavored headlines get a bump because that's what
+    this brief is for, and listicle noise is pushed down."""
+    home_terms = _mention_terms(home)
+    away_terms = _mention_terms(away)
+    names_lower = {n.lower(): n for n in (player_names or set())}
+    now = time.time()
+
+    scored = []
+    for it in items:
+        hay = (it['title'] + ' ' + (it.get('summary') or '')).lower()
+        score, why = 0, []
+        hit_home = any(t in hay for t in home_terms)
+        hit_away = any(t in hay for t in away_terms)
+        if hit_home:
+            score += 10
+        if hit_away:
+            score += 10
+        if hit_home and hit_away:
+            score += 12      # a piece about THIS game specifically, not just one team
+            why.append('this matchup')
+        matched_players = [orig for low, orig in names_lower.items() if low in hay]
+        if matched_players:
+            score += 5 + min(len(matched_players), 3)
+            why.append(matched_players[0])
+        if score == 0:
+            continue
+        if any(w in hay for w in _GAMEPLAN_WORDS):
+            score += 8
+            why.append('gameplan piece')
+        if any(w in hay for w in _NOISE_WORDS):
+            score -= 12
+        if it['kind'] == 'analysis':
+            score += 3
+        age_days = ((now - it['_ts']) / 86400) if it['_ts'] else 3.0
+        score -= min(age_days, 7) * 1.5     # fresher wins, but relevance still dominates
+        scored.append({**{k: v for k, v in it.items() if not k.startswith('_')},
+                       'relevance': round(score, 1), 'why': why[:2]})
+    scored.sort(key=lambda i: -i['relevance'])
+    return scored[:limit]
+
+
+def _ordinal_rank_phrase(rank):
+    if rank is None:
+        return None
+    if rank <= 5:
+        return f"{_ordinal(rank)}-most"
+    if rank >= 28:
+        return f"{_ordinal(33 - rank)}-stingiest"
+    return None
+
+
+def build_matchup_read(home, away, team_defense, team_offense, redzone, injuries,
+                       upcoming, strong_by_game, team_names=None):
+    """The data layer of a brief: what the numbers already say about this specific game.
+    Each bullet carries the category it came from so the UI can group them, and every one
+    is traceable to a value computed elsewhere in this pipeline."""
+    label = lambda c: (team_names or {}).get(c, c)
+    bullets = []
+
+    # Game script, straight off the real schedule's Vegas line
+    up = (upcoming or {}).get(home) or {}
+    if up.get('spread') is not None or up.get('total') is not None:
+        parts = []
+        if up.get('spread') is not None:
+            s = up['spread']
+            fav, num = (label(home), abs(s)) if s < 0 else (label(away), abs(s))
+            parts.append(f"{fav} favored by {num:g}" if num else "pick'em")
+        if up.get('total') is not None:
+            parts.append(f"total {up['total']:g}")
+        bullets.append({'cat': 'Game script', 'text': " · ".join(parts),
+                        'note': 'real line from the published schedule'})
+
+    for off, dfn in ((away, home), (home, away)):
+        d = (team_defense or {}).get(dfn) or {}
+        scheme = d.get('scheme') or {}
+        cov, cov_pct = scheme.get('primaryCoverage'), scheme.get('primaryCoveragePct')
+        if cov and cov != 'Unknown' and cov_pct:
+            bullets.append({
+                'cat': f'{label(off)} offense',
+                'text': f"faces {COVERAGE_LABEL_PY.get(cov, cov)} on {cov_pct:.0f}% of {label(dfn)}'s pass snaps",
+                'note': 'from real per-snap coverage tagging',
+            })
+        allowed = d.get('allowedByPosition') or {}
+        for pos in ('WR', 'TE', 'RB', 'QB'):
+            a = allowed.get(pos) or {}
+            phrase = _ordinal_rank_phrase(a.get('rank'))
+            if phrase and a.get('ypg') is not None:
+                bullets.append({
+                    'cat': f'{label(off)} offense',
+                    'text': f"{label(dfn)} allows the {phrase} production to {pos}s ({a['ypg']:g} yds/gm)",
+                    'note': 'season-to-date, by position',
+                })
+        rz = (redzone or {}).get(dfn) or {}
+        if rz.get('defPassTDRate') is not None and rz['defPassTDRate'] >= 23:
+            bullets.append({'cat': f'{label(off)} offense',
+                            'text': f"{label(dfn)} gives up a TD on {rz['defPassTDRate']:.0f}% of red-zone passes",
+                            'note': 'red-zone play-level rate'})
+        elif rz.get('defPassTDRate') is not None and rz['defPassTDRate'] <= 15:
+            bullets.append({'cat': f'{label(off)} offense',
+                            'text': f"tough red zone — {label(dfn)} allows just {rz['defPassTDRate']:.0f}% on red-zone passes",
+                            'note': 'red-zone play-level rate'})
+
+    # Availability, which outranks any of the above when it lands on a starter
+    outs = []
+    for name, inj in (injuries or {}).items():
+        s = str(inj.get('status', '')).lower()
+        if 'out' in s or 'doubtful' in s or 'injured reserve' in s:
+            outs.append((name, inj.get('status'), inj.get('injury')))
+    # only the ones on these two teams, resolved via the strong-pick/player index
+    rel = [o for o in outs if o[0] in (strong_by_game or {}).get('roster', set())]
+    for name, status, detail in rel[:6]:
+        bullets.append({'cat': 'Availability', 'text': f"{name} — {status}" + (f" ({detail})" if detail else ""),
+                        'note': 'latest official injury report'})
+
+    picks = (strong_by_game or {}).get('picks') or []
+    for p in picks[:3]:
+        bullets.append({
+            'cat': 'Best-scoring lines here',
+            'text': f"{p['player']} {p['stat']} {p['p25']['line']:.0f}+ — hit in {p['p25']['testHit']:.0f}% of "
+                    f"{p['testGames']} held-out games (score {p['pickScore']})",
+            'note': 'from the Strong Picks composite',
+        })
+    return bullets
+
+
+def build_daily_briefs(upcoming, team_defense, team_offense, redzone, injuries,
+                       receivers, qbs, kickers, full_pool, strong_picks, team_names=None,
+                       fetch_news=True):
+    """One brief per upcoming game: the computed read first, matched headlines second."""
+    NEWS_LOG.clear()
+    now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')
+
+    # roster index per team, for matching player mentions in headlines
+    by_team = {}
+    for p in (receivers or []) + (qbs or []) + (kickers or []):
+        by_team.setdefault(p.get('team'), set()).add(p['name'])
+
+    items, live_sources = ([], [])
+    if fetch_news:
+        try:
+            items, live_sources = build_news_index()
+        except Exception as e:
+            _nlog(f"  [!] News fetch failed entirely: {type(e).__name__}: {e}")
+
+    # dedupe the schedule into one row per game
+    games, seen = [], set()
+    for team, info in (upcoming or {}).items():
+        if not info or not info.get('opp'):
+            continue
+        key = tuple(sorted([team, info['opp']]))
+        if key in seen:
+            continue
+        seen.add(key)
+        home = team if info.get('isHome') else info['opp']
+        away = info['opp'] if info.get('isHome') else team
+        games.append({'home': home, 'away': away, 'week': info.get('week'), 'date': info.get('date')})
+    games.sort(key=lambda g: (g.get('week') or 0, str(g.get('date') or '')))
+
+    picks_by_player = {}
+    for p in (strong_picks or {}).get('picks', []):
+        picks_by_player.setdefault(p.get('team'), []).append(p)
+
+    briefs = []
+    for g in games:
+        roster = by_team.get(g['home'], set()) | by_team.get(g['away'], set())
+        ctx = {'roster': roster,
+               'picks': (picks_by_player.get(g['home'], []) + picks_by_player.get(g['away'], []))}
+        read = build_matchup_read(g['home'], g['away'], team_defense, team_offense, redzone,
+                                  injuries, upcoming, ctx, team_names)
+        news = match_news_to_game(items, g['home'], g['away'], roster) if items else []
+        briefs.append({**g, 'read': read, 'news': news,
+                       'readCount': len(read), 'newsCount': len(news)})
+
+    with_news = sum(1 for b in briefs if b['newsCount'])
+    _nlog(f"  {len(briefs)} game brief(s) built · {with_news} with matched headlines")
+
+    payload = {
+        'briefs': briefs, 'generatedAt': now_iso,
+        'sources': [{'name': s['name'], 'kind': s['kind'], 'live': s['name'] in live_sources}
+                    for s in NEWS_SOURCES],
+        'liveSourceCount': len(live_sources),
+        'totalItems': len(items),
+        'diagnostics': list(NEWS_LOG),
+    }
+
+    # Cache the last good pull so one failed run doesn't empty the tab.
+    try:
+        if items:
+            NEWS_CACHE_PATH.write_text(json.dumps(payload), encoding='utf-8')
+        elif NEWS_CACHE_PATH.exists():
+            cached = json.loads(NEWS_CACHE_PATH.read_text(encoding='utf-8'))
+            # keep today's freshly-computed read, reuse yesterday's headlines
+            cached_news = {(b['home'], b['away']): b.get('news', []) for b in cached.get('briefs', [])}
+            restored = 0
+            for b in payload['briefs']:
+                old = cached_news.get((b['home'], b['away']))
+                if old:
+                    b['news'] = old
+                    b['newsCount'] = len(old)
+                    b['newsStale'] = True
+                    restored += 1
+            if restored:
+                payload['newsFrom'] = cached.get('generatedAt')
+                _nlog(f"  No live news this run — reused cached headlines for {restored} game(s) "
+                      f"from {cached.get('generatedAt')}")
+    except (OSError, json.JSONDecodeError, KeyError) as e:
+        _nlog(f"  [!] News cache problem: {type(e).__name__}: {e}")
+    payload['diagnostics'] = list(NEWS_LOG)
+    return payload
+
+
+# =====================================================================
 # MAIN PIPELINE
 # =====================================================================
 # =====================================================================
@@ -5003,6 +6141,86 @@ def main():
             print(f"  MLB pipeline error: {e} — shipping with empty MLB data this run, everything else unaffected.")
             mlb_players, mlb_pool, mlb_team_defense, mlb_upcoming = [], [], {}, {}
 
+    # ---- NBA pipeline ----
+    print("\n[5.8/8] Building NBA data (stats.nba.com)...")
+    NBA_LOG.clear()
+    nba_players, nba_pool, nba_team_defense, nba_upcoming = [], [], {}, {}
+    nba_edges, nba_pos_defense, nba_strong = [], {}, {'picks': [], 'scoredCount': 0}
+    nba_meta = {'baselineSeason': NBA_BASELINE_SEASON, 'currentSeason': None, 'reachable': False}
+    try:
+        # Has the new season tipped off yet? For most of October it hasn't, and that's a
+        # normal state, not an error — everything leans on the completed baseline until
+        # real games exist.
+        nba_current = None
+        for s in NBA_CANDIDATE_CURRENT:
+            ok, note = nba_season_has_data(s)
+            if ok:
+                nba_current = s
+                print(f"  NBA current season: {s} ({note})")
+                break
+            print(f"  NBA {s}: not started yet ({note})")
+        nba_meta['currentSeason'] = nba_current
+
+        base_stats = fetch_nba_player_stats(NBA_BASELINE_SEASON)
+        nba_meta['reachable'] = bool(base_stats)
+        if not base_stats:
+            print("  stats.nba.com returned nothing for the baseline season — "
+                  "this is almost always an IP block on the runner, not a bug. "
+                  "Run market_probe.py from here to confirm.")
+            raise RuntimeError("no NBA baseline data")
+
+        cur_stats = fetch_nba_player_stats(nba_current) if nba_current else []
+        base_logs = fetch_nba_game_logs(NBA_BASELINE_SEASON)
+        cur_logs = fetch_nba_game_logs(nba_current) if nba_current else []
+        defenders = fetch_nba_defender_ratings(NBA_BASELINE_SEASON)
+        matchup_rows = fetch_nba_matchups(NBA_BASELINE_SEASON)
+
+        # Current rosters decide who is on which team NOW, which is what an upcoming
+        # matchup depends on — a defender's team last season is the wrong answer after a
+        # trade. Position comes from here too, falling back to the defender feed.
+        team_ids = sorted({s.get('TEAM_ID') for s in (cur_stats or base_stats) if s.get('TEAM_ID')})
+        rosters = fetch_nba_rosters(nba_current or NBA_BASELINE_SEASON, team_ids) if team_ids else {}
+        abbr_by_team_id = {}
+        for s in (cur_stats or base_stats):
+            if s.get('TEAM_ID') and s.get('TEAM_ABBREVIATION'):
+                abbr_by_team_id[s['TEAM_ID']] = s['TEAM_ABBREVIATION']
+        for pid, r in rosters.items():
+            r['teamAbbr'] = abbr_by_team_id.get(r.get('teamId'))
+
+        nba_players = build_nba_players(base_stats, cur_stats, base_logs, cur_logs, rosters, defenders)
+        nba_pool = build_nba_pool(nba_players)
+        nba_team_defense = build_nba_team_defense(fetch_nba_team_defense(NBA_BASELINE_SEASON))
+        nba_upcoming = build_nba_upcoming(fetch_nba_schedule())
+
+        defender_index = build_nba_defender_index(defenders)
+        pair_index, off_totals = build_nba_matchup_history(matchup_rows)
+        nba_edges = build_nba_matchup_edges(nba_upcoming, pair_index, off_totals,
+                                             defender_index, nba_players, nba_team_defense)
+        pos_by_id = {p['id']: p.get('posBucket') for p in nba_players if p.get('posBucket')}
+        team_by_id = {d['id']: d.get('team') for d in defender_index.values() if d.get('team')}
+        nba_pos_defense = build_nba_positional_defense(matchup_rows, pos_by_id, team_by_id)
+
+        for line in NBA_LOG:
+            print(line)
+        tracked = sum(1 for g in nba_edges for e in g['edges'] if e['tracked'])
+        total_edges = sum(len(g['edges']) for g in nba_edges)
+        print(f"  {len(nba_players)} NBA players, {len(nba_pool)} prop pool entries, "
+              f"{len(nba_team_defense)} team defense profiles, {len(nba_upcoming)} teams with a next game")
+        print(f"  Matchup engine: {len(nba_edges)} game(s), {total_edges} scorer-vs-defender pairings "
+              f"({tracked} backed by real tracked possessions, {total_edges - tracked} projected by position)")
+        if nba_pos_defense:
+            print(f"  Positional defense profiles for {len(nba_pos_defense)} teams")
+        try:
+            nba_strong = build_simple_strong_picks(nba_pool, nba_players, list(nba_team_defense.values()),
+                                                   nba_upcoming, sport='nba')
+            print(f"  NBA Strong Picks: {nba_strong['scoredCount']} lines scored")
+        except Exception as e:
+            print(f"  [!] NBA Strong Picks error: {e}")
+    except Exception as e:
+        for line in NBA_LOG:
+            print(line)
+        print(f"  NBA pipeline error: {e} — shipping with empty NBA data this run, everything else unaffected.")
+
     # ---- Real sportsbook lines (optional — only runs if odds_api_key.txt exists) ----
     ensure_gitignored()
     odds_key = load_odds_api_key()
@@ -5124,6 +6342,21 @@ def main():
             market_live[key + 'At'] = entry.get('fetchedAt')
             market_live[key + 'Stale'] = True
 
+    # ---- Daily briefs: computed matchup read + matched beat-writer headlines ----
+    print("\n[5.9/8] Building daily matchup briefs (computed read + news)...")
+    try:
+        daily_briefs = build_daily_briefs(
+            nfl_upcoming, team_defense, team_offense, redzone_tendencies, injury_status,
+            receivers, qbs, kickers, full_pool, strong_picks)
+        for line in NEWS_LOG:
+            print(line)
+        print(f"  {len(daily_briefs['briefs'])} brief(s) · {daily_briefs['liveSourceCount']}"
+              f"/{len(NEWS_SOURCES)} news sources reachable · {daily_briefs['totalItems']} items indexed")
+    except Exception as e:
+        print(f"  [!] Daily briefs error: {e} — the tab falls back to scheme matchups only, nothing else affected.")
+        daily_briefs = {'briefs': [], 'generatedAt': None, 'sources': [], 'liveSourceCount': 0,
+                        'totalItems': 0, 'diagnostics': [f"{type(e).__name__}: {e}"]}
+
     # ---- 6. Assemble final data payload ----
     print("\n[6/8] Assembling data payload...")
     # NFL stays embedded (it's the default sport shown on load). WNBA/MLB are written as
@@ -5150,6 +6383,7 @@ def main():
         'MARKET_LIVE': market_live,  # Kalshi/Polymarket, now fetched here rather than in the browser
         'STRONG_PICKS': strong_picks,  # composite weekly ranking, scored server-side
         'QUAD_BOX': quad_box,          # generated 4-leg cards (3 P25 legs + 1 Anytime TD)
+        'DAILY_BRIEFS': daily_briefs,  # per-matchup computed read + matched headlines
     }
 
     # Same composite Strong-Picks scoring for the other two sports, on the signals that are
@@ -5169,14 +6403,27 @@ def main():
 
     wnba_bundle = {'players': wnba_players, 'pool': wnba_pool, 'teamDefense': wnba_team_defense, 'upcoming': wnba_upcoming, 'defenseProfile': wnba_defense_profile, 'strongPicks': wnba_strong}
     mlb_bundle = {'players': mlb_players, 'pool': mlb_pool, 'teamDefense': mlb_team_defense, 'upcoming': mlb_upcoming, 'strongPicks': mlb_strong}
+    nba_bundle = {'players': nba_players, 'pool': nba_pool, 'teamDefense': nba_team_defense,
+                  'upcoming': nba_upcoming, 'strongPicks': nba_strong,
+                  'matchupEdges': nba_edges, 'positionalDefense': nba_pos_defense,
+                  'meta': nba_meta}
     cfb_bundle = {'teams': cfb_teams, 'upcoming': cfb_upcoming, 'backtest': cfb_backtest, 'homeField': cfb_home_field}
     wnba_json_path = SCRIPT_DIR / "data-wnba.json"
     mlb_json_path = SCRIPT_DIR / "data-mlb.json"
     cfb_json_path = SCRIPT_DIR / "data-cfb.json"
+    nba_json_path = SCRIPT_DIR / "data-nba.json"
     wnba_json_path.write_text(json.dumps(wnba_bundle), encoding='utf-8')
     mlb_json_path.write_text(json.dumps(mlb_bundle), encoding='utf-8')
     cfb_json_path.write_text(json.dumps(cfb_bundle), encoding='utf-8')
-    print(f"  Wrote {wnba_json_path.name} ({wnba_json_path.stat().st_size/1024:.0f} KB), {mlb_json_path.name} ({mlb_json_path.stat().st_size/1024:.0f} KB), and {cfb_json_path.name} ({cfb_json_path.stat().st_size/1024:.0f} KB) — all fetched on demand, not embedded")
+    # If this run couldn't reach stats.nba.com, keep whatever the last good run wrote
+    # rather than overwriting real data with an empty bundle.
+    if nba_players or not nba_json_path.exists():
+        nba_json_path.write_text(json.dumps(nba_bundle), encoding='utf-8')
+    else:
+        print(f"  Kept the previous {nba_json_path.name} — this run had no NBA data to replace it with")
+    sizes = " · ".join(f"{p.name} ({p.stat().st_size/1024:.0f} KB)" for p in
+                       (wnba_json_path, mlb_json_path, cfb_json_path, nba_json_path) if p.exists())
+    print(f"  Wrote {sizes} — all fetched on demand, not embedded")
 
     # ---- 7. Inject into template ----
     print("\n[7/8] Injecting data into template...")
@@ -5252,8 +6499,8 @@ def main():
         # market_cache.json rides along so the last good Kalshi/Polymarket values survive
         # between Actions runs — a transient API failure then costs you hours of freshness,
         # not a fall-back-to-a-months-old-constant.
-        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json',
-                                    'accuracy_ledger.json', 'market_cache.json']
+        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'data-nba.json',
+                                    'accuracy_ledger.json', 'market_cache.json', 'news_cache.json']
                         if (SCRIPT_DIR / f).exists()]
         for source_file in ['update_dashboard.py', 'dashboard_template.jsx', 'guide.html', 'market_probe.py']:
             if (SCRIPT_DIR / source_file).exists():

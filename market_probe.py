@@ -198,6 +198,149 @@ if isinstance(d, list):
             print(f"    · {e.get('title')[:56]:<56} slug={e.get('slug')}")
 
 line("=")
+print("NEWS FEEDS — the Daily Brief on the Research tab")
+line("=")
+print("  These are plain RSS/Atom. A dead one just thins the brief; the computed read")
+print("  above each game's headlines does not depend on any of them.\n")
+NEWS_FEEDS = [
+    ("ESPN NFL", "https://www.espn.com/espn/rss/nfl/news"),
+    ("CBS Sports NFL", "https://www.cbssports.com/rss/headlines/nfl/"),
+    ("Yahoo Sports NFL", "https://sports.yahoo.com/nfl/rss.xml"),
+    ("Pro Football Talk", "https://profootballtalk.nbcsports.com/feed/"),
+    ("Pro Football Rumors", "https://www.profootballrumors.com/feed"),
+    ("SB Nation NFL", "https://www.sbnation.com/rss/nfl/index.xml"),
+    ("Sharp Football Analysis", "https://www.sharpfootballanalysis.com/feed/"),
+    ("RotoWire NFL", "https://www.rotowire.com/rss/news.php?sport=NFL"),
+    ("NFL.com", "https://www.nfl.com/feeds/rss/news"),
+    ("The Ringer NFL", "https://www.theringer.com/rss/nfl/index.xml"),
+]
+import xml.etree.ElementTree as _ET
+for name, url in NEWS_FEEDS:
+    try:
+        r = requests.get(url, timeout=TIMEOUT, headers={
+            'User-Agent': 'statum-probe/1.0',
+            'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml'})
+    except requests.RequestException as e:
+        print(f"  [{FAIL}] {name}\n         network error: {type(e).__name__}")
+        results.append((FAIL, f"news:{name}", "network"))
+        continue
+    if r.status_code != 200:
+        print(f"  [{FAIL}] {name} — HTTP {r.status_code}")
+        results.append((FAIL, f"news:{name}", f"HTTP {r.status_code}"))
+        continue
+    try:
+        root_el = _ET.fromstring(r.content)
+    except _ET.ParseError:
+        print(f"  [{FAIL}] {name} — 200 but the body isn't parseable XML (probably an HTML page)")
+        results.append((FAIL, f"news:{name}", "not XML"))
+        continue
+    ns = {'atom': 'http://www.w3.org/2005/Atom'}
+    nodes = root_el.findall('.//item') or root_el.findall('.//atom:entry', ns)
+    if not nodes:
+        tag = root_el.tag.split('}')[-1]
+        print(f"  [{WARN}] {name} — parsed, but 0 items (root <{tag}>)")
+        results.append((WARN, f"news:{name}", "0 items"))
+        continue
+    print(f"  [{PASS}] {name} — {len(nodes)} items")
+    results.append((PASS, f"news:{name}", f"{len(nodes)} items"))
+    for n in nodes[:2]:
+        t = n.find('title') if n.find('title') is not None else n.find('atom:title', ns)
+        if t is not None and t.text:
+            print(f"           · {t.text.strip()[:70]}")
+
+line("=")
+print("NBA — stats.nba.com (the Matchups tab depends entirely on this)")
+line("=")
+print("  This host is the one most likely to refuse a cloud/CI IP range outright. If the")
+print("  calls below fail while everything else on this page passes, that's an IP block,")
+print("  not a bug — and the CDN schedule check at the end should still succeed, which is")
+print("  how you tell the two apart.\n")
+NBA_HEADERS = {
+    'Host': 'stats.nba.com',
+    'User-Agent': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                   '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'),
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Referer': 'https://www.nba.com/',
+    'Origin': 'https://www.nba.com',
+    'x-nba-stats-origin': 'stats',
+    'x-nba-stats-token': 'true',
+}
+NBA_SEASON = "2025-26"
+NBA_CALLS = [
+    ("player season stats", "leaguedashplayerstats", {
+        'College': '', 'Conference': '', 'Country': '', 'DateFrom': '', 'DateTo': '', 'Division': '',
+        'DraftPick': '', 'DraftYear': '', 'GameScope': '', 'GameSegment': '', 'Height': '',
+        'LastNGames': 0, 'LeagueID': '00', 'Location': '', 'MeasureType': 'Base', 'Month': 0,
+        'OpponentTeamID': 0, 'Outcome': '', 'PORound': 0, 'PaceAdjust': 'N', 'PerMode': 'Totals',
+        'Period': 0, 'PlayerExperience': '', 'PlayerPosition': '', 'PlusMinus': 'N', 'Rank': 'N',
+        'Season': NBA_SEASON, 'SeasonSegment': '', 'SeasonType': 'Regular Season',
+        'ShotClockRange': '', 'StarterBench': '', 'TeamID': 0, 'TwoWay': 0, 'VsConference': '',
+        'VsDivision': '', 'Weight': ''}),
+    ("defender ratings", "leaguedashptdefend", {
+        'College': '', 'Conference': '', 'Country': '', 'DateFrom': '', 'DateTo': '',
+        'DefenseCategory': 'Overall', 'Division': '', 'DraftPick': '', 'DraftYear': '',
+        'GameSegment': '', 'Height': '', 'LastNGames': 0, 'LeagueID': '00', 'Location': '',
+        'Month': 0, 'OpponentTeamID': 0, 'Outcome': '', 'PORound': 0, 'PaceAdjust': 'N',
+        'PerMode': 'Totals', 'Period': 0, 'PlayerExperience': '', 'PlayerPosition': '',
+        'PlusMinus': 'N', 'Rank': 'N', 'Season': NBA_SEASON, 'SeasonSegment': '',
+        'SeasonType': 'Regular Season', 'StarterBench': '', 'TeamID': 0, 'VsConference': '',
+        'VsDivision': '', 'Weight': ''}),
+    ("SEASON MATCHUPS (the critical one)", "leagueseasonmatchups", {
+        'LeagueID': '00', 'PerMode': 'Totals', 'Season': NBA_SEASON,
+        'SeasonType': 'Regular Season', 'OffPlayerID': '', 'DefPlayerID': '',
+        'OffTeamID': '', 'DefTeamID': ''}),
+]
+for label, endpoint, params in NBA_CALLS:
+    url = f"https://stats.nba.com/stats/{endpoint}"
+    try:
+        r = requests.get(url, params=params, timeout=30, headers=NBA_HEADERS)
+    except requests.RequestException as e:
+        print(f"  [{FAIL}] {label} ({endpoint})\n         network error: {type(e).__name__}")
+        results.append((FAIL, f"nba:{endpoint}", "network"))
+        continue
+    if r.status_code != 200:
+        print(f"  [{FAIL}] {label} ({endpoint}) — HTTP {r.status_code}")
+        results.append((FAIL, f"nba:{endpoint}", f"HTTP {r.status_code}"))
+        continue
+    try:
+        payload = r.json()
+    except ValueError:
+        print(f"  [{FAIL}] {label} ({endpoint}) — 200 but not JSON (a block/challenge page)")
+        results.append((FAIL, f"nba:{endpoint}", "not JSON"))
+        continue
+    sets = payload.get('resultSets') or payload.get('resultSet') or []
+    total = sum(len(rs.get('rowSet') or []) for rs in sets if isinstance(rs, dict))
+    if total == 0:
+        print(f"  [{WARN}] {label} ({endpoint}) — 200 with 0 rows")
+        results.append((WARN, f"nba:{endpoint}", "0 rows"))
+        continue
+    print(f"  [{PASS}] {label} ({endpoint}) — {total} rows")
+    results.append((PASS, f"nba:{endpoint}", f"{total} rows"))
+    for rs in sets:
+        if isinstance(rs, dict) and rs.get('rowSet'):
+            cols = rs.get('headers') or []
+            print(f"           columns: {', '.join(str(c) for c in cols[:9])}"
+                  + (" …" if len(cols) > 9 else ""))
+            break
+
+print("\n  NBA schedule (public CDN — no stats headers, should work even if the above fail):")
+try:
+    r = requests.get("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json",
+                     timeout=30, headers={'User-Agent': 'statum-probe/1.0'})
+    if r.status_code == 200:
+        dates = ((r.json().get('leagueSchedule') or {}).get('gameDates') or [])
+        n = sum(len(d.get('games') or []) for d in dates)
+        print(f"  [{PASS}] CDN schedule — {n} games across {len(dates)} dates")
+        results.append((PASS, "nba:cdn-schedule", f"{n} games"))
+    else:
+        print(f"  [{FAIL}] CDN schedule — HTTP {r.status_code}")
+        results.append((FAIL, "nba:cdn-schedule", f"HTTP {r.status_code}"))
+except (requests.RequestException, ValueError) as e:
+    print(f"  [{FAIL}] CDN schedule — {type(e).__name__}")
+    results.append((FAIL, "nba:cdn-schedule", "network"))
+
+line("=")
 print("VERDICT")
 line("=")
 n_pass = sum(1 for r in results if r[0] == PASS)
