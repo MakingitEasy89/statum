@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-19T07:26:06+00:00",
+ "lastRun": "2026-10-19T19:47:50+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 58.0
+       "pct": 59.0
       },
       {
        "name": "Chris Olave",
@@ -34,7 +34,7 @@
       },
       {
        "name": "Matthew Stafford",
-       "pct": 18.0
+       "pct": 20.0
       },
       {
        "name": "Jordan Love",
@@ -64,32 +64,32 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-19T07:26:06+00:00",
+   "fetchedAt": "2026-10-19T19:47:50+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 67.0,
-    "Atlanta": 35.0
+    "Golden State": 66.0,
+    "Atlanta": 34.0
    },
-   "fetchedAt": "2026-10-19T07:26:06+00:00",
+   "fetchedAt": "2026-10-19T19:47:50+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 35.0,
-    "Golden State": 65.3
+    "Atlanta": 35.5,
+    "Golden State": 64.8
    },
-   "fetchedAt": "2026-10-19T07:26:06+00:00",
+   "fetchedAt": "2026-10-19T19:47:50+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 31.7,
-    "Cleveland Guardians": 6.3,
-    "Milwaukee Brewers": 62.3
+    "Tampa Bay Rays": 32.1,
+    "Cleveland Guardians": 5.5,
+    "Milwaukee Brewers": 62.1
    },
-   "fetchedAt": "2026-10-19T07:26:06+00:00",
+   "fetchedAt": "2026-10-19T19:47:50+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -97,7 +97,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 67.0,
+     "price": 66.0,
      "depth": null,
      "flow": {
       "totalVolume": 351119.02999999997,
@@ -117,7 +117,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 35.0,
+     "price": 34.0,
      "depth": null,
      "flow": {
       "totalVolume": 107529.51999999999,
@@ -135,7 +135,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-19T07:26:06+00:00",
+   "fetchedAt": "2026-10-19T19:47:50+00:00",
    "stale": false
   }
  }

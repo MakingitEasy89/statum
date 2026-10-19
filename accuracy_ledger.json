@@ -9636,6 +9636,33 @@
       "predictedMargin": 4.6,
       "predictedTotal": 49.3,
       "snapshotDate": "2026-10-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862828,
+      "homeTeam": "Rice",
+      "awayTeam": "Tulane",
+      "predictedMargin": -5.1,
+      "predictedTotal": 49.3,
+      "snapshotDate": "2026-10-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858520,
+      "homeTeam": "Maryland",
+      "awayTeam": "Wisconsin",
+      "predictedMargin": 9.7,
+      "predictedTotal": 46.0,
+      "snapshotDate": "2026-10-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858301,
+      "homeTeam": "SMU",
+      "awayTeam": "Wake Forest",
+      "predictedMargin": 13.1,
+      "predictedTotal": 52.5,
+      "snapshotDate": "2026-10-19"
     }
   ],
   "graded": [
