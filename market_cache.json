@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-18T23:33:22+00:00",
+ "lastRun": "2026-10-19T01:01:43+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -64,40 +64,60 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-18T23:33:22+00:00",
+   "fetchedAt": "2026-10-19T01:01:43+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 63.0,
-    "Atlanta": 35.0
+    "Golden State": 65.0,
+    "Atlanta": 34.0
    },
-   "fetchedAt": "2026-10-18T23:33:22+00:00",
+   "fetchedAt": "2026-10-19T01:01:43+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 37.0,
-    "Golden State": 61.2
+    "Golden State": 61.8
    },
-   "fetchedAt": "2026-10-18T23:33:22+00:00",
+   "fetchedAt": "2026-10-19T01:01:43+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 31.9,
-    "Cleveland Guardians": 7.6,
-    "Milwaukee Brewers": 62.5
+    "Tampa Bay Rays": 32.1,
+    "Cleveland Guardians": 6.1,
+    "Milwaukee Brewers": 62.1
    },
-   "fetchedAt": "2026-10-18T23:33:22+00:00",
+   "fetchedAt": "2026-10-19T01:01:43+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
    "data": [
     {
+     "ticker": "KXWNBA-26-GS",
+     "name": "Golden State",
+     "price": 65.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 349008.12,
+      "latestOI": 890027.91,
+      "oiChange": 192370.14,
+      "oiSeries": [
+       697657.77,
+       728187.86,
+       733656.05,
+       784702.09,
+       801546.0,
+       832797.02,
+       890027.91
+      ]
+     }
+    },
+    {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 35.0,
+     "price": 34.0,
      "depth": null,
      "flow": {
       "totalVolume": 104037.9,
@@ -115,7 +135,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-18T23:33:22+00:00",
+   "fetchedAt": "2026-10-19T01:01:43+00:00",
    "stale": false
   }
  }
