@@ -291,13 +291,48 @@ NBA_CALLS = [
         'SeasonType': 'Regular Season', 'OffPlayerID': '', 'DefPlayerID': '',
         'OffTeamID': '', 'DefTeamID': ''}),
 ]
+# The probe has to use the same transport as the pipeline, or it reports failures the
+# pipeline doesn't have. Both NBA hosts are behind Akamai, which tarpits connections whose
+# TLS fingerprint doesn't match the browser they claim to be: measured, the same endpoint
+# hung for 75s over plain `requests` and answered in 0.4s over a Chrome fingerprint.
+NBA_TIMEOUT = (15, 75)
+NBA_HEAVY_TIMEOUT = (15, 180)
+try:
+    from curl_cffi import requests as nba_requests
+    NBA_SESSION = nba_requests.Session(impersonate="chrome")
+    NBA_IMPERSONATES = True
+    print("  transport: curl_cffi (Chrome TLS fingerprint)")
+except ImportError:
+    NBA_SESSION = requests.Session()
+    NBA_IMPERSONATES = False
+    print("  transport: plain requests — curl_cffi NOT installed, so timeouts below are")
+    print("             expected. Fix with:  pip install curl_cffi")
+NBA_SESSION.headers.update(NBA_HEADERS)
+try:        # pick up the cookies nba.com sets, the way a browser would
+    NBA_SESSION.get("https://www.nba.com/stats/", timeout=45 if NBA_IMPERSONATES else NBA_TIMEOUT)
+except Exception:
+    pass
+
 for label, endpoint, params in NBA_CALLS:
     url = f"https://stats.nba.com/stats/{endpoint}"
+    tmo = NBA_HEAVY_TIMEOUT if endpoint == 'leagueseasonmatchups' else NBA_TIMEOUT
+    if NBA_IMPERSONATES:
+        tmo = tmo[1]        # curl_cffi takes one number, not a (connect, read) pair
     try:
-        r = requests.get(url, params=params, timeout=30, headers=NBA_HEADERS)
-    except requests.RequestException as e:
-        print(f"  [{FAIL}] {label} ({endpoint})\n         network error: {type(e).__name__}")
-        results.append((FAIL, f"nba:{endpoint}", "network"))
+        r = NBA_SESSION.get(url, params=params, timeout=tmo)
+    except Exception as e:
+        name = type(e).__name__
+        if 'imeout' in name or 'imed out' in str(e).lower():
+            hint = ("curl_cffi isn't installed — that is the likely cause"
+                    if not NBA_IMPERSONATES else
+                    "a Chrome fingerprint was already in use, so this host is refusing "
+                    "this machine specifically")
+            print(f"  [{FAIL}] {label} ({endpoint})\n         ReadTimeout — connection accepted, "
+                  f"no reply.\n         Akamai tarpitting, not a network fault: {hint}.")
+            results.append((FAIL, f"nba:{endpoint}", "ReadTimeout (bot mitigation)"))
+        else:
+            print(f"  [{FAIL}] {label} ({endpoint})\n         network error: {name}")
+            results.append((FAIL, f"nba:{endpoint}", "network"))
         continue
     if r.status_code != 200:
         print(f"  [{FAIL}] {label} ({endpoint}) — HTTP {r.status_code}")
@@ -324,21 +359,40 @@ for label, endpoint, params in NBA_CALLS:
                   + (" …" if len(cols) > 9 else ""))
             break
 
-print("\n  NBA schedule (public CDN — no stats headers, should work even if the above fail):")
+print("\n  NBA schedule — the CDN first, then ESPN (the pipeline's actual fallback order):")
+cdn_live = False
 try:
-    r = requests.get("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json",
-                     timeout=30, headers={'User-Agent': 'statum-probe/1.0'})
+    r = NBA_SESSION.get("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json",
+                        timeout=60 if NBA_IMPERSONATES else (15, 60))
     if r.status_code == 200:
         dates = ((r.json().get('leagueSchedule') or {}).get('gameDates') or [])
         n = sum(len(d.get('games') or []) for d in dates)
         print(f"  [{PASS}] CDN schedule — {n} games across {len(dates)} dates")
         results.append((PASS, "nba:cdn-schedule", f"{n} games"))
+        cdn_live = True
     else:
-        print(f"  [{FAIL}] CDN schedule — HTTP {r.status_code}")
-        results.append((FAIL, "nba:cdn-schedule", f"HTTP {r.status_code}"))
-except (requests.RequestException, ValueError) as e:
-    print(f"  [{FAIL}] CDN schedule — {type(e).__name__}")
-    results.append((FAIL, "nba:cdn-schedule", "network"))
+        # This host has been seen returning 403 even to a Chrome fingerprint that
+        # stats.nba.com accepts, so it is not treated as fatal — ESPN covers it.
+        print(f"  [{WARN}] CDN schedule — HTTP {r.status_code} (pipeline falls back to ESPN)")
+        results.append((WARN, "nba:cdn-schedule", f"HTTP {r.status_code}"))
+except Exception as e:
+    print(f"  [{WARN}] CDN schedule — {type(e).__name__} (pipeline falls back to ESPN)")
+    results.append((WARN, "nba:cdn-schedule", "unreachable"))
+
+if not cdn_live:
+    try:
+        r = requests.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+                         timeout=(15, 45), headers={'User-Agent': 'statum-probe/1.0'})
+        if r.status_code == 200:
+            n = len(r.json().get('events') or [])
+            print(f"  [{PASS}] ESPN scoreboard — {n} games today (schedule is covered)")
+            results.append((PASS, "nba:espn-schedule", f"{n} games"))
+        else:
+            print(f"  [{FAIL}] ESPN scoreboard — HTTP {r.status_code} (no schedule source left)")
+            results.append((FAIL, "nba:espn-schedule", f"HTTP {r.status_code}"))
+    except (requests.RequestException, ValueError) as e:
+        print(f"  [{FAIL}] ESPN scoreboard — {type(e).__name__} (no schedule source left)")
+        results.append((FAIL, "nba:espn-schedule", "network"))
 
 line("=")
 print("VERDICT")

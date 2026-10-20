@@ -1877,13 +1877,76 @@ NBA_CANDIDATE_CURRENT = ["2026-27", "2027-28"]
 NBA_CACHE_PATH = SCRIPT_DIR / "nba_cache.json"
 NBA_MIN_POSS = 20          # partial possessions before an O-vs-D sample means anything
 NBA_MIN_DEF_FGA = 150      # contested FGA before a defender's FG% impact means anything
-NBA_HTTP_TIMEOUT = 25
+# Both NBA hosts sit behind Akamai, which does not simply refuse traffic it distrusts — it
+# accepts the TLS handshake and then never answers, which surfaces as a ReadTimeout and is
+# easy to misread as a slow host or a bad route. It isn't either. Measured directly: the
+# same endpoint that hung for 75s over plain `requests` answered in 0.4s once the TLS
+# handshake matched the Chrome User-Agent being claimed. The mismatch WAS the signal —
+# sending a Chrome UA over Python's distinctive ClientHello is a louder bot tell than an
+# honest UA would be. See nba_fetch() below. Timeouts stay generous anyway, for cold
+# season-wide queries that genuinely are slow.
+NBA_HTTP_TIMEOUT = (15, 75)
+NBA_HEAVY_TIMEOUT = (15, 180)   # league-wide matchup pull is enormous; give it real room
 
 NBA_LOG = []
 
 
 def _nbalog(msg):
     NBA_LOG.append(msg)
+
+
+_NBA_SESSION = None
+_NBA_IMPERSONATES = False      # True once we know the session has a real Chrome fingerprint
+_NBA_WARMED = False
+
+
+def nba_session():
+    """One keep-alive session for every NBA call, with a Chrome TLS fingerprint when the
+    machine has curl_cffi installed.
+
+    curl_cffi drives libcurl configured to reproduce Chrome's actual ClientHello and HTTP/2
+    settings, so the handshake matches the Chrome User-Agent in nba_headers(). That is the
+    difference between a 0.4s answer and a 75s hang; plain `requests` cannot do it at any
+    timeout, because the problem was never time.
+
+    Falls back to `requests` when curl_cffi isn't installed. That path still works on hosts
+    that aren't fingerprinting (CI runners often aren't), so this degrades rather than
+    breaks — but the run log says plainly which one is in use, because it predicts whether
+    the NBA section can succeed at all."""
+    global _NBA_SESSION, _NBA_IMPERSONATES
+    if _NBA_SESSION is None:
+        try:
+            from curl_cffi import requests as curl_requests
+            _NBA_SESSION = curl_requests.Session(impersonate="chrome")
+            _NBA_IMPERSONATES = True
+        except Exception:
+            _NBA_SESSION = requests.Session()
+            _NBA_IMPERSONATES = False
+        _NBA_SESSION.headers.update(nba_headers())
+    return _NBA_SESSION
+
+
+def nba_warm_session():
+    """Visit nba.com once before asking its API for anything, the way a browser would.
+
+    stats.nba.com expects cookies that get set by the site itself. Going straight to the
+    API with no prior contact is another thing real browsers never do. Best-effort: if this
+    fails the data calls are still attempted, since on some networks it works anyway."""
+    global _NBA_WARMED
+    if _NBA_WARMED:
+        return
+    _NBA_WARMED = True
+    try:
+        nba_session().get("https://www.nba.com/stats/", timeout=NBA_HTTP_TIMEOUT)
+    except Exception:
+        pass
+
+
+def nba_timeout(timeout):
+    """curl_cffi takes a single number where requests takes a (connect, read) pair."""
+    if _NBA_IMPERSONATES and isinstance(timeout, tuple):
+        return timeout[1]
+    return timeout
 
 
 def nba_headers():
@@ -1909,18 +1972,26 @@ def nba_get(endpoint, params, timeout=NBA_HTTP_TIMEOUT, retries=3):
 
     Every stats.nba.com response has the same shape — a list of resultSets, each with its
     own `headers` list and `rowSet` of positional rows — so this normalizes all of them
-    into {setName: [ {col: val}, ... ]} and nothing downstream has to know about it."""
+    into {setName: [ {col: val}, ... ]} and nothing downstream has to know about it.
+
+    Timeouts and refusals are different problems and are reported differently: a 403 means
+    the host declined you outright, a timeout means it accepted the connection and went
+    quiet. Against Akamai both are bot mitigation, and the fix for both is the Chrome TLS
+    fingerprint in nba_session() rather than anything about retries or patience — so a
+    timeout here, with impersonation already active, is worth reporting rather than
+    grinding on."""
     url = f"{NBA_STATS_API}/{endpoint}"
     last = "unknown"
+    timed_out = False
+    nba_warm_session()
     for attempt in range(retries):
         try:
-            r = requests.get(url, params=params, timeout=timeout, headers=nba_headers())
+            r = nba_session().get(url, params=params, timeout=nba_timeout(timeout))
             if r.status_code == 200:
                 try:
                     data = r.json()
                 except ValueError:
-                    last = "200 but body wasn't JSON (likely a block page)"
-                    break
+                    return None, "200 but body wasn't JSON (likely a block page)"
                 out = {}
                 for rs in data.get('resultSets', data.get('resultSet', []) or []):
                     if not isinstance(rs, dict):
@@ -1930,13 +2001,28 @@ def nba_get(endpoint, params, timeout=NBA_HTTP_TIMEOUT, retries=3):
                 return out, "ok"
             last = f"HTTP {r.status_code}"
             if r.status_code in (403, 429):
-                # Being rate-limited or IP-blocked isn't fixed by hammering it.
                 time.sleep(2.0 * (attempt + 1))
             else:
                 break
-        except requests.RequestException as e:
-            last = type(e).__name__
+        except requests.Timeout:
+            timed_out = True
+            last = "ReadTimeout"
+            time.sleep(1.0 * (attempt + 1))
+        except Exception as e:
+            # curl_cffi raises its own exception types, not requests', so this has to catch
+            # broadly. A timeout from it still reads as a timeout by name.
+            name = type(e).__name__
+            if 'imeout' in name or 'imed out' in str(e).lower():
+                timed_out = True
+                last = "ReadTimeout"
+            else:
+                last = name
             time.sleep(1.5 * (attempt + 1))
+
+    if timed_out and not _NBA_IMPERSONATES:
+        # The one genuinely actionable timeout: no Chrome fingerprint available, which is
+        # the known cause of this exact symptom. Say so instead of leaving a bare timeout.
+        last = "ReadTimeout (no curl_cffi — run: pip install curl_cffi)"
     return None, last
 
 
@@ -2016,20 +2102,46 @@ def fetch_nba_defender_ratings(season, category='Overall'):
     return rows
 
 
-def fetch_nba_matchups(season, season_type='Regular Season'):
+def fetch_nba_matchups(season, season_type='Regular Season', team_ids=None):
     """THE endpoint this whole feature exists for: real tracked possessions of one
-    offensive player guarded by one specific defender, with what happened on them."""
-    data, note = nba_get("leagueseasonmatchups", {
-        'LeagueID': '00', 'PerMode': 'Totals', 'Season': season, 'SeasonType': season_type,
-        'OffPlayerID': '', 'DefPlayerID': '', 'OffTeamID': '', 'DefTeamID': '',
-    })
-    rows = []
-    for rs in (data or {}).values():
-        if rs and 'OFF_PLAYER_ID' in (rs[0] or {}):
-            rows = rs
-            break
-    _nbalog(f"    season matchups [{season}]: {note}, {len(rows)} offense-vs-defender pairs")
-    return rows
+    offensive player guarded by one specific defender, with what happened on them.
+
+    Asking for the whole league at once is a genuinely enormous response — every
+    offense-defender pair that shared the floor all season — and it is the single most
+    likely call here to time out. So: try it whole, and if that fails, walk it one
+    defensive team at a time. Thirty small requests beat one that never returns."""
+    base = {'LeagueID': '00', 'PerMode': 'Totals', 'Season': season, 'SeasonType': season_type,
+            'OffPlayerID': '', 'DefPlayerID': '', 'OffTeamID': '', 'DefTeamID': ''}
+
+    def extract(data):
+        for rs in (data or {}).values():
+            if rs and 'OFF_PLAYER_ID' in (rs[0] or {}):
+                return rs
+        return []
+
+    data, note = nba_get("leagueseasonmatchups", base, timeout=NBA_HEAVY_TIMEOUT)
+    rows = extract(data)
+    if rows:
+        _nbalog(f"    season matchups [{season}]: {note}, {len(rows)} offense-vs-defender pairs")
+        return rows
+
+    if not team_ids:
+        _nbalog(f"    season matchups [{season}]: {note}, 0 pairs (no team list to fall back on)")
+        return []
+
+    _nbalog(f"    season matchups [{season}]: league-wide pull failed ({note}) — "
+            f"falling back to {len(team_ids)} per-team requests")
+    all_rows, ok_teams = [], 0
+    for tid in team_ids:
+        d, n = nba_get("leagueseasonmatchups", {**base, 'DefTeamID': tid}, timeout=NBA_HTTP_TIMEOUT)
+        got = extract(d)
+        if got:
+            ok_teams += 1
+            all_rows.extend(got)
+        time.sleep(0.4)
+    _nbalog(f"    season matchups [{season}]: {ok_teams}/{len(team_ids)} teams via fallback, "
+            f"{len(all_rows)} pairs")
+    return all_rows
 
 
 def fetch_nba_rosters(season, team_ids):
@@ -2071,19 +2183,30 @@ def fetch_nba_team_defense(season):
     return rows
 
 
-def fetch_nba_schedule():
-    """Upcoming games from the NBA's static CDN JSON rather than the stats API. This is
-    plain cached hosting with no header games, so it keeps working in environments where
-    the stats endpoints are refused."""
+ESPN_NBA_SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
+
+# ESPN publishes team abbreviations that differ from the NBA's own tricodes in a handful of
+# cases. Everything downstream keys on the NBA's spelling, so normalize at the boundary.
+ESPN_NBA_TRICODE = {'NY': 'NYK', 'SA': 'SAS', 'GS': 'GSW', 'NO': 'NOP', 'UTAH': 'UTA',
+                    'WSH': 'WAS', 'PHX': 'PHX'}
+
+
+def _espn_tri(abbr):
+    a = str(abbr or '').upper()
+    return ESPN_NBA_TRICODE.get(a, a)
+
+
+def fetch_nba_schedule_cdn():
+    """The NBA's own static schedule JSON. Preferred when it works: it is the full season
+    calendar in one request, where ESPN's scoreboard covers a narrow window."""
     try:
-        r = requests.get(NBA_CDN_SCHEDULE, timeout=NBA_HTTP_TIMEOUT,
-                         headers={'User-Agent': 'statum-dashboard/1.0', 'Accept': 'application/json'})
+        r = nba_session().get(NBA_CDN_SCHEDULE, timeout=nba_timeout(NBA_HTTP_TIMEOUT))
         if r.status_code != 200:
-            _nbalog(f"    schedule: HTTP {r.status_code}")
+            _nbalog(f"    schedule (NBA CDN): HTTP {r.status_code}")
             return []
         data = r.json()
-    except (requests.RequestException, ValueError) as e:
-        _nbalog(f"    schedule: {type(e).__name__}")
+    except Exception as e:
+        _nbalog(f"    schedule (NBA CDN): {type(e).__name__}")
         return []
     games = []
     for gd in ((data.get('leagueSchedule') or {}).get('gameDates') or []):
@@ -2097,8 +2220,63 @@ def fetch_nba_schedule():
                 'home': home.get('teamTricode'), 'away': away.get('teamTricode'),
                 'homeId': home.get('teamId'), 'awayId': away.get('teamId'),
             })
-    _nbalog(f"    schedule: {len(games)} games on the published calendar")
+    _nbalog(f"    schedule (NBA CDN): {len(games)} games on the published calendar")
     return games
+
+
+def fetch_nba_schedule_espn(days=8):
+    """Upcoming games from ESPN, one request per day.
+
+    ESPN's scoreboard defaults to today only, so a date range has to be walked explicitly.
+    Team ids here are ESPN's, not the NBA's — build_nba_upcoming matches on tricode, so
+    that is fine, but nothing downstream should treat these as stats.nba.com team ids."""
+    games, seen = [], set()
+    today = datetime.date.today()
+    for i in range(days):
+        day = today + datetime.timedelta(days=i)
+        try:
+            r = requests.get(ESPN_NBA_SCOREBOARD, timeout=NBA_HTTP_TIMEOUT,
+                             params={'dates': day.strftime('%Y%m%d'), 'limit': 50},
+                             headers={'User-Agent': 'statum-dashboard/1.0'})
+            if r.status_code != 200:
+                continue
+            payload = r.json()
+        except (requests.RequestException, ValueError):
+            continue
+        for ev in payload.get('events') or []:
+            comps = (ev.get('competitions') or [{}])[0].get('competitors') or []
+            home = next((c for c in comps if c.get('homeAway') == 'home'), None)
+            away = next((c for c in comps if c.get('homeAway') == 'away'), None)
+            if not home or not away:
+                continue
+            htri = _espn_tri((home.get('team') or {}).get('abbreviation'))
+            atri = _espn_tri((away.get('team') or {}).get('abbreviation'))
+            gid = ev.get('id')
+            if not htri or not atri or gid in seen:
+                continue
+            seen.add(gid)
+            games.append({
+                'gameId': gid, 'date': (ev.get('date') or '')[:10],
+                'home': htri, 'away': atri,
+                'homeId': None, 'awayId': None,
+            })
+        time.sleep(0.15)
+    _nbalog(f"    schedule (ESPN): {len(games)} games over the next {days} days")
+    return games
+
+
+def fetch_nba_schedule():
+    """Upcoming games, from whichever source answers.
+
+    The NBA CDN is tried first because one request gets the whole season. It is behind the
+    same Akamai gate as the stats API though, and has been observed returning 403 even to
+    a Chrome fingerprint that stats.nba.com accepts — so ESPN is a real fallback here, not
+    a theoretical one. ESPN covers a shorter window, which is all the Matchups tab needs."""
+    games = fetch_nba_schedule_cdn()
+    if games:
+        return games
+    _nbalog("    schedule: NBA CDN unavailable, falling back to ESPN")
+    return fetch_nba_schedule_espn()
 
 
 ESPN_NBA_INJURIES = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
@@ -6247,6 +6425,14 @@ def main():
     # ---- NBA pipeline ----
     print("\n[5.8/8] Building NBA data (stats.nba.com)...")
     NBA_LOG.clear()
+    # Which transport is in use decides whether this section can succeed at all, so say it
+    # up front rather than leaving a wall of timeouts to be interpreted afterwards.
+    nba_session()
+    if _NBA_IMPERSONATES:
+        print("  transport: curl_cffi (Chrome TLS fingerprint)")
+    else:
+        print("  transport: plain requests — curl_cffi is NOT installed.")
+        print("  If the calls below time out, that is why. Fix:  pip install curl_cffi")
     nba_players, nba_pool, nba_team_defense, nba_upcoming = [], [], {}, {}
     nba_edges, nba_pos_defense, nba_strong = [], {}, {'picks': [], 'scoredCount': 0}
     nba_injuries = {}
@@ -6268,22 +6454,30 @@ def main():
         base_stats = fetch_nba_player_stats(NBA_BASELINE_SEASON)
         nba_meta['reachable'] = bool(base_stats)
         if not base_stats:
-            print("  stats.nba.com returned nothing for the baseline season — "
-                  "this is almost always an IP block on the runner, not a bug. "
-                  "Run market_probe.py from here to confirm.")
+            print("  stats.nba.com returned nothing for the baseline season.")
+            if not _NBA_IMPERSONATES:
+                print("  curl_cffi is not installed, which is almost certainly the whole reason.")
+                print("  Run:  pip install curl_cffi   then run this again.")
+            else:
+                print("  Both 'HTTP 403' and 'ReadTimeout' in the notes above are Akamai bot")
+                print("  mitigation — declining outright vs accepting and never answering.")
+                print("  A Chrome fingerprint was already in use, so run nba_check2.py to see")
+                print("  whether the stats API is refusing this machine specifically.")
             raise RuntimeError("no NBA baseline data")
 
         cur_stats = fetch_nba_player_stats(nba_current) if nba_current else []
         base_logs = fetch_nba_game_logs(NBA_BASELINE_SEASON)
         cur_logs = fetch_nba_game_logs(nba_current) if nba_current else []
         defenders = fetch_nba_defender_ratings(NBA_BASELINE_SEASON)
-        matchup_rows = fetch_nba_matchups(NBA_BASELINE_SEASON)
 
         # Current rosters decide who is on which team NOW, which is what an upcoming
         # matchup depends on — a defender's team last season is the wrong answer after a
         # trade. Position comes from here too, falling back to the defender feed.
         team_ids = sorted({s.get('TEAM_ID') for s in (cur_stats or base_stats) if s.get('TEAM_ID')})
         rosters = fetch_nba_rosters(nba_current or NBA_BASELINE_SEASON, team_ids) if team_ids else {}
+        # needs team_ids so it can fall back to per-team requests if the league-wide
+        # matchup pull is too big to come back
+        matchup_rows = fetch_nba_matchups(NBA_BASELINE_SEASON, team_ids=team_ids)
         abbr_by_team_id = {}
         for s in (cur_stats or base_stats):
             if s.get('TEAM_ID') and s.get('TEAM_ABBREVIATION'):
