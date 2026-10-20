@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-19T19:47:50+00:00",
+ "lastRun": "2026-10-20T00:35:38+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -13,12 +13,12 @@
        "pct": 59.0
       },
       {
-       "name": "Chris Olave",
-       "pct": 14.0
-      },
-      {
        "name": "CeeDee Lamb",
        "pct": 9.0
+      },
+      {
+       "name": "Chris Olave",
+       "pct": 6.0
       }
      ],
      "totalMarkets": 27
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "C.J. Stroud",
-       "pct": 22.0
+       "name": "Matthew Stafford",
+       "pct": 19.0
       },
       {
-       "name": "Matthew Stafford",
-       "pct": 20.0
+       "name": "Jared Goff",
+       "pct": 14.0
       },
       {
        "name": "Jordan Love",
-       "pct": 15.0
+       "pct": 10.0
       }
      ],
      "totalMarkets": 28
@@ -64,32 +64,32 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-19T19:47:50+00:00",
+   "fetchedAt": "2026-10-20T00:35:38+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 66.0,
-    "Atlanta": 34.0
+    "Golden State": 65.0,
+    "Atlanta": 37.0
    },
-   "fetchedAt": "2026-10-19T19:47:50+00:00",
+   "fetchedAt": "2026-10-20T00:35:38+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 35.5,
-    "Golden State": 64.8
+    "Atlanta": 36.5,
+    "Golden State": 63.3
    },
-   "fetchedAt": "2026-10-19T19:47:50+00:00",
+   "fetchedAt": "2026-10-20T00:35:38+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 32.1,
-    "Cleveland Guardians": 5.5,
-    "Milwaukee Brewers": 62.1
+    "Tampa Bay Rays": 32.6,
+    "Cleveland Guardians": 5.1,
+    "Milwaukee Brewers": 62.8
    },
-   "fetchedAt": "2026-10-19T19:47:50+00:00",
+   "fetchedAt": "2026-10-20T00:35:38+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -136,7 +136,7 @@
     }
    ],
    "fetchedAt": "2026-10-19T19:47:50+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }

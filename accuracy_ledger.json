@@ -9663,6 +9663,33 @@
       "predictedMargin": 13.1,
       "predictedTotal": 52.5,
       "snapshotDate": "2026-10-19"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856886,
+      "homeTeam": "Mississippi State",
+      "awayTeam": "Auburn",
+      "predictedMargin": 7.7,
+      "predictedTotal": 54.0,
+      "snapshotDate": "2026-10-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862826,
+      "homeTeam": "Tulsa",
+      "awayTeam": "Florida Atlantic",
+      "predictedMargin": 13.4,
+      "predictedTotal": 58.9,
+      "snapshotDate": "2026-10-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858300,
+      "homeTeam": "NC State",
+      "awayTeam": "Syracuse",
+      "predictedMargin": 21.7,
+      "predictedTotal": 57.6,
+      "snapshotDate": "2026-10-20"
     }
   ],
   "graded": [
