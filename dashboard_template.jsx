@@ -33,6 +33,7 @@ function nbaUpcoming() { return SportDataCache.nba?.upcoming || {}; }
 function nbaMatchupEdges() { return SportDataCache.nba?.matchupEdges || []; }
 function nbaPositionalDefense() { return SportDataCache.nba?.positionalDefense || {}; }
 function nbaMeta() { return SportDataCache.nba?.meta || {}; }
+function nbaInjuries() { return SportDataCache.nba?.injuries || {}; }
 function wnbaPlayers() { return SportDataCache.wnba?.players || []; }
 function wnbaPool() { return SportDataCache.wnba?.pool || []; }
 function wnbaTeamDefense() { return SportDataCache.wnba?.teamDefense || {}; }
@@ -395,7 +396,10 @@ function injuryTierKey(status) {
 // The one function everything else asks: can this player be bet on right now?
 // Returns { status, injury, week, tier, label, playable } or null when there's no report.
 function injuryInfo(playerName) {
-  const inj = playerName && INJURIES[playerName];
+  // NFL's report is baked into the page; NBA's rides in the lazily-loaded sport bundle.
+  // Resolving both here means InjuryBadge, UnplayableNote, isUnplayable and every pick
+  // generator pick up NBA availability without any of them needing to know about sports.
+  const inj = playerName && (INJURIES[playerName] || nbaInjuries()[playerName]);
   if (!inj) return null;
   const key = injuryTierKey(inj.status);
   const tier = INJURY_TIERS[key] || { rank: 1, label: String(inj.status || "INJ").toUpperCase(), color: ACCENT.rose, bg: "transparent", playable: true };
@@ -1138,6 +1142,7 @@ function NBACard({ p, onSelect, idx }) {
         <div style={{ minWidth: 0 }}>
           <div style={{ fontSize: 15, fontWeight: 700, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
             {p.name}
+            <InjuryBadge playerName={p.name} />
             {p.isRookie && <span style={{ fontSize: 9, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 8, padding: "1px 6px", fontWeight: 700 }}>ROOKIE</span>}
           </div>
           <div style={{ fontSize: 11, color: "var(--text-secondary-b)", marginTop: 2 }}>
@@ -1152,6 +1157,7 @@ function NBACard({ p, onSelect, idx }) {
       <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--text-secondary-a)", fontFamily: "'JetBrains Mono', monospace" }}>
         {fmt(p.overall.reb,1)} reb · {fmt(p.overall.ast,1)} ast · {fmt(p.overall.fgPct,1)}% FG · {p.overall.games} gm
       </div>
+      <div style={{ marginTop: 6 }}><UnplayableNote playerName={p.name} /></div>
       {/* In basketball the same player is on both ends, so his own defensive impact belongs
           on his card — it's what makes him a problem for the other team's card. */}
       {d && d.defFga > 0 && (
@@ -1177,8 +1183,10 @@ function NBADetail({ p, onClose }) {
       <button onClick={onClose} className="bubble-btn" style={{ marginBottom: 14, padding: "7px 14px", borderRadius: 999, border: "1px solid var(--overlay-6)", background: "var(--overlay-1)", color: "var(--text-body)", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>← Back</button>
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 4, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         {p.name}
+        <InjuryBadge playerName={p.name} />
         {p.isRookie && <span style={{ fontSize: 10, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 8, padding: "2px 8px", fontWeight: 700 }}>ROOKIE</span>}
       </h2>
+      <UnplayableNote playerName={p.name} />
       <div style={{ fontSize: 12.5, color: "var(--text-secondary-b)", marginBottom: 16 }}>{[p.pos, p.team].filter(Boolean).join(" · ")} · {p.overall.games} games</div>
 
       <Glass hover={false} style={{ padding: "16px 18px", marginBottom: 14 }}>
@@ -1244,8 +1252,11 @@ const NBA_VERDICT = {
 function NBAEdgeRow({ e, onSelectPlayer }) {
   const v = NBA_VERDICT[e.verdict] || NBA_VERDICT.neutral;
   const d = e.defender;
+  // An unavailable scorer isn't a bad edge, it's a non-edge — dim the whole row rather
+  // than leaving it looking like a live recommendation with a small tag on it.
+  const dim = e.unavailable;
   return (
-    <div style={{ padding: "10px 0", borderTop: "1px solid var(--overlay-4)" }}>
+    <div style={{ padding: "10px 0", borderTop: "1px solid var(--overlay-4)", opacity: dim ? 0.5 : 1 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, flexWrap: "wrap" }}>
         <div style={{ minWidth: 0, flex: "1 1 240px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap" }}>
@@ -1254,6 +1265,7 @@ function NBAEdgeRow({ e, onSelectPlayer }) {
                        textDecoration: onSelectPlayer ? "underline" : "none", textDecorationColor: "var(--overlay-6)" }}>
               {e.player}
             </span>
+            <InjuryBadge playerName={e.player} />
             <span style={{ fontSize: 10, color: "var(--text-tertiary)" }}>{[e.pos, e.team].filter(Boolean).join(" · ")} · {fmt(e.ppg,1)} ppg</span>
             {!e.tracked && (
               <span title="These two have no meaningful tracked history together — this is the opponent's likely matchup at the position, not a measured one."
@@ -1265,6 +1277,9 @@ function NBAEdgeRow({ e, onSelectPlayer }) {
           <div style={{ fontSize: 11.5, color: "var(--text-secondary-a)", marginTop: 3 }}>
             guarded by <b style={{ color: "var(--text-body)" }}>{d ? d.name : "—"}</b>
             {d && d.pos ? <span style={{ color: "var(--text-tertiary)" }}> ({d.pos})</span> : null}
+            {e.defenderUnavailable && e.defenderInjury && (
+              <span style={{ color: ACCENT.amber, fontWeight: 700 }}> · {String(e.defenderInjury.status).toUpperCase()}</span>
+            )}
             {d && d.qualified && d.rank
               ? <span style={{ color: "var(--text-tertiary)" }}> · #{d.rank} of {d.rankedOf} defenders</span>
               : null}
@@ -1280,9 +1295,13 @@ function NBAEdgeRow({ e, onSelectPlayer }) {
               <div style={{ fontSize: 9, color: "var(--text-tertiary)" }}>{fmt(e.history.poss,0)} poss</div>
             </div>
           )}
-          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.05em", color: v.color,
-                         border: `1px solid ${v.color}55`, background: `${v.color}14`,
-                         borderRadius: 7, padding: "3px 7px", whiteSpace: "nowrap" }}>{v.label}</span>
+          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.05em",
+                         color: dim ? ACCENT.rose : v.color,
+                         border: `1px solid ${(dim ? ACCENT.rose : v.color)}55`,
+                         background: `${(dim ? ACCENT.rose : v.color)}14`,
+                         borderRadius: 7, padding: "3px 7px", whiteSpace: "nowrap" }}>
+            {dim ? "NO LINE" : v.label}
+          </span>
           <PickScoreChip score={e.score} accent={NBA_ACCENT} />
         </div>
       </div>

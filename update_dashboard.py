@@ -2101,6 +2101,95 @@ def fetch_nba_schedule():
     return games
 
 
+ESPN_NBA_INJURIES = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+
+
+def _norm_player_name(n):
+    """Match ESPN's spelling to stats.nba.com's: drop punctuation, suffixes and case."""
+    s = str(n or '').lower().strip()
+    s = re.sub(r'\b(jr|sr|ii|iii|iv|v)\b\.?', '', s)
+    s = re.sub(r"[.'’`\-]", '', s)
+    return re.sub(r'\s+', ' ', s).strip()
+
+
+def fetch_nba_injuries():
+    """Current NBA availability, so the tab can show Out/Doubtful the way the NFL side does.
+
+    Source is ESPN rather than stats.nba.com for two reasons: the NBA's own injury report
+    is published as a PDF, and ESPN is plain public JSON on a host that doesn't refuse
+    datacenter traffic — so availability keeps working even on a run where the matchup
+    endpoints are blocked. Keyed by player name, which is what the UI looks up by.
+
+    The response nests injuries under teams, and ESPN has shuffled that shape before, so
+    this walks it tolerantly rather than assuming one exact layout."""
+    try:
+        r = requests.get(ESPN_NBA_INJURIES, timeout=NBA_HTTP_TIMEOUT,
+                         headers={'User-Agent': 'statum-dashboard/1.0', 'Accept': 'application/json'})
+        if r.status_code != 200:
+            _nbalog(f"    injuries: HTTP {r.status_code}")
+            return {}
+        data = r.json()
+    except (requests.RequestException, ValueError) as e:
+        _nbalog(f"    injuries: {type(e).__name__}")
+        return {}
+
+    out = {}
+
+    def take(entry, team_hint=None):
+        ath = entry.get('athlete') or {}
+        name = ath.get('displayName') or ath.get('fullName') or entry.get('displayName')
+        status = entry.get('status') or (entry.get('type') or {}).get('description') \
+            or (entry.get('type') or {}).get('name')
+        if not name or not status:
+            return
+        details = entry.get('details') or {}
+        detail = (details.get('detail') or details.get('type')
+                  or entry.get('shortComment') or None)
+        if isinstance(detail, str) and len(detail) > 80:
+            detail = detail[:77].rstrip() + '…'
+        out[name] = {
+            'status': str(status).strip(),
+            'injury': detail,
+            'team': team_hint or ((ath.get('team') or {}).get('abbreviation')),
+            'date': (entry.get('date') or '')[:10] or None,
+            'pos': ((ath.get('position') or {}).get('abbreviation')),
+        }
+
+    groups = data.get('injuries') if isinstance(data, dict) else None
+    if isinstance(groups, list):
+        for g in groups:
+            if not isinstance(g, dict):
+                continue
+            inner = g.get('injuries')
+            if isinstance(inner, list):
+                hint = g.get('abbreviation') or g.get('displayName')
+                for e in inner:
+                    if isinstance(e, dict):
+                        take(e, hint)
+            else:
+                take(g)
+
+    n_out = sum(1 for v in out.values() if str(v['status']).lower().startswith('out'))
+    n_doubt = sum(1 for v in out.values() if 'doubtful' in str(v['status']).lower())
+    n_quest = sum(1 for v in out.values() if 'question' in str(v['status']).lower())
+    _nbalog(f"    injuries: {len(out)} designations ({n_out} Out, {n_doubt} Doubtful, {n_quest} Questionable)")
+    return out
+
+
+def nba_injury_for(name, injuries):
+    """Exact name first, then a normalized match — ESPN and stats.nba.com disagree on
+    apostrophes and suffixes often enough to matter (De'Aaron, Jaren Jackson Jr.)."""
+    if not injuries or not name:
+        return None
+    if name in injuries:
+        return injuries[name]
+    target = _norm_player_name(name)
+    for k, v in injuries.items():
+        if _norm_player_name(k) == target:
+            return v
+    return None
+
+
 def build_nba_upcoming(schedule):
     """Next scheduled game per team tricode."""
     today = datetime.date.today().isoformat()
@@ -2449,7 +2538,7 @@ def grade_nba_matchup(off_player, defender, pair_rec, off_totals):
 
 
 def build_nba_matchup_edges(upcoming, pair_index, off_totals, defender_index, players,
-                            team_defense, max_per_team=5):
+                            team_defense, max_per_team=5, injuries=None):
     """Per upcoming game, who guards whom and whether that favors the scorer.
 
     Primary defender is whoever actually logged the most tracked possessions against this
@@ -2513,8 +2602,22 @@ def build_nba_matchup_edges(upcoming, pair_index, off_totals, defender_index, pl
                 if not tracked:
                     reasons.insert(0, "no meaningful tracked history between these two — "
                                       "this is the opponent's likely matchup at the position, not a measured one")
+                # Availability matters more than any edge: a perfect matchup is worth
+                # nothing if the scorer isn't dressing, and the defender being out is
+                # what CREATES an edge. Both are attached and surfaced.
+                o_inj = nba_injury_for(o['name'], injuries)
+                d_inj = nba_injury_for(defender['name'], injuries) if defender else None
+                o_unplayable = bool(o_inj and _is_unplayable(o['name'], {o['name']: o_inj}))
+                d_unplayable = bool(d_inj and defender and _is_unplayable(defender['name'], {defender['name']: d_inj}))
+                if d_unplayable:
+                    reasons.insert(0, f"{defender['name']} is {d_inj['status']} — if he sits, "
+                                      f"this matchup likely doesn't happen as shown")
+                if o_unplayable:
+                    reasons.insert(0, f"{o['name']} is {o_inj['status']} — no line to bet here")
                 edges.append({
                     'player': o['name'], 'playerId': o['id'], 'team': off_team,
+                    'injury': o_inj, 'unavailable': o_unplayable,
+                    'defenderInjury': d_inj, 'defenderUnavailable': d_unplayable,
                     'pos': o.get('pos'), 'posBucket': o.get('posBucket'),
                     'ppg': o['overall']['pts'],
                     'defender': ({'name': defender['name'], 'pos': defender.get('pos'),
@@ -2534,7 +2637,7 @@ def build_nba_matchup_edges(upcoming, pair_index, off_totals, defender_index, pl
                     'ownFgPct': off_totals.get(o['id'], {}).get('fgPct'),
                     'score': score, 'verdict': verdict, 'why': reasons[:3],
                 })
-        edges.sort(key=lambda e: -e['score'])
+        edges.sort(key=lambda e: (e.get('unavailable', False), -e['score']))
         out.append({**g, 'edges': edges,
                     'teamDefense': {g['home']: team_defense.get(g['home']),
                                     g['away']: team_defense.get(g['away'])}})
@@ -6146,6 +6249,7 @@ def main():
     NBA_LOG.clear()
     nba_players, nba_pool, nba_team_defense, nba_upcoming = [], [], {}, {}
     nba_edges, nba_pos_defense, nba_strong = [], {}, {'picks': [], 'scoredCount': 0}
+    nba_injuries = {}
     nba_meta = {'baselineSeason': NBA_BASELINE_SEASON, 'currentSeason': None, 'reachable': False}
     try:
         # Has the new season tipped off yet? For most of October it hasn't, and that's a
@@ -6187,7 +6291,24 @@ def main():
         for pid, r in rosters.items():
             r['teamAbbr'] = abbr_by_team_id.get(r.get('teamId'))
 
+        # Availability, fetched from ESPN rather than stats.nba.com so it survives a run
+        # where the matchup endpoints are refused.
+        raw_injuries = fetch_nba_injuries()
+        # Re-key onto the names the rest of the app uses, so the UI lookup is an exact
+        # hit instead of re-doing fuzzy matching in the browser. Anything ESPN lists that
+        # we can't tie to a known player is kept under its own name rather than dropped.
+        nba_injuries = {}
+        for p_ in build_nba_players(base_stats, cur_stats, base_logs, cur_logs, rosters, defenders):
+            hit = nba_injury_for(p_['name'], raw_injuries)
+            if hit:
+                nba_injuries[p_['name']] = hit
+        matched = len(nba_injuries)
+        for k, v in raw_injuries.items():
+            nba_injuries.setdefault(k, v)
+
         nba_players = build_nba_players(base_stats, cur_stats, base_logs, cur_logs, rosters, defenders)
+        for p_ in nba_players:
+            p_['injury'] = nba_injuries.get(p_['name'])
         nba_pool = build_nba_pool(nba_players)
         nba_team_defense = build_nba_team_defense(fetch_nba_team_defense(NBA_BASELINE_SEASON))
         nba_upcoming = build_nba_upcoming(fetch_nba_schedule())
@@ -6195,7 +6316,8 @@ def main():
         defender_index = build_nba_defender_index(defenders)
         pair_index, off_totals = build_nba_matchup_history(matchup_rows)
         nba_edges = build_nba_matchup_edges(nba_upcoming, pair_index, off_totals,
-                                             defender_index, nba_players, nba_team_defense)
+                                             defender_index, nba_players, nba_team_defense,
+                                             injuries=nba_injuries)
         pos_by_id = {p['id']: p.get('posBucket') for p in nba_players if p.get('posBucket')}
         team_by_id = {d['id']: d.get('team') for d in defender_index.values() if d.get('team')}
         nba_pos_defense = build_nba_positional_defense(matchup_rows, pos_by_id, team_by_id)
@@ -6210,8 +6332,14 @@ def main():
               f"({tracked} backed by real tracked possessions, {total_edges - tracked} projected by position)")
         if nba_pos_defense:
             print(f"  Positional defense profiles for {len(nba_pos_defense)} teams")
+        n_out = sum(1 for v in nba_injuries.values() if _is_unplayable('x', {'x': v}))
+        print(f"  Availability: {len(nba_injuries)} designations ({matched} matched to known players, "
+              f"{n_out} Out/Doubtful)")
         try:
-            nba_strong = build_simple_strong_picks(nba_pool, nba_players, list(nba_team_defense.values()),
+            # Same rule as every other sport: a player who isn't available can't be a pick,
+            # however good the line looks.
+            playable_pool = [e for e in nba_pool if not _is_unplayable(e['player'], nba_injuries)]
+            nba_strong = build_simple_strong_picks(playable_pool, nba_players, list(nba_team_defense.values()),
                                                    nba_upcoming, sport='nba')
             print(f"  NBA Strong Picks: {nba_strong['scoredCount']} lines scored")
         except Exception as e:
@@ -6406,7 +6534,7 @@ def main():
     nba_bundle = {'players': nba_players, 'pool': nba_pool, 'teamDefense': nba_team_defense,
                   'upcoming': nba_upcoming, 'strongPicks': nba_strong,
                   'matchupEdges': nba_edges, 'positionalDefense': nba_pos_defense,
-                  'meta': nba_meta}
+                  'injuries': nba_injuries, 'meta': nba_meta}
     cfb_bundle = {'teams': cfb_teams, 'upcoming': cfb_upcoming, 'backtest': cfb_backtest, 'homeField': cfb_home_field}
     wnba_json_path = SCRIPT_DIR / "data-wnba.json"
     mlb_json_path = SCRIPT_DIR / "data-mlb.json"
