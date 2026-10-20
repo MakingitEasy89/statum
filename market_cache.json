@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-20T17:13:22+00:00",
+ "lastRun": "2026-10-20T18:37:16+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -34,7 +34,7 @@
       },
       {
        "name": "Matthew Stafford",
-       "pct": 25.0
+       "pct": 20.0
       },
       {
        "name": "Jared Goff",
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-20T17:13:22+00:00",
+   "fetchedAt": "2026-10-20T18:37:16+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 45.0,
+    "Golden State": 42.0,
     "Atlanta": 57.0
    },
-   "fetchedAt": "2026-10-20T17:13:22+00:00",
+   "fetchedAt": "2026-10-20T18:37:16+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 56.5,
-    "Golden State": 43.5
+    "Golden State": 43.6
    },
-   "fetchedAt": "2026-10-20T17:13:22+00:00",
+   "fetchedAt": "2026-10-20T18:37:16+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 37.4,
-    "Milwaukee Brewers": 62.2
+    "Tampa Bay Rays": 38.1,
+    "Milwaukee Brewers": 62.3
    },
-   "fetchedAt": "2026-10-20T17:13:22+00:00",
+   "fetchedAt": "2026-10-20T18:37:16+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -112,29 +112,9 @@
        720895.4
       ]
      }
-    },
-    {
-     "ticker": "KXWNBA-26-GS",
-     "name": "Golden State",
-     "price": 45.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 354626.44,
-      "latestOI": 896872.2,
-      "oiChange": 163216.1499999999,
-      "oiSeries": [
-       733656.05,
-       784702.09,
-       801546.0,
-       832797.02,
-       890027.91,
-       893219.4,
-       896872.2
-      ]
-     }
     }
    ],
-   "fetchedAt": "2026-10-20T17:13:22+00:00",
+   "fetchedAt": "2026-10-20T18:37:16+00:00",
    "stale": false
   }
  }
