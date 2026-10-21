@@ -9656,6 +9656,24 @@
       "predictedMargin": 21.7,
       "predictedTotal": 57.6,
       "snapshotDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858301,
+      "homeTeam": "SMU",
+      "awayTeam": "Wake Forest",
+      "predictedMargin": 13.1,
+      "predictedTotal": 52.5,
+      "snapshotDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858520,
+      "homeTeam": "Maryland",
+      "awayTeam": "Wisconsin",
+      "predictedMargin": 9.7,
+      "predictedTotal": 46.0,
+      "snapshotDate": "2026-10-21"
     }
   ],
   "graded": [

@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-21T07:17:52+00:00",
+ "lastRun": "2026-10-21T18:40:18+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,10 +10,10 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 51.0
+       "pct": 40.0
       },
       {
-       "name": "Chris Olave",
+       "name": "Puka Nacua",
        "pct": 11.0
       },
       {
@@ -34,7 +34,7 @@
       },
       {
        "name": "Matthew Stafford",
-       "pct": 25.0
+       "pct": 19.0
       },
       {
        "name": "Jared Goff",
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-21T07:17:52+00:00",
+   "fetchedAt": "2026-10-21T18:40:18+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 45.0,
-    "Atlanta": 58.0
+    "Golden State": 41.0,
+    "Atlanta": 59.0
    },
-   "fetchedAt": "2026-10-21T07:17:52+00:00",
+   "fetchedAt": "2026-10-21T18:40:18+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 57.5,
-    "Golden State": 42.2
+    "Atlanta": 57.0,
+    "Golden State": 42.4
    },
-   "fetchedAt": "2026-10-21T07:17:52+00:00",
+   "fetchedAt": "2026-10-21T18:40:18+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 37.3,
-    "Milwaukee Brewers": 62.7
+    "Tampa Bay Rays": 37.2,
+    "Milwaukee Brewers": 62.8
    },
-   "fetchedAt": "2026-10-21T07:17:52+00:00",
+   "fetchedAt": "2026-10-21T18:40:18+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,7 +96,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 58.0,
+     "price": 59.0,
      "depth": null,
      "flow": {
       "totalVolume": 122872.22,
@@ -112,9 +112,29 @@
        725270.64
       ]
      }
+    },
+    {
+     "ticker": "KXWNBA-26-GS",
+     "name": "Golden State",
+     "price": 41.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 388610.16,
+      "latestOI": 896193.75,
+      "oiChange": 111491.66000000003,
+      "oiSeries": [
+       784702.09,
+       801546.0,
+       832797.02,
+       890027.91,
+       893219.4,
+       896872.2,
+       896193.75
+      ]
+     }
     }
    ],
-   "fetchedAt": "2026-10-21T07:17:52+00:00",
+   "fetchedAt": "2026-10-21T18:40:18+00:00",
    "stale": false
   }
  }
