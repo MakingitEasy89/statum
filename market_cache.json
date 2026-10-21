@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-20T18:37:16+00:00",
+ "lastRun": "2026-10-21T07:17:52+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,11 +10,11 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 60.0
+       "pct": 51.0
       },
       {
-       "name": "Puka Nacua",
-       "pct": 10.0
+       "name": "Chris Olave",
+       "pct": 11.0
       },
       {
        "name": "CeeDee Lamb",
@@ -34,7 +34,7 @@
       },
       {
        "name": "Matthew Stafford",
-       "pct": 20.0
+       "pct": 25.0
       },
       {
        "name": "Jared Goff",
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-20T18:37:16+00:00",
+   "fetchedAt": "2026-10-21T07:17:52+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 42.0,
-    "Atlanta": 57.0
+    "Golden State": 45.0,
+    "Atlanta": 58.0
    },
-   "fetchedAt": "2026-10-20T18:37:16+00:00",
+   "fetchedAt": "2026-10-21T07:17:52+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 56.5,
-    "Golden State": 43.6
+    "Atlanta": 57.5,
+    "Golden State": 42.2
    },
-   "fetchedAt": "2026-10-20T18:37:16+00:00",
+   "fetchedAt": "2026-10-21T07:17:52+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 38.1,
-    "Milwaukee Brewers": 62.3
+    "Tampa Bay Rays": 37.3,
+    "Milwaukee Brewers": 62.7
    },
-   "fetchedAt": "2026-10-20T18:37:16+00:00",
+   "fetchedAt": "2026-10-21T07:17:52+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,25 +96,25 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 57.0,
+     "price": 58.0,
      "depth": null,
      "flow": {
-      "totalVolume": 122862.59999999999,
-      "latestOI": 720895.4,
-      "oiChange": 39102.92000000004,
+      "totalVolume": 122872.22,
+      "latestOI": 725270.64,
+      "oiChange": 41282.859999999986,
       "oiSeries": [
-       681792.48,
        683987.78,
        682333.07,
        682406.72,
        701143.06,
        707692.7,
-       720895.4
+       720895.4,
+       725270.64
       ]
      }
     }
    ],
-   "fetchedAt": "2026-10-20T18:37:16+00:00",
+   "fetchedAt": "2026-10-21T07:17:52+00:00",
    "stale": false
   }
  }

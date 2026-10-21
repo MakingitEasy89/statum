@@ -4177,33 +4177,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871069,
-      "homeTeam": "Delaware",
-      "awayTeam": "Missouri State",
-      "predictedMargin": 13.9,
-      "predictedTotal": 56.5,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871055,
-      "homeTeam": "Florida International",
-      "awayTeam": "Middle Tennessee",
-      "predictedMargin": 19.3,
-      "predictedTotal": 51.3,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871092,
-      "homeTeam": "Marshall",
-      "awayTeam": "South Alabama",
-      "predictedMargin": 13.0,
-      "predictedTotal": 59.0,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401871070,
       "homeTeam": "Sam Houston",
       "awayTeam": "New Mexico State",
@@ -9674,6 +9647,15 @@
       "predictedMargin": -0.8,
       "predictedTotal": 50.0,
       "snapshotDate": "2026-10-20"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858300,
+      "homeTeam": "NC State",
+      "awayTeam": "Syracuse",
+      "predictedMargin": 21.7,
+      "predictedTotal": 57.6,
+      "snapshotDate": "2026-10-21"
     }
   ],
   "graded": [
@@ -43446,18 +43428,84 @@
       "hit": true,
       "snapshotDate": "2026-10-18",
       "gradedDate": "2026-10-20"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Missouri State @ Delaware",
+      "stat": "spread",
+      "line": 13.9,
+      "actual": 23,
+      "hit": true,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Missouri State @ Delaware",
+      "stat": "total",
+      "line": 56.5,
+      "actual": 99,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Middle Tennessee @ Florida International",
+      "stat": "spread",
+      "line": 19.3,
+      "actual": -3,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Middle Tennessee @ Florida International",
+      "stat": "total",
+      "line": 51.3,
+      "actual": 49,
+      "hit": true,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "South Alabama @ Marshall",
+      "stat": "spread",
+      "line": 13.0,
+      "actual": 7,
+      "hit": true,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "South Alabama @ Marshall",
+      "stat": "total",
+      "line": 59.0,
+      "actual": 33,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-21"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 299,
-      "hits": 201,
+      "graded": 302,
+      "hits": 203,
       "rate": 67.2
     },
     "cfb_total": {
-      "graded": 299,
-      "hits": 42,
-      "rate": 14.0
+      "graded": 302,
+      "hits": 43,
+      "rate": 14.2
     },
     "nfl_p25": {
       "graded": 824,
