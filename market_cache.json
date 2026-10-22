@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-21T18:40:18+00:00",
+ "lastRun": "2026-10-22T00:20:50+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 40.0
+       "pct": 39.0
       },
       {
        "name": "Puka Nacua",
        "pct": 11.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 9.0
+       "name": "Chris Olave",
+       "pct": 10.0
       }
      ],
      "totalMarkets": 27
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-21T18:40:18+00:00",
+   "fetchedAt": "2026-10-22T00:20:50+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 41.0,
-    "Atlanta": 59.0
+    "Golden State": 39.0,
+    "Atlanta": 64.0
    },
-   "fetchedAt": "2026-10-21T18:40:18+00:00",
+   "fetchedAt": "2026-10-22T00:20:50+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 57.0,
-    "Golden State": 42.4
+    "Atlanta": 64.5,
+    "Golden State": 34.4
    },
-   "fetchedAt": "2026-10-21T18:40:18+00:00",
+   "fetchedAt": "2026-10-22T00:20:50+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 37.2,
-    "Milwaukee Brewers": 62.8
+    "Tampa Bay Rays": 37.0,
+    "Milwaukee Brewers": 63.1
    },
-   "fetchedAt": "2026-10-21T18:40:18+00:00",
+   "fetchedAt": "2026-10-22T00:20:50+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,7 +96,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 59.0,
+     "price": 64.0,
      "depth": null,
      "flow": {
       "totalVolume": 122872.22,
@@ -116,7 +116,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 41.0,
+     "price": 39.0,
      "depth": null,
      "flow": {
       "totalVolume": 388610.16,
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-21T18:40:18+00:00",
+   "fetchedAt": "2026-10-22T00:20:50+00:00",
    "stale": false
   }
  }

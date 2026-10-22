@@ -9674,6 +9674,24 @@
       "predictedMargin": 9.7,
       "predictedTotal": 46.0,
       "snapshotDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856864,
+      "homeTeam": "Arizona",
+      "awayTeam": "Utah",
+      "predictedMargin": 2.5,
+      "predictedTotal": 55.3,
+      "snapshotDate": "2026-10-22"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856889,
+      "homeTeam": "Vanderbilt",
+      "awayTeam": "Alabama",
+      "predictedMargin": 4.7,
+      "predictedTotal": 55.6,
+      "snapshotDate": "2026-10-22"
     }
   ],
   "graded": [
