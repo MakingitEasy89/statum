@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-22T00:20:50+00:00",
+ "lastRun": "2026-10-22T07:21:11+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,85 +10,45 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 39.0
+       "pct": 60.0
       },
       {
        "name": "Puka Nacua",
-       "pct": 11.0
+       "pct": 9.0
       },
       {
-       "name": "Chris Olave",
-       "pct": 10.0
+       "name": "CeeDee Lamb",
+       "pct": 9.0
       }
      ],
      "totalMarkets": 27
-    },
-    {
-     "category": "Passing Yards Leader",
-     "source": "kalshi",
-     "ticker": "KXLEADERNFLPYDS",
-     "options": [
-      {
-       "name": "Bryce Young",
-       "pct": 27.0
-      },
-      {
-       "name": "Matthew Stafford",
-       "pct": 19.0
-      },
-      {
-       "name": "Jared Goff",
-       "pct": 18.0
-      }
-     ],
-     "totalMarkets": 28
-    },
-    {
-     "category": "Interceptions Leader",
-     "source": "kalshi",
-     "ticker": "KXLEADERNFLINT",
-     "options": [
-      {
-       "name": "Derek Stingley Jr.",
-       "pct": 25.0
-      },
-      {
-       "name": "Xavier Watts",
-       "pct": 9.0
-      },
-      {
-       "name": "Kevin Byard III",
-       "pct": 9.0
-      }
-     ],
-     "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-22T00:20:50+00:00",
+   "fetchedAt": "2026-10-22T07:21:11+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 39.0,
-    "Atlanta": 64.0
+    "Golden State": 45.0,
+    "Atlanta": 57.0
    },
-   "fetchedAt": "2026-10-22T00:20:50+00:00",
+   "fetchedAt": "2026-10-22T07:21:11+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 64.5,
-    "Golden State": 34.4
+    "Atlanta": 76.5,
+    "Golden State": 22.8
    },
-   "fetchedAt": "2026-10-22T00:20:50+00:00",
+   "fetchedAt": "2026-10-22T07:21:11+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 37.0,
+    "Tampa Bay Rays": 36.9,
     "Milwaukee Brewers": 63.1
    },
-   "fetchedAt": "2026-10-22T00:20:50+00:00",
+   "fetchedAt": "2026-10-22T07:21:11+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -135,7 +95,7 @@
     }
    ],
    "fetchedAt": "2026-10-22T00:20:50+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }

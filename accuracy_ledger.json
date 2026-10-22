@@ -4177,15 +4177,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871070,
-      "homeTeam": "Sam Houston",
-      "awayTeam": "New Mexico State",
-      "predictedMargin": 3.3,
-      "predictedTotal": 52.8,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401871056,
       "homeTeam": "Kennesaw State",
       "awayTeam": "Liberty",
@@ -43530,18 +43521,40 @@
       "hit": false,
       "snapshotDate": "2026-09-28",
       "gradedDate": "2026-10-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "New Mexico State @ Sam Houston",
+      "stat": "spread",
+      "line": 3.3,
+      "actual": -6,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-22"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "New Mexico State @ Sam Houston",
+      "stat": "total",
+      "line": 52.8,
+      "actual": 54,
+      "hit": true,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-22"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 302,
+      "graded": 303,
       "hits": 203,
-      "rate": 67.2
+      "rate": 67.0
     },
     "cfb_total": {
-      "graded": 302,
-      "hits": 43,
-      "rate": 14.2
+      "graded": 303,
+      "hits": 44,
+      "rate": 14.5
     },
     "nfl_p25": {
       "graded": 824,
