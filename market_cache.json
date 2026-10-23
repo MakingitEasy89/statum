@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-23T01:07:03+00:00",
+ "lastRun": "2026-10-23T07:12:09+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -14,11 +14,11 @@
       },
       {
        "name": "Puka Nacua",
-       "pct": 11.0
+       "pct": 10.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 9.0
+       "name": "Chris Olave",
+       "pct": 8.0
       }
      ],
      "totalMarkets": 27
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Matthew Stafford",
-       "pct": 20.0
+       "pct": 21.0
       },
       {
        "name": "Jared Goff",
-       "pct": 15.0
+       "pct": 16.0
       },
       {
        "name": "Bryce Young",
-       "pct": 10.0
+       "pct": 12.0
       }
      ],
      "totalMarkets": 28
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-23T01:07:03+00:00",
+   "fetchedAt": "2026-10-23T07:12:09+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Golden State": 20.0,
-    "Atlanta": 79.0
+    "Atlanta": 80.0
    },
-   "fetchedAt": "2026-10-23T01:07:03+00:00",
+   "fetchedAt": "2026-10-23T07:12:09+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 78.5,
-    "Golden State": 22.1
+    "Golden State": 21.8
    },
-   "fetchedAt": "2026-10-23T01:07:03+00:00",
+   "fetchedAt": "2026-10-23T07:12:09+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 36.6,
-    "Milwaukee Brewers": 63.7
+    "Tampa Bay Rays": 36.5,
+    "Milwaukee Brewers": 64.0
    },
-   "fetchedAt": "2026-10-23T01:07:03+00:00",
+   "fetchedAt": "2026-10-23T07:12:09+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,20 +96,20 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 79.0,
+     "price": 80.0,
      "depth": null,
      "flow": {
-      "totalVolume": 147148.8,
-      "latestOI": 742929.32,
-      "oiChange": 60596.25,
+      "totalVolume": 153376.43,
+      "latestOI": 746603.63,
+      "oiChange": 64196.91000000003,
       "oiSeries": [
-       682333.07,
        682406.72,
        701143.06,
        707692.7,
        720895.4,
        725270.64,
-       742929.32
+       742929.32,
+       746603.63
       ]
      }
     },
@@ -119,22 +119,22 @@
      "price": 20.0,
      "depth": null,
      "flow": {
-      "totalVolume": 408022.32,
-      "latestOI": 896565.14,
-      "oiChange": 95019.14000000001,
+      "totalVolume": 395506.73,
+      "latestOI": 898628.19,
+      "oiChange": 65831.16999999993,
       "oiSeries": [
-       801546.0,
        832797.02,
        890027.91,
        893219.4,
        896872.2,
        896193.75,
-       896565.14
+       896565.14,
+       898628.19
       ]
      }
     }
    ],
-   "fetchedAt": "2026-10-23T01:07:03+00:00",
+   "fetchedAt": "2026-10-23T07:12:09+00:00",
    "stale": false
   }
  }
