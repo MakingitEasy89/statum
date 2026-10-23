@@ -9683,6 +9683,24 @@
       "predictedMargin": 4.7,
       "predictedTotal": 55.6,
       "snapshotDate": "2026-10-22"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862826,
+      "homeTeam": "Tulsa",
+      "awayTeam": "Florida Atlantic",
+      "predictedMargin": 13.3,
+      "predictedTotal": 58.9,
+      "snapshotDate": "2026-10-23"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862828,
+      "homeTeam": "Rice",
+      "awayTeam": "Tulane",
+      "predictedMargin": -5.1,
+      "predictedTotal": 49.3,
+      "snapshotDate": "2026-10-23"
     }
   ],
   "graded": [

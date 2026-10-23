@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-22T18:34:09+00:00",
+ "lastRun": "2026-10-23T01:07:03+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -17,7 +17,7 @@
        "pct": 11.0
       },
       {
-       "name": "Chris Olave",
+       "name": "CeeDee Lamb",
        "pct": 9.0
       }
      ],
@@ -34,11 +34,11 @@
       },
       {
        "name": "Jared Goff",
-       "pct": 18.0
+       "pct": 15.0
       },
       {
        "name": "Bryce Young",
-       "pct": 14.0
+       "pct": 10.0
       }
      ],
      "totalMarkets": 28
@@ -64,15 +64,15 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-22T18:34:09+00:00",
+   "fetchedAt": "2026-10-23T01:07:03+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 23.0,
+    "Golden State": 20.0,
     "Atlanta": 79.0
    },
-   "fetchedAt": "2026-10-22T18:34:09+00:00",
+   "fetchedAt": "2026-10-23T01:07:03+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
@@ -80,15 +80,15 @@
     "Atlanta": 78.5,
     "Golden State": 22.1
    },
-   "fetchedAt": "2026-10-22T18:34:09+00:00",
+   "fetchedAt": "2026-10-23T01:07:03+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 37.0,
-    "Milwaukee Brewers": 63.0
+    "Tampa Bay Rays": 36.6,
+    "Milwaukee Brewers": 63.7
    },
-   "fetchedAt": "2026-10-22T18:34:09+00:00",
+   "fetchedAt": "2026-10-23T01:07:03+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -116,7 +116,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 23.0,
+     "price": 20.0,
      "depth": null,
      "flow": {
       "totalVolume": 408022.32,
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-22T18:34:09+00:00",
+   "fetchedAt": "2026-10-23T01:07:03+00:00",
    "stale": false
   }
  }
