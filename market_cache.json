@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-23T07:12:09+00:00",
+ "lastRun": "2026-10-23T18:21:32+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,14 +10,14 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 34.0
+       "pct": 46.0
       },
       {
        "name": "Puka Nacua",
        "pct": 10.0
       },
       {
-       "name": "Chris Olave",
+       "name": "CeeDee Lamb",
        "pct": 8.0
       }
      ],
@@ -34,7 +34,7 @@
       },
       {
        "name": "Jared Goff",
-       "pct": 16.0
+       "pct": 18.0
       },
       {
        "name": "Bryce Young",
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-23T07:12:09+00:00",
+   "fetchedAt": "2026-10-23T18:21:32+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 20.0,
-    "Atlanta": 80.0
+    "Golden State": 24.0,
+    "Atlanta": 78.0
    },
-   "fetchedAt": "2026-10-23T07:12:09+00:00",
+   "fetchedAt": "2026-10-23T18:21:32+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 78.5,
-    "Golden State": 21.8
+    "Golden State": 21.9
    },
-   "fetchedAt": "2026-10-23T07:12:09+00:00",
+   "fetchedAt": "2026-10-23T18:21:32+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 36.5,
+    "Tampa Bay Rays": 36.2,
     "Milwaukee Brewers": 64.0
    },
-   "fetchedAt": "2026-10-23T07:12:09+00:00",
+   "fetchedAt": "2026-10-23T18:21:32+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -135,7 +135,7 @@
     }
    ],
    "fetchedAt": "2026-10-23T07:12:09+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
