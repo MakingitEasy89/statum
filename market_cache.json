@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-23T18:21:32+00:00",
+ "lastRun": "2026-10-24T07:08:44+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -13,8 +13,8 @@
        "pct": 46.0
       },
       {
-       "name": "Puka Nacua",
-       "pct": 10.0
+       "name": "Chris Olave",
+       "pct": 12.0
       },
       {
        "name": "CeeDee Lamb",
@@ -29,12 +29,12 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "Matthew Stafford",
-       "pct": 21.0
-      },
-      {
        "name": "Jared Goff",
        "pct": 18.0
+      },
+      {
+       "name": "Matthew Stafford",
+       "pct": 12.0
       },
       {
        "name": "Bryce Young",
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-23T18:21:32+00:00",
+   "fetchedAt": "2026-10-24T07:08:44+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 24.0,
-    "Atlanta": 78.0
+    "Golden State": 25.0,
+    "Atlanta": 77.0
    },
-   "fetchedAt": "2026-10-23T18:21:32+00:00",
+   "fetchedAt": "2026-10-24T07:08:44+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 78.5,
-    "Golden State": 21.9
+    "Atlanta": 76.0,
+    "Golden State": 24.1
    },
-   "fetchedAt": "2026-10-23T18:21:32+00:00",
+   "fetchedAt": "2026-10-24T07:08:44+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 36.2,
-    "Milwaukee Brewers": 64.0
+    "Tampa Bay Rays": 26.4,
+    "Milwaukee Brewers": 74.1
    },
-   "fetchedAt": "2026-10-23T18:21:32+00:00",
+   "fetchedAt": "2026-10-24T07:08:44+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,46 +96,46 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 80.0,
+     "price": 77.0,
      "depth": null,
      "flow": {
-      "totalVolume": 153376.43,
-      "latestOI": 746603.63,
-      "oiChange": 64196.91000000003,
+      "totalVolume": 168225.54,
+      "latestOI": 752814.9,
+      "oiChange": 51671.83999999997,
       "oiSeries": [
-       682406.72,
        701143.06,
        707692.7,
        720895.4,
        725270.64,
        742929.32,
-       746603.63
+       746603.63,
+       752814.9
       ]
      }
     },
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 20.0,
+     "price": 25.0,
      "depth": null,
      "flow": {
-      "totalVolume": 395506.73,
-      "latestOI": 898628.19,
-      "oiChange": 65831.16999999993,
+      "totalVolume": 380916.56,
+      "latestOI": 895377.73,
+      "oiChange": 5349.819999999949,
       "oiSeries": [
-       832797.02,
        890027.91,
        893219.4,
        896872.2,
        896193.75,
        896565.14,
-       898628.19
+       898628.19,
+       895377.73
       ]
      }
     }
    ],
-   "fetchedAt": "2026-10-23T07:12:09+00:00",
-   "stale": true
+   "fetchedAt": "2026-10-24T07:08:44+00:00",
+   "stale": false
   }
  }
 }

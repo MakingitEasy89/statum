@@ -4177,51 +4177,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401861965,
-      "homeTeam": "UConn",
-      "awayTeam": "Massachusetts",
-      "predictedMargin": 38.3,
-      "predictedTotal": 55.4,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858271,
-      "homeTeam": "Virginia",
-      "awayTeam": "Duke",
-      "predictedMargin": 17.4,
-      "predictedTotal": 56.0,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862808,
-      "homeTeam": "Tulsa",
-      "awayTeam": "Army",
-      "predictedMargin": 5.9,
-      "predictedTotal": 47.3,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401864525,
-      "homeTeam": "Wyoming",
-      "awayTeam": "Air Force",
-      "predictedMargin": 6.3,
-      "predictedTotal": 48.3,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858272,
-      "homeTeam": "Stanford",
-      "awayTeam": "NC State",
-      "predictedMargin": -3.1,
-      "predictedTotal": 54.8,
-      "snapshotDate": "2026-09-28"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401856731,
       "homeTeam": "South Carolina",
       "awayTeam": "Tennessee",
@@ -44194,18 +44149,128 @@
       "hit": false,
       "snapshotDate": "2026-09-28",
       "gradedDate": "2026-10-23"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Massachusetts @ UConn",
+      "stat": "spread",
+      "line": 38.3,
+      "actual": 19,
+      "hit": true,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Massachusetts @ UConn",
+      "stat": "total",
+      "line": 55.4,
+      "actual": 51,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Duke @ Virginia",
+      "stat": "spread",
+      "line": 17.4,
+      "actual": -3,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Duke @ Virginia",
+      "stat": "total",
+      "line": 56.0,
+      "actual": 35,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Army @ Tulsa",
+      "stat": "spread",
+      "line": 5.9,
+      "actual": -3,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Army @ Tulsa",
+      "stat": "total",
+      "line": 47.3,
+      "actual": 73,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Air Force @ Wyoming",
+      "stat": "spread",
+      "line": 6.3,
+      "actual": 14,
+      "hit": true,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Air Force @ Wyoming",
+      "stat": "total",
+      "line": 48.3,
+      "actual": 42,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "NC State @ Stanford",
+      "stat": "spread",
+      "line": -3.1,
+      "actual": 3,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "NC State @ Stanford",
+      "stat": "total",
+      "line": 54.8,
+      "actual": 59,
+      "hit": false,
+      "snapshotDate": "2026-09-28",
+      "gradedDate": "2026-10-24"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 306,
-      "hits": 204,
-      "rate": 66.7
+      "graded": 311,
+      "hits": 206,
+      "rate": 66.2
     },
     "cfb_total": {
-      "graded": 306,
+      "graded": 311,
       "hits": 44,
-      "rate": 14.4
+      "rate": 14.1
     },
     "nfl_p25": {
       "graded": 842,
