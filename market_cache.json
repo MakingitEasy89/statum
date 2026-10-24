@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-24T07:08:44+00:00",
+ "lastRun": "2026-10-24T17:29:34+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 46.0
+       "pct": 39.0
       },
       {
        "name": "Chris Olave",
@@ -18,7 +18,7 @@
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 8.0
+       "pct": 9.0
       }
      ],
      "totalMarkets": 27
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Jared Goff",
-       "pct": 18.0
+       "pct": 22.0
       },
       {
        "name": "Matthew Stafford",
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-24T07:08:44+00:00",
+   "fetchedAt": "2026-10-24T17:29:34+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 25.0,
+    "Golden State": 28.0,
     "Atlanta": 77.0
    },
-   "fetchedAt": "2026-10-24T07:08:44+00:00",
+   "fetchedAt": "2026-10-24T17:29:34+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 76.0,
-    "Golden State": 24.1
+    "Atlanta": 74.0,
+    "Golden State": 26.6
    },
-   "fetchedAt": "2026-10-24T07:08:44+00:00",
+   "fetchedAt": "2026-10-24T17:29:34+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 26.4,
-    "Milwaukee Brewers": 74.1
+    "Tampa Bay Rays": 27.4,
+    "Milwaukee Brewers": 73.0
    },
-   "fetchedAt": "2026-10-24T07:08:44+00:00",
+   "fetchedAt": "2026-10-24T17:29:34+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -116,7 +116,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 25.0,
+     "price": 28.0,
      "depth": null,
      "flow": {
       "totalVolume": 380916.56,
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-24T07:08:44+00:00",
+   "fetchedAt": "2026-10-24T17:29:34+00:00",
    "stale": false
   }
  }
