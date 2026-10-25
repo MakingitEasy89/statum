@@ -4548,21 +4548,88 @@ def build_quad_box(full_pool, atd_pool, receivers, qbs, redzone, upcoming, injur
 NEWS_CACHE_PATH = SCRIPT_DIR / "news_cache.json"
 NEWS_MAX_AGE_DAYS = 6        # a brief about last week's gameplan is noise
 NEWS_PER_GAME = 5
+NEWS_MAX_PER_SOURCE = 2      # no single feed may take more than this many of a brief's slots
 NEWS_HTTP_TIMEOUT = 15
 
 # kind: 'news' = reporting/injuries/transactions, 'analysis' = gameplan/scheme/matchup
 # writing. Analysis is ranked above straight news for a brief about what to expect.
+# 'team' marks a beat feed: everything it publishes is about that team, whether or not the
+# headline says so. match_news_to_game() treats that as a mention, which is the only reason
+# beat coverage reaches a brief at all — see the comment in fetch_rss().
+#
+# Every URL here was verified reachable from a real machine by news_probe.py on 2026-10-25.
+# Notable absences, all confirmed 404 rather than guessed wrong: NFL.com, The Ringer, and
+# Sports Illustrated have each retired their public feeds. Re-run news_probe.py when the
+# briefs start looking thin; feeds rot silently and a dead one is invisible otherwise.
 NEWS_SOURCES = [
+    # --- national: analysis-heavy, which is what a matchup brief wants ---
+    {'name': 'CBS Sports NFL', 'url': 'https://www.cbssports.com/rss/headlines/nfl/', 'kind': 'analysis'},
+    {'name': 'Pro Football Focus', 'url': 'https://www.pff.com/feed', 'kind': 'analysis'},
+    {'name': 'FOX Sports NFL', 'url': 'https://api.foxsports.com/v1/rss?partnerKey=zBaFxRyGKCfxBagJG9b8pqLyndmvo7UU&tag=nfl', 'kind': 'analysis'},
+    {'name': 'Sharp Football Analysis', 'url': 'https://www.sharpfootballanalysis.com/feed/', 'kind': 'analysis'},
+    {'name': 'DraftKings Network', 'url': 'https://dknetwork.draftkings.com/feed/', 'kind': 'analysis'},
+    {'name': 'Action Network NFL', 'url': 'https://www.actionnetwork.com/nfl/feed', 'kind': 'analysis'},
+    {'name': 'VSiN', 'url': 'https://vsin.com/feed/', 'kind': 'analysis'},
+    {'name': 'The Athletic NFL', 'url': 'https://www.nytimes.com/athletic/rss/nfl/', 'kind': 'analysis'},
+
+    # Deliberately not included, all confirmed alive but not worth a request each run:
+    #   Yahoo NFL (alt path)  — byte-identical to the Yahoo feed above, just another URL
+    #   NBC Sports (atom)     — 4 items, and Pro Football Talk already covers NBC
+    #   WalterFootball        — draft coverage, 0 matchup pieces
+    #   Sportico              — the business of sports, 0 matchup pieces
+    #   Awful Announcing      — broadcasters and TV ratings, 0 matchup pieces
+
+    # --- national: straight news, injuries and transactions ---
     {'name': 'ESPN NFL', 'url': 'https://www.espn.com/espn/rss/nfl/news', 'kind': 'news'},
-    {'name': 'CBS Sports NFL', 'url': 'https://www.cbssports.com/rss/headlines/nfl/', 'kind': 'news'},
     {'name': 'Yahoo Sports NFL', 'url': 'https://sports.yahoo.com/nfl/rss.xml', 'kind': 'news'},
     {'name': 'Pro Football Talk', 'url': 'https://profootballtalk.nbcsports.com/feed/', 'kind': 'news'},
     {'name': 'Pro Football Rumors', 'url': 'https://www.profootballrumors.com/feed', 'kind': 'news'},
-    {'name': 'SB Nation NFL', 'url': 'https://www.sbnation.com/rss/nfl/index.xml', 'kind': 'analysis'},
-    {'name': 'Sharp Football Analysis', 'url': 'https://www.sharpfootballanalysis.com/feed/', 'kind': 'analysis'},
     {'name': 'RotoWire NFL', 'url': 'https://www.rotowire.com/rss/news.php?sport=NFL', 'kind': 'news'},
-    {'name': 'NFL.com', 'url': 'https://www.nfl.com/feeds/rss/news', 'kind': 'news'},
-    {'name': 'The Ringer NFL', 'url': 'https://www.theringer.com/rss/nfl/index.xml', 'kind': 'analysis'},
+    {'name': 'SB Nation NFL', 'url': 'https://www.sbnation.com/rss/nfl/index.xml', 'kind': 'news'},
+    {'name': 'Yardbarker NFL', 'url': 'https://www.yardbarker.com/rss/sport/2', 'kind': 'news'},
+
+    # --- the 32 beat blogs: an opponent preview every week, per team ---
+    {'name': 'ARI beat (Revenge of the Birds)', 'url': 'https://www.revengeofthebirds.com/rss/index.xml', 'kind': 'analysis', 'team': 'ARI'},
+    {'name': 'ATL beat (The Falcoholic)', 'url': 'https://www.thefalcoholic.com/rss/index.xml', 'kind': 'analysis', 'team': 'ATL'},
+    {'name': 'BAL beat (Baltimore Beatdown)', 'url': 'https://www.baltimorebeatdown.com/rss/index.xml', 'kind': 'analysis', 'team': 'BAL'},
+    {'name': 'BUF beat (Buffalo Rumblings)', 'url': 'https://www.buffalorumblings.com/rss/index.xml', 'kind': 'analysis', 'team': 'BUF'},
+    {'name': 'CAR beat (Cat Scratch Reader)', 'url': 'https://www.catscratchreader.com/rss/index.xml', 'kind': 'analysis', 'team': 'CAR'},
+    {'name': 'CHI beat (Windy City Gridiron)', 'url': 'https://www.windycitygridiron.com/rss/index.xml', 'kind': 'analysis', 'team': 'CHI'},
+    {'name': 'CIN beat (Cincy Jungle)', 'url': 'https://www.cincyjungle.com/rss/index.xml', 'kind': 'analysis', 'team': 'CIN'},
+    {'name': 'CLE beat (Dawgs By Nature)', 'url': 'https://www.dawgsbynature.com/rss/index.xml', 'kind': 'analysis', 'team': 'CLE'},
+    {'name': 'DAL beat (Blogging The Boys)', 'url': 'https://www.bloggingtheboys.com/rss/index.xml', 'kind': 'analysis', 'team': 'DAL'},
+    {'name': 'DEN beat (Mile High Report)', 'url': 'https://www.milehighreport.com/rss/index.xml', 'kind': 'analysis', 'team': 'DEN'},
+    {'name': 'DET beat (Pride Of Detroit)', 'url': 'https://www.prideofdetroit.com/rss/index.xml', 'kind': 'analysis', 'team': 'DET'},
+    {'name': 'GB beat (Acme Packing Company)', 'url': 'https://www.acmepackingcompany.com/rss/index.xml', 'kind': 'analysis', 'team': 'GB'},
+    {'name': 'HOU beat (Battle Red Blog)', 'url': 'https://www.battleredblog.com/rss/index.xml', 'kind': 'analysis', 'team': 'HOU'},
+    {'name': 'IND beat (Stampede Blue)', 'url': 'https://www.stampedeblue.com/rss/index.xml', 'kind': 'analysis', 'team': 'IND'},
+    {'name': 'JAX beat (Big Cat Country)', 'url': 'https://www.bigcatcountry.com/rss/index.xml', 'kind': 'analysis', 'team': 'JAX'},
+    {'name': 'KC beat (Arrowhead Pride)', 'url': 'https://www.arrowheadpride.com/rss/index.xml', 'kind': 'analysis', 'team': 'KC'},
+    {'name': 'LAC beat (Bolts From The Blue)', 'url': 'https://www.boltsfromtheblue.com/rss/index.xml', 'kind': 'analysis', 'team': 'LAC'},
+    {'name': 'LAR beat (Turf Show Times)', 'url': 'https://www.turfshowtimes.com/rss/index.xml', 'kind': 'analysis', 'team': 'LAR'},
+    {'name': 'LV beat (Silver And Black Pride)', 'url': 'https://www.silverandblackpride.com/rss/index.xml', 'kind': 'analysis', 'team': 'LV'},
+    {'name': 'MIA beat (The Phinsider)', 'url': 'https://www.thephinsider.com/rss/index.xml', 'kind': 'analysis', 'team': 'MIA'},
+    {'name': 'MIN beat (Daily Norseman)', 'url': 'https://www.dailynorseman.com/rss/index.xml', 'kind': 'analysis', 'team': 'MIN'},
+    {'name': 'NE beat (Pats Pulpit)', 'url': 'https://www.patspulpit.com/rss/index.xml', 'kind': 'analysis', 'team': 'NE'},
+    {'name': 'NO beat (Canal Street Chronicles)', 'url': 'https://www.canalstreetchronicles.com/rss/index.xml', 'kind': 'analysis', 'team': 'NO'},
+    {'name': 'NYG beat (Big Blue View)', 'url': 'https://www.bigblueview.com/rss/index.xml', 'kind': 'analysis', 'team': 'NYG'},
+    {'name': 'NYJ beat (Gang Green Nation)', 'url': 'https://www.ganggreennation.com/rss/index.xml', 'kind': 'analysis', 'team': 'NYJ'},
+    {'name': 'PHI beat (Bleeding Green Nation)', 'url': 'https://www.bleedinggreennation.com/rss/index.xml', 'kind': 'analysis', 'team': 'PHI'},
+    {'name': 'PIT beat (Behind The Steel Curtain)', 'url': 'https://www.behindthesteelcurtain.com/rss/index.xml', 'kind': 'analysis', 'team': 'PIT'},
+    {'name': 'SEA beat (Field Gulls)', 'url': 'https://www.fieldgulls.com/rss/index.xml', 'kind': 'analysis', 'team': 'SEA'},
+    {'name': 'SF beat (Niners Nation)', 'url': 'https://www.ninersnation.com/rss/index.xml', 'kind': 'analysis', 'team': 'SF'},
+    {'name': 'TB beat (Bucs Nation)', 'url': 'https://www.bucsnation.com/rss/index.xml', 'kind': 'analysis', 'team': 'TB'},
+    {'name': 'TEN beat (Music City Miracles)', 'url': 'https://www.musiccitymiracles.com/rss/index.xml', 'kind': 'analysis', 'team': 'TEN'},
+    {'name': 'WAS beat (Hogs Haven)', 'url': 'https://www.hogshaven.com/rss/index.xml', 'kind': 'analysis', 'team': 'WAS'},
+
+    # --- second beat voice for the teams that have one. More chances that a team's
+    # weekly opponent preview falls inside the window when a brief gets built. The
+    # per-source cap in match_news_to_game keeps a prolific one from taking over. ---
+    {'name': 'ATL beat (Blogging Dirty)', 'url': 'https://bloggingdirty.com/feed', 'kind': 'analysis', 'team': 'ATL'},
+    {'name': 'PIT beat (Steelers Depot)', 'url': 'https://feeds.feedburner.com/SteelersDepotBlog', 'kind': 'analysis', 'team': 'PIT'},
+    {'name': 'TB beat (Pewter Report)', 'url': 'https://www.pewterreport.com/feed/', 'kind': 'analysis', 'team': 'TB'},
+    {'name': 'BAL beat (Russell Street Report)', 'url': 'https://russellstreetreport.com/feed/', 'kind': 'analysis', 'team': 'BAL'},
+    {'name': 'NE beat (Pats Propaganda)', 'url': 'https://www.patspropaganda.com/feed/', 'kind': 'analysis', 'team': 'NE'},
 ]
 
 NEWS_LOG = []
@@ -4654,19 +4721,52 @@ def fetch_rss(source, timeout=NEWS_HTTP_TIMEOUT):
         items.append({
             'title': title, 'link': link, 'summary': summary[:320],
             'source': source['name'], 'kind': source['kind'],
+            # A team beat feed is implicitly about its own team. Its headlines routinely
+            # never name it ("Three keys for Sunday", "What the offense must fix"), so
+            # without this the best matchup writing on the internet scores zero on team
+            # mentions and never reaches a brief. Carried per item, not per feed lookup,
+            # so a deduped item keeps the attribution of whichever feed supplied it.
+            'team': source.get('team'),
             'published': published.isoformat() if published else None,
             '_ts': published.timestamp() if published else 0.0,
         })
     return items, ("ok" if items else "no items parsed")
 
 
-def build_news_index(sources=None, max_age_days=NEWS_MAX_AGE_DAYS):
-    """Every source, fetched and normalized into one deduped, recency-sorted list."""
+NEWS_FETCH_WORKERS = 8      # 40+ feeds one at a time adds over a minute to every run
+
+
+def build_news_index(sources=None, max_age_days=NEWS_MAX_AGE_DAYS,
+                     workers=NEWS_FETCH_WORKERS):
+    """Every source, fetched and normalized into one deduped, recency-sorted list.
+
+    Fetching runs in parallel because the list is long and each feed is mostly waiting on
+    the network. Results are then processed in the order the sources were DECLARED, not
+    the order they happened to arrive: dedupe keeps the first copy of a headline, so
+    processing in completion order would make the output depend on which site answered
+    faster that minute, and the same run would produce different briefs each time."""
     sources = sources or NEWS_SOURCES
     cutoff = time.time() - max_age_days * 86400
-    seen_titles, out, live_sources = set(), [], []
-    for src in sources:
-        items, note = fetch_rss(src)
+
+    fetched = {}
+    if workers > 1 and len(sources) > 1:
+        import concurrent.futures as _futures
+        with _futures.ThreadPoolExecutor(max_workers=workers) as pool:
+            pending = {pool.submit(fetch_rss, s): i for i, s in enumerate(sources)}
+            for fut in _futures.as_completed(pending):
+                idx = pending[fut]
+                try:
+                    fetched[idx] = fut.result()
+                except Exception as e:
+                    # One feed raising must not take the whole brief down with it.
+                    fetched[idx] = ([], f"{type(e).__name__} (worker)")
+    else:
+        for i, s in enumerate(sources):
+            fetched[i] = fetch_rss(s)
+
+    seen_titles, out, live_sources = {}, [], []
+    for i, src in enumerate(sources):
+        items, note = fetched.get(i, ([], "not fetched"))
         kept = 0
         for it in items:
             # Undated items are kept — a lot of feeds omit pubDate — but they sort last.
@@ -4674,8 +4774,15 @@ def build_news_index(sources=None, max_age_days=NEWS_MAX_AGE_DAYS):
                 continue
             key = re.sub(r'[^a-z0-9]', '', it['title'].lower())[:70]
             if key in seen_titles:
+                # Same story from two feeds. First one wins, except for team attribution:
+                # if this copy came from a team's beat feed and the kept one didn't, take
+                # the attribution. Otherwise a syndicated headline that happens to be
+                # listed earlier silently strips the signal off the beat version.
+                prior = seen_titles[key]
+                if it.get('team') and not prior.get('team'):
+                    prior['team'] = it['team']
                 continue
-            seen_titles.add(key)
+            seen_titles[key] = it
             out.append(it)
             kept += 1
         if kept:
@@ -4734,8 +4841,10 @@ def match_news_to_game(items, home, away, player_names, limit=NEWS_PER_GAME):
     for it in items:
         hay = (it['title'] + ' ' + (it.get('summary') or '')).lower()
         score, why = 0, []
-        hit_home = any(t in hay for t in home_terms)
-        hit_away = any(t in hay for t in away_terms)
+        src_team = it.get('team')
+        # A beat feed's own team counts as a mention even when the text never says it.
+        hit_home = src_team == home or any(t in hay for t in home_terms)
+        hit_away = src_team == away or any(t in hay for t in away_terms)
         if hit_home:
             score += 10
         if hit_away:
@@ -4743,6 +4852,12 @@ def match_news_to_game(items, home, away, player_names, limit=NEWS_PER_GAME):
         if hit_home and hit_away:
             score += 12      # a piece about THIS game specifically, not just one team
             why.append('this matchup')
+        if src_team in (home, away):
+            # Beat writers cover one team all week and write the opponent preview; that is
+            # exactly the context this brief is for, so it outranks a national aggregator
+            # that mentioned both teams in passing.
+            score += 4
+            why.append(f'{src_team} beat')
         matched_players = [orig for low, orig in names_lower.items() if low in hay]
         if matched_players:
             score += 5 + min(len(matched_players), 3)
@@ -4761,7 +4876,26 @@ def match_news_to_game(items, home, away, player_names, limit=NEWS_PER_GAME):
         scored.append({**{k: v for k, v in it.items() if not k.startswith('_')},
                        'relevance': round(score, 1), 'why': why[:2]})
     scored.sort(key=lambda i: -i['relevance'])
-    return scored[:limit]
+
+    # Cap how much of one brief any single feed can take. Feed volume varies enormously —
+    # most beat blogs publish ~10 items where one publishes 90 — and without a cap the
+    # loudest feed wins slots on sheer volume rather than on being more relevant. Five
+    # links from one site is a worse brief than five links from four.
+    out, per_source = [], {}
+    for it in scored:
+        src = it.get('source')
+        if per_source.get(src, 0) >= NEWS_MAX_PER_SOURCE:
+            continue
+        per_source[src] = per_source.get(src, 0) + 1
+        out.append(it)
+        if len(out) >= limit:
+            return out
+    # Only if the cap left the brief short do we top it up with what it excluded, since a
+    # thin brief helps nobody — a second opinion from a loud feed beats an empty slot.
+    if len(out) < limit:
+        taken = {id(i) for i in out}
+        out.extend([i for i in scored if id(i) not in taken][:limit - len(out)])
+    return out[:limit]
 
 
 def _ordinal_rank_phrase(rank):
