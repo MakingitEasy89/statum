@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-25T21:40:23+00:00",
+ "lastRun": "2026-10-25T23:40:39+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 42.0
+       "pct": 20.0
+      },
+      {
+       "name": "Amon-Ra St. Brown",
+       "pct": 11.0
       },
       {
        "name": "CeeDee Lamb",
        "pct": 9.0
-      },
-      {
-       "name": "Chris Olave",
-       "pct": 7.0
       }
      ],
      "totalMarkets": 27
@@ -37,7 +37,7 @@
        "pct": 21.0
       },
       {
-       "name": "Jordan Love",
+       "name": "Joe Burrow",
        "pct": 10.0
       }
      ],
@@ -64,15 +64,15 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-25T21:40:23+00:00",
+   "fetchedAt": "2026-10-25T23:40:39+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Golden State": 46.0,
-    "Atlanta": 53.0
+    "Atlanta": 54.0
    },
-   "fetchedAt": "2026-10-25T21:40:23+00:00",
+   "fetchedAt": "2026-10-25T23:40:39+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
@@ -80,7 +80,7 @@
     "Atlanta": 51.5,
     "Golden State": 48.4
    },
-   "fetchedAt": "2026-10-25T21:40:23+00:00",
+   "fetchedAt": "2026-10-25T23:40:39+00:00",
    "stale": false
   },
   "mlbChampPoly": {
@@ -88,7 +88,7 @@
     "Tampa Bay Rays": 16.0,
     "Milwaukee Brewers": 83.7
    },
-   "fetchedAt": "2026-10-25T21:40:23+00:00",
+   "fetchedAt": "2026-10-25T23:40:39+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,7 +96,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 53.0,
+     "price": 54.0,
      "depth": null,
      "flow": {
       "totalVolume": 122238.31,
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-25T21:40:23+00:00",
+   "fetchedAt": "2026-10-25T23:40:39+00:00",
    "stale": false
   }
  }
