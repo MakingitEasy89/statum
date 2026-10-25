@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-25T13:57:18+00:00",
+ "lastRun": "2026-10-25T17:41:22+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 38.0
+       "pct": 37.0
       },
       {
        "name": "CeeDee Lamb",
@@ -34,7 +34,7 @@
       },
       {
        "name": "Matthew Stafford",
-       "pct": 18.0
+       "pct": 21.0
       },
       {
        "name": "Bryce Young",
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-25T13:57:18+00:00",
+   "fetchedAt": "2026-10-25T17:41:22+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 46.0,
+    "Golden State": 47.0,
     "Atlanta": 54.0
    },
-   "fetchedAt": "2026-10-25T13:57:18+00:00",
+   "fetchedAt": "2026-10-25T17:41:22+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 51.5,
-    "Golden State": 48.4
+    "Golden State": 48.5
    },
-   "fetchedAt": "2026-10-25T13:57:18+00:00",
+   "fetchedAt": "2026-10-25T17:41:22+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 16.1,
-    "Milwaukee Brewers": 84.0
+    "Tampa Bay Rays": 15.8,
+    "Milwaukee Brewers": 83.9
    },
-   "fetchedAt": "2026-10-25T13:57:18+00:00",
+   "fetchedAt": "2026-10-25T17:41:22+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -116,7 +116,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 46.0,
+     "price": 47.0,
      "depth": null,
      "flow": {
       "totalVolume": 301548.93,
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-25T13:57:18+00:00",
+   "fetchedAt": "2026-10-25T17:41:22+00:00",
    "stale": false
   }
  }

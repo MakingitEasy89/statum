@@ -9494,6 +9494,42 @@
       "predictedMargin": 5.5,
       "predictedTotal": 46.5,
       "snapshotDate": "2026-10-25"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858532,
+      "homeTeam": "Penn State",
+      "awayTeam": "Rutgers",
+      "predictedMargin": 24.8,
+      "predictedTotal": 56.1,
+      "snapshotDate": "2026-10-25"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862836,
+      "homeTeam": "UAB",
+      "awayTeam": "UTSA",
+      "predictedMargin": -2.5,
+      "predictedTotal": 60.1,
+      "snapshotDate": "2026-10-25"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869929,
+      "homeTeam": "App State",
+      "awayTeam": "UL Monroe",
+      "predictedMargin": 26.7,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-10-25"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869953,
+      "homeTeam": "Troy",
+      "awayTeam": "Georgia Southern",
+      "predictedMargin": 13.6,
+      "predictedTotal": 52.5,
+      "snapshotDate": "2026-10-25"
     }
   ],
   "graded": [
