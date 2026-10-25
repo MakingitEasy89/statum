@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-25T18:50:57+00:00",
+ "lastRun": "2026-10-25T21:40:23+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 37.0
+       "pct": 42.0
       },
       {
        "name": "CeeDee Lamb",
@@ -38,7 +38,7 @@
       },
       {
        "name": "Jordan Love",
-       "pct": 11.0
+       "pct": 10.0
       }
      ],
      "totalMarkets": 28
@@ -64,7 +64,7 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-25T18:50:57+00:00",
+   "fetchedAt": "2026-10-25T21:40:23+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -72,7 +72,7 @@
     "Golden State": 46.0,
     "Atlanta": 53.0
    },
-   "fetchedAt": "2026-10-25T18:50:57+00:00",
+   "fetchedAt": "2026-10-25T21:40:23+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
@@ -80,15 +80,15 @@
     "Atlanta": 51.5,
     "Golden State": 48.4
    },
-   "fetchedAt": "2026-10-25T18:50:57+00:00",
+   "fetchedAt": "2026-10-25T21:40:23+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 15.8,
-    "Milwaukee Brewers": 83.8
+    "Tampa Bay Rays": 16.0,
+    "Milwaukee Brewers": 83.7
    },
-   "fetchedAt": "2026-10-25T18:50:57+00:00",
+   "fetchedAt": "2026-10-25T21:40:23+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-25T18:50:57+00:00",
+   "fetchedAt": "2026-10-25T21:40:23+00:00",
    "stale": false
   }
  }
