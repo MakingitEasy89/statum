@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-25T17:41:22+00:00",
+ "lastRun": "2026-10-25T18:50:57+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -37,8 +37,8 @@
        "pct": 21.0
       },
       {
-       "name": "Bryce Young",
-       "pct": 12.0
+       "name": "Jordan Love",
+       "pct": 11.0
       }
      ],
      "totalMarkets": 28
@@ -64,31 +64,31 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-25T17:41:22+00:00",
+   "fetchedAt": "2026-10-25T18:50:57+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 47.0,
-    "Atlanta": 54.0
+    "Golden State": 46.0,
+    "Atlanta": 53.0
    },
-   "fetchedAt": "2026-10-25T17:41:22+00:00",
+   "fetchedAt": "2026-10-25T18:50:57+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Atlanta": 51.5,
-    "Golden State": 48.5
+    "Golden State": 48.4
    },
-   "fetchedAt": "2026-10-25T17:41:22+00:00",
+   "fetchedAt": "2026-10-25T18:50:57+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Tampa Bay Rays": 15.8,
-    "Milwaukee Brewers": 83.9
+    "Milwaukee Brewers": 83.8
    },
-   "fetchedAt": "2026-10-25T17:41:22+00:00",
+   "fetchedAt": "2026-10-25T18:50:57+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,7 +96,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 54.0,
+     "price": 53.0,
      "depth": null,
      "flow": {
       "totalVolume": 122238.31,
@@ -116,7 +116,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 47.0,
+     "price": 46.0,
      "depth": null,
      "flow": {
       "totalVolume": 301548.93,
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-25T17:41:22+00:00",
+   "fetchedAt": "2026-10-25T18:50:57+00:00",
    "stale": false
   }
  }

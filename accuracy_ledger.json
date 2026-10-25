@@ -9530,6 +9530,42 @@
       "predictedMargin": 13.6,
       "predictedTotal": 52.5,
       "snapshotDate": "2026-10-25"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856752,
+      "homeTeam": "Oklahoma",
+      "awayTeam": "Texas A&M",
+      "predictedMargin": 7.9,
+      "predictedTotal": 46.9,
+      "snapshotDate": "2026-10-25"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858302,
+      "homeTeam": "Miami",
+      "awayTeam": "Virginia Tech",
+      "predictedMargin": 35.6,
+      "predictedTotal": 53.6,
+      "snapshotDate": "2026-10-25"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858533,
+      "homeTeam": "Purdue",
+      "awayTeam": "Wisconsin",
+      "predictedMargin": 3.5,
+      "predictedTotal": 46.4,
+      "snapshotDate": "2026-10-25"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864541,
+      "homeTeam": "Nevada",
+      "awayTeam": "Hawai'i",
+      "predictedMargin": 4.8,
+      "predictedTotal": 47.8,
+      "snapshotDate": "2026-10-25"
     }
   ],
   "graded": [
