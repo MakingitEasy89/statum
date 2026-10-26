@@ -9757,6 +9757,33 @@
       "predictedMargin": 20.3,
       "predictedTotal": 52.0,
       "snapshotDate": "2026-10-26"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856751,
+      "homeTeam": "Missouri",
+      "awayTeam": "Kentucky",
+      "predictedMargin": 22.1,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-10-26"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856866,
+      "homeTeam": "Kansas",
+      "awayTeam": "BYU",
+      "predictedMargin": 0.9,
+      "predictedTotal": 53.1,
+      "snapshotDate": "2026-10-26"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858306,
+      "homeTeam": "Louisville",
+      "awayTeam": "Pittsburgh",
+      "predictedMargin": 10.4,
+      "predictedTotal": 56.9,
+      "snapshotDate": "2026-10-26"
     }
   ],
   "graded": [

@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-26T07:40:33+00:00",
+ "lastRun": "2026-10-26T20:02:52+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 41.0
+       "pct": 57.0
       },
       {
        "name": "Puka Nacua",
@@ -64,15 +64,15 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-26T07:40:33+00:00",
+   "fetchedAt": "2026-10-26T20:02:52+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Golden State": 46.0,
-    "Atlanta": 53.0
+    "Atlanta": 52.0
    },
-   "fetchedAt": "2026-10-26T07:40:33+00:00",
+   "fetchedAt": "2026-10-26T20:02:52+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
@@ -80,15 +80,15 @@
     "Atlanta": 51.5,
     "Golden State": 48.4
    },
-   "fetchedAt": "2026-10-26T07:40:33+00:00",
+   "fetchedAt": "2026-10-26T20:02:52+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 16.6,
-    "Milwaukee Brewers": 83.4
+    "Tampa Bay Rays": 16.7,
+    "Milwaukee Brewers": 83.2
    },
-   "fetchedAt": "2026-10-26T07:40:33+00:00",
+   "fetchedAt": "2026-10-26T20:02:52+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,7 +96,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 53.0,
+     "price": 52.0,
      "depth": null,
      "flow": {
       "totalVolume": 119707.22,
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-26T07:40:33+00:00",
+   "fetchedAt": "2026-10-26T20:02:52+00:00",
    "stale": false
   }
  }
