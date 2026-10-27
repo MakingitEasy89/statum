@@ -9802,6 +9802,24 @@
       "predictedMargin": 19.6,
       "predictedTotal": 54.9,
       "snapshotDate": "2026-10-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856753,
+      "homeTeam": "South Carolina",
+      "awayTeam": "Georgia",
+      "predictedMargin": -4.6,
+      "predictedTotal": 51.3,
+      "snapshotDate": "2026-10-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862833,
+      "homeTeam": "Florida Atlantic",
+      "awayTeam": "South Florida",
+      "predictedMargin": -8.8,
+      "predictedTotal": 62.6,
+      "snapshotDate": "2026-10-27"
     }
   ],
   "graded": [
