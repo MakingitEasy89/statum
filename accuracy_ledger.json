@@ -9784,6 +9784,24 @@
       "predictedMargin": 10.4,
       "predictedTotal": 56.9,
       "snapshotDate": "2026-10-26"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858527,
+      "homeTeam": "Illinois",
+      "awayTeam": "Iowa",
+      "predictedMargin": 2.9,
+      "predictedTotal": 48.6,
+      "snapshotDate": "2026-10-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869946,
+      "homeTeam": "Louisiana",
+      "awayTeam": "Coastal Carolina",
+      "predictedMargin": 19.6,
+      "predictedTotal": 54.9,
+      "snapshotDate": "2026-10-27"
     }
   ],
   "graded": [

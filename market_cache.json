@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-26T20:02:52+00:00",
+ "lastRun": "2026-10-27T00:56:12+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -53,42 +53,42 @@
        "pct": 25.0
       },
       {
-       "name": "Xavier Watts",
-       "pct": 9.0
+       "name": "Marlon Humphrey",
+       "pct": 13.0
       },
       {
-       "name": "Kevin Byard III",
+       "name": "Xavier Watts",
        "pct": 9.0
       }
      ],
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-26T20:02:52+00:00",
+   "fetchedAt": "2026-10-27T00:56:12+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 46.0,
-    "Atlanta": 52.0
+    "Golden State": 50.0,
+    "Atlanta": 51.0
    },
-   "fetchedAt": "2026-10-26T20:02:52+00:00",
+   "fetchedAt": "2026-10-27T00:56:12+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 51.5,
-    "Golden State": 48.4
+    "Atlanta": 53.0,
+    "Golden State": 47.3
    },
-   "fetchedAt": "2026-10-26T20:02:52+00:00",
+   "fetchedAt": "2026-10-27T00:56:12+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 16.7,
-    "Milwaukee Brewers": 83.2
+    "Tampa Bay Rays": 12.4,
+    "Milwaukee Brewers": 86.9
    },
-   "fetchedAt": "2026-10-26T20:02:52+00:00",
+   "fetchedAt": "2026-10-27T00:56:12+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -96,7 +96,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 52.0,
+     "price": 51.0,
      "depth": null,
      "flow": {
       "totalVolume": 119707.22,
@@ -116,7 +116,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 46.0,
+     "price": 50.0,
      "depth": null,
      "flow": {
       "totalVolume": 287769.45,
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-26T20:02:52+00:00",
+   "fetchedAt": "2026-10-27T00:56:12+00:00",
    "stale": false
   }
  }
