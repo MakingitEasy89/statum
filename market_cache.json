@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-28T08:11:27+00:00",
+ "lastRun": "2026-10-28T19:36:15+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,11 +10,11 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 67.0
+       "pct": 66.0
       },
       {
        "name": "Puka Nacua",
-       "pct": 11.0
+       "pct": 9.0
       },
       {
        "name": "Zay Flowers",
@@ -37,8 +37,8 @@
        "pct": 20.0
       },
       {
-       "name": "Joe Burrow",
-       "pct": 11.0
+       "name": "Jalen Hurts",
+       "pct": 9.0
       }
      ],
      "totalMarkets": 28
@@ -53,18 +53,18 @@
        "pct": 25.0
       },
       {
-       "name": "Marlon Humphrey",
-       "pct": 13.0
+       "name": "Xavier Watts",
+       "pct": 9.0
       },
       {
-       "name": "Xavier Watts",
+       "name": "Kyle Hamilton",
        "pct": 9.0
       }
      ],
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-28T08:11:27+00:00",
+   "fetchedAt": "2026-10-28T19:36:15+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -72,23 +72,23 @@
     "Golden State": 70.0,
     "Atlanta": 31.0
    },
-   "fetchedAt": "2026-10-28T08:11:27+00:00",
+   "fetchedAt": "2026-10-28T19:36:15+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 29.0,
-    "Golden State": 71.0
+    "Atlanta": 30.0,
+    "Golden State": 70.6
    },
-   "fetchedAt": "2026-10-28T08:11:27+00:00",
+   "fetchedAt": "2026-10-28T19:36:15+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
-    "Tampa Bay Rays": 9.5,
+    "Tampa Bay Rays": 9.2,
     "Milwaukee Brewers": 90.8
    },
-   "fetchedAt": "2026-10-28T08:11:27+00:00",
+   "fetchedAt": "2026-10-28T19:36:15+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -134,7 +134,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-28T08:11:27+00:00",
+   "fetchedAt": "2026-10-28T19:36:15+00:00",
    "stale": false
   }
  }
