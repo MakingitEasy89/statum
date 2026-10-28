@@ -4337,24 +4337,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871071,
-      "homeTeam": "Western Kentucky",
-      "awayTeam": "Delaware",
-      "predictedMargin": 13.7,
-      "predictedTotal": 56.4,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871072,
-      "homeTeam": "Missouri State",
-      "awayTeam": "Sam Houston",
-      "predictedMargin": 21.8,
-      "predictedTotal": 54.5,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401871058,
       "homeTeam": "Middle Tennessee",
       "awayTeam": "Kennesaw State",
@@ -9858,6 +9840,24 @@
       "predictedMargin": 14.0,
       "predictedTotal": 55.3,
       "snapshotDate": "2026-10-27"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856755,
+      "homeTeam": "Texas",
+      "awayTeam": "Arkansas",
+      "predictedMargin": 24.1,
+      "predictedTotal": 54.6,
+      "snapshotDate": "2026-10-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856865,
+      "homeTeam": "Kansas State",
+      "awayTeam": "Arizona",
+      "predictedMargin": 1.2,
+      "predictedTotal": 53.6,
+      "snapshotDate": "2026-10-28"
     }
   ],
   "graded": [
@@ -52584,18 +52584,62 @@
       "hit": false,
       "snapshotDate": "2026-10-20",
       "gradedDate": "2026-10-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Delaware @ Western Kentucky",
+      "stat": "spread",
+      "line": 13.7,
+      "actual": -14,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-28"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Delaware @ Western Kentucky",
+      "stat": "total",
+      "line": 56.4,
+      "actual": 56,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-28"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Sam Houston @ Missouri State",
+      "stat": "spread",
+      "line": 21.8,
+      "actual": 21,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-28"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Sam Houston @ Missouri State",
+      "stat": "total",
+      "line": 54.5,
+      "actual": 27,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-28"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 355,
-      "hits": 234,
-      "rate": 65.9
+      "graded": 357,
+      "hits": 235,
+      "rate": 65.8
     },
     "cfb_total": {
-      "graded": 355,
-      "hits": 45,
-      "rate": 12.7
+      "graded": 357,
+      "hits": 46,
+      "rate": 12.9
     },
     "nfl_p25": {
       "graded": 1058,
