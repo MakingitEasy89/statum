@@ -9840,6 +9840,15 @@
       "predictedMargin": 1.2,
       "predictedTotal": 53.6,
       "snapshotDate": "2026-10-28"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858310,
+      "homeTeam": "Georgia Tech",
+      "awayTeam": "Wake Forest",
+      "predictedMargin": 4.7,
+      "predictedTotal": 54.5,
+      "snapshotDate": "2026-10-29"
     }
   ],
   "graded": [

@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-29T08:15:23+00:00",
+ "lastRun": "2026-10-29T19:41:17+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 64.0
+       "pct": 67.0
       },
       {
-       "name": "Zay Flowers",
+       "name": "CeeDee Lamb",
        "pct": 9.0
       },
       {
        "name": "Puka Nacua",
-       "pct": 7.0
+       "pct": 6.0
       }
      ],
      "totalMarkets": 27
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Jared Goff",
-       "pct": 19.0
+       "pct": 36.0
       },
       {
        "name": "Matthew Stafford",
-       "pct": 17.0
+       "pct": 20.0
       },
       {
        "name": "Jordan Love",
-       "pct": 9.0
+       "pct": 14.0
       }
      ],
      "totalMarkets": 28
@@ -64,30 +64,30 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-29T08:15:23+00:00",
+   "fetchedAt": "2026-10-29T19:41:17+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 68.0,
-    "Atlanta": 32.0
+    "Golden State": 51.0,
+    "Atlanta": 51.0
    },
-   "fetchedAt": "2026-10-29T08:15:23+00:00",
+   "fetchedAt": "2026-10-29T19:41:17+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 31.0,
-    "Golden State": 68.5
+    "Atlanta": 49.5,
+    "Golden State": 49.8
    },
-   "fetchedAt": "2026-10-29T08:15:23+00:00",
+   "fetchedAt": "2026-10-29T19:41:17+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-10-29T08:15:23+00:00",
+   "fetchedAt": "2026-10-29T19:41:17+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -95,7 +95,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 68.0,
+     "price": 51.0,
      "depth": null,
      "flow": {
       "totalVolume": 218099.63,
@@ -115,7 +115,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 32.0,
+     "price": 51.0,
      "depth": null,
      "flow": {
       "totalVolume": 160867.48,
@@ -133,7 +133,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-29T08:15:23+00:00",
+   "fetchedAt": "2026-10-29T19:41:17+00:00",
    "stale": false
   }
  }
