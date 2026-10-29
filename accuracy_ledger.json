@@ -4337,24 +4337,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401871058,
-      "homeTeam": "Middle Tennessee",
-      "awayTeam": "Kennesaw State",
-      "predictedMargin": 0.9,
-      "predictedTotal": 51.3,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871057,
-      "homeTeam": "New Mexico State",
-      "awayTeam": "Jacksonville State",
-      "predictedMargin": 4.4,
-      "predictedTotal": 52.0,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401869963,
       "homeTeam": "James Madison",
       "awayTeam": "Troy",
@@ -52628,18 +52610,62 @@
       "hit": false,
       "snapshotDate": "2026-10-03",
       "gradedDate": "2026-10-28"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Kennesaw State @ Middle Tennessee",
+      "stat": "spread",
+      "line": 0.9,
+      "actual": -16,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-29"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Kennesaw State @ Middle Tennessee",
+      "stat": "total",
+      "line": 51.3,
+      "actual": 72,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-29"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Jacksonville State @ New Mexico State",
+      "stat": "spread",
+      "line": 4.4,
+      "actual": -24,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-29"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Jacksonville State @ New Mexico State",
+      "stat": "total",
+      "line": 52.0,
+      "actual": 24,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-29"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 357,
+      "graded": 359,
       "hits": 235,
-      "rate": 65.8
+      "rate": 65.5
     },
     "cfb_total": {
-      "graded": 357,
+      "graded": 359,
       "hits": 46,
-      "rate": 12.9
+      "rate": 12.8
     },
     "nfl_p25": {
       "graded": 1058,
