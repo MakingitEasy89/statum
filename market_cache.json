@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-30T08:17:41+00:00",
+ "lastRun": "2026-10-30T19:16:54+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 71.0
+       "pct": 72.0
+      },
+      {
+       "name": "Zay Flowers",
+       "pct": 12.0
       },
       {
        "name": "CeeDee Lamb",
        "pct": 9.0
-      },
-      {
-       "name": "Zay Flowers",
-       "pct": 6.0
       }
      ],
      "totalMarkets": 27
@@ -38,7 +38,7 @@
       },
       {
        "name": "Jordan Love",
-       "pct": 14.0
+       "pct": 12.0
       }
      ],
      "totalMarkets": 28
@@ -64,15 +64,15 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-30T08:17:41+00:00",
+   "fetchedAt": "2026-10-30T19:16:54+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 52.0,
-    "Atlanta": 49.0
+    "Golden State": 51.0,
+    "Atlanta": 51.0
    },
-   "fetchedAt": "2026-10-30T08:17:41+00:00",
+   "fetchedAt": "2026-10-30T19:16:54+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
@@ -80,14 +80,14 @@
     "Atlanta": 48.5,
     "Golden State": 51.3
    },
-   "fetchedAt": "2026-10-30T08:17:41+00:00",
+   "fetchedAt": "2026-10-30T19:16:54+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-10-30T08:17:41+00:00",
+   "fetchedAt": "2026-10-30T19:16:54+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -95,7 +95,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 52.0,
+     "price": 51.0,
      "depth": null,
      "flow": {
       "totalVolume": 251847.61000000002,
@@ -115,7 +115,7 @@
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 49.0,
+     "price": 51.0,
      "depth": null,
      "flow": {
       "totalVolume": 199438.98,
@@ -133,7 +133,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-30T08:17:41+00:00",
+   "fetchedAt": "2026-10-30T19:16:54+00:00",
    "stale": false
   }
  }
