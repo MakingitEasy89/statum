@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-29T19:41:17+00:00",
+ "lastRun": "2026-10-30T02:21:37+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 67.0
+       "pct": 65.0
       },
       {
        "name": "CeeDee Lamb",
@@ -29,12 +29,12 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "Jared Goff",
-       "pct": 36.0
+       "name": "Matthew Stafford",
+       "pct": 23.0
       },
       {
-       "name": "Matthew Stafford",
-       "pct": 20.0
+       "name": "Jared Goff",
+       "pct": 17.0
       },
       {
        "name": "Jordan Love",
@@ -64,30 +64,30 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-29T19:41:17+00:00",
+   "fetchedAt": "2026-10-30T02:21:37+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 51.0,
+    "Golden State": 52.0,
     "Atlanta": 51.0
    },
-   "fetchedAt": "2026-10-29T19:41:17+00:00",
+   "fetchedAt": "2026-10-30T02:21:37+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 49.5,
-    "Golden State": 49.8
+    "Atlanta": 48.0,
+    "Golden State": 50.4
    },
-   "fetchedAt": "2026-10-29T19:41:17+00:00",
+   "fetchedAt": "2026-10-30T02:21:37+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-10-29T19:41:17+00:00",
+   "fetchedAt": "2026-10-30T02:21:37+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -95,7 +95,7 @@
     {
      "ticker": "KXWNBA-26-GS",
      "name": "Golden State",
-     "price": 51.0,
+     "price": 52.0,
      "depth": null,
      "flow": {
       "totalVolume": 218099.63,
@@ -133,7 +133,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-10-29T19:41:17+00:00",
+   "fetchedAt": "2026-10-30T02:21:37+00:00",
    "stale": false
   }
  }
