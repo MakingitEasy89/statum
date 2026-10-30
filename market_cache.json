@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-30T02:21:37+00:00",
+ "lastRun": "2026-10-30T08:17:41+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,14 +10,14 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 65.0
+       "pct": 71.0
       },
       {
        "name": "CeeDee Lamb",
        "pct": 9.0
       },
       {
-       "name": "Puka Nacua",
+       "name": "Zay Flowers",
        "pct": 6.0
       }
      ],
@@ -34,7 +34,7 @@
       },
       {
        "name": "Jared Goff",
-       "pct": 17.0
+       "pct": 16.0
       },
       {
        "name": "Jordan Love",
@@ -64,30 +64,30 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-30T02:21:37+00:00",
+   "fetchedAt": "2026-10-30T08:17:41+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Golden State": 52.0,
-    "Atlanta": 51.0
+    "Atlanta": 49.0
    },
-   "fetchedAt": "2026-10-30T02:21:37+00:00",
+   "fetchedAt": "2026-10-30T08:17:41+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 48.0,
-    "Golden State": 50.4
+    "Atlanta": 48.5,
+    "Golden State": 51.3
    },
-   "fetchedAt": "2026-10-30T02:21:37+00:00",
+   "fetchedAt": "2026-10-30T08:17:41+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-10-30T02:21:37+00:00",
+   "fetchedAt": "2026-10-30T08:17:41+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -98,42 +98,42 @@
      "price": 52.0,
      "depth": null,
      "flow": {
-      "totalVolume": 218099.63,
-      "latestOI": 902181.87,
-      "oiChange": 3553.680000000051,
+      "totalVolume": 251847.61000000002,
+      "latestOI": 904561.57,
+      "oiChange": 9183.839999999967,
       "oiSeries": [
-       898628.19,
        895377.73,
        897831.99,
        895851.52,
        922681.48,
        911660.99,
-       902181.87
+       902181.87,
+       904561.57
       ]
      }
     },
     {
      "ticker": "KXWNBA-26-ATL",
      "name": "Atlanta",
-     "price": 51.0,
+     "price": 49.0,
      "depth": null,
      "flow": {
-      "totalVolume": 160867.48,
-      "latestOI": 782661.34,
-      "oiChange": 36057.70999999996,
+      "totalVolume": 199438.98,
+      "latestOI": 805780.96,
+      "oiChange": 52966.05999999994,
       "oiSeries": [
-       746603.63,
        752814.9,
        766808.85,
        766457.85,
        760833.28,
        770598.13,
-       782661.34
+       782661.34,
+       805780.96
       ]
      }
     }
    ],
-   "fetchedAt": "2026-10-30T02:21:37+00:00",
+   "fetchedAt": "2026-10-30T08:17:41+00:00",
    "stale": false
   }
  }
