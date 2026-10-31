@@ -9822,6 +9822,24 @@
       "predictedMargin": 6.0,
       "predictedTotal": 55.9,
       "snapshotDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858305,
+      "homeTeam": "Virginia",
+      "awayTeam": "North Carolina",
+      "predictedMargin": 23.3,
+      "predictedTotal": 47.6,
+      "snapshotDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858308,
+      "homeTeam": "California",
+      "awayTeam": "Stanford",
+      "predictedMargin": 19.0,
+      "predictedTotal": 51.9,
+      "snapshotDate": "2026-10-31"
     }
   ],
   "graded": [
