@@ -4337,33 +4337,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401862813,
-      "homeTeam": "Charlotte",
-      "awayTeam": "Tulane",
-      "predictedMargin": -14.4,
-      "predictedTotal": 51.1,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856844,
-      "homeTeam": "UCF",
-      "awayTeam": "Baylor",
-      "predictedMargin": 13.7,
-      "predictedTotal": 53.5,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866451,
-      "homeTeam": "Sacramento State",
-      "awayTeam": "Kent State",
-      "predictedMargin": 15.7,
-      "predictedTotal": 48.5,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401858281,
       "homeTeam": "Pittsburgh",
       "awayTeam": "Georgia Tech",
@@ -9840,6 +9813,15 @@
       "predictedMargin": 16.8,
       "predictedTotal": 58.1,
       "snapshotDate": "2026-10-30"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856748,
+      "homeTeam": "Florida",
+      "awayTeam": "Vanderbilt",
+      "predictedMargin": 6.0,
+      "predictedTotal": 55.9,
+      "snapshotDate": "2026-10-31"
     }
   ],
   "graded": [
@@ -53160,18 +53142,84 @@
       "hit": false,
       "snapshotDate": "2026-10-03",
       "gradedDate": "2026-10-30"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Tulane @ Charlotte",
+      "stat": "spread",
+      "line": -14.4,
+      "actual": -7,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Tulane @ Charlotte",
+      "stat": "total",
+      "line": 51.1,
+      "actual": 69,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Baylor @ UCF",
+      "stat": "spread",
+      "line": 13.7,
+      "actual": -32,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Baylor @ UCF",
+      "stat": "total",
+      "line": 53.5,
+      "actual": 50,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Kent State @ Sacramento State",
+      "stat": "spread",
+      "line": 15.7,
+      "actual": 21,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Kent State @ Sacramento State",
+      "stat": "total",
+      "line": 48.5,
+      "actual": 41,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-10-31"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 361,
-      "hits": 236,
+      "graded": 364,
+      "hits": 238,
       "rate": 65.4
     },
     "cfb_total": {
-      "graded": 361,
+      "graded": 364,
       "hits": 46,
-      "rate": 12.7
+      "rate": 12.6
     },
     "nfl_p25": {
       "graded": 1072,

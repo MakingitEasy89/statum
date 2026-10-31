@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-10-30T19:16:54+00:00",
+ "lastRun": "2026-10-31T08:14:25+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 72.0
+       "pct": 69.0
       },
       {
        "name": "Zay Flowers",
-       "pct": 12.0
+       "pct": 9.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 9.0
+       "name": "Puka Nacua",
+       "pct": 6.0
       }
      ],
      "totalMarkets": 27
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Matthew Stafford",
-       "pct": 23.0
+       "pct": 22.0
+      },
+      {
+       "name": "Jordan Love",
+       "pct": 17.0
       },
       {
        "name": "Jared Goff",
        "pct": 16.0
-      },
-      {
-       "name": "Jordan Love",
-       "pct": 12.0
       }
      ],
      "totalMarkets": 28
@@ -64,30 +64,30 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-10-30T19:16:54+00:00",
+   "fetchedAt": "2026-10-31T08:14:25+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Golden State": 51.0,
-    "Atlanta": 51.0
+    "Golden State": 53.0,
+    "Atlanta": 48.0
    },
-   "fetchedAt": "2026-10-30T19:16:54+00:00",
+   "fetchedAt": "2026-10-31T08:14:25+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
-    "Atlanta": 48.5,
-    "Golden State": 51.3
+    "Atlanta": 49.0,
+    "Golden State": 51.8
    },
-   "fetchedAt": "2026-10-30T19:16:54+00:00",
+   "fetchedAt": "2026-10-31T08:14:25+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-10-30T19:16:54+00:00",
+   "fetchedAt": "2026-10-31T08:14:25+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -134,7 +134,7 @@
     }
    ],
    "fetchedAt": "2026-10-30T19:16:54+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
