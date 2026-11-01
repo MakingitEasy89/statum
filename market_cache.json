@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-01T19:02:17+00:00",
+ "lastRun": "2026-11-01T20:10:38+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -13,12 +13,12 @@
        "pct": 66.0
       },
       {
-       "name": "Zay Flowers",
+       "name": "CeeDee Lamb",
        "pct": 8.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 8.0
+       "name": "Puka Nacua",
+       "pct": 7.0
       }
      ],
      "totalMarkets": 27
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Jordan Love",
-       "pct": 28.0
+       "pct": 26.0
       },
       {
        "name": "Matthew Stafford",
@@ -64,7 +64,7 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-11-01T19:02:17+00:00",
+   "fetchedAt": "2026-11-01T20:10:38+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -79,14 +79,14 @@
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-01T19:02:17+00:00",
+   "fetchedAt": "2026-11-01T20:10:38+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-01T19:02:17+00:00",
+   "fetchedAt": "2026-11-01T20:10:38+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
