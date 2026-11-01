@@ -9624,6 +9624,15 @@
       "predictedMargin": 24.7,
       "predictedTotal": 53.4,
       "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862838,
+      "homeTeam": "Memphis",
+      "awayTeam": "Temple",
+      "predictedMargin": 26.0,
+      "predictedTotal": 56.7,
+      "snapshotDate": "2026-11-01"
     }
   ],
   "graded": [
