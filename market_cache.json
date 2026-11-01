@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-01T20:10:38+00:00",
+ "lastRun": "2026-11-01T22:51:31+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
+       "name": "Joe Burrow",
+       "pct": 39.0
+      },
+      {
        "name": "Jordan Love",
        "pct": 26.0
       },
       {
        "name": "Matthew Stafford",
        "pct": 20.0
-      },
-      {
-       "name": "Jalen Hurts",
-       "pct": 9.0
       }
      ],
      "totalMarkets": 28
@@ -64,7 +64,7 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-11-01T20:10:38+00:00",
+   "fetchedAt": "2026-11-01T22:51:31+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -79,14 +79,14 @@
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-01T20:10:38+00:00",
+   "fetchedAt": "2026-11-01T22:51:31+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-01T20:10:38+00:00",
+   "fetchedAt": "2026-11-01T22:51:31+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
