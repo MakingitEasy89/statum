@@ -4336,204 +4336,6 @@
       "snapshotDate": "2026-10-03"
     },
     {
-      "sport": "cfb",
-      "gameId": 401858281,
-      "homeTeam": "Pittsburgh",
-      "awayTeam": "Georgia Tech",
-      "predictedMargin": 20.1,
-      "predictedTotal": 57.2,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858505,
-      "homeTeam": "Oregon",
-      "awayTeam": "Northwestern",
-      "predictedMargin": 30.2,
-      "predictedTotal": 51.2,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856846,
-      "homeTeam": "Colorado",
-      "awayTeam": "Kansas State",
-      "predictedMargin": -5.3,
-      "predictedTotal": 52.6,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856848,
-      "homeTeam": "Cincinnati",
-      "awayTeam": "Utah",
-      "predictedMargin": -3.0,
-      "predictedTotal": 58.0,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858282,
-      "homeTeam": "North Carolina",
-      "awayTeam": "Miami",
-      "predictedMargin": -16.9,
-      "predictedTotal": 47.4,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856737,
-      "homeTeam": "Texas",
-      "awayTeam": "Mississippi State",
-      "predictedMargin": 20.1,
-      "predictedTotal": 55.2,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856735,
-      "homeTeam": "Ole Miss",
-      "awayTeam": "Auburn",
-      "predictedMargin": 20.0,
-      "predictedTotal": 53.6,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856842,
-      "homeTeam": "Texas Tech",
-      "awayTeam": "Arizona",
-      "predictedMargin": 26.3,
-      "predictedTotal": 52.0,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856847,
-      "homeTeam": "Iowa State",
-      "awayTeam": "Oklahoma State",
-      "predictedMargin": 30.6,
-      "predictedTotal": 49.8,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858280,
-      "homeTeam": "Florida State",
-      "awayTeam": "Clemson",
-      "predictedMargin": 19.1,
-      "predictedTotal": 51.5,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858283,
-      "homeTeam": "Louisville",
-      "awayTeam": "Stanford",
-      "predictedMargin": 34.5,
-      "predictedTotal": 53.1,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871097,
-      "homeTeam": "South Alabama",
-      "awayTeam": "Louisiana Tech",
-      "predictedMargin": 3.7,
-      "predictedTotal": 56.5,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862815,
-      "homeTeam": "East Carolina",
-      "awayTeam": "Temple",
-      "predictedMargin": 22.4,
-      "predictedTotal": 54.1,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858507,
-      "homeTeam": "Rutgers",
-      "awayTeam": "Michigan",
-      "predictedMargin": 0.6,
-      "predictedTotal": 52.5,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858503,
-      "homeTeam": "Maryland",
-      "awayTeam": "Illinois",
-      "predictedMargin": 4.1,
-      "predictedTotal": 53.5,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858508,
-      "homeTeam": "UCLA",
-      "awayTeam": "Nevada",
-      "predictedMargin": 13.6,
-      "predictedTotal": 50.6,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862814,
-      "homeTeam": "Memphis",
-      "awayTeam": "Army",
-      "predictedMargin": 21.5,
-      "predictedTotal": 52.5,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871095,
-      "homeTeam": "UL Monroe",
-      "awayTeam": "Southern Miss",
-      "predictedMargin": -5.6,
-      "predictedTotal": 55.4,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858506,
-      "homeTeam": "Penn State",
-      "awayTeam": "Purdue",
-      "predictedMargin": 34.5,
-      "predictedTotal": 53.3,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856843,
-      "homeTeam": "BYU",
-      "awayTeam": "Arizona State",
-      "predictedMargin": 23.0,
-      "predictedTotal": 50.8,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401864529,
-      "homeTeam": "San Jos\u00e9 State",
-      "awayTeam": "New Mexico",
-      "predictedMargin": -10.9,
-      "predictedTotal": 52.3,
-      "snapshotDate": "2026-10-03"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856733,
-      "homeTeam": "Arkansas",
-      "awayTeam": "Missouri",
-      "predictedMargin": -5.5,
-      "predictedTotal": 57.3,
-      "snapshotDate": "2026-10-03"
-    },
-    {
       "sport": "nfl",
       "player": "KC Concepcion",
       "stat": "Targets",
@@ -4611,141 +4413,6 @@
       "p50": 4.0,
       "p75": 5.0,
       "gamelogLenAtSnapshot": 3,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858504,
-      "homeTeam": "Nebraska",
-      "awayTeam": "Washington",
-      "predictedMargin": 12.4,
-      "predictedTotal": 52.3,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858284,
-      "homeTeam": "Wake Forest",
-      "awayTeam": "Virginia",
-      "predictedMargin": 6.8,
-      "predictedTotal": 52.0,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401869944,
-      "homeTeam": "Georgia State",
-      "awayTeam": "Coastal Carolina",
-      "predictedMargin": 12.9,
-      "predictedTotal": 56.2,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401860924,
-      "homeTeam": "Fresno State",
-      "awayTeam": "Oregon State",
-      "predictedMargin": 23.6,
-      "predictedTotal": 48.6,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401869846,
-      "homeTeam": "Georgia Southern",
-      "awayTeam": "App State",
-      "predictedMargin": 7.9,
-      "predictedTotal": 56.8,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858509,
-      "homeTeam": "USC",
-      "awayTeam": "Ohio State",
-      "predictedMargin": -2.4,
-      "predictedTotal": 53.2,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858501,
-      "homeTeam": "Indiana",
-      "awayTeam": "Minnesota",
-      "predictedMargin": 39.5,
-      "predictedTotal": 50.5,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858278,
-      "homeTeam": "Syracuse",
-      "awayTeam": "SMU",
-      "predictedMargin": -8.4,
-      "predictedTotal": 55.2,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856736,
-      "homeTeam": "Oklahoma",
-      "awayTeam": "South Carolina",
-      "predictedMargin": 19.1,
-      "predictedTotal": 45.2,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856845,
-      "homeTeam": "TCU",
-      "awayTeam": "Kansas",
-      "predictedMargin": 13.5,
-      "predictedTotal": 52.6,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858279,
-      "homeTeam": "Duke",
-      "awayTeam": "Boston College",
-      "predictedMargin": 28.2,
-      "predictedTotal": 56.2,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871096,
-      "homeTeam": "Old Dominion",
-      "awayTeam": "Marshall",
-      "predictedMargin": 20.9,
-      "predictedTotal": 55.9,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862816,
-      "homeTeam": "South Florida",
-      "awayTeam": "UAB",
-      "predictedMargin": 37.4,
-      "predictedTotal": 59.3,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858277,
-      "homeTeam": "NC State",
-      "awayTeam": "California",
-      "predictedMargin": 17.1,
-      "predictedTotal": 56.0,
-      "snapshotDate": "2026-10-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858502,
-      "homeTeam": "Iowa",
-      "awayTeam": "Wisconsin",
-      "predictedMargin": 28.1,
-      "predictedTotal": 40.9,
       "snapshotDate": "2026-10-04"
     },
     {
@@ -5086,96 +4753,6 @@
       "p50": 9.0,
       "p75": 10.0,
       "gamelogLenAtSnapshot": 4,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866452,
-      "homeTeam": "Western Michigan",
-      "awayTeam": "Bowling Green",
-      "predictedMargin": 24.2,
-      "predictedTotal": 43.9,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401859185,
-      "homeTeam": "Navy",
-      "awayTeam": "Notre Dame",
-      "predictedMargin": -10.2,
-      "predictedTotal": 57.0,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401861966,
-      "homeTeam": "Air Force",
-      "awayTeam": "UConn",
-      "predictedMargin": 3.7,
-      "predictedTotal": 59.5,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856734,
-      "homeTeam": "Georgia",
-      "awayTeam": "Florida",
-      "predictedMargin": 28.5,
-      "predictedTotal": 52.8,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401871059,
-      "homeTeam": "Liberty",
-      "awayTeam": "Florida International",
-      "predictedMargin": 13.2,
-      "predictedTotal": 49.9,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401864531,
-      "homeTeam": "North Dakota State",
-      "awayTeam": "UTEP",
-      "predictedMargin": 42.0,
-      "predictedTotal": 47.0,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401860910,
-      "homeTeam": "Utah State",
-      "awayTeam": "Colorado State",
-      "predictedMargin": 21.2,
-      "predictedTotal": 55.9,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401860909,
-      "homeTeam": "San Diego State",
-      "awayTeam": "Washington State",
-      "predictedMargin": 16.8,
-      "predictedTotal": 44.1,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401860908,
-      "homeTeam": "Boise State",
-      "awayTeam": "Texas State",
-      "predictedMargin": 14.6,
-      "predictedTotal": 61.9,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401864530,
-      "homeTeam": "UNLV",
-      "awayTeam": "Northern Illinois",
-      "predictedMargin": 27.9,
-      "predictedTotal": 51.5,
       "snapshotDate": "2026-10-18"
     },
     {
@@ -9840,6 +9417,213 @@
       "predictedMargin": 19.0,
       "predictedTotal": 51.9,
       "snapshotDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856867,
+      "homeTeam": "Cincinnati",
+      "awayTeam": "Colorado",
+      "predictedMargin": 26.0,
+      "predictedTotal": 55.2,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401869958,
+      "homeTeam": "Marshall",
+      "awayTeam": "Georgia State",
+      "predictedMargin": 16.5,
+      "predictedTotal": 58.4,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862834,
+      "homeTeam": "Navy",
+      "awayTeam": "Memphis",
+      "predictedMargin": 0.1,
+      "predictedTotal": 58.2,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862831,
+      "homeTeam": "Army",
+      "awayTeam": "East Carolina",
+      "predictedMargin": 6.4,
+      "predictedTotal": 51.0,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871080,
+      "homeTeam": "Liberty",
+      "awayTeam": "Western Kentucky",
+      "predictedMargin": 18.5,
+      "predictedTotal": 51.5,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871081,
+      "homeTeam": "Sam Houston",
+      "awayTeam": "Middle Tennessee",
+      "predictedMargin": 3.3,
+      "predictedTotal": 52.0,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871079,
+      "homeTeam": "Jacksonville State",
+      "awayTeam": "Missouri State",
+      "predictedMargin": 19.6,
+      "predictedTotal": 53.2,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871078,
+      "homeTeam": "Kennesaw State",
+      "awayTeam": "Florida International",
+      "predictedMargin": 12.0,
+      "predictedTotal": 50.4,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401871077,
+      "homeTeam": "New Mexico State",
+      "awayTeam": "Delaware",
+      "predictedMargin": 6.7,
+      "predictedTotal": 54.1,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401861968,
+      "homeTeam": "UConn",
+      "awayTeam": "Old Dominion",
+      "predictedMargin": 18.3,
+      "predictedTotal": 55.0,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864543,
+      "homeTeam": "North Dakota State",
+      "awayTeam": "Northern Illinois",
+      "predictedMargin": 39.9,
+      "predictedTotal": 43.2,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401860920,
+      "homeTeam": "Texas State",
+      "awayTeam": "Washington State",
+      "predictedMargin": 19.3,
+      "predictedTotal": 55.9,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864544,
+      "homeTeam": "San Jos\u00e9 State",
+      "awayTeam": "UNLV",
+      "predictedMargin": -1.5,
+      "predictedTotal": 53.8,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858307,
+      "homeTeam": "Notre Dame",
+      "awayTeam": "SMU",
+      "predictedMargin": 23.7,
+      "predictedTotal": 56.2,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401860918,
+      "homeTeam": "Fresno State",
+      "awayTeam": "Colorado State",
+      "predictedMargin": 27.9,
+      "predictedTotal": 54.3,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864542,
+      "homeTeam": "Wyoming",
+      "awayTeam": "New Mexico",
+      "predictedMargin": -4.6,
+      "predictedTotal": 43.4,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401860925,
+      "homeTeam": "Boise State",
+      "awayTeam": "San Diego State",
+      "predictedMargin": 17.1,
+      "predictedTotal": 51.8,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401860919,
+      "homeTeam": "Oregon State",
+      "awayTeam": "Utah State",
+      "predictedMargin": 10.0,
+      "predictedTotal": 53.0,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866471,
+      "homeTeam": "Western Michigan",
+      "awayTeam": "Miami (OH)",
+      "predictedMargin": 14.4,
+      "predictedTotal": 46.2,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866470,
+      "homeTeam": "Eastern Michigan",
+      "awayTeam": "Kent State",
+      "predictedMargin": 19.7,
+      "predictedTotal": 50.8,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856879,
+      "homeTeam": "Texas Tech",
+      "awayTeam": "TCU",
+      "predictedMargin": 28.8,
+      "predictedTotal": 51.6,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862837,
+      "homeTeam": "East Carolina",
+      "awayTeam": "Florida Atlantic",
+      "predictedMargin": 21.9,
+      "predictedTotal": 60.2,
+      "snapshotDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862839,
+      "homeTeam": "South Florida",
+      "awayTeam": "Tulane",
+      "predictedMargin": 24.7,
+      "predictedTotal": 53.4,
+      "snapshotDate": "2026-11-01"
     }
   ],
   "graded": [
@@ -53226,18 +53010,1052 @@
       "hit": false,
       "snapshotDate": "2026-10-03",
       "gradedDate": "2026-10-31"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Georgia Tech @ Pittsburgh",
+      "stat": "spread",
+      "line": 20.1,
+      "actual": 23,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Georgia Tech @ Pittsburgh",
+      "stat": "total",
+      "line": 57.2,
+      "actual": 45,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Northwestern @ Oregon",
+      "stat": "spread",
+      "line": 30.2,
+      "actual": 8,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Northwestern @ Oregon",
+      "stat": "total",
+      "line": 51.2,
+      "actual": 60,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Kansas State @ Colorado",
+      "stat": "spread",
+      "line": -5.3,
+      "actual": 3,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Kansas State @ Colorado",
+      "stat": "total",
+      "line": 52.6,
+      "actual": 51,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Utah @ Cincinnati",
+      "stat": "spread",
+      "line": -3.0,
+      "actual": -24,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Utah @ Cincinnati",
+      "stat": "total",
+      "line": 58.0,
+      "actual": 74,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Miami @ North Carolina",
+      "stat": "spread",
+      "line": -16.9,
+      "actual": -3,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Miami @ North Carolina",
+      "stat": "total",
+      "line": 47.4,
+      "actual": 73,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Mississippi State @ Texas",
+      "stat": "spread",
+      "line": 20.1,
+      "actual": 28,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Mississippi State @ Texas",
+      "stat": "total",
+      "line": 55.2,
+      "actual": 34,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Auburn @ Ole Miss",
+      "stat": "spread",
+      "line": 20.0,
+      "actual": 30,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Auburn @ Ole Miss",
+      "stat": "total",
+      "line": 53.6,
+      "actual": 60,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Arizona @ Texas Tech",
+      "stat": "spread",
+      "line": 26.3,
+      "actual": 8,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Arizona @ Texas Tech",
+      "stat": "total",
+      "line": 52.0,
+      "actual": 60,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Oklahoma State @ Iowa State",
+      "stat": "spread",
+      "line": 30.6,
+      "actual": 2,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Oklahoma State @ Iowa State",
+      "stat": "total",
+      "line": 49.8,
+      "actual": 100,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Clemson @ Florida State",
+      "stat": "spread",
+      "line": 19.1,
+      "actual": -12,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Clemson @ Florida State",
+      "stat": "total",
+      "line": 51.5,
+      "actual": 60,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Stanford @ Louisville",
+      "stat": "spread",
+      "line": 34.5,
+      "actual": 28,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Stanford @ Louisville",
+      "stat": "total",
+      "line": 53.1,
+      "actual": 76,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Louisiana Tech @ South Alabama",
+      "stat": "spread",
+      "line": 3.7,
+      "actual": -15,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Louisiana Tech @ South Alabama",
+      "stat": "total",
+      "line": 56.5,
+      "actual": 55,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Temple @ East Carolina",
+      "stat": "spread",
+      "line": 22.4,
+      "actual": 8,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Temple @ East Carolina",
+      "stat": "total",
+      "line": 54.1,
+      "actual": 26,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Michigan @ Rutgers",
+      "stat": "spread",
+      "line": 0.6,
+      "actual": -7,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Michigan @ Rutgers",
+      "stat": "total",
+      "line": 52.5,
+      "actual": 49,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Illinois @ Maryland",
+      "stat": "spread",
+      "line": 4.1,
+      "actual": -3,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Illinois @ Maryland",
+      "stat": "total",
+      "line": 53.5,
+      "actual": 37,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Nevada @ UCLA",
+      "stat": "spread",
+      "line": 13.6,
+      "actual": 27,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Nevada @ UCLA",
+      "stat": "total",
+      "line": 50.6,
+      "actual": 27,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Army @ Memphis",
+      "stat": "spread",
+      "line": 21.5,
+      "actual": 27,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Army @ Memphis",
+      "stat": "total",
+      "line": 52.5,
+      "actual": 71,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Southern Miss @ UL Monroe",
+      "stat": "spread",
+      "line": -5.6,
+      "actual": -14,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Southern Miss @ UL Monroe",
+      "stat": "total",
+      "line": 55.4,
+      "actual": 56,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Purdue @ Penn State",
+      "stat": "spread",
+      "line": 34.5,
+      "actual": 14,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Purdue @ Penn State",
+      "stat": "total",
+      "line": 53.3,
+      "actual": 48,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Arizona State @ BYU",
+      "stat": "spread",
+      "line": 23.0,
+      "actual": 7,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Arizona State @ BYU",
+      "stat": "total",
+      "line": 50.8,
+      "actual": 47,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "New Mexico @ San Jos\u00e9 State",
+      "stat": "spread",
+      "line": -10.9,
+      "actual": -5,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "New Mexico @ San Jos\u00e9 State",
+      "stat": "total",
+      "line": 52.3,
+      "actual": 37,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Missouri @ Arkansas",
+      "stat": "spread",
+      "line": -5.5,
+      "actual": -24,
+      "hit": true,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Missouri @ Arkansas",
+      "stat": "total",
+      "line": 57.3,
+      "actual": 44,
+      "hit": false,
+      "snapshotDate": "2026-10-03",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Washington @ Nebraska",
+      "stat": "spread",
+      "line": 12.4,
+      "actual": -7,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Washington @ Nebraska",
+      "stat": "total",
+      "line": 52.3,
+      "actual": 27,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Virginia @ Wake Forest",
+      "stat": "spread",
+      "line": 6.8,
+      "actual": 44,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Virginia @ Wake Forest",
+      "stat": "total",
+      "line": 52.0,
+      "actual": 58,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Coastal Carolina @ Georgia State",
+      "stat": "spread",
+      "line": 12.9,
+      "actual": -11,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Coastal Carolina @ Georgia State",
+      "stat": "total",
+      "line": 56.2,
+      "actual": 51,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Oregon State @ Fresno State",
+      "stat": "spread",
+      "line": 23.6,
+      "actual": 16,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Oregon State @ Fresno State",
+      "stat": "total",
+      "line": 48.6,
+      "actual": 60,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "App State @ Georgia Southern",
+      "stat": "spread",
+      "line": 7.9,
+      "actual": 16,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "App State @ Georgia Southern",
+      "stat": "total",
+      "line": 56.8,
+      "actual": 22,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Ohio State @ USC",
+      "stat": "spread",
+      "line": -2.4,
+      "actual": 12,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Ohio State @ USC",
+      "stat": "total",
+      "line": 53.2,
+      "actual": 48,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Minnesota @ Indiana",
+      "stat": "spread",
+      "line": 39.5,
+      "actual": 7,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Minnesota @ Indiana",
+      "stat": "total",
+      "line": 50.5,
+      "actual": 39,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "SMU @ Syracuse",
+      "stat": "spread",
+      "line": -8.4,
+      "actual": 3,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "SMU @ Syracuse",
+      "stat": "total",
+      "line": 55.2,
+      "actual": 57,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "South Carolina @ Oklahoma",
+      "stat": "spread",
+      "line": 19.1,
+      "actual": -17,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "South Carolina @ Oklahoma",
+      "stat": "total",
+      "line": 45.2,
+      "actual": 67,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Kansas @ TCU",
+      "stat": "spread",
+      "line": 13.5,
+      "actual": 6,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Kansas @ TCU",
+      "stat": "total",
+      "line": 52.6,
+      "actual": 38,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Boston College @ Duke",
+      "stat": "spread",
+      "line": 28.2,
+      "actual": 45,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Boston College @ Duke",
+      "stat": "total",
+      "line": 56.2,
+      "actual": 49,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Marshall @ Old Dominion",
+      "stat": "spread",
+      "line": 20.9,
+      "actual": -13,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Marshall @ Old Dominion",
+      "stat": "total",
+      "line": 55.9,
+      "actual": 59,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "UAB @ South Florida",
+      "stat": "spread",
+      "line": 37.4,
+      "actual": 20,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "UAB @ South Florida",
+      "stat": "total",
+      "line": 59.3,
+      "actual": 40,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "California @ NC State",
+      "stat": "spread",
+      "line": 17.1,
+      "actual": 21,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "California @ NC State",
+      "stat": "total",
+      "line": 56.0,
+      "actual": 41,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Wisconsin @ Iowa",
+      "stat": "spread",
+      "line": 28.1,
+      "actual": 30,
+      "hit": true,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Wisconsin @ Iowa",
+      "stat": "total",
+      "line": 40.9,
+      "actual": 30,
+      "hit": false,
+      "snapshotDate": "2026-10-04",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Bowling Green @ Western Michigan",
+      "stat": "spread",
+      "line": 24.2,
+      "actual": 13,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Bowling Green @ Western Michigan",
+      "stat": "total",
+      "line": 43.9,
+      "actual": 33,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Notre Dame @ Navy",
+      "stat": "spread",
+      "line": -10.2,
+      "actual": -22,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Notre Dame @ Navy",
+      "stat": "total",
+      "line": 57.0,
+      "actual": 48,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "UConn @ Air Force",
+      "stat": "spread",
+      "line": 3.7,
+      "actual": 9,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "UConn @ Air Force",
+      "stat": "total",
+      "line": 59.5,
+      "actual": 61,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Florida @ Georgia",
+      "stat": "spread",
+      "line": 28.5,
+      "actual": 19,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Florida @ Georgia",
+      "stat": "total",
+      "line": 52.8,
+      "actual": 35,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Florida International @ Liberty",
+      "stat": "spread",
+      "line": 13.2,
+      "actual": 39,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Florida International @ Liberty",
+      "stat": "total",
+      "line": 49.9,
+      "actual": 59,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "UTEP @ North Dakota State",
+      "stat": "spread",
+      "line": 42.0,
+      "actual": 24,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "UTEP @ North Dakota State",
+      "stat": "total",
+      "line": 47.0,
+      "actual": 38,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Colorado State @ Utah State",
+      "stat": "spread",
+      "line": 21.2,
+      "actual": 17,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Colorado State @ Utah State",
+      "stat": "total",
+      "line": 55.9,
+      "actual": 45,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Washington State @ San Diego State",
+      "stat": "spread",
+      "line": 16.8,
+      "actual": 6,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Washington State @ San Diego State",
+      "stat": "total",
+      "line": 44.1,
+      "actual": 46,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Texas State @ Boise State",
+      "stat": "spread",
+      "line": 14.6,
+      "actual": 1,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Texas State @ Boise State",
+      "stat": "total",
+      "line": 61.9,
+      "actual": 91,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Northern Illinois @ UNLV",
+      "stat": "spread",
+      "line": 27.9,
+      "actual": 7,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Northern Illinois @ UNLV",
+      "stat": "total",
+      "line": 51.5,
+      "actual": 55,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-01"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 364,
-      "hits": 238,
-      "rate": 65.4
+      "graded": 411,
+      "hits": 274,
+      "rate": 66.7
     },
     "cfb_total": {
-      "graded": 364,
-      "hits": 46,
-      "rate": 12.6
+      "graded": 411,
+      "hits": 52,
+      "rate": 12.7
     },
     "nfl_p25": {
       "graded": 1072,
