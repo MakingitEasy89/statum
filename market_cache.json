@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-02T09:08:34+00:00",
+ "lastRun": "2026-11-02T22:52:30+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 67.0
+       "pct": 59.0
       },
       {
        "name": "Tee Higgins",
        "pct": 23.0
       },
       {
-       "name": "Puka Nacua",
-       "pct": 4.0
+       "name": "CeeDee Lamb",
+       "pct": 9.0
       }
      ],
      "totalMarkets": 27
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "Joe Burrow",
-       "pct": 32.0
+       "name": "C.J. Stroud",
+       "pct": 21.0
       },
       {
        "name": "Matthew Stafford",
        "pct": 20.0
       },
       {
-       "name": "Jordan Love",
-       "pct": 14.0
+       "name": "Joe Burrow",
+       "pct": 19.0
       }
      ],
      "totalMarkets": 28
@@ -64,7 +64,7 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-11-02T09:08:34+00:00",
+   "fetchedAt": "2026-11-02T22:52:30+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -79,14 +79,14 @@
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-02T09:08:34+00:00",
+   "fetchedAt": "2026-11-02T22:52:30+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-02T09:08:34+00:00",
+   "fetchedAt": "2026-11-02T22:52:30+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
