@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-02T01:12:55+00:00",
+ "lastRun": "2026-11-02T02:25:14+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -64,7 +64,7 @@
      "totalMarkets": 24
     }
    ],
-   "fetchedAt": "2026-11-02T01:12:55+00:00",
+   "fetchedAt": "2026-11-02T02:25:14+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -79,14 +79,14 @@
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-02T01:12:55+00:00",
+   "fetchedAt": "2026-11-02T02:25:14+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-02T01:12:55+00:00",
+   "fetchedAt": "2026-11-02T02:25:14+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
