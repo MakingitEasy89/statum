@@ -5509,26 +5509,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Stefon Diggs",
-      "stat": "Receptions",
-      "p25": 5.0,
-      "p50": 5.0,
-      "p75": 6.0,
-      "gamelogLenAtSnapshot": 34,
-      "snapshotDate": "2026-10-20"
-    },
-    {
-      "sport": "nfl",
-      "player": "Stefon Diggs",
-      "stat": "Receiving Yards",
-      "p25": 36.0,
-      "p50": 73.0,
-      "p75": 81.0,
-      "gamelogLenAtSnapshot": 34,
-      "snapshotDate": "2026-10-20"
-    },
-    {
-      "sport": "nfl",
       "player": "Mike Evans",
       "stat": "Receptions",
       "p25": 3.0,
@@ -5575,36 +5555,6 @@
       "p50": 2.0,
       "p75": 3.0,
       "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-10-20"
-    },
-    {
-      "sport": "nfl",
-      "player": "Rachaad White",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 2.0,
-      "p75": 5.0,
-      "gamelogLenAtSnapshot": 38,
-      "snapshotDate": "2026-10-20"
-    },
-    {
-      "sport": "nfl",
-      "player": "Rachaad White",
-      "stat": "Rush Attempts",
-      "p25": 6.0,
-      "p50": 10.0,
-      "p75": 11.0,
-      "gamelogLenAtSnapshot": 38,
-      "snapshotDate": "2026-10-20"
-    },
-    {
-      "sport": "nfl",
-      "player": "Rachaad White",
-      "stat": "Rush Yards",
-      "p25": 18.0,
-      "p50": 31.0,
-      "p75": 52.0,
-      "gamelogLenAtSnapshot": 38,
       "snapshotDate": "2026-10-20"
     },
     {
@@ -5714,26 +5664,6 @@
       "p25": 10.0,
       "p50": 22.0,
       "p75": 44.0,
-      "gamelogLenAtSnapshot": 31,
-      "snapshotDate": "2026-10-20"
-    },
-    {
-      "sport": "nfl",
-      "player": "Antonio Williams",
-      "stat": "Receiving Yards",
-      "p25": 19.0,
-      "p50": 22.0,
-      "p75": 34.0,
-      "gamelogLenAtSnapshot": 6,
-      "snapshotDate": "2026-10-20"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jayden Daniels",
-      "stat": "Passing Yards",
-      "p25": 205.0,
-      "p50": 230.0,
-      "p75": 260.0,
       "gamelogLenAtSnapshot": 31,
       "snapshotDate": "2026-10-20"
     },
@@ -7129,16 +7059,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Dallas Goedert",
-      "stat": "Receiving Yards",
-      "p25": 28.0,
-      "p50": 42.0,
-      "p75": 59.0,
-      "gamelogLenAtSnapshot": 35,
-      "snapshotDate": "2026-10-27"
-    },
-    {
-      "sport": "nfl",
       "player": "Elijah Moore",
       "stat": "Receptions",
       "p25": 2.0,
@@ -7155,46 +7075,6 @@
       "p50": 21.0,
       "p75": 41.0,
       "gamelogLenAtSnapshot": 29,
-      "snapshotDate": "2026-10-27"
-    },
-    {
-      "sport": "nfl",
-      "player": "Saquon Barkley",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 2.0,
-      "p75": 3.0,
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-10-27"
-    },
-    {
-      "sport": "nfl",
-      "player": "Saquon Barkley",
-      "stat": "Rush Attempts",
-      "p25": 18.0,
-      "p50": 23.0,
-      "p75": 26.0,
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-10-27"
-    },
-    {
-      "sport": "nfl",
-      "player": "Saquon Barkley",
-      "stat": "Rush Yards",
-      "p25": 92.0,
-      "p50": 118.0,
-      "p75": 152.0,
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-10-27"
-    },
-    {
-      "sport": "nfl",
-      "player": "Makai Lemon",
-      "stat": "Receiving Yards",
-      "p25": 14.0,
-      "p50": 27.0,
-      "p75": 29.0,
-      "gamelogLenAtSnapshot": 7,
       "snapshotDate": "2026-10-27"
     },
     {
@@ -9612,6 +9492,126 @@
       "p50": 206.0,
       "p75": 243.0,
       "gamelogLenAtSnapshot": 42,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "p25": 36.0,
+      "p50": 73.0,
+      "p75": 81.0,
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Dallas Goedert",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 42.0,
+      "p75": 59.0,
+      "gamelogLenAtSnapshot": 36,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Saquon Barkley",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Saquon Barkley",
+      "stat": "Rush Attempts",
+      "p25": 18.0,
+      "p50": 23.0,
+      "p75": 26.0,
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Saquon Barkley",
+      "stat": "Rush Yards",
+      "p25": 92.0,
+      "p50": 118.0,
+      "p75": 152.0,
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rachaad White",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 5.0,
+      "gamelogLenAtSnapshot": 39,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rachaad White",
+      "stat": "Rush Attempts",
+      "p25": 6.0,
+      "p50": 10.0,
+      "p75": 11.0,
+      "gamelogLenAtSnapshot": 39,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rachaad White",
+      "stat": "Rush Yards",
+      "p25": 18.0,
+      "p50": 31.0,
+      "p75": 52.0,
+      "gamelogLenAtSnapshot": 39,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Makai Lemon",
+      "stat": "Receiving Yards",
+      "p25": 15.0,
+      "p50": 23.0,
+      "p75": 28.0,
+      "gamelogLenAtSnapshot": 8,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "p25": 21.0,
+      "p50": 24.0,
+      "p75": 31.0,
+      "gamelogLenAtSnapshot": 7,
+      "snapshotDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "p25": 205.0,
+      "p50": 230.0,
+      "p75": 260.0,
+      "gamelogLenAtSnapshot": 32,
       "snapshotDate": "2026-11-02"
     }
   ],
@@ -60600,6 +60600,402 @@
       "hit": true,
       "snapshotDate": "2026-10-26",
       "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 3.0,
+      "hit": false,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 3.0,
+      "hit": false,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 3.0,
+      "hit": false,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "line": 36.0,
+      "actual": 38.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "line": 73.0,
+      "actual": 38.0,
+      "hit": false,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "line": 81.0,
+      "actual": 38.0,
+      "hit": false,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Rachaad White",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 2.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Rachaad White",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 2.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Rachaad White",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Rachaad White",
+      "stat": "Rush Attempts",
+      "line": 6.0,
+      "actual": 11.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Rachaad White",
+      "stat": "Rush Attempts",
+      "line": 10.0,
+      "actual": 11.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Rachaad White",
+      "stat": "Rush Attempts",
+      "line": 11.0,
+      "actual": 11.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Rachaad White",
+      "stat": "Rush Yards",
+      "line": 18.0,
+      "actual": 55.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Rachaad White",
+      "stat": "Rush Yards",
+      "line": 31.0,
+      "actual": 55.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Rachaad White",
+      "stat": "Rush Yards",
+      "line": 52.0,
+      "actual": 55.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "line": 19.0,
+      "actual": 54.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "line": 22.0,
+      "actual": 54.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "line": 34.0,
+      "actual": 54.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "line": 205.0,
+      "actual": 217.0,
+      "hit": true,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "line": 230.0,
+      "actual": 217.0,
+      "hit": false,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "line": 260.0,
+      "actual": 217.0,
+      "hit": false,
+      "snapshotDate": "2026-10-20",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Dallas Goedert",
+      "stat": "Receiving Yards",
+      "line": 28.0,
+      "actual": 30.0,
+      "hit": true,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Dallas Goedert",
+      "stat": "Receiving Yards",
+      "line": 42.0,
+      "actual": 30.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Dallas Goedert",
+      "stat": "Receiving Yards",
+      "line": 59.0,
+      "actual": 30.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Saquon Barkley",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 1.0,
+      "hit": true,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Saquon Barkley",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 1.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Saquon Barkley",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 1.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Saquon Barkley",
+      "stat": "Rush Attempts",
+      "line": 18.0,
+      "actual": 13.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Saquon Barkley",
+      "stat": "Rush Attempts",
+      "line": 23.0,
+      "actual": 13.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Saquon Barkley",
+      "stat": "Rush Attempts",
+      "line": 26.0,
+      "actual": 13.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Saquon Barkley",
+      "stat": "Rush Yards",
+      "line": 92.0,
+      "actual": 30.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Saquon Barkley",
+      "stat": "Rush Yards",
+      "line": 118.0,
+      "actual": 30.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Saquon Barkley",
+      "stat": "Rush Yards",
+      "line": 152.0,
+      "actual": 30.0,
+      "hit": false,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Makai Lemon",
+      "stat": "Receiving Yards",
+      "line": 14.0,
+      "actual": 57.0,
+      "hit": true,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Makai Lemon",
+      "stat": "Receiving Yards",
+      "line": 27.0,
+      "actual": 57.0,
+      "hit": true,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Makai Lemon",
+      "stat": "Receiving Yards",
+      "line": 29.0,
+      "actual": 57.0,
+      "hit": true,
+      "snapshotDate": "2026-10-27",
+      "gradedDate": "2026-11-02"
     }
   ],
   "summary": {
@@ -60614,18 +61010,18 @@
       "rate": 12.7
     },
     "nfl_p25": {
-      "graded": 1271,
-      "hits": 871,
-      "rate": 68.5
+      "graded": 1283,
+      "hits": 880,
+      "rate": 68.6
     },
     "nfl_p50": {
-      "graded": 1271,
-      "hits": 595,
+      "graded": 1283,
+      "hits": 600,
       "rate": 46.8
     },
     "nfl_p75": {
-      "graded": 1271,
-      "hits": 340,
+      "graded": 1283,
+      "hits": 344,
       "rate": 26.8
     }
   }
