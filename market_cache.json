@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-02T22:52:30+00:00",
+ "lastRun": "2026-11-03T03:16:34+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,18 +10,18 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 59.0
-      },
-      {
-       "name": "Tee Higgins",
-       "pct": 23.0
+       "pct": 62.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 9.0
+       "pct": 8.0
+      },
+      {
+       "name": "Tee Higgins",
+       "pct": 6.0
       }
      ],
-     "totalMarkets": 27
+     "totalMarkets": 29
     },
     {
      "category": "Passing Yards Leader",
@@ -33,15 +33,15 @@
        "pct": 21.0
       },
       {
-       "name": "Matthew Stafford",
-       "pct": 20.0
-      },
-      {
        "name": "Joe Burrow",
        "pct": 19.0
+      },
+      {
+       "name": "Matthew Stafford",
+       "pct": 16.0
       }
      ],
-     "totalMarkets": 28
+     "totalMarkets": 29
     },
     {
      "category": "Interceptions Leader",
@@ -61,10 +61,10 @@
        "pct": 9.0
       }
      ],
-     "totalMarkets": 24
+     "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-02T22:52:30+00:00",
+   "fetchedAt": "2026-11-03T03:16:34+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -79,14 +79,14 @@
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-02T22:52:30+00:00",
+   "fetchedAt": "2026-11-03T03:16:34+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-02T22:52:30+00:00",
+   "fetchedAt": "2026-11-03T03:16:34+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
