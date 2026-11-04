@@ -4617,24 +4617,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401866453,
-      "homeTeam": "Akron",
-      "awayTeam": "Ohio",
-      "predictedMargin": -3.8,
-      "predictedTotal": 51.1,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866454,
-      "homeTeam": "Miami (OH)",
-      "awayTeam": "Buffalo",
-      "predictedMargin": 14.8,
-      "predictedTotal": 48.1,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401866457,
       "homeTeam": "Sacramento State",
       "awayTeam": "Toledo",
@@ -9613,6 +9595,15 @@
       "p75": 256.0,
       "gamelogLenAtSnapshot": 41,
       "snapshotDate": "2026-11-03"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866473,
+      "homeTeam": "Ohio",
+      "awayTeam": "Toledo",
+      "predictedMargin": 0.9,
+      "predictedTotal": 51.3,
+      "snapshotDate": "2026-11-04"
     }
   ],
   "graded": [
@@ -61524,18 +61515,62 @@
       "hit": false,
       "snapshotDate": "2026-10-26",
       "gradedDate": "2026-11-03"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Ohio @ Akron",
+      "stat": "spread",
+      "line": -3.8,
+      "actual": -8,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-04"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Ohio @ Akron",
+      "stat": "total",
+      "line": 51.1,
+      "actual": 48,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-04"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Buffalo @ Miami (OH)",
+      "stat": "spread",
+      "line": 14.8,
+      "actual": -3,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-04"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Buffalo @ Miami (OH)",
+      "stat": "total",
+      "line": 48.1,
+      "actual": 65,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-04"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 411,
-      "hits": 274,
-      "rate": 66.7
+      "graded": 413,
+      "hits": 275,
+      "rate": 66.6
     },
     "cfb_total": {
-      "graded": 411,
+      "graded": 413,
       "hits": 52,
-      "rate": 12.7
+      "rate": 12.6
     },
     "nfl_p25": {
       "graded": 1299,
