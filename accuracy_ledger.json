@@ -9604,6 +9604,15 @@
       "predictedMargin": 0.9,
       "predictedTotal": 51.3,
       "snapshotDate": "2026-11-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401866472,
+      "homeTeam": "Akron",
+      "awayTeam": "Buffalo",
+      "predictedMargin": 2.8,
+      "predictedTotal": 49.5,
+      "snapshotDate": "2026-11-04"
     }
   ],
   "graded": [
