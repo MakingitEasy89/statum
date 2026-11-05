@@ -4617,33 +4617,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401866457,
-      "homeTeam": "Sacramento State",
-      "awayTeam": "Toledo",
-      "predictedMargin": -21.6,
-      "predictedTotal": 48.0,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866456,
-      "homeTeam": "Eastern Michigan",
-      "awayTeam": "Central Michigan",
-      "predictedMargin": 8.6,
-      "predictedTotal": 48.1,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866455,
-      "homeTeam": "Massachusetts",
-      "awayTeam": "Ball State",
-      "predictedMargin": 12.4,
-      "predictedTotal": 49.5,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401869964,
       "homeTeam": "Southern Miss",
       "awayTeam": "James Madison",
@@ -9613,6 +9586,24 @@
       "predictedMargin": 2.8,
       "predictedTotal": 49.5,
       "snapshotDate": "2026-11-04"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401862840,
+      "homeTeam": "UTSA",
+      "awayTeam": "Tulsa",
+      "predictedMargin": 17.5,
+      "predictedTotal": 57.3,
+      "snapshotDate": "2026-11-05"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858536,
+      "homeTeam": "Iowa",
+      "awayTeam": "Nebraska",
+      "predictedMargin": 14.8,
+      "predictedTotal": 46.7,
+      "snapshotDate": "2026-11-05"
     }
   ],
   "graded": [
@@ -61568,18 +61559,84 @@
       "hit": false,
       "snapshotDate": "2026-10-18",
       "gradedDate": "2026-11-04"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Toledo @ Sacramento State",
+      "stat": "spread",
+      "line": -21.6,
+      "actual": -3,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-05"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Toledo @ Sacramento State",
+      "stat": "total",
+      "line": 48.0,
+      "actual": 37,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-05"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Central Michigan @ Eastern Michigan",
+      "stat": "spread",
+      "line": 8.6,
+      "actual": -28,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-05"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Central Michigan @ Eastern Michigan",
+      "stat": "total",
+      "line": 48.1,
+      "actual": 42,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-05"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Ball State @ Massachusetts",
+      "stat": "spread",
+      "line": 12.4,
+      "actual": 1,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-05"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Ball State @ Massachusetts",
+      "stat": "total",
+      "line": 49.5,
+      "actual": 61,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-05"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 413,
-      "hits": 275,
+      "graded": 416,
+      "hits": 277,
       "rate": 66.6
     },
     "cfb_total": {
-      "graded": 413,
+      "graded": 416,
       "hits": 52,
-      "rate": 12.6
+      "rate": 12.5
     },
     "nfl_p25": {
       "graded": 1299,
