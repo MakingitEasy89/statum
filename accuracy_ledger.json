@@ -9604,6 +9604,15 @@
       "predictedMargin": 14.8,
       "predictedTotal": 46.7,
       "snapshotDate": "2026-11-05"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856762,
+      "homeTeam": "Ole Miss",
+      "awayTeam": "Mississippi State",
+      "predictedMargin": 26.1,
+      "predictedTotal": 58.2,
+      "snapshotDate": "2026-11-05"
     }
   ],
   "graded": [
