@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-06T09:11:12+00:00",
+ "lastRun": "2026-11-06T20:30:37+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 67.0
+       "pct": 68.0
       },
       {
        "name": "Tee Higgins",
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 28.0
+       "pct": 35.0
       },
       {
        "name": "Jordan Love",
-       "pct": 19.0
+       "pct": 27.0
       },
       {
        "name": "Jared Goff",
-       "pct": 18.0
+       "pct": 21.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-06T09:11:12+00:00",
+   "fetchedAt": "2026-11-06T20:30:37+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -72,27 +72,27 @@
     "Washington": 2.0,
     "New York": 6.0,
     "Minnesota": 11.0,
-    "Las Vegas": 11.0,
+    "Las Vegas": 16.0,
     "Indiana": 7.0,
     "Golden State": 36.0,
     "Dallas": 4.0,
     "Atlanta": 11.0
    },
-   "fetchedAt": "2026-11-06T09:11:12+00:00",
+   "fetchedAt": "2026-11-06T20:30:37+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-06T09:11:12+00:00",
+   "fetchedAt": "2026-11-06T20:30:37+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-06T09:11:12+00:00",
+   "fetchedAt": "2026-11-06T20:30:37+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -114,6 +114,21 @@
      }
     },
     {
+     "ticker": "KXWNBA-27-LV",
+     "name": "Las Vegas",
+     "price": 16.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 51.0,
+      "latestOI": 51.0,
+      "oiChange": 0.0,
+      "oiSeries": [
+       51.0,
+       51.0
+      ]
+     }
+    },
+    {
      "ticker": "KXWNBA-27-MIN",
      "name": "Minnesota",
      "price": 11.0,
@@ -126,24 +141,9 @@
        51.0
       ]
      }
-    },
-    {
-     "ticker": "KXWNBA-27-LV",
-     "name": "Las Vegas",
-     "price": 11.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 51.0,
-      "latestOI": 51.0,
-      "oiChange": 0.0,
-      "oiSeries": [
-       51.0,
-       51.0
-      ]
-     }
     }
    ],
-   "fetchedAt": "2026-11-06T09:11:12+00:00",
+   "fetchedAt": "2026-11-06T20:30:37+00:00",
    "stale": false
   }
  }
