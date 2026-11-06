@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-06T03:02:01+00:00",
+ "lastRun": "2026-11-06T09:11:12+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 71.0
+       "pct": 67.0
       },
       {
        "name": "Tee Higgins",
@@ -34,11 +34,11 @@
       },
       {
        "name": "Jordan Love",
-       "pct": 24.0
+       "pct": 19.0
       },
       {
        "name": "Jared Goff",
-       "pct": 21.0
+       "pct": 18.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-06T03:02:01+00:00",
+   "fetchedAt": "2026-11-06T09:11:12+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -74,25 +74,25 @@
     "Minnesota": 11.0,
     "Las Vegas": 11.0,
     "Indiana": 7.0,
-    "Golden State": 18.0,
+    "Golden State": 36.0,
     "Dallas": 4.0,
     "Atlanta": 11.0
    },
-   "fetchedAt": "2026-11-06T03:02:01+00:00",
+   "fetchedAt": "2026-11-06T09:11:12+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-06T03:02:01+00:00",
+   "fetchedAt": "2026-11-06T09:11:12+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-06T03:02:01+00:00",
+   "fetchedAt": "2026-11-06T09:11:12+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -100,15 +100,16 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 18.0,
+     "price": 36.0,
      "depth": null,
      "flow": {
-      "totalVolume": 879.19,
-      "latestOI": 819.75,
-      "oiChange": 764.03,
+      "totalVolume": 909.23,
+      "latestOI": 835.75,
+      "oiChange": 780.03,
       "oiSeries": [
        55.72,
-       819.75
+       819.75,
+       835.75
       ]
      }
     },
@@ -134,14 +135,15 @@
      "flow": {
       "totalVolume": 51.0,
       "latestOI": 51.0,
-      "oiChange": 0,
+      "oiChange": 0.0,
       "oiSeries": [
+       51.0,
        51.0
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-06T03:02:01+00:00",
+   "fetchedAt": "2026-11-06T09:11:12+00:00",
    "stale": false
   }
  }
