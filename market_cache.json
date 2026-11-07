@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-07T08:35:19+00:00",
+ "lastRun": "2026-11-07T18:44:32+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -14,7 +14,7 @@
       },
       {
        "name": "Tee Higgins",
-       "pct": 11.0
+       "pct": 7.0
       },
       {
        "name": "CeeDee Lamb",
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 34.0
+       "pct": 27.0
       },
       {
        "name": "Jordan Love",
-       "pct": 33.0
+       "pct": 18.0
       },
       {
        "name": "Jared Goff",
-       "pct": 21.0
+       "pct": 17.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-07T08:35:19+00:00",
+   "fetchedAt": "2026-11-07T18:44:32+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -74,25 +74,25 @@
     "Minnesota": 11.0,
     "Las Vegas": 16.0,
     "Indiana": 7.0,
-    "Golden State": 49.0,
+    "Golden State": 18.0,
     "Dallas": 4.0,
     "Atlanta": 11.0
    },
-   "fetchedAt": "2026-11-07T08:35:19+00:00",
+   "fetchedAt": "2026-11-07T18:44:32+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-07T08:35:19+00:00",
+   "fetchedAt": "2026-11-07T18:44:32+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-07T08:35:19+00:00",
+   "fetchedAt": "2026-11-07T18:44:32+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -100,7 +100,7 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 49.0,
+     "price": 18.0,
      "depth": null,
      "flow": {
       "totalVolume": 1038.47,
@@ -146,7 +146,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-07T08:35:19+00:00",
+   "fetchedAt": "2026-11-07T18:44:32+00:00",
    "stale": false
   }
  }
