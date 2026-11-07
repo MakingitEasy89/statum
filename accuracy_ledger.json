@@ -4617,51 +4617,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401858288,
-      "homeTeam": "SMU",
-      "awayTeam": "Virginia Tech",
-      "predictedMargin": 22.8,
-      "predictedTotal": 53.8,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862818,
-      "homeTeam": "East Carolina",
-      "awayTeam": "South Florida",
-      "predictedMargin": 3.2,
-      "predictedTotal": 54.4,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858510,
-      "homeTeam": "Illinois",
-      "awayTeam": "Nebraska",
-      "predictedMargin": 5.2,
-      "predictedTotal": 53.4,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401864533,
-      "homeTeam": "Nevada",
-      "awayTeam": "New Mexico",
-      "predictedMargin": -7.9,
-      "predictedTotal": 48.4,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856855,
-      "homeTeam": "Arizona",
-      "awayTeam": "TCU",
-      "predictedMargin": 18.2,
-      "predictedTotal": 50.9,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401862821,
       "homeTeam": "North Texas",
       "awayTeam": "Rice",
@@ -9594,6 +9549,51 @@
       "predictedMargin": 9.6,
       "predictedTotal": 56.7,
       "snapshotDate": "2026-11-06"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856759,
+      "homeTeam": "Florida State",
+      "awayTeam": "Florida",
+      "predictedMargin": 16.4,
+      "predictedTotal": 54.8,
+      "snapshotDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864549,
+      "homeTeam": "San Jos\u00e9 State",
+      "awayTeam": "North Dakota State",
+      "predictedMargin": -12.9,
+      "predictedTotal": 44.5,
+      "snapshotDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401864546,
+      "homeTeam": "New Mexico",
+      "awayTeam": "Air Force",
+      "predictedMargin": 21.1,
+      "predictedTotal": 52.4,
+      "snapshotDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401856756,
+      "homeTeam": "Texas A&M",
+      "awayTeam": "Texas",
+      "predictedMargin": 11.8,
+      "predictedTotal": 51.3,
+      "snapshotDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "gameId": 401858544,
+      "homeTeam": "Wisconsin",
+      "awayTeam": "Minnesota",
+      "predictedMargin": 6.2,
+      "predictedTotal": 41.6,
+      "snapshotDate": "2026-11-07"
     }
   ],
   "graded": [
@@ -62253,18 +62253,128 @@
       "hit": false,
       "snapshotDate": "2026-10-18",
       "gradedDate": "2026-11-06"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Virginia Tech @ SMU",
+      "stat": "spread",
+      "line": 22.8,
+      "actual": 23,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Virginia Tech @ SMU",
+      "stat": "total",
+      "line": 53.8,
+      "actual": 79,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "South Florida @ East Carolina",
+      "stat": "spread",
+      "line": 3.2,
+      "actual": 3,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "South Florida @ East Carolina",
+      "stat": "total",
+      "line": 54.4,
+      "actual": 37,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "Nebraska @ Illinois",
+      "stat": "spread",
+      "line": 5.2,
+      "actual": 11,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "Nebraska @ Illinois",
+      "stat": "total",
+      "line": 53.4,
+      "actual": 37,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "New Mexico @ Nevada",
+      "stat": "spread",
+      "line": -7.9,
+      "actual": -28,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "New Mexico @ Nevada",
+      "stat": "total",
+      "line": 48.4,
+      "actual": 34,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "spread",
+      "player": "TCU @ Arizona",
+      "stat": "spread",
+      "line": 18.2,
+      "actual": 1,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total",
+      "player": "TCU @ Arizona",
+      "stat": "total",
+      "line": 50.9,
+      "actual": 57,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-07"
     }
   ],
   "summary": {
     "cfb_spread": {
-      "graded": 418,
-      "hits": 279,
-      "rate": 66.7
+      "graded": 423,
+      "hits": 284,
+      "rate": 67.1
     },
     "cfb_total": {
-      "graded": 418,
+      "graded": 423,
       "hits": 52,
-      "rate": 12.4
+      "rate": 12.3
     },
     "nfl_p25": {
       "graded": 1317,

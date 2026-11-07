@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-06T20:30:37+00:00",
+ "lastRun": "2026-11-07T08:35:19+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 68.0
+       "pct": 69.0
       },
       {
        "name": "Tee Higgins",
@@ -30,11 +30,11 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 35.0
+       "pct": 34.0
       },
       {
        "name": "Jordan Love",
-       "pct": 27.0
+       "pct": 33.0
       },
       {
        "name": "Jared Goff",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-06T20:30:37+00:00",
+   "fetchedAt": "2026-11-07T08:35:19+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -74,25 +74,25 @@
     "Minnesota": 11.0,
     "Las Vegas": 16.0,
     "Indiana": 7.0,
-    "Golden State": 36.0,
+    "Golden State": 49.0,
     "Dallas": 4.0,
     "Atlanta": 11.0
    },
-   "fetchedAt": "2026-11-06T20:30:37+00:00",
+   "fetchedAt": "2026-11-07T08:35:19+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-06T20:30:37+00:00",
+   "fetchedAt": "2026-11-07T08:35:19+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-06T20:30:37+00:00",
+   "fetchedAt": "2026-11-07T08:35:19+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -100,16 +100,17 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 36.0,
+     "price": 49.0,
      "depth": null,
      "flow": {
-      "totalVolume": 909.23,
-      "latestOI": 835.75,
-      "oiChange": 780.03,
+      "totalVolume": 1038.47,
+      "latestOI": 964.99,
+      "oiChange": 909.27,
       "oiSeries": [
        55.72,
        819.75,
-       835.75
+       835.75,
+       964.99
       ]
      }
     },
@@ -119,12 +120,13 @@
      "price": 16.0,
      "depth": null,
      "flow": {
-      "totalVolume": 51.0,
-      "latestOI": 51.0,
-      "oiChange": 0.0,
+      "totalVolume": 55.1,
+      "latestOI": 53.05,
+      "oiChange": 2.049999999999997,
       "oiSeries": [
        51.0,
-       51.0
+       51.0,
+       53.05
       ]
      }
     },
@@ -136,14 +138,15 @@
      "flow": {
       "totalVolume": 51.0,
       "latestOI": 51.0,
-      "oiChange": 0,
+      "oiChange": 0.0,
       "oiSeries": [
+       51.0,
        51.0
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-06T20:30:37+00:00",
+   "fetchedAt": "2026-11-07T08:35:19+00:00",
    "stale": false
   }
  }
