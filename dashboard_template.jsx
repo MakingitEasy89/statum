@@ -367,6 +367,7 @@ function GlobalStyle() {
         .glass { border-radius: 8px !important; }
         input, select { font-size: 16px !important; } /* prevents iOS auto-zoom on focus */
         button { min-height: 38px; }
+        .app-shell { width: 100% !important; padding: 18px 12px 60px !important; }
       }
       .bounce-in { animation: bounceIn 0.3s ease-out both; }
       @keyframes bounceIn { 0% { opacity:0; transform: translateY(6px);} 100% { opacity:1; transform: translateY(0);} }
@@ -723,6 +724,120 @@ function SavedFilters({ scope, sport, current, canSave, onApply }) {
       ) : canSave && (
         <button onClick={() => setNaming(true)} style={{ ...chip, padding: "4px 11px", borderStyle: "dashed" }}>+ Save current filters</button>
       )}
+    </div>
+  );
+}
+
+// =====================================================================
+// ACCURACY — live, forward-graded results next to the target each market is supposed to hit.
+// Data comes from accuracy.json, written by the pipeline from the real ledger. Nothing here is
+// smoothed, rounded up or re-run: picks are logged before the game and graded after it.
+// =====================================================================
+function accuracyVerdict(m) {
+  if (m.graded < 30) return { text: "Collecting data", color: "var(--text-tertiary)" };
+  if (m.stated == null) return null;
+  if (m.high < m.stated) return { text: "Below target", color: ACCENT.rose };
+  if (m.low > m.stated) return { text: "Above target", color: ACCENT.green };
+  return { text: "Within range of target", color: ACCENT.amber };
+}
+
+function AccuracyBar({ m }) {
+  const pos = (v) => `${Math.max(0, Math.min(100, v))}%`;
+  return (
+    <div style={{ position: "relative", height: 22, margin: "10px 0 4px" }} role="img"
+      aria-label={m.rate == null ? "No graded results yet" : `Live ${m.rate} percent, plausible range ${m.low} to ${m.high}${m.stated != null ? `, target ${m.stated}` : ""}`}>
+      <div style={{ position: "absolute", top: 9, left: 0, right: 0, height: 4, borderRadius: 2, background: "var(--overlay-4)" }} />
+      {m.rate != null && <div style={{ position: "absolute", top: 7, height: 8, borderRadius: 4, left: pos(m.low), width: `calc(${pos(m.high)} - ${pos(m.low)})`, background: "var(--overlay-7)" }} />}
+      {m.stated != null && <div title={`Target ${m.stated}%`} style={{ position: "absolute", top: 2, width: 2, height: 18, left: pos(m.stated), background: ACCENT.amber }} />}
+      {m.rate != null && <div style={{ position: "absolute", top: 5, width: 12, height: 12, borderRadius: 6, marginLeft: -6, left: pos(m.rate), background: "var(--text-primary)", border: "2px solid var(--card-bg)" }} />}
+    </div>
+  );
+}
+
+function AccuracyView() {
+  const [data, setData] = useState(null);
+  const [status, setStatus] = useState("loading");
+  useEffect(() => {
+    let alive = true;
+    fetch("./accuracy.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(d => { if (alive) { setData(d); setStatus("ok"); } })
+      .catch(() => { if (alive) setStatus("error"); });
+    return () => { alive = false; };
+  }, []);
+
+  if (status === "loading") return <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: "var(--text-secondary-a)", fontSize: 13 }}>Loading accuracy record…</Glass>;
+  if (status === "error" || !data) return <Glass hover={false} style={{ padding: "30px 20px", textAlign: "center", color: ACCENT.rose, fontSize: 13 }}>The accuracy record isn't available yet. It's written each time the dashboard updates, so check again after the next update.</Glass>;
+
+  const groups = [];
+  data.markets.forEach(m => { let g = groups.find(x => x.name === m.group); if (!g) { g = { name: m.group, items: [] }; groups.push(g); } g.items.push(m); });
+  const bt = data.cfbBacktest || {};
+  const fmtPct = (v) => (v == null ? "n/a" : `${v}%`);
+
+  return (
+    <div className="fade-in">
+      <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 6 }}>Accuracy</div>
+      <div style={{ fontSize: 12.5, color: "var(--text-secondary-a)", lineHeight: 1.6, maxWidth: 720, marginBottom: 20 }}>
+        Every pick is logged before the game and graded after it, so these are live results, not backtests. The dot is the live hit rate,
+        the shaded band is the range the true rate plausibly sits in (95%), and the amber line is the number that market is supposed to hit.
+        Updated {data.updated}. {data.pending} picks are still waiting on games.
+      </div>
+      {groups.map(g => (
+        <div key={g.name} style={{ marginBottom: 22 }}>
+          <div style={{ fontSize: 12.5, fontWeight: 700, color: "var(--text-body)", marginBottom: 8 }}>{g.name}</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 12 }}>
+            {g.items.map(m => {
+              const v = accuracyVerdict(m);
+              return (
+                <Glass key={m.id} hover={false} style={{ padding: "14px 16px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                    <div style={{ fontSize: 13.5, fontWeight: 700 }}>{m.label}</div>
+                    {v && <div style={{ fontSize: 11, fontWeight: 700, color: v.color }}>{v.text}</div>}
+                  </div>
+                  <div style={{ fontSize: 11.5, color: "var(--text-secondary-a)", lineHeight: 1.5, marginTop: 3 }}>{m.about}</div>
+                  <AccuracyBar m={m} />
+                  <div style={{ fontSize: 12, fontFamily: "'JetBrains Mono', monospace", color: "var(--text-body)" }}>
+                    {m.rate == null ? "No graded results yet" : <>{m.rate}% <span style={{ color: "var(--text-tertiary)" }}>({m.low}–{m.high}%)</span></>}
+                    {m.stated != null && <span style={{ color: "var(--text-tertiary)" }}> · target {m.stated}%</span>}
+                  </div>
+                  {m.shown != null && <div style={{ fontSize: 11, color: "var(--text-secondary-a)", marginTop: 4 }}>The dashboard showed an average of {m.shown}% beside these lines at pick time ({m.shownN} picks).</div>}
+                  <div style={{ fontSize: 10.5, color: "var(--text-tertiary)", marginTop: 3 }}>{m.hits} of {m.graded} graded</div>
+                </Glass>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {data.nflByStat && data.nflByStat.p25 && data.nflByStat.p25.length > 0 && (
+        <div style={{ marginBottom: 22 }}>
+          <div style={{ fontSize: 12.5, fontWeight: 700, color: "var(--text-body)", marginBottom: 8 }}>NFL safer line (P25) by stat, target 75%</div>
+          <Glass hover={false} style={{ padding: "6px 16px" }}>
+            {data.nflByStat.p25.map((r, i) => (
+              <div key={r.stat} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "9px 0", borderTop: i ? "1px solid var(--overlay-3)" : "none", fontSize: 12.5 }}>
+                <span>{r.stat}</span>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--text-body)" }}>
+                  {r.rate}% <span style={{ color: "var(--text-tertiary)" }}>({r.low}–{r.high}%, {r.graded} graded)</span>
+                </span>
+              </div>
+            ))}
+          </Glass>
+        </div>
+      )}
+
+      {bt.spreadSample ? (
+        <Glass hover={false} style={{ padding: "14px 16px", marginBottom: 22 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>College football against real betting lines (backtest)</div>
+          <div style={{ fontSize: 12, color: "var(--text-secondary-a)", lineHeight: 1.6 }}>
+            Tested on {bt.spreadSample} past games with real spreads and {bt.totalSample} with real totals: {fmtPct(bt.spreadHitRate)} against the spread
+            and {fmtPct(bt.totalHitRate)} on over/unders. Break-even at standard pricing is 52.4%.
+            {((bt.spreadHitRate != null && bt.spreadHitRate < 52.4) || (bt.totalHitRate != null && bt.totalHitRate < 52.4)) && " At least one of these is below break-even, so the college model has not shown an edge over the market. Live grading against the line is now running and will appear above as it builds."}
+          </div>
+        </Glass>
+      ) : null}
+
+      <div style={{ fontSize: 10.5, color: "var(--text-tertiary)", lineHeight: 1.6, maxWidth: 720 }}>
+        Statum is research, not betting advice or a guarantee. Past results do not predict future ones. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.
+      </div>
     </div>
   );
 }
@@ -3933,7 +4048,7 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
             <>Each stat shows three real numbers from this player's 2024 games — a <b style={{color:TRANCHE_COLOR.p25}}>safer number</b> they
             cleared about 75% of the time, a <b style={{color:TRANCHE_COLOR.p50}}>middle number</b> they cleared about half the time, and a
             <b style={{color:TRANCHE_COLOR.p75}}> bigger number</b> they only cleared about 25% of the time (higher risk, bigger number if it hits).
-            The hit rates shown are checked against real 2025 games — not just fit to their own history. Tap a number to add it to your slip
+            The hit rates shown are checked against real 2025 games — not just fit to their own history. Live, unsmoothed results against these targets are on the Accuracy tab. Tap a number to add it to your slip
             and build a parlay across players. 📋 notes are usage/tendency call-outs from real game data — not tied to a specific upcoming
             opponent yet, since there's no 2026 schedule out.</>
           ) : sport==="wnba" ? (
@@ -6007,7 +6122,7 @@ function tabActionsFor(sport) {
   if (sport === "nfl") a.push(["quadbox", "🎲 Quad Box"]);
   if (sport !== "cfb") a.push(["matchup", "🏟️ Matchup"]);
   if (sport === "nfl" || sport === "wnba") a.push(["research", "🔬 Research"]);
-  a.push(["teams", "🏛️ Teams"], ["tracking", "🏆 Tracking"]);
+  a.push(["teams", "🏛️ Teams"], ["tracking", "🏆 Tracking"], ["accuracy", "📊 Accuracy"]);
   return a;
 }
 
@@ -6110,7 +6225,7 @@ function GlobalSearch({ open, onClose, sport, dataTick, stub, onPreload, onGo })
 
 // ---- persisted view state: sport + tab survive a refresh and live in the URL hash ----
 const VALID_SPORTS = ["nfl","wnba","mlb","nba","cfb"];
-const VALID_TABS = ["dashboard","offense","defense","market","locks","quadbox","matchup","research","teams","tracking","nbamatchups"];
+const VALID_TABS = ["dashboard","offense","defense","market","locks","quadbox","matchup","research","teams","tracking","nbamatchups","accuracy"];
 function readSavedView() {
   let s = null, t = null;
   try {
@@ -6399,9 +6514,9 @@ function App() {
     <div style={{ position: "relative", minHeight: "100vh", fontFamily: "'Inter', -apple-system, sans-serif", color: "var(--text-primary)", ...themeVars }}>
       <GlobalStyle />
       <AmbientBackground theme={dailyTheme} />
-      <div style={{ position: "relative", zIndex: 1, width: "90%", maxWidth: 1600, margin: "0 auto", padding: "28px 20px 70px" }}>
+      <div className="app-shell" style={{ position: "relative", zIndex: 1, width: "90%", maxWidth: 1600, margin: "0 auto", padding: "28px 20px 70px" }}>
 
-        <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 16 }}>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 16, flexWrap: "wrap" }}>
           <Logo theme={dailyTheme} />
           <button onClick={()=>setSport("nfl")} className="bubble-btn" style={{
             padding: "9px 20px", borderRadius: 10, border: `1px solid ${sport==="nfl"?ACCENT.teal:"var(--overlay-6)"}`,
@@ -6488,6 +6603,7 @@ function App() {
           {(sport==="nfl" || sport==="wnba") && <Pill active={tab==="research"} onClick={()=>{setTab("research");setSelected(null);}} accent={ACCENT.violet}>🔬 Research</Pill>}
           <Pill active={tab==="teams"} onClick={()=>{setTab("teams");setSelected(null);}} accent="#6EC9F2">🏛️ Teams</Pill>
           <Pill active={tab==="tracking"} onClick={()=>{setTab("tracking");setSelected(null);}} accent="#FFD54A">🏆 Tracking</Pill>
+          <Pill active={tab==="accuracy"} onClick={()=>{setTab("accuracy");setSelected(null);}} accent="#6EC9F2">📊 Accuracy</Pill>
         </div>
 
         {tab==="dashboard" && <DashboardView sport={sport} slip={slip} sportDataStatus={sportDataStatus} dataTick={dataTick}
@@ -6546,6 +6662,7 @@ function App() {
             }} />
         )}
         {tab==="tracking" && <TrackingView slip={slip} setSlip={setSlip} />}
+        {tab==="accuracy" && <AccuracyView />}
 
         {(tab==="offense" || tab==="defense") && sport!=="cfb" && !selected && (
           <SavedFilters scope={"board:" + tab} sport={sport}

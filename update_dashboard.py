@@ -959,6 +959,60 @@ def build_real_odds(sport, api_key, player_names, days_ahead):
         # bookmakers key present but no matching markets still counts against quota — nothing else to do here
     return out
 
+def _wilson(hits, n, z=1.96):
+    """95% Wilson interval, in percent. Honest about how little a small sample proves."""
+    if not n:
+        return None, None
+    p = hits / n
+    denom = 1 + z * z / n
+    centre = (p + z * z / (2 * n)) / denom
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / denom
+    return round(100 * (centre - half), 1), round(100 * (centre + half), 1)
+
+
+def build_public_accuracy(ledger, cfb_backtest):
+    """Everything on the public Accuracy page comes from here: real forward-graded results with
+    their uncertainty, next to the number each market is SUPPOSED to hit. Nothing is smoothed."""
+    graded = ledger.get("graded", [])
+    def tally(sport, tranche, stat=None):
+        rows = [r for r in graded if r.get("sport") == sport and r.get("tranche") == tranche and (stat is None or r.get("stat") == stat)]
+        n = len(rows); h = sum(1 for r in rows if r.get("hit"))
+        lo, hi = _wilson(h, n)
+        # The hit rate users were SHOWN beside each line at pick time, averaged over the same picks.
+        shown_vals = [r["shown"] for r in rows if isinstance(r.get("shown"), (int, float))]
+        shown = round(sum(shown_vals) / len(shown_vals), 1) if len(shown_vals) >= 30 else None
+        return {"graded": n, "hits": h, "rate": round(100 * h / n, 1) if n else None, "low": lo, "high": hi,
+                "shown": shown, "shownN": len(shown_vals)}
+    markets = [
+        {"id": "nfl_p25", "group": "NFL player props", "label": "Safer line (P25)", "stated": 75,
+         "about": "Chance a player clears the line we call the safer number.", **tally("nfl", "p25")},
+        {"id": "nfl_p50", "group": "NFL player props", "label": "Middle line (P50)", "stated": 50,
+         "about": "Chance a player clears the middle number.", **tally("nfl", "p50")},
+        {"id": "nfl_p75", "group": "NFL player props", "label": "Bigger line (P75)", "stated": 25,
+         "about": "Chance a player clears the bigger, riskier number.", **tally("nfl", "p75")},
+        {"id": "cfb_ats", "group": "College football vs the market", "label": "Picks against the spread", "stated": 52.4,
+         "about": "Our side vs the real spread. 52.4% is break-even at standard -110 pricing.", **tally("cfb", "ats")},
+        {"id": "cfb_ou", "group": "College football vs the market", "label": "Over/under picks", "stated": 52.4,
+         "about": "Our over/under call vs the real total. 52.4% is break-even at -110.", **tally("cfb", "ou")},
+        {"id": "cfb_winner", "group": "College football (not betting results)", "label": "Straight-up winner", "stated": None,
+         "about": "How often the team we rated higher won. This ignores the point spread, so it says nothing about beating the market.", **tally("cfb", "winner")},
+        {"id": "cfb_total_within3", "group": "College football (not betting results)", "label": "Total within 3 points", "stated": None,
+         "about": "How often our predicted total landed within 3 points of the final. A narrow-target accuracy check, not an over/under result.", **tally("cfb", "total_within3")},
+    ]
+    by_stat = {}
+    for tranche in ("p25", "p50", "p75"):
+        stats = sorted({r["stat"] for r in graded if r.get("sport") == "nfl" and r.get("tranche") == tranche})
+        by_stat[tranche] = [dict(stat=s, **tally("nfl", tranche, s)) for s in stats]
+        by_stat[tranche] = [x for x in by_stat[tranche] if x["graded"] >= 20]
+    return {
+        "updated": datetime.date.today().isoformat(),
+        "markets": markets,
+        "nflByStat": by_stat,
+        "cfbBacktest": cfb_backtest or {},
+        "pending": len(ledger.get("pending", [])),
+    }
+
+
 def _shrink_floats(obj):
     """Lossless-for-display size cut: whole-number floats become ints (43.0 -> 43) and long
     floats keep 6 significant figures (40.983333333333334 -> 40.9833). Non-finite values and
@@ -5462,6 +5516,8 @@ def build_cfb_upcoming(games, ratings, home_field, lines_by_game, team_names_by_
             'id': g['id'], 'date': game_date, 'startDateTime': g['start_date'], 'kickoffET': kickoff_et, 'week': g['week'],
             'homeTeam': g['home_team'], 'awayTeam': g['away_team'],
             'predictedMargin': pred['predictedMargin'], 'predictedTotal': pred['predictedTotal'],
+            'marketMargin': (-lines_by_game[g['id']]['spread']) if (lines_by_game.get(g['id']) or {}).get('spread') is not None else None,
+            'marketTotal': (lines_by_game.get(g['id']) or {}).get('total'),
         })
     # Sort by the FULL timestamp (not just the date) so games on the same day are correctly
     # ordered by actual kickoff time, not left in whatever order the source data happened to be in.
@@ -5486,12 +5542,23 @@ def build_cfb_upcoming(games, ratings, home_field, lines_by_game, team_names_by_
 ACCURACY_LEDGER_PATH = SCRIPT_DIR / "accuracy_ledger.json"
 
 def load_accuracy_ledger():
+    ledger = {"pending": [], "graded": [], "summary": {}}
     if ACCURACY_LEDGER_PATH.exists():
         try:
-            return json.loads(ACCURACY_LEDGER_PATH.read_text(encoding='utf-8'))
+            ledger = json.loads(ACCURACY_LEDGER_PATH.read_text(encoding='utf-8'))
         except Exception:
             pass
-    return {"pending": [], "graded": [], "summary": {}}
+    # Honest relabel (idempotent). The original CFB "spread" grade only checked that the model
+    # picked the right WINNER, and "total" only checked that the predicted total landed within
+    # 3 points of the real one. Neither is a bet against a market line, so they are renamed to
+    # say what they measure. Real against-the-market grades ("ats", "ou") are tracked separately.
+    renames = {"spread": "winner", "total": "total_within3"}
+    for entry in ledger.get("graded", []):
+        if entry.get("sport") == "cfb" and entry.get("tranche") in renames:
+            new = renames[entry["tranche"]]
+            entry["tranche"] = new
+            entry["stat"] = new
+    return ledger
 
 def save_accuracy_ledger(ledger):
     summary = {}
@@ -5540,6 +5607,7 @@ def update_nfl_accuracy_ledger(ledger, full_pool, nfl_upcoming, receivers, qbs, 
                 "sport": "nfl", "tranche": tranche, "player": snap["player"], "stat": snap["stat"],
                 "line": snap[tranche], "actual": round(float(actual), 1),
                 "hit": actual >= snap[tranche], "snapshotDate": snap["snapshotDate"], "gradedDate": today,
+                "shown": (snap.get("shown") or {}).get(tranche),
             })
         graded_count += 1
     ledger["pending"] = still_pending
@@ -5558,6 +5626,7 @@ def update_nfl_accuracy_ledger(ledger, full_pool, nfl_upcoming, receivers, qbs, 
         ledger["pending"].append({
             "sport": "nfl", "player": entry['player'], "stat": entry['stat'],
             "p25": entry['p25']['line'], "p50": entry['p50']['line'], "p75": entry['p75']['line'],
+            "shown": {t: entry[t].get('testHit') for t in ("p25", "p50", "p75")},
             "gamelogLenAtSnapshot": len(player.get('gamelog', [])), "snapshotDate": today,
         })
         new_snapshots += 1
@@ -5580,11 +5649,27 @@ def update_cfb_accuracy_ledger(ledger, cfb_games, cfb_upcoming_list):
             continue
         real_margin = g['home_points'] - g['away_points']
         real_total = g['home_points'] + g['away_points']
-        for market, predicted, actual in [("spread", snap["predictedMargin"], real_margin), ("total", snap["predictedTotal"], real_total)]:
-            hit = (predicted > 0) == (actual > 0) if market == "spread" else abs(predicted - actual) <= 3
+        matchup = f"{snap['awayTeam']} @ {snap['homeTeam']}"
+        for market, predicted, actual in [("winner", snap["predictedMargin"], real_margin), ("total_within3", snap["predictedTotal"], real_total)]:
+            hit = (predicted > 0) == (actual > 0) if market == "winner" else abs(predicted - actual) <= 3
             ledger["graded"].append({
-                "sport": "cfb", "tranche": market, "player": f"{snap['awayTeam']} @ {snap['homeTeam']}", "stat": market,
+                "sport": "cfb", "tranche": market, "player": matchup, "stat": market,
                 "line": predicted, "actual": actual, "hit": hit, "snapshotDate": snap["snapshotDate"], "gradedDate": today,
+            })
+        # Against the market: only possible when a real line was captured BEFORE the game.
+        # A push (actual lands exactly on the line) is not a win or a loss, so it is skipped.
+        mm, mt = snap.get("marketMargin"), snap.get("marketTotal")
+        if mm is not None and real_margin != mm:
+            ledger["graded"].append({
+                "sport": "cfb", "tranche": "ats", "player": matchup, "stat": "ats", "line": mm, "actual": real_margin,
+                "hit": (real_margin > mm) == (snap["predictedMargin"] > mm),
+                "snapshotDate": snap["snapshotDate"], "gradedDate": today,
+            })
+        if mt is not None and real_total != mt:
+            ledger["graded"].append({
+                "sport": "cfb", "tranche": "ou", "player": matchup, "stat": "ou", "line": mt, "actual": real_total,
+                "hit": (real_total > mt) == (snap["predictedTotal"] > mt),
+                "snapshotDate": snap["snapshotDate"], "gradedDate": today,
             })
         graded_count += 1
     ledger["pending"] = still_pending
@@ -5597,6 +5682,7 @@ def update_cfb_accuracy_ledger(ledger, cfb_games, cfb_upcoming_list):
         ledger["pending"].append({
             "sport": "cfb", "gameId": g['id'], "homeTeam": g['homeTeam'], "awayTeam": g['awayTeam'],
             "predictedMargin": g['predictedMargin'], "predictedTotal": g['predictedTotal'], "snapshotDate": today,
+            "marketMargin": g.get('marketMargin'), "marketTotal": g.get('marketTotal'),
         })
         new_snapshots += 1
     print(f"  CFB accuracy ledger: graded {graded_count} newly-completed games, snapshotted {new_snapshots} new predictions")
@@ -6809,7 +6895,13 @@ def main():
             cfb_teams = [{'school': name, **cfb_ratings[name]} for name in cfb_ratings]
             cfb_teams.sort(key=lambda t: -t['powerRating'])
 
-            cfb_upcoming = build_cfb_upcoming(current_games, cfb_ratings, cfb_home_field, {}, cfb_team_names)
+            try:
+                current_lines = fetch_cfb_lines(current_year, cfbd_key)
+            except Exception as e:
+                print(f"  [!] Current-season CFB lines unavailable ({e}) -- new snapshots won't carry a market line this run.")
+                current_lines = {}
+            print(f"  Market lines found for {sum(1 for g in current_games if g['id'] in current_lines)} of {len(current_games)} current-season CFB games")
+            cfb_upcoming = build_cfb_upcoming(current_games, cfb_ratings, cfb_home_field, current_lines, cfb_team_names)
             accuracy_ledger = update_cfb_accuracy_ledger(accuracy_ledger, current_games, cfb_upcoming)
 
             print(f"  {len(cfb_teams)} teams rated, {len(cfb_upcoming)} upcoming games with predictions")
@@ -6989,6 +7081,11 @@ def main():
     # the actual dashboard UI. Check accuracy_ledger.json directly, or ask me to read it
     # back to you, whenever you want to see how things are actually grading out.
     summary = save_accuracy_ledger(accuracy_ledger)
+    try:
+        (SCRIPT_DIR / "accuracy.json").write_text(json.dumps(build_public_accuracy(accuracy_ledger, cfb_backtest), separators=(',', ':')), encoding='utf-8')
+        print("  Wrote accuracy.json for the public Accuracy page")
+    except Exception as e:
+        print(f"  [!] accuracy.json skipped: {e}")
     if summary:
         print("\n[Accuracy Ledger] Current grading summary (backend-only, not shown in UI):")
         for key, s in sorted(summary.items()):
@@ -7005,7 +7102,7 @@ def main():
         # market_cache.json rides along so the last good Kalshi/Polymarket values survive
         # between Actions runs — a transient API failure then costs you hours of freshness,
         # not a fall-back-to-a-months-old-constant.
-        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'data-nba.json', 'data-search.json',
+        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'data-nba.json', 'data-search.json', 'accuracy.json',
                                     'accuracy_ledger.json', 'market_cache.json', 'news_cache.json']
                         if (SCRIPT_DIR / f).exists()]
         for source_file in ['update_dashboard.py', 'dashboard_template.jsx', 'guide.html', 'market_probe.py']:

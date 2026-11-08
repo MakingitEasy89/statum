@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-08T20:16:49+00:00",
+ "lastRun": "2026-11-08T21:34:49+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -13,12 +13,12 @@
        "pct": 71.0
       },
       {
-       "name": "Tee Higgins",
-       "pct": 7.0
+       "name": "CeeDee Lamb",
+       "pct": 11.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 6.0
+       "name": "Tee Higgins",
+       "pct": 7.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-08T20:16:49+00:00",
+   "fetchedAt": "2026-11-08T21:34:49+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -78,21 +78,21 @@
     "Dallas": 4.0,
     "Atlanta": 11.0
    },
-   "fetchedAt": "2026-11-08T20:16:49+00:00",
+   "fetchedAt": "2026-11-08T21:34:49+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-08T20:16:49+00:00",
+   "fetchedAt": "2026-11-08T21:34:49+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-08T20:16:49+00:00",
+   "fetchedAt": "2026-11-08T21:34:49+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -149,7 +149,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-08T20:16:49+00:00",
+   "fetchedAt": "2026-11-08T21:34:49+00:00",
    "stale": false
   }
  }
