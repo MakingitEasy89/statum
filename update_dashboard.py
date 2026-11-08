@@ -959,6 +959,52 @@ def build_real_odds(sport, api_key, player_names, days_ahead):
         # bookmakers key present but no matching markets still counts against quota — nothing else to do here
     return out
 
+def _shrink_floats(obj):
+    """Lossless-for-display size cut: whole-number floats become ints (43.0 -> 43) and long
+    floats keep 6 significant figures (40.983333333333334 -> 40.9833). Non-finite values and
+    every non-float type pass through untouched, so behaviour matches plain json.dumps."""
+    if isinstance(obj, float):
+        if obj != obj or obj in (float('inf'), float('-inf')):
+            return obj
+        if obj == int(obj) and abs(obj) < 1e15:
+            return int(obj)
+        return float(f"{obj:.6g}")
+    if isinstance(obj, dict):
+        return {k: _shrink_floats(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_shrink_floats(v) for v in obj]
+    return obj
+
+
+def _compact_json(obj):
+    return json.dumps(_shrink_floats(obj), separators=(',', ':'))
+
+
+def write_search_stub(path, wnba_players, mlb_players, nba_players, cfb_teams):
+    """~100KB name index for the global search box, so searching never has to download the
+    multi-MB per-sport files. Real data files are still fetched when a result is opened."""
+    prev = {}
+    if path.exists():
+        try:
+            prev = json.loads(path.read_text(encoding='utf-8'))
+        except Exception:
+            prev = {}
+    def teams_of(players):
+        return sorted({p.get('team') for p in players if p.get('team')})
+    stub = {
+        'wnba': {'p': [[p['name'], p.get('team', '')] for p in wnba_players if p.get('name')], 't': teams_of(wnba_players)},
+        'mlb': {'p': [[p['name'], p.get('team', ''), p.get('group', '')] for p in mlb_players if p.get('name')], 't': teams_of(mlb_players)},
+        'nba': {'p': [[p['name'], p.get('team', ''), p.get('posBucket', '')] for p in nba_players if p.get('name')], 't': teams_of(nba_players)},
+        'cfb': {'t': sorted({t.get('school') for t in cfb_teams if t.get('school')})},
+    }
+    # A run that couldn't reach a source keeps that sport's last good index instead of blanking it.
+    for k in ('wnba', 'mlb', 'nba', 'cfb'):
+        if not (stub[k].get('p') or stub[k].get('t')) and prev.get(k):
+            stub[k] = prev[k]
+    path.write_text(json.dumps(stub, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
+    print(f"  Wrote {path.name} ({path.stat().st_size/1024:.0f} KB) for the global search box")
+
+
 TEMPLATE_PATH = SCRIPT_DIR / "dashboard_template.jsx"
 OUTPUT_HTML = SCRIPT_DIR / "index.html"
 
@@ -6868,15 +6914,19 @@ def main():
     mlb_json_path = SCRIPT_DIR / "data-mlb.json"
     cfb_json_path = SCRIPT_DIR / "data-cfb.json"
     nba_json_path = SCRIPT_DIR / "data-nba.json"
-    wnba_json_path.write_text(json.dumps(wnba_bundle), encoding='utf-8')
-    mlb_json_path.write_text(json.dumps(mlb_bundle), encoding='utf-8')
-    cfb_json_path.write_text(json.dumps(cfb_bundle), encoding='utf-8')
+    wnba_json_path.write_text(_compact_json(wnba_bundle), encoding='utf-8')
+    mlb_json_path.write_text(_compact_json(mlb_bundle), encoding='utf-8')
+    cfb_json_path.write_text(_compact_json(cfb_bundle), encoding='utf-8')
     # If this run couldn't reach stats.nba.com, keep whatever the last good run wrote
     # rather than overwriting real data with an empty bundle.
     if nba_players or not nba_json_path.exists():
-        nba_json_path.write_text(json.dumps(nba_bundle), encoding='utf-8')
+        nba_json_path.write_text(_compact_json(nba_bundle), encoding='utf-8')
     else:
         print(f"  Kept the previous {nba_json_path.name} — this run had no NBA data to replace it with")
+    try:
+        write_search_stub(SCRIPT_DIR / "data-search.json", wnba_players, mlb_players, nba_players, cfb_teams)
+    except Exception as e:
+        print(f"  [!] Search index skipped: {e} — the search box still works for sports already loaded.")
     sizes = " · ".join(f"{p.name} ({p.stat().st_size/1024:.0f} KB)" for p in
                        (wnba_json_path, mlb_json_path, cfb_json_path, nba_json_path) if p.exists())
     print(f"  Wrote {sizes} — all fetched on demand, not embedded")
@@ -6955,7 +7005,7 @@ def main():
         # market_cache.json rides along so the last good Kalshi/Polymarket values survive
         # between Actions runs — a transient API failure then costs you hours of freshness,
         # not a fall-back-to-a-months-old-constant.
-        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'data-nba.json',
+        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'data-nba.json', 'data-search.json',
                                     'accuracy_ledger.json', 'market_cache.json', 'news_cache.json']
                         if (SCRIPT_DIR / f).exists()]
         for source_file in ['update_dashboard.py', 'dashboard_template.jsx', 'guide.html', 'market_probe.py']:

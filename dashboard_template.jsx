@@ -647,6 +647,86 @@ function SplitRow({ label, n, rate1Label, rate1, rate2Label, rate2, epa, maxAbs 
 // =====================================================================
 // SKILL POSITION (WR/TE/RB) DETAIL
 // =====================================================================
+// =====================================================================
+// FIND-PROPS BUTTONS ON DETAIL PAGES + SAVED FILTERS
+// =====================================================================
+const PropsNavContext = React.createContext(null);
+
+function FindPropsChip({ name, team }) {
+  const nav = React.useContext(PropsNavContext);
+  if (!nav) return null;
+  return (
+    <button onClick={() => (team ? nav.team(team) : nav.player(name))} className="bubble-btn"
+      title={team ? "Open every prop line for this team in Prop Floors" : "Open this player's lines in Prop Floors"}
+      style={{ fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 999, border: "1px solid #00E67655", color: "#00E676", background: "transparent", cursor: "pointer" }}>
+      {team ? "Team props" : "Find props"}
+    </button>
+  );
+}
+
+function DetailBackRow({ onClose, label, name, team }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 14, flexWrap: "wrap" }}>
+      <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", padding: 0 }}>{label}</button>
+      <FindPropsChip name={name} team={team} />
+    </div>
+  );
+}
+
+function loadSavedFilters() {
+  try { const r = JSON.parse(localStorage.getItem("statum_saved_filters") || "[]"); return Array.isArray(r) ? r : []; } catch (e) { return []; }
+}
+function describeFilterState(s) {
+  const parts = [];
+  if (s.search) parts.push(`"${s.search}"`);
+  if (s.team && s.team !== "all") parts.push(s.team);
+  if (s.posFilter && s.posFilter !== "all") parts.push(s.posFilter);
+  if (s.pos && s.pos !== "all") parts.push(s.pos);
+  if (s.sortKey && s.sortKey !== "yards") parts.push("sorted by " + s.sortKey);
+  if (s.matchup && s.matchup.label) parts.push(s.matchup.label);
+  return parts.join(" · ") || "no filters";
+}
+
+// Named, re-applicable filter sets, remembered per sport and per screen in this browser.
+function SavedFilters({ scope, sport, current, canSave, onApply }) {
+  const [all, setAll] = useState(loadSavedFilters);
+  const [naming, setNaming] = useState(false);
+  const [name, setName] = useState("");
+  const mine = all.filter(f => f.scope === scope && f.sport === sport);
+  const persist = (next) => { setAll(next); try { localStorage.setItem("statum_saved_filters", JSON.stringify(next)); } catch (e) {} };
+  const save = () => {
+    const n = name.trim();
+    if (!n) return;
+    const rest = all.filter(f => !(f.scope === scope && f.sport === sport && f.name.toLowerCase() === n.toLowerCase()));
+    persist([...rest, { id: Date.now().toString(36), scope, sport, name: n, state: current }].slice(-60));
+    setName(""); setNaming(false);
+  };
+  if (!mine.length && !canSave) return null;
+  const chip = { fontSize: 11.5, fontWeight: 700, borderRadius: 999, border: "1px solid var(--overlay-6)", background: "var(--overlay-2)", color: "var(--text-body)", cursor: "pointer" };
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
+      <span style={{ fontSize: 11.5, color: "var(--text-label)" }}>Saved filters</span>
+      {mine.map(f => (
+        <span key={f.id} style={{ display: "inline-flex", alignItems: "center", ...chip, cursor: "default" }}>
+          <button onClick={() => onApply(f.state)} title={describeFilterState(f.state)} style={{ ...chip, border: "none", background: "none", padding: "4px 4px 4px 11px" }}>{f.name}</button>
+          <button onClick={() => persist(all.filter(x => x.id !== f.id))} title="Delete this saved filter" aria-label={`Delete saved filter ${f.name}`} style={{ ...chip, border: "none", background: "none", padding: "4px 9px 4px 4px", color: "var(--text-tertiary)" }}>✕</button>
+        </span>
+      ))}
+      {naming ? (
+        <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
+          <input autoFocus value={name} onChange={e => setName(e.target.value)} maxLength={28}
+            onKeyDown={e => { if (e.key === "Enter") save(); else if (e.key === "Escape") { setNaming(false); setName(""); } }}
+            placeholder="Name this filter" style={{ background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 8, padding: "5px 10px", color: "var(--text-primary)", fontSize: 12, width: 150 }} />
+          <button onClick={save} disabled={!name.trim()} style={{ ...chip, padding: "4px 11px", opacity: name.trim() ? 1 : 0.5 }}>Save</button>
+          <button onClick={() => { setNaming(false); setName(""); }} style={{ ...chip, padding: "4px 11px" }}>Cancel</button>
+        </span>
+      ) : canSave && (
+        <button onClick={() => setNaming(true)} style={{ ...chip, padding: "4px 11px", borderStyle: "dashed" }}>+ Save current filters</button>
+      )}
+    </div>
+  );
+}
+
 function SkillDetail({ p, onClose }) {
   const frontEntries = Object.entries(p.fronts || {}).sort((a,b)=>b[1].targets-a[1].targets);
   const covEntries = Object.entries(p.coverages || {}).sort((a,b)=>b[1].targets-a[1].targets);
@@ -657,7 +737,7 @@ function SkillDetail({ p, onClose }) {
 
   return (
     <div className="fade-in">
-      <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", marginBottom: 14, padding: 0 }}>← Back to leaderboard</button>
+      <DetailBackRow onClose={onClose} label="← Back to leaderboard" name={p.name} />
       <div style={{ fontSize: 10.5, letterSpacing: "0.16em", color: ACCENT.amber, fontWeight: 700, marginBottom: 4 }}>{p.pos} · {TEAM_NAMES[p.team] || p.team}</div>
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 16, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>{p.name}<InjuryBadge playerName={p.name} /><OLInjuryBadge team={p.team} pos={p.pos} /></h2>
 
@@ -843,7 +923,7 @@ function QBDetail({ p, onClose }) {
 
   return (
     <div className="fade-in">
-      <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", marginBottom: 14, padding: 0 }}>← Back to leaderboard</button>
+      <DetailBackRow onClose={onClose} label="← Back to leaderboard" name={p.name} />
       <div style={{ fontSize: 10.5, letterSpacing: "0.16em", color: ACCENT.green, fontWeight: 700, marginBottom: 4 }}>QB · {TEAM_NAMES[p.team] || p.team}</div>
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 16, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>{p.name}<InjuryBadge playerName={p.name} /><OLInjuryBadge team={p.team} pos="QB" /></h2>
 
@@ -990,7 +1070,7 @@ function KickerDetail({ p, onClose }) {
   const gamesPlayed = (p.gamelog || []).length;
   return (
     <div className="fade-in">
-      <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", marginBottom: 14, padding: 0 }}>← Back to leaderboard</button>
+      <DetailBackRow onClose={onClose} label="← Back to leaderboard" name={p.name} />
       <div style={{ fontSize: 10.5, letterSpacing: "0.16em", color: ACCENT.rose, fontWeight: 700, marginBottom: 4 }}>K · {TEAM_NAMES[p.team] || p.team}</div>
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}>{p.name}<InjuryBadge playerName={p.name} /></h2>
 
@@ -1067,7 +1147,7 @@ function DefenseDetail({ d, onClose }) {
   const maxWeather = Math.max(...weathers.map(([,v])=>v), 1);
   return (
     <div className="fade-in">
-      <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", marginBottom: 14, padding: 0 }}>← Back to leaderboard</button>
+      <DetailBackRow onClose={onClose} label="← Back to leaderboard" name={d.name} />
       <div style={{ fontSize: 10.5, letterSpacing: "0.16em", color: ACCENT.violet, fontWeight: 700, marginBottom: 4 }}>{d.pos} · {TEAM_NAMES[d.team] || d.team}</div>
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 16 }}>{d.name}</h2>
 
@@ -1180,7 +1260,10 @@ function NBADetail({ p, onClose }) {
   const d = p.defense;
   return (
     <div className="fade-in">
-      <button onClick={onClose} className="bubble-btn" style={{ marginBottom: 14, padding: "7px 14px", borderRadius: 999, border: "1px solid var(--overlay-6)", background: "var(--overlay-1)", color: "var(--text-body)", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>← Back</button>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, flexWrap: "wrap" }}>
+        <button onClick={onClose} className="bubble-btn" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--overlay-6)", background: "var(--overlay-1)", color: "var(--text-body)", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>← Back</button>
+        <FindPropsChip name={p.name} />
+      </div>
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 4, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         {p.name}
         <InjuryBadge playerName={p.name} />
@@ -1483,7 +1566,7 @@ function MLBDetail({ p, onClose }) {
   const next = mlbUpcoming()[p.team];
   return (
     <div className="fade-in">
-      <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", marginBottom: 14, padding: 0 }}>← Back to leaderboard</button>
+      <DetailBackRow onClose={onClose} label="← Back to leaderboard" name={p.name} />
       <div style={{ fontSize: 10.5, letterSpacing: "0.16em", color: ACCENT.amber, fontWeight: 700, marginBottom: 4 }}>{p.team} · {isPitcher?"Pitcher":"Batter"} · {p.overall.games} games</div>
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}>{p.name}<InjuryBadge playerName={p.name} /></h2>
 
@@ -1547,7 +1630,7 @@ function WNBADetail({ p, onClose }) {
   const next = wnbaUpcoming()[p.team];
   return (
     <div className="fade-in">
-      <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", marginBottom: 14, padding: 0 }}>← Back to leaderboard</button>
+      <DetailBackRow onClose={onClose} label="← Back to leaderboard" name={p.name} />
       <div style={{ fontSize: 10.5, letterSpacing: "0.16em", color: ACCENT.amber, fontWeight: 700, marginBottom: 4 }}>{p.team} · {p.overall.games} games (2025–26)</div>
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}>{p.name}<InjuryBadge playerName={p.name} /></h2>
 
@@ -3678,12 +3761,13 @@ function ParlaySlip({ slip, onRemove, onClear, stake, setStake, aiSuggestion, on
 // =====================================================================
 // PROP FLOORS VIEW (parlay + AI assist + search)
 // =====================================================================
-function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, setAiSuggestion, dataTick, sportDataStatus, matchupFilter, setMatchupFilter }) {
+function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, setAiSuggestion, dataTick, sportDataStatus, matchupFilter, setMatchupFilter, propQuery, onPropQueryUsed }) {
   const [minimized, setMinimized] = useState(false);
   const [poolSearch, setPoolSearch] = useState("");
   const [poolPos, setPoolPos] = useState("all");
   const [showTopPicks, setShowTopPicks] = useState(false);
   useEffect(() => { setPoolPos("all"); setPoolSearch(""); }, [sport]);
+  useEffect(() => { if (propQuery) { setPoolPos("all"); setPoolSearch(propQuery); if (onPropQueryUsed) onPropQueryUsed(); } }, [propQuery]);
 
   const inSlipTranchesFor = (entry) => slip.filter(s => s.entry.id === entry.id).map(s => s.tranche);
   const isInSlip = (entry) => slip.some(s => s.entry.id === entry.id);
@@ -3884,6 +3968,10 @@ function PropFloorsView({ sport, slip, setSlip, stake, setStake, aiSuggestion, s
       </div>
 
       <div className="fade-in">
+        <SavedFilters scope="props" sport={sport}
+          current={{ search: poolSearch, pos: poolPos, matchup: matchupFilter }}
+          canSave={!!poolSearch || poolPos !== "all" || !!matchupFilter}
+          onApply={(s) => { setPoolSearch(s.search || ""); setPoolPos(s.pos || "all"); setMatchupFilter(s.matchup || null); }} />
         <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
           <input placeholder="Search player or stat…" value={poolSearch} onChange={e=>setPoolSearch(e.target.value)} style={{
             flex: 1, minWidth: 200, background: "var(--overlay-2)", border: "1px solid var(--overlay-5)", borderRadius: 8, padding: "8px 12px", color: "var(--text-primary)", fontSize: 13
@@ -4630,7 +4718,7 @@ function TeamDetail({ team, sport, onClose, onSelectPlayer }) {
 
   return (
     <div className="fade-in">
-      <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-secondary-b)", fontSize: 12.5, cursor: "pointer", marginBottom: 14, padding: 0 }}>← Back to teams</button>
+      <DetailBackRow onClose={onClose} label="← Back to teams" team={team} />
       <h2 style={{ fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 10 }}>{teamLabel}</h2>
 
       {sport === "nfl" && <HCToggle view={effectiveView} setView={setHcView} hasCurrent={hasCurrentTeamData} />}
@@ -4997,7 +5085,14 @@ function DailyBriefSection() {
   );
 }
 
-function ResearchView({ onSelectPlayer }) {
+function PropsChip({ onClick }) {
+  return <button onClick={(e) => { e.stopPropagation(); onClick(); }} className="bubble-btn" title="Open this player's lines in Prop Floors" style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 999, border: "1px solid #00E67655", color: "#00E676", background: "transparent", cursor: "pointer" }}>Props</button>;
+}
+function GameChip({ onClick }) {
+  return <button onClick={onClick} className="bubble-btn" style={{ fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 999, border: "1px solid #00E67655", color: "#00E676", background: "transparent", cursor: "pointer" }}>Game props</button>;
+}
+
+function ResearchView({ onSelectPlayer, onFindProps, onGameProps }) {
   const games = useMemo(() => {
     const seen = new Set();
     const list = [];
@@ -5025,7 +5120,10 @@ function ResearchView({ onSelectPlayer }) {
         <Glass key={g.home + g.away} hover={false} style={{ padding: "18px 20px", marginBottom: 16 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14, flexWrap: "wrap", gap: 6 }}>
             <div style={{ fontSize: 15, fontWeight: 800 }}>{TEAM_NAMES[g.away] || g.away} @ {TEAM_NAMES[g.home] || g.home}</div>
-            <div style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>{g.week ? `Week ${g.week}` : ""}{g.date ? ` · ${g.date}` : ""}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>{g.week ? `Week ${g.week}` : ""}{g.date ? ` · ${g.date}` : ""}</span>
+              {onGameProps && <GameChip onClick={() => onGameProps(g.away, g.home, `${TEAM_NAMES[g.away] || g.away} @ ${TEAM_NAMES[g.home] || g.home}`)} />}
+            </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
             {[{ off: g.away, def: g.home }, { off: g.home, def: g.away }].map(({ off, def }) => {
@@ -5050,7 +5148,7 @@ function ResearchView({ onSelectPlayer }) {
                       )}
                       {r.players.map(pl => (
                         <div key={pl.name} onClick={() => onSelectPlayer(pl.name)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderTop: "1px solid var(--overlay-3)", cursor: "pointer" }} className="bounce-in">
-                          <span style={{ fontSize: 11.5 }}>{pl.name} <span style={{ color: "var(--text-tertiary)" }}>({pl.pos})</span></span>
+                          <span style={{ fontSize: 11.5 }}>{pl.name} <span style={{ color: "var(--text-tertiary)" }}>({pl.pos})</span>{onFindProps && <PropsChip onClick={() => onFindProps(pl.name)} />}</span>
                           <span style={{ textAlign: "right" }}>
                             <div style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: ACCENT.green }}>{fmt(pl.splitRate,1)} <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>vs {fmt(pl.overallRate,1)} {pl.kind==="qb"?"ypa":"ypt"}</span></div>
                             <div style={{ fontSize: 9, color: "var(--text-tertiary)" }}>{pl.vol} {pl.kind==="qb"?"att":"tgt"} · {fmt(pl.epa,2)} EPA/{pl.kind==="qb"?"att":"tgt"}</div>
@@ -5090,7 +5188,7 @@ function wnbaResearchMatchupsForGame(offTeam, defTeam) {
   return { defProfile, players: positive, noVolume: rows.length === 0 };
 }
 
-function WNBAResearchView({ onSelectPlayer, sportDataStatus }) {
+function WNBAResearchView({ onSelectPlayer, onFindProps, onGameProps, sportDataStatus }) {
   const games = useMemo(() => {
     const seen = new Set();
     const list = [];
@@ -5103,7 +5201,7 @@ function WNBAResearchView({ onSelectPlayer, sportDataStatus }) {
       list.push({ teamA, teamB, date: info.date });
     }
     return list.sort((a,b) => String(a.date||"").localeCompare(String(b.date||"")));
-  }, []);
+  }, [sportDataStatus?.wnba]); // recompute once the lazy WNBA file lands (matters when a saved tab is restored on refresh)
 
   return (
     <div className="fade-in">
@@ -5117,7 +5215,10 @@ function WNBAResearchView({ onSelectPlayer, sportDataStatus }) {
         <Glass key={g.teamA + g.teamB} hover={false} style={{ padding: "18px 20px", marginBottom: 16 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14, flexWrap: "wrap", gap: 6 }}>
             <div style={{ fontSize: 15, fontWeight: 800 }}>{g.teamA} vs {g.teamB}</div>
-            <div style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>{g.date || ""}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>{g.date || ""}</span>
+              {onGameProps && <GameChip onClick={() => onGameProps(g.teamA, g.teamB, `${g.teamA} vs ${g.teamB}`)} />}
+            </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
             {[{ off: g.teamA, def: g.teamB }, { off: g.teamB, def: g.teamA }].map(({ off, def }) => {
@@ -5137,7 +5238,7 @@ function WNBAResearchView({ onSelectPlayer, sportDataStatus }) {
                   )}
                   {r.players.map(pl => (
                     <div key={pl.name} onClick={() => onSelectPlayer(pl.name)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderTop: "1px solid var(--overlay-3)", cursor: "pointer" }} className="bounce-in">
-                      <span style={{ fontSize: 11.5 }}>{pl.name}</span>
+                      <span style={{ fontSize: 11.5 }}>{pl.name}{onFindProps && <PropsChip onClick={() => onFindProps(pl.name)} />}</span>
                       <span style={{ textAlign: "right" }}>
                         <div style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: ACCENT.green }}>{fmt(pl.histPts,1)} <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>vs {fmt(pl.overallPts,1)} ppg</span></div>
                         <div style={{ fontSize: 9, color: "var(--text-tertiary)" }}>{pl.games} meetings{pl.histTpPct!=null ? ` · ${fmt(pl.histTpPct,0)}% 3PT` : ""}</div>
@@ -5837,9 +5938,204 @@ function QuickTeamSearch({ sport, query, setQuery, onJump }) {
   );
 }
 
+// =====================================================================
+// GLOBAL SEARCH — one palette (Ctrl/Cmd+K or "/") for players, teams, tabs and sports.
+// Enter opens the profile; Shift+Enter (or the Props button) jumps to Prop Floors with the
+// player pre-searched, so research -> picks is one keystroke.
+// =====================================================================
+const SEARCH_SPORTS = [["nfl","NFL"],["nba","NBA"],["wnba","WNBA"],["mlb","MLB"],["cfb","CFB"]];
+
+function buildSearchIndex(stub) {
+  const out = [];
+  const seen = new Set();
+  const push = (sport, type, name, sub, extra) => {
+    if (!name) return;
+    const k = sport + "|" + type + "|" + name;
+    if (seen.has(k)) return;
+    seen.add(k);
+    out.push({ key: k, sport, type, name, sub: sub || "", lname: String(name).toLowerCase(), ...extra });
+  };
+  RECEIVERS.forEach(p => push("nfl", "player", p.name, `${p.team || ""} · ${p.pos || "WR"}`));
+  QBS.forEach(p => push("nfl", "player", p.name, `${p.team || ""} · QB`));
+  KICKERS.forEach(p => push("nfl", "player", p.name, `${p.team || ""} · K`));
+  SACKS.forEach(p => push("nfl", "player", p.name, `${p.team || ""} · ${p.pos || "DEF"}`));
+  TEAMS.forEach(t => push("nfl", "team", TEAM_NAMES[t] || t, "NFL team", { team: t }));
+  wnbaPlayers().forEach(p => push("wnba", "player", p.name, `${p.team || ""} · WNBA`));
+  getWnbaTeams().forEach(t => push("wnba", "team", t, "WNBA team", { team: t }));
+  mlbPlayers().forEach(p => push("mlb", "player", p.name, `${p.team || ""} · ${p.group === "pitching" ? "Pitcher" : "Batter"}`));
+  getMlbTeamsList().forEach(t => push("mlb", "team", t, "MLB team", { team: t }));
+  const nbaTeams = new Set();
+  nbaPlayers().forEach(p => { push("nba", "player", p.name, `${p.team || ""} · ${p.posBucket || "NBA"}`); if (p.team) nbaTeams.add(p.team); });
+  [...nbaTeams].sort().forEach(t => push("nba", "team", t, "NBA team", { team: t }));
+  cfbTeams().forEach(t => push("cfb", "team", t.school, "CFB team", { team: t.school }));
+  // Sports whose full data file hasn't been fetched yet are searchable from a ~100KB stub, so
+  // searching never forces the 8MB NBA / 5MB MLB files down. Real data wins on duplicates.
+  if (stub) {
+    (stub.wnba?.p || []).forEach(([n, t]) => push("wnba", "player", n, `${t || ""} · WNBA`));
+    (stub.wnba?.t || []).forEach(t => push("wnba", "team", t, "WNBA team", { team: t }));
+    (stub.mlb?.p || []).forEach(([n, t, g]) => push("mlb", "player", n, `${t || ""} · ${g === "pitching" ? "Pitcher" : "Batter"}`));
+    (stub.mlb?.t || []).forEach(t => push("mlb", "team", t, "MLB team", { team: t }));
+    (stub.nba?.p || []).forEach(([n, t, b]) => push("nba", "player", n, `${t || ""} · ${b || "NBA"}`));
+    (stub.nba?.t || []).forEach(t => push("nba", "team", t, "NBA team", { team: t }));
+    (stub.cfb?.t || []).forEach(t => push("cfb", "team", t, "CFB team", { team: t }));
+  }
+  return out;
+}
+
+function scoreSearchItem(item, q, tokens, curSport) {
+  const hay = item.lname + " " + item.sub.toLowerCase();
+  if (!tokens.every(t => hay.includes(t))) return 0;
+  const n = item.lname;
+  let s;
+  if (n === q) s = 100;
+  else if (n.startsWith(q)) s = 80;
+  else if (n.split(/[\s.\-']+/).some(w => w.startsWith(tokens[0]))) s = 60;
+  else if (n.includes(tokens[0])) s = 40;
+  else s = 15;
+  if (item.sport === curSport) s += 10;
+  if (item.type === "team") s += 2;
+  return s;
+}
+
+function tabActionsFor(sport) {
+  const a = [["dashboard", "🏠 Dashboard"]];
+  a.push(["offense", sport === "cfb" ? "Games" : sport === "nfl" ? "NFL Offense" : sport === "nba" ? "NBA Players" : sport === "wnba" ? "WNBA Players" : "MLB Batters"]);
+  if (sport !== "cfb" && sport !== "nba") a.push(["defense", sport === "nfl" ? "NFL Defense · Sacks" : sport === "wnba" ? "WNBA Defense" : "MLB Pitchers"]);
+  if (sport === "nba") a.push(["nbamatchups", "🏀 Matchups"]);
+  if (sport !== "cfb" && sport !== "nba") a.push(["market", "Market Pulse · Kalshi"]);
+  if (sport !== "cfb") a.push(["locks", "🎯 Prop Floors + Parlay"]);
+  if (sport === "nfl") a.push(["quadbox", "🎲 Quad Box"]);
+  if (sport !== "cfb") a.push(["matchup", "🏟️ Matchup"]);
+  if (sport === "nfl" || sport === "wnba") a.push(["research", "🔬 Research"]);
+  a.push(["teams", "🏛️ Teams"], ["tracking", "🏆 Tracking"]);
+  return a;
+}
+
+function loadRecentSearches() {
+  try { const r = JSON.parse(localStorage.getItem("statum_recent_search") || "[]"); return Array.isArray(r) ? r.slice(0, 6) : []; } catch (e) { return []; }
+}
+function saveRecentSearch(item) {
+  try {
+    const cur = loadRecentSearches().filter(r => r.key !== item.key);
+    const slim = { key: item.key, sport: item.sport, type: item.type, name: item.name, sub: item.sub, team: item.team };
+    localStorage.setItem("statum_recent_search", JSON.stringify([slim, ...cur].slice(0, 6)));
+  } catch (e) {}
+}
+
+function SearchLauncher({ onClick }) {
+  return (
+    <button onClick={onClick} style={{ display: "flex", alignItems: "center", gap: 8, width: 230, background: "var(--overlay-2)", border: "1px solid var(--overlay-6)", borderRadius: 999, padding: "7px 14px", color: "var(--text-secondary-a)", fontSize: 12.5, cursor: "pointer", textAlign: "left" }}>
+      <span>🔍</span><span style={{ flex: 1 }}>Search players, teams, props…</span>
+      <span style={{ fontSize: 10.5, border: "1px solid var(--overlay-6)", borderRadius: 5, padding: "1px 5px" }}>Ctrl K</span>
+    </button>
+  );
+}
+
+function GlobalSearch({ open, onClose, sport, dataTick, stub, onPreload, onGo }) {
+  const [q, setQ] = useState("");
+  const [cursor, setCursor] = useState(0);
+  const inputRef = useRef(null);
+  const index = useMemo(() => (open ? buildSearchIndex(stub) : []), [open, dataTick, stub]);
+
+  useEffect(() => { if (open) { setQ(""); setCursor(0); setTimeout(() => inputRef.current && inputRef.current.focus(), 0); } }, [open]);
+  useEffect(() => { if (open && onPreload) onPreload(); }, [open]);
+  useEffect(() => { setCursor(0); }, [q]);
+
+  const results = useMemo(() => {
+    const query = q.trim().toLowerCase();
+    if (!query) {
+      const recents = loadRecentSearches().map(r => ({ ...r, lname: String(r.name).toLowerCase(), recent: true }));
+      const tabs = tabActionsFor(sport).map(([tab, label]) => ({ key: "tab|" + tab, type: "tab", sport, tab, name: label, sub: "Go to tab" }));
+      return [...recents, ...tabs];
+    }
+    const tokens = query.split(/\s+/).filter(Boolean);
+    const scored = [];
+    for (const it of index) { const s = scoreSearchItem(it, query, tokens, sport); if (s > 0) scored.push([s, it]); }
+    scored.sort((a, b) => b[0] - a[0]);
+    const items = scored.slice(0, 14).map(x => x[1]);
+    const tabs = tabActionsFor(sport).filter(([, label]) => label.toLowerCase().includes(query)).map(([tab, label]) => ({ key: "tab|" + tab, type: "tab", sport, tab, name: label, sub: "Go to tab" }));
+    const sports = SEARCH_SPORTS.filter(([id, label]) => id !== sport && (label.toLowerCase().startsWith(query) || query === id)).map(([id, label]) => ({ key: "sport|" + id, type: "sport", sport: id, name: "Switch to " + label, sub: "Change sport" }));
+    return [...tabs, ...sports, ...items];
+  }, [q, index, sport]);
+
+  const choose = (item, mode) => {
+    if (!item) return;
+    if (item.type === "player" || item.type === "team") saveRecentSearch(item);
+    onGo(item, mode || "profile");
+    onClose();
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Escape") { e.preventDefault(); onClose(); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); setCursor(c => Math.min(results.length - 1, c + 1)); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); setCursor(c => Math.max(0, c - 1)); }
+    else if (e.key === "Enter") { e.preventDefault(); choose(results[cursor], e.shiftKey ? "props" : "profile"); }
+  };
+
+  if (!open) return null;
+  const sportLabel = (id) => (SEARCH_SPORTS.find(s => s[0] === id) || [id, id])[1];
+  const stillLoading = q.trim().length >= 2 && !stub;
+
+  return (
+    <div onMouseDown={onClose} style={{ position: "fixed", inset: 0, zIndex: 300, background: "rgba(0,0,0,0.55)", display: "flex", justifyContent: "center", alignItems: "flex-start", paddingTop: "10vh" }}>
+      <div onMouseDown={e => e.stopPropagation()} className="fade-in" style={{ width: "min(640px, 92vw)", background: "var(--card-bg)", backdropFilter: "blur(22px)", border: "1px solid var(--overlay-6)", borderRadius: 14, boxShadow: "0 24px 60px -12px rgba(0,0,0,0.6)", overflow: "hidden" }}>
+        <input ref={inputRef} value={q} onChange={e => setQ(e.target.value)} onKeyDown={onKeyDown}
+          placeholder="Search a player or team, or type a tab name (props, research, tracking)…"
+          style={{ width: "100%", boxSizing: "border-box", background: "transparent", border: "none", borderBottom: "1px solid var(--overlay-5)", padding: "16px 18px", fontSize: 15, color: "var(--text-primary)", outline: "none" }} />
+        <div style={{ maxHeight: "52vh", overflowY: "auto" }}>
+          {!q.trim() && <div style={{ padding: "8px 18px 2px", fontSize: 11.5, color: "var(--text-label)" }}>Recent searches and tabs</div>}
+          {results.length === 0 && <div style={{ padding: "18px", fontSize: 13, color: "var(--text-secondary-a)" }}>No match for "{q}". {stillLoading ? "Other sports are still loading, try again in a moment." : "Check the spelling or try just the last name."}</div>}
+          {results.map((r, i) => (
+            <div key={r.key + (r.recent ? "|r" : "")} onMouseEnter={() => setCursor(i)} onClick={() => choose(r, "profile")}
+              style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 18px", cursor: "pointer", background: i === cursor ? "var(--overlay-4)" : "transparent", borderTop: "1px solid var(--overlay-2)" }}>
+              <span style={{ fontSize: 11, minWidth: 40, color: "var(--text-label)" }}>{r.type === "tab" ? "Tab" : r.type === "sport" ? "Sport" : sportLabel(r.sport)}</span>
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)" }}>{r.name}</span>
+                <span style={{ fontSize: 12, color: "var(--text-secondary-a)", marginLeft: 8 }}>{r.recent ? "Recent · " : ""}{r.sub}</span>
+              </span>
+              {r.type === "player" && r.sport !== "cfb" && (
+                <button onClick={(e) => { e.stopPropagation(); choose(r, "props"); }} className="bubble-btn"
+                  style={{ fontSize: 11.5, fontWeight: 700, padding: "4px 10px", borderRadius: 999, border: "1px solid #00E67655", color: "#00E676", background: "transparent", cursor: "pointer" }}>Find props</button>
+              )}
+            </div>
+          ))}
+        </div>
+        <div style={{ padding: "8px 18px", fontSize: 11.5, color: "var(--text-label)", borderTop: "1px solid var(--overlay-5)" }}>
+          Up/Down to move · Enter opens the profile · Shift+Enter finds props · Esc closes
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---- persisted view state: sport + tab survive a refresh and live in the URL hash ----
+const VALID_SPORTS = ["nfl","wnba","mlb","nba","cfb"];
+const VALID_TABS = ["dashboard","offense","defense","market","locks","quadbox","matchup","research","teams","tracking","nbamatchups"];
+function readSavedView() {
+  let s = null, t = null;
+  try {
+    const h = (window.location.hash || "").replace(/^#\/?/, "").split("/");
+    if (VALID_SPORTS.includes(h[0])) { s = h[0]; if (VALID_TABS.includes(h[1])) t = h[1]; }
+  } catch (e) {}
+  if (!s) {
+    try { const v = JSON.parse(localStorage.getItem("statum_view") || "null"); if (v && VALID_SPORTS.includes(v.sport)) { s = v.sport; if (VALID_TABS.includes(v.tab)) t = v.tab; } } catch (e) {}
+  }
+  return { sport: s || "nfl", tab: t || "dashboard" };
+}
+// Slip drafts are kept for 36h only: lines move, so an older draft would show stale prices.
+function readSavedSlip() {
+  try {
+    const v = JSON.parse(localStorage.getItem("statum_slip") || "null");
+    if (v && Array.isArray(v.slip) && v.savedAt && Date.now() - v.savedAt < 36 * 3600 * 1000) return v;
+  } catch (e) {}
+  return null;
+}
+
 function App() {
-  const [sport, setSport] = useState("nfl");
-  const [tab, setTab] = useState("dashboard");
+  const [savedView] = useState(readSavedView);
+  const [savedSlip] = useState(readSavedSlip);
+  const [sport, setSport] = useState(savedView.sport);
+  const [tab, setTab] = useState(savedView.tab);
   const [search, setSearch] = useState("");
   const [team, setTeam] = useState("all");
   const [posFilter, setPosFilter] = useState("all");
@@ -5850,9 +6146,13 @@ function App() {
   const [teamsSearch, setTeamsSearch] = useState("");
   const [quickSearch, setQuickSearch] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [slip, setSlip] = useState([]);
-  const [stake, setStake] = useState(20);
+  const [slip, setSlip] = useState(() => (savedSlip ? savedSlip.slip : []));
+  const [stake, setStake] = useState(() => (savedSlip && Number.isFinite(savedSlip.stake) ? savedSlip.stake : 20));
   const [aiSuggestion, setAiSuggestion] = useState(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [propQuery, setPropQuery] = useState("");
+  const [pendingNav, setPendingNav] = useState(null);
+  const navTeamRef = useRef(null);
 
   // Lazy-load state for WNBA/MLB data — declared early since several useMemo hooks below
   // depend on dataTick to know when to recompute after a fetch completes.
@@ -5962,8 +6262,78 @@ function App() {
     return [...t].sort();
   }, [dataTick]);
 
-  useEffect(() => { setSelectedTeam(null); setPosFilter("all"); }, [tab]);
+  useEffect(() => {
+    if (navTeamRef.current) { setSelectedTeam(navTeamRef.current); navTeamRef.current = null; } else setSelectedTeam(null);
+    setPosFilter("all");
+  }, [tab]);
   useEffect(() => { setSelected(null); setSelectedTeam(null); setSearch(""); setPosFilter("all"); setTeam("all"); setMatchupFilter(null); }, [sport]);
+
+  // Applies a navigation request. Returns false while the target sport's data is still loading.
+  function applyNav(nav) {
+    if (nav.type === "sport") return true;
+    if (nav.type === "tab") { setSelected(null); setTab(nav.tab); return true; }
+    if ((nav.type === "team" || nav.type === "player") && nav.mode !== "props" && nav.sport !== "nfl" && !SportDataCache[nav.sport]) return false;
+    if (nav.type === "team") {
+      setSelected(null);
+      if (tab === "teams") setSelectedTeam(nav.team); else { navTeamRef.current = nav.team; setTab("teams"); }
+      return true;
+    }
+    if (nav.type === "player") {
+      if (nav.mode === "props" && nav.sport !== "cfb") {
+        setSelected(null); setMatchupFilter(null); setPropQuery(nav.name); setTab("locks");
+        return true;
+      }
+      const found = findPlayerRecordForNav(nav.sport, nav.name);
+      if (!found) return false;
+      setSelected(found.player); setTab(found.tab);
+      return true;
+    }
+    return true;
+  }
+  function goTo(item, mode) {
+    const nav = { ...item, mode };
+    if (item.sport !== sport) {
+      setPendingNav(nav);
+      setSport(item.sport);
+      if (item.type === "sport") setTab("dashboard");
+      return;
+    }
+    applyNav(nav);
+  }
+  useEffect(() => {
+    if (!pendingNav || pendingNav.sport !== sport) return;
+    if (applyNav(pendingNav)) setPendingNav(null);
+  }, [pendingNav, sport, dataTick]);
+  const [searchStub, setSearchStub] = useState(null);
+  const stubRequested = useRef(false);
+  async function loadSearchStub() {
+    if (stubRequested.current) return;
+    stubRequested.current = true;
+    try {
+      const res = await fetch("./data-search.json");
+      if (!res.ok) throw new Error("status " + res.status);
+      setSearchStub(await res.json());
+    } catch (e) { stubRequested.current = false; }
+  }
+
+  useEffect(() => {
+    const onKey = (e) => {
+      const tag = (e.target && e.target.tagName) || "";
+      const typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (e.target && e.target.isContentEditable);
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setSearchOpen(o => !o); }
+      else if (e.key === "/" && !typing) { e.preventDefault(); setSearchOpen(true); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    try { localStorage.setItem("statum_view", JSON.stringify({ sport, tab })); } catch (e) {}
+    try { window.history.replaceState(null, "", "#" + sport + "/" + tab); } catch (e) {}
+  }, [sport, tab]);
+  useEffect(() => {
+    try { localStorage.setItem("statum_slip", JSON.stringify({ slip, stake, savedAt: Date.now() })); } catch (e) {}
+  }, [slip, stake]);
   useEffect(() => { if (sport === "cfb" && (tab === "locks" || tab === "matchup" || tab === "market")) setTab("dashboard"); }, [sport, tab]);
   // NBA has no separate defense leaderboard or Kalshi feed; and the Matchups tab only
   // exists for NBA, so leaving it selected while switching sports would show nothing.
@@ -6014,7 +6384,18 @@ function App() {
     "--trend-down": isDay ? "#D42A5E" : "#FF3D71",
   };
 
+  const propsNav = sport === "cfb" ? null : {
+    player: (name) => goTo({ type: "player", sport, name }, "props"),
+    team: (t) => {
+      const label = (sport === "nfl" ? (TEAM_NAMES[t] || t) : t) + " props";
+      setSelected(null); setSelectedTeam(null); setPropQuery("");
+      setMatchupFilter({ teamA: t, teamB: t, label });
+      setTab("locks");
+    },
+  };
+
   return (
+    <PropsNavContext.Provider value={propsNav}>
     <div style={{ position: "relative", minHeight: "100vh", fontFamily: "'Inter', -apple-system, sans-serif", color: "var(--text-primary)", ...themeVars }}>
       <GlobalStyle />
       <AmbientBackground theme={dailyTheme} />
@@ -6080,7 +6461,7 @@ function App() {
                 : `${cfbTeams().length} FBS teams rated · real historical lines · spread/total/moneyline backtested`}
             </div>
           </div>
-          <QuickTeamSearch sport={sport} query={quickSearch} setQuery={setQuickSearch} onJump={(team)=>{ setSelectedTeam(team); setTab("teams"); setQuickSearch(""); }} />
+          <SearchLauncher onClick={()=>setSearchOpen(true)} />
           <a href="./guide.html" style={{
             fontSize: 12, fontWeight: 700, color: "#B4FF39", border: "1px solid #B4FF3955", borderRadius: 999,
             padding: "7px 14px", textDecoration: "none", whiteSpace: "nowrap"
@@ -6120,18 +6501,18 @@ function App() {
           const found = findPlayerRecordForNav(sport, playerName);
           if (found) { setSelected(found.player); setTab(found.tab); }
         }} />}
-        {tab==="locks" && <PropFloorsView sport={sport} slip={slip} setSlip={setSlip} stake={stake} setStake={setStake} aiSuggestion={aiSuggestion} setAiSuggestion={setAiSuggestion} dataTick={dataTick} sportDataStatus={sportDataStatus} matchupFilter={matchupFilter} setMatchupFilter={setMatchupFilter} />}
+        {tab==="locks" && <PropFloorsView sport={sport} slip={slip} setSlip={setSlip} stake={stake} setStake={setStake} aiSuggestion={aiSuggestion} setAiSuggestion={setAiSuggestion} dataTick={dataTick} sportDataStatus={sportDataStatus} matchupFilter={matchupFilter} setMatchupFilter={setMatchupFilter} propQuery={propQuery} onPropQueryUsed={()=>setPropQuery("")} />}
         {tab==="quadbox" && sport==="nfl" && <QuadBoxView slip={slip} setSlip={setSlip} stake={stake} setStake={setStake}
           onSelectPlayer={(playerName)=>{
             const found = findPlayerRecordForNav(sport, playerName);
             if (found) { setSelected(found.player); setTab(found.tab); }
           }} />}
         {tab==="matchup" && <MatchupView slip={slip} setSlip={setSlip} />}
-        {tab==="research" && sport==="nfl" && <ResearchView onSelectPlayer={(playerName)=>{
+        {tab==="research" && sport==="nfl" && <ResearchView onFindProps={(name)=>goTo({ type: "player", sport, name }, "props")} onGameProps={(teamA, teamB, label)=>{ setSelected(null); setPropQuery(""); setMatchupFilter({ teamA, teamB, label }); setTab("locks"); }} onSelectPlayer={(playerName)=>{
           const found = findPlayerRecordForNav(sport, playerName);
           if (found) { setSelected(found.player); setTab(found.tab); }
         }} />}
-        {tab==="research" && sport==="wnba" && <WNBAResearchView sportDataStatus={sportDataStatus} onSelectPlayer={(playerName)=>{
+        {tab==="research" && sport==="wnba" && <WNBAResearchView sportDataStatus={sportDataStatus} onFindProps={(name)=>goTo({ type: "player", sport, name }, "props")} onGameProps={(teamA, teamB, label)=>{ setSelected(null); setPropQuery(""); setMatchupFilter({ teamA, teamB, label }); setTab("locks"); }} onSelectPlayer={(playerName)=>{
           const found = findPlayerRecordForNav(sport, playerName);
           if (found) { setSelected(found.player); setTab(found.tab); }
         }} />}
@@ -6165,6 +6546,13 @@ function App() {
             }} />
         )}
         {tab==="tracking" && <TrackingView slip={slip} setSlip={setSlip} />}
+
+        {(tab==="offense" || tab==="defense") && sport!=="cfb" && !selected && (
+          <SavedFilters scope={"board:" + tab} sport={sport}
+            current={{ team, posFilter, sortKey, search }}
+            canSave={team !== "all" || posFilter !== "all" || sortKey !== "yards" || !!search}
+            onApply={(s) => { setTeam(s.team || "all"); setPosFilter(s.posFilter || "all"); setSortKey(s.sortKey || "yards"); setSearch(s.search || ""); }} />
+        )}
 
         {sport==="nfl" && (tab==="offense" || tab==="defense") && !selected && (
           <>
@@ -6342,8 +6730,10 @@ function App() {
           {sport === "nba" && <>NBA player-tracking and matchup data (stats.nba.com); schedule from the NBA's public CDN.</>}
           {sport === "cfb" && <>Games, lines, and team ratings from CollegeFootballData.com.</>}
         </div>
+        <GlobalSearch open={searchOpen} onClose={()=>setSearchOpen(false)} sport={sport} dataTick={dataTick} stub={searchStub} onPreload={loadSearchStub} onGo={goTo} />
       </div>
     </div>
+    </PropsNavContext.Provider>
   );
 }
 
