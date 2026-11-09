@@ -5647,26 +5647,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Cade Otton",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 3.0,
-      "p75": 6.0,
-      "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "nfl",
-      "player": "Cade Otton",
-      "stat": "Receiving Yards",
-      "p25": 22.0,
-      "p50": 35.0,
-      "p75": 61.0,
-      "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "nfl",
       "player": "Tyrone Tracy Jr.",
       "stat": "Receptions",
       "p25": 1.0,
@@ -6718,36 +6698,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Bucky Irving",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 2.0,
-      "p75": 3.0,
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "nfl",
-      "player": "Bucky Irving",
-      "stat": "Rush Attempts",
-      "p25": 9.0,
-      "p50": 11.0,
-      "p75": 15.0,
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "nfl",
-      "player": "Bucky Irving",
-      "stat": "Rush Yards",
-      "p25": 44.0,
-      "p50": 69.0,
-      "p75": 86.0,
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "nfl",
       "player": "Germie Bernard",
       "stat": "Receptions",
       "p25": 2.0,
@@ -6794,26 +6744,6 @@
       "p50": 75.0,
       "p75": 91.0,
       "gamelogLenAtSnapshot": 31,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "nfl",
-      "player": "Ted Hurst III",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 2.0,
-      "p75": 3.0,
-      "gamelogLenAtSnapshot": 7,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "nfl",
-      "player": "Ted Hurst III",
-      "stat": "Receiving Yards",
-      "p25": 27.0,
-      "p50": 36.0,
-      "p75": 40.0,
-      "gamelogLenAtSnapshot": 7,
       "snapshotDate": "2026-11-01"
     },
     {
@@ -6874,16 +6804,6 @@
       "p50": 235.0,
       "p75": 276.0,
       "gamelogLenAtSnapshot": 44,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "nfl",
-      "player": "Baker Mayfield",
-      "stat": "Passing Yards",
-      "p25": 188.0,
-      "p50": 288.0,
-      "p75": 319.0,
-      "gamelogLenAtSnapshot": 40,
       "snapshotDate": "2026-11-01"
     },
     {
@@ -6958,82 +6878,12 @@
     },
     {
       "sport": "nfl",
-      "player": "Rome Odunze",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 3.0,
-      "p75": 5.0,
-      "gamelogLenAtSnapshot": 39,
-      "snapshotDate": "2026-11-03"
-    },
-    {
-      "sport": "nfl",
-      "player": "Rome Odunze",
-      "stat": "Receiving Yards",
-      "p25": 23.0,
-      "p50": 39.0,
-      "p75": 42.0,
-      "gamelogLenAtSnapshot": 39,
-      "snapshotDate": "2026-11-03"
-    },
-    {
-      "sport": "nfl",
-      "player": "D'Andre Swift",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 2.0,
-      "p75": 4.0,
-      "gamelogLenAtSnapshot": 43,
-      "snapshotDate": "2026-11-03"
-    },
-    {
-      "sport": "nfl",
-      "player": "D'Andre Swift",
-      "stat": "Rush Attempts",
-      "p25": 13.0,
-      "p50": 14.0,
-      "p75": 17.0,
-      "gamelogLenAtSnapshot": 43,
-      "snapshotDate": "2026-11-03"
-    },
-    {
-      "sport": "nfl",
-      "player": "D'Andre Swift",
-      "stat": "Rush Yards",
-      "p25": 30.0,
-      "p50": 53.0,
-      "p75": 73.0,
-      "gamelogLenAtSnapshot": 43,
-      "snapshotDate": "2026-11-03"
-    },
-    {
-      "sport": "nfl",
-      "player": "Kalif Raymond",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 2.0,
-      "p75": 3.0,
-      "gamelogLenAtSnapshot": 31,
-      "snapshotDate": "2026-11-03"
-    },
-    {
-      "sport": "nfl",
       "player": "Sam Darnold",
       "stat": "Passing Yards",
       "p25": 232.0,
       "p50": 245.0,
       "p75": 273.0,
       "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-03"
-    },
-    {
-      "sport": "nfl",
-      "player": "Caleb Williams",
-      "stat": "Passing Yards",
-      "p25": 134.0,
-      "p50": 191.0,
-      "p75": 256.0,
-      "gamelogLenAtSnapshot": 41,
       "snapshotDate": "2026-11-03"
     },
     {
@@ -10549,6 +10399,216 @@
         "p75": 10.0
       },
       "gamelogLenAtSnapshot": 33,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "shown": {
+        "p25": 92.9,
+        "p50": 50.0,
+        "p75": 28.6
+      },
+      "gamelogLenAtSnapshot": 40,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "p25": 23.0,
+      "p50": 39.0,
+      "p75": 42.0,
+      "shown": {
+        "p25": 85.7,
+        "p50": 71.4,
+        "p75": 64.3
+      },
+      "gamelogLenAtSnapshot": 40,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cade Otton",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 6.0,
+      "shown": {
+        "p25": 93.3,
+        "p50": 73.3,
+        "p75": 20.0
+      },
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Cade Otton",
+      "stat": "Receiving Yards",
+      "p25": 22.0,
+      "p50": 35.0,
+      "p75": 61.0,
+      "shown": {
+        "p25": 60.0,
+        "p50": 40.0,
+        "p75": 26.7
+      },
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "shown": {
+        "p25": 88.9,
+        "p50": 61.1,
+        "p75": 11.1
+      },
+      "gamelogLenAtSnapshot": 44,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "p25": 13.0,
+      "p50": 14.0,
+      "p75": 17.0,
+      "shown": {
+        "p25": 72.2,
+        "p50": 44.4,
+        "p75": 33.3
+      },
+      "gamelogLenAtSnapshot": 44,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "p25": 30.0,
+      "p50": 53.0,
+      "p75": 73.0,
+      "shown": {
+        "p25": 94.4,
+        "p50": 72.2,
+        "p75": 38.9
+      },
+      "gamelogLenAtSnapshot": 44,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bucky Irving",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "shown": {
+        "p25": 70.0,
+        "p50": 70.0,
+        "p75": 50.0
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bucky Irving",
+      "stat": "Rush Attempts",
+      "p25": 9.0,
+      "p50": 11.0,
+      "p75": 15.0,
+      "shown": {
+        "p25": 100.0,
+        "p50": 90.0,
+        "p75": 80.0
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Bucky Irving",
+      "stat": "Rush Yards",
+      "p25": 44.0,
+      "p50": 69.0,
+      "p75": 86.0,
+      "shown": {
+        "p25": 80.0,
+        "p50": 30.0,
+        "p75": 0.0
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "shown": {
+        "p25": 91.7,
+        "p50": 58.3,
+        "p75": 33.3
+      },
+      "gamelogLenAtSnapshot": 32,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ted Hurst III",
+      "stat": "Receiving Yards",
+      "p25": 25.0,
+      "p50": 31.0,
+      "p75": 39.0,
+      "shown": {
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0
+      },
+      "gamelogLenAtSnapshot": 8,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Baker Mayfield",
+      "stat": "Passing Yards",
+      "p25": 188.0,
+      "p50": 288.0,
+      "p75": 319.0,
+      "shown": {
+        "p25": 64.7,
+        "p50": 17.6,
+        "p75": 11.8
+      },
+      "gamelogLenAtSnapshot": 41,
+      "snapshotDate": "2026-11-09"
+    },
+    {
+      "sport": "nfl",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "p25": 134.0,
+      "p50": 191.0,
+      "p75": 256.0,
+      "shown": {
+        "p25": 100.0,
+        "p50": 84.2,
+        "p75": 31.6
+      },
+      "gamelogLenAtSnapshot": 42,
       "snapshotDate": "2026-11-09"
     }
   ],
@@ -71043,6 +71103,546 @@
       "snapshotDate": "2026-11-03",
       "gradedDate": "2026-11-09",
       "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Cade Otton",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Cade Otton",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Cade Otton",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 4.0,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Cade Otton",
+      "stat": "Receiving Yards",
+      "line": 22.0,
+      "actual": 25.0,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Cade Otton",
+      "stat": "Receiving Yards",
+      "line": 35.0,
+      "actual": 25.0,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Cade Otton",
+      "stat": "Receiving Yards",
+      "line": 61.0,
+      "actual": 25.0,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Bucky Irving",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Bucky Irving",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Bucky Irving",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Bucky Irving",
+      "stat": "Rush Attempts",
+      "line": 9.0,
+      "actual": 20.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Bucky Irving",
+      "stat": "Rush Attempts",
+      "line": 11.0,
+      "actual": 20.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Bucky Irving",
+      "stat": "Rush Attempts",
+      "line": 15.0,
+      "actual": 20.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Bucky Irving",
+      "stat": "Rush Yards",
+      "line": 44.0,
+      "actual": 97.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Bucky Irving",
+      "stat": "Rush Yards",
+      "line": 69.0,
+      "actual": 97.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Bucky Irving",
+      "stat": "Rush Yards",
+      "line": 86.0,
+      "actual": 97.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Ted Hurst III",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Ted Hurst III",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Ted Hurst III",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Ted Hurst III",
+      "stat": "Receiving Yards",
+      "line": 27.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Ted Hurst III",
+      "stat": "Receiving Yards",
+      "line": 36.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Ted Hurst III",
+      "stat": "Receiving Yards",
+      "line": 40.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Baker Mayfield",
+      "stat": "Passing Yards",
+      "line": 188.0,
+      "actual": 243.0,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Baker Mayfield",
+      "stat": "Passing Yards",
+      "line": 288.0,
+      "actual": 243.0,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Baker Mayfield",
+      "stat": "Passing Yards",
+      "line": 319.0,
+      "actual": 243.0,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 4.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "line": 23.0,
+      "actual": 60.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "line": 39.0,
+      "actual": 60.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "line": 42.0,
+      "actual": 60.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 0.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "line": 13.0,
+      "actual": 12.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "line": 14.0,
+      "actual": 12.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "line": 17.0,
+      "actual": 12.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "line": 30.0,
+      "actual": 31.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "line": 53.0,
+      "actual": 31.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "line": 73.0,
+      "actual": 31.0,
+      "hit": false,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "line": 134.0,
+      "actual": 279.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "line": 191.0,
+      "actual": 279.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "line": 256.0,
+      "actual": 279.0,
+      "hit": true,
+      "snapshotDate": "2026-11-03",
+      "gradedDate": "2026-11-09",
+      "shown": null
     }
   ],
   "summary": {
@@ -71057,19 +71657,19 @@
       "rate": 12.3
     },
     "nfl_p25": {
-      "graded": 1501,
-      "hits": 1042,
-      "rate": 69.4
+      "graded": 1516,
+      "hits": 1053,
+      "rate": 69.5
     },
     "nfl_p50": {
-      "graded": 1501,
-      "hits": 713,
-      "rate": 47.5
+      "graded": 1516,
+      "hits": 721,
+      "rate": 47.6
     },
     "nfl_p75": {
-      "graded": 1501,
-      "hits": 407,
-      "rate": 27.1
+      "graded": 1516,
+      "hits": 413,
+      "rate": 27.2
     }
   }
 }
