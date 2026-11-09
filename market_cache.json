@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-08T22:54:31+00:00",
+ "lastRun": "2026-11-09T01:20:21+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 37.0
+       "pct": 36.0
       },
       {
        "name": "Jordan Love",
-       "pct": 19.0
+       "pct": 34.0
       },
       {
-       "name": "Jared Goff",
-       "pct": 18.0
+       "name": "C.J. Stroud",
+       "pct": 16.0
       }
      ],
      "totalMarkets": 29
@@ -49,22 +49,22 @@
      "ticker": "KXLEADERNFLINT",
      "options": [
       {
+       "name": "Renardo Green",
+       "pct": 46.0
+      },
+      {
        "name": "Xavier Watts",
        "pct": 9.0
       },
       {
        "name": "Kyle Hamilton",
        "pct": 9.0
-      },
-      {
-       "name": "Alex Anzalone",
-       "pct": 8.0
       }
      ],
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-08T22:54:31+00:00",
+   "fetchedAt": "2026-11-09T01:20:21+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -78,21 +78,21 @@
     "Dallas": 4.0,
     "Atlanta": 11.0
    },
-   "fetchedAt": "2026-11-08T22:54:31+00:00",
+   "fetchedAt": "2026-11-09T01:20:21+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-08T22:54:31+00:00",
+   "fetchedAt": "2026-11-09T01:20:21+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-08T22:54:31+00:00",
+   "fetchedAt": "2026-11-09T01:20:21+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -114,9 +114,42 @@
        997.96
       ]
      }
+    },
+    {
+     "ticker": "KXWNBA-27-LV",
+     "name": "Las Vegas",
+     "price": 16.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 55.1,
+      "latestOI": 53.05,
+      "oiChange": 2.049999999999997,
+      "oiSeries": [
+       51.0,
+       51.0,
+       53.05,
+       53.05
+      ]
+     }
+    },
+    {
+     "ticker": "KXWNBA-27-MIN",
+     "name": "Minnesota",
+     "price": 11.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 51.0,
+      "latestOI": 51.0,
+      "oiChange": 0.0,
+      "oiSeries": [
+       51.0,
+       51.0,
+       51.0
+      ]
+     }
     }
    ],
-   "fetchedAt": "2026-11-08T22:54:31+00:00",
+   "fetchedAt": "2026-11-09T01:20:21+00:00",
    "stale": false
   }
  }
