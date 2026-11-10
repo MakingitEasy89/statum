@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-10T09:30:18+00:00",
+ "lastRun": "2026-11-10T20:58:58+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,11 +10,11 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 54.0
+       "pct": 57.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 17.0
+       "pct": 11.0
       },
       {
        "name": "Christian Watson",
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 40.0
+       "pct": 50.0
       },
       {
        "name": "Jordan Love",
-       "pct": 28.0
+       "pct": 30.0
       },
       {
-       "name": "C.J. Stroud",
-       "pct": 15.0
+       "name": "Jared Goff",
+       "pct": 8.0
       }
      ],
      "totalMarkets": 29
@@ -53,18 +53,18 @@
        "pct": 46.0
       },
       {
-       "name": "Xavier Watts",
-       "pct": 9.0
+       "name": "Xavier McKinney",
+       "pct": 26.0
       },
       {
-       "name": "Kyle Hamilton",
+       "name": "Xavier Watts",
        "pct": 9.0
       }
      ],
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-10T09:30:18+00:00",
+   "fetchedAt": "2026-11-10T20:58:58+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -76,25 +76,25 @@
     "Las Vegas": 16.0,
     "Los Angeles": 2.0,
     "Indiana": 9.0,
-    "Golden State": 46.0,
+    "Golden State": 47.0,
     "Dallas": 4.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-10T09:30:18+00:00",
+   "fetchedAt": "2026-11-10T20:58:58+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-10T09:30:18+00:00",
+   "fetchedAt": "2026-11-10T20:58:58+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-10T09:30:18+00:00",
+   "fetchedAt": "2026-11-10T20:58:58+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -102,7 +102,7 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 46.0,
+     "price": 47.0,
      "depth": null,
      "flow": {
       "totalVolume": 1219.98,
@@ -155,7 +155,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-10T09:30:18+00:00",
+   "fetchedAt": "2026-11-10T20:58:58+00:00",
    "stale": false
   }
  }
