@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-10T20:58:58+00:00",
+ "lastRun": "2026-11-11T09:06:13+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 57.0
+       "pct": 60.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 11.0
+       "pct": 10.0
       },
       {
-       "name": "Christian Watson",
-       "pct": 9.0
+       "name": "Tee Higgins",
+       "pct": 7.0
       }
      ],
      "totalMarkets": 29
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 50.0
+       "pct": 31.0
       },
       {
        "name": "Jordan Love",
        "pct": 30.0
       },
       {
-       "name": "Jared Goff",
-       "pct": 8.0
+       "name": "Brock Purdy",
+       "pct": 21.0
       }
      ],
      "totalMarkets": 29
@@ -49,22 +49,22 @@
      "ticker": "KXLEADERNFLINT",
      "options": [
       {
+       "name": "Amani Hooker",
+       "pct": 68.0
+      },
+      {
        "name": "Renardo Green",
        "pct": 46.0
       },
       {
        "name": "Xavier McKinney",
-       "pct": 26.0
-      },
-      {
-       "name": "Xavier Watts",
-       "pct": 9.0
+       "pct": 21.0
       }
      ],
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-10T20:58:58+00:00",
+   "fetchedAt": "2026-11-11T09:06:13+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -72,29 +72,29 @@
     "Washington": 2.0,
     "Seattle": 2.0,
     "New York": 11.0,
-    "Minnesota": 11.0,
+    "Minnesota": 15.0,
     "Las Vegas": 16.0,
     "Los Angeles": 2.0,
     "Indiana": 9.0,
-    "Golden State": 47.0,
-    "Dallas": 4.0,
+    "Golden State": 20.0,
+    "Dallas": 9.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-10T20:58:58+00:00",
+   "fetchedAt": "2026-11-11T09:06:13+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-10T20:58:58+00:00",
+   "fetchedAt": "2026-11-11T09:06:13+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-10T20:58:58+00:00",
+   "fetchedAt": "2026-11-11T09:06:13+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -102,20 +102,20 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 47.0,
+     "price": 20.0,
      "depth": null,
      "flow": {
-      "totalVolume": 1219.98,
-      "latestOI": 1089.73,
-      "oiChange": 1034.01,
+      "totalVolume": 1245.96,
+      "latestOI": 1135.13,
+      "oiChange": 315.3800000000001,
       "oiSeries": [
-       55.72,
        819.75,
        835.75,
        964.99,
        997.96,
        1045.96,
-       1089.73
+       1089.73,
+       1135.13
       ]
      }
     },
@@ -125,14 +125,14 @@
      "price": 16.0,
      "depth": null,
      "flow": {
-      "totalVolume": 56.1,
+      "totalVolume": 5.1,
       "latestOI": 54.05,
       "oiChange": 3.049999999999997,
       "oiSeries": [
        51.0,
-       51.0,
        53.05,
        53.05,
+       54.05,
        54.05
       ]
      }
@@ -143,19 +143,19 @@
      "price": 16.0,
      "depth": null,
      "flow": {
-      "totalVolume": 52.0,
+      "totalVolume": 1.0,
       "latestOI": 52.0,
       "oiChange": 1.0,
       "oiSeries": [
        51.0,
        51.0,
-       51.0,
+       52.0,
        52.0
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-10T20:58:58+00:00",
+   "fetchedAt": "2026-11-11T09:06:13+00:00",
    "stale": false
   }
  }

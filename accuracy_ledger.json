@@ -4567,33 +4567,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401866459,
-      "homeTeam": "Bowling Green",
-      "awayTeam": "Kent State",
-      "predictedMargin": 19.7,
-      "predictedTotal": 48.3,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866460,
-      "homeTeam": "Miami (OH)",
-      "awayTeam": "Ohio",
-      "predictedMargin": 7.0,
-      "predictedTotal": 50.4,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866458,
-      "homeTeam": "Akron",
-      "awayTeam": "Western Michigan",
-      "predictedMargin": -3.4,
-      "predictedTotal": 46.1,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401866461,
       "homeTeam": "Ball State",
       "awayTeam": "Buffalo",
@@ -72586,18 +72559,84 @@
       "snapshotDate": "2026-11-01",
       "gradedDate": "2026-11-10",
       "shown": null
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Kent State @ Bowling Green",
+      "stat": "winner",
+      "line": 19.7,
+      "actual": 5,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-11"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Kent State @ Bowling Green",
+      "stat": "total_within3",
+      "line": 48.3,
+      "actual": 61,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-11"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Ohio @ Miami (OH)",
+      "stat": "winner",
+      "line": 7.0,
+      "actual": 17,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-11"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Ohio @ Miami (OH)",
+      "stat": "total_within3",
+      "line": 50.4,
+      "actual": 51,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-11"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Western Michigan @ Akron",
+      "stat": "winner",
+      "line": -3.4,
+      "actual": -28,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-11"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Western Michigan @ Akron",
+      "stat": "total_within3",
+      "line": 46.1,
+      "actual": 56,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-11"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 473,
-      "hits": 310,
-      "rate": 65.5
+      "graded": 476,
+      "hits": 313,
+      "rate": 65.8
     },
     "cfb_total_within3": {
-      "graded": 473,
-      "hits": 58,
-      "rate": 12.3
+      "graded": 476,
+      "hits": 59,
+      "rate": 12.4
     },
     "nfl_p25": {
       "graded": 1539,
