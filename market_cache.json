@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-11T09:06:13+00:00",
+ "lastRun": "2026-11-11T21:20:15+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,11 +10,11 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 60.0
+       "pct": 63.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 10.0
+       "name": "Christian Watson",
+       "pct": 8.0
       },
       {
        "name": "Tee Higgins",
@@ -37,8 +37,8 @@
        "pct": 30.0
       },
       {
-       "name": "Brock Purdy",
-       "pct": 21.0
+       "name": "Kirk Cousins",
+       "pct": 8.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-11T09:06:13+00:00",
+   "fetchedAt": "2026-11-11T21:20:15+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -72,7 +72,7 @@
     "Washington": 2.0,
     "Seattle": 2.0,
     "New York": 11.0,
-    "Minnesota": 15.0,
+    "Minnesota": 5.0,
     "Las Vegas": 16.0,
     "Los Angeles": 2.0,
     "Indiana": 9.0,
@@ -80,21 +80,21 @@
     "Dallas": 9.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-11T09:06:13+00:00",
+   "fetchedAt": "2026-11-11T21:20:15+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-11T09:06:13+00:00",
+   "fetchedAt": "2026-11-11T21:20:15+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-11T09:06:13+00:00",
+   "fetchedAt": "2026-11-11T21:20:15+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -155,7 +155,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-11T09:06:13+00:00",
+   "fetchedAt": "2026-11-11T21:20:15+00:00",
    "stale": false
   }
  }
