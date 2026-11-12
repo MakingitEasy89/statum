@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-12T09:32:41+00:00",
+ "lastRun": "2026-11-12T21:34:22+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 68.0
+       "pct": 46.0
       },
       {
        "name": "CeeDee Lamb",
@@ -29,16 +29,16 @@
      "ticker": "KXLEADERNFLPYDS",
      "options": [
       {
-       "name": "Joe Burrow",
-       "pct": 30.0
+       "name": "Jordan Love",
+       "pct": 31.0
       },
       {
-       "name": "Jordan Love",
-       "pct": 27.0
+       "name": "Joe Burrow",
+       "pct": 31.0
       },
       {
        "name": "Kirk Cousins",
-       "pct": 25.0
+       "pct": 26.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-12T09:32:41+00:00",
+   "fetchedAt": "2026-11-12T21:34:22+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -76,25 +76,25 @@
     "Las Vegas": 16.0,
     "Los Angeles": 2.0,
     "Indiana": 9.0,
-    "Golden State": 20.0,
+    "Golden State": 44.0,
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-12T09:32:41+00:00",
+   "fetchedAt": "2026-11-12T21:34:22+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-12T09:32:41+00:00",
+   "fetchedAt": "2026-11-12T21:34:22+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-12T09:32:41+00:00",
+   "fetchedAt": "2026-11-12T21:34:22+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -102,7 +102,7 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 20.0,
+     "price": 44.0,
      "depth": null,
      "flow": {
       "totalVolume": 427.21000000000004,
@@ -116,24 +116,6 @@
        1089.73,
        1135.13,
        1135.13
-      ]
-     }
-    },
-    {
-     "ticker": "KXWNBA-27-LV",
-     "name": "Las Vegas",
-     "price": 16.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 5.1,
-      "latestOI": 54.05,
-      "oiChange": 3.049999999999997,
-      "oiSeries": [
-       51.0,
-       53.05,
-       53.05,
-       54.05,
-       54.05
       ]
      }
     },
@@ -153,7 +135,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-12T09:32:41+00:00",
+   "fetchedAt": "2026-11-12T21:34:22+00:00",
    "stale": false
   }
  }
