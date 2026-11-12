@@ -4567,33 +4567,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401866461,
-      "homeTeam": "Ball State",
-      "awayTeam": "Buffalo",
-      "predictedMargin": -2.9,
-      "predictedTotal": 48.9,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866463,
-      "homeTeam": "Toledo",
-      "awayTeam": "Massachusetts",
-      "predictedMargin": 42.2,
-      "predictedTotal": 49.2,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866462,
-      "homeTeam": "Central Michigan",
-      "awayTeam": "Sacramento State",
-      "predictedMargin": 24.5,
-      "predictedTotal": 45.6,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401862824,
       "homeTeam": "South Florida",
       "awayTeam": "Memphis",
@@ -72625,18 +72598,84 @@
       "hit": false,
       "snapshotDate": "2026-10-18",
       "gradedDate": "2026-11-11"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Buffalo @ Ball State",
+      "stat": "winner",
+      "line": -2.9,
+      "actual": -21,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-12"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Buffalo @ Ball State",
+      "stat": "total_within3",
+      "line": 48.9,
+      "actual": 35,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-12"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Massachusetts @ Toledo",
+      "stat": "winner",
+      "line": 42.2,
+      "actual": 24,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-12"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Massachusetts @ Toledo",
+      "stat": "total_within3",
+      "line": 49.2,
+      "actual": 24,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-12"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Sacramento State @ Central Michigan",
+      "stat": "winner",
+      "line": 24.5,
+      "actual": 21,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-12"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Sacramento State @ Central Michigan",
+      "stat": "total_within3",
+      "line": 45.6,
+      "actual": 35,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-12"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 476,
-      "hits": 313,
-      "rate": 65.8
+      "graded": 479,
+      "hits": 316,
+      "rate": 66.0
     },
     "cfb_total_within3": {
-      "graded": 476,
+      "graded": 479,
       "hits": 59,
-      "rate": 12.4
+      "rate": 12.3
     },
     "nfl_p25": {
       "graded": 1539,
