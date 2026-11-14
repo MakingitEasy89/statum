@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-14T08:49:15+00:00",
+ "lastRun": "2026-11-14T19:14:08+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -13,12 +13,12 @@
        "pct": 53.0
       },
       {
-       "name": "CeeDee Lamb",
-       "pct": 10.0
-      },
-      {
        "name": "Christian Watson",
        "pct": 8.0
+      },
+      {
+       "name": "Puka Nacua",
+       "pct": 6.0
       }
      ],
      "totalMarkets": 29
@@ -34,7 +34,7 @@
       },
       {
        "name": "Jordan Love",
-       "pct": 27.0
+       "pct": 29.0
       },
       {
        "name": "Kirk Cousins",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-14T08:49:15+00:00",
+   "fetchedAt": "2026-11-14T19:14:08+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -80,21 +80,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-14T08:49:15+00:00",
+   "fetchedAt": "2026-11-14T19:14:08+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-14T08:49:15+00:00",
+   "fetchedAt": "2026-11-14T19:14:08+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-14T08:49:15+00:00",
+   "fetchedAt": "2026-11-14T19:14:08+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -105,17 +105,34 @@
      "price": 41.0,
      "depth": null,
      "flow": {
-      "totalVolume": 408.42,
-      "latestOI": 1136.13,
-      "oiChange": 171.1400000000001,
+      "totalVolume": 292.18,
+      "latestOI": 1149.13,
+      "oiChange": 151.17000000000007,
       "oiSeries": [
-       964.99,
        997.96,
        1045.96,
        1089.73,
        1135.13,
        1135.13,
-       1136.13
+       1136.13,
+       1149.13
+      ]
+     }
+    },
+    {
+     "ticker": "KXWNBA-27-LV",
+     "name": "Las Vegas",
+     "price": 16.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 18.93,
+      "latestOI": 71.98,
+      "oiChange": 18.930000000000007,
+      "oiSeries": [
+       53.05,
+       54.05,
+       54.05,
+       71.98
       ]
      }
     },
@@ -131,13 +148,14 @@
       "oiSeries": [
        8.0,
        71.0,
+       79.0,
        79.0
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-13T21:01:26+00:00",
-   "stale": true
+   "fetchedAt": "2026-11-14T19:14:08+00:00",
+   "stale": false
   }
  }
 }
