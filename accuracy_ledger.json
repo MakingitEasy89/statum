@@ -4557,33 +4557,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401858293,
-      "homeTeam": "Pittsburgh",
-      "awayTeam": "Florida State",
-      "predictedMargin": 15.3,
-      "predictedTotal": 56.4,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858526,
-      "homeTeam": "UCLA",
-      "awayTeam": "Illinois",
-      "predictedMargin": 2.1,
-      "predictedTotal": 53.3,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856860,
-      "homeTeam": "Colorado",
-      "awayTeam": "Houston",
-      "predictedMargin": -8.1,
-      "predictedTotal": 51.6,
-      "snapshotDate": "2026-10-18"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401864540,
       "homeTeam": "UTEP",
       "awayTeam": "Wyoming",
@@ -73235,18 +73208,84 @@
       "hit": false,
       "snapshotDate": "2026-10-18",
       "gradedDate": "2026-11-13"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Florida State @ Pittsburgh",
+      "stat": "winner",
+      "line": 15.3,
+      "actual": -6,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Florida State @ Pittsburgh",
+      "stat": "total_within3",
+      "line": 56.4,
+      "actual": 26,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Illinois @ UCLA",
+      "stat": "winner",
+      "line": 2.1,
+      "actual": 8,
+      "hit": true,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Illinois @ UCLA",
+      "stat": "total_within3",
+      "line": 53.3,
+      "actual": 36,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Houston @ Colorado",
+      "stat": "winner",
+      "line": -8.1,
+      "actual": 10,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-14"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Houston @ Colorado",
+      "stat": "total_within3",
+      "line": 51.6,
+      "actual": 74,
+      "hit": false,
+      "snapshotDate": "2026-10-18",
+      "gradedDate": "2026-11-14"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 481,
-      "hits": 317,
-      "rate": 65.9
+      "graded": 484,
+      "hits": 318,
+      "rate": 65.7
     },
     "cfb_total_within3": {
-      "graded": 481,
+      "graded": 484,
       "hits": 59,
-      "rate": 12.3
+      "rate": 12.2
     },
     "nfl_p25": {
       "graded": 1554,

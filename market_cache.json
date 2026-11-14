@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-13T21:01:26+00:00",
+ "lastRun": "2026-11-14T08:49:15+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 55.0
+       "pct": 53.0
       },
       {
        "name": "CeeDee Lamb",
@@ -34,11 +34,11 @@
       },
       {
        "name": "Jordan Love",
-       "pct": 30.0
+       "pct": 27.0
       },
       {
        "name": "Kirk Cousins",
-       "pct": 17.0
+       "pct": 20.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-13T21:01:26+00:00",
+   "fetchedAt": "2026-11-14T08:49:15+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -80,21 +80,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-13T21:01:26+00:00",
+   "fetchedAt": "2026-11-14T08:49:15+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-13T21:01:26+00:00",
+   "fetchedAt": "2026-11-14T08:49:15+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-13T21:01:26+00:00",
+   "fetchedAt": "2026-11-14T08:49:15+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -137,7 +137,7 @@
     }
    ],
    "fetchedAt": "2026-11-13T21:01:26+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
