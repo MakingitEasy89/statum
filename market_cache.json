@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-15T20:52:25+00:00",
+ "lastRun": "2026-11-15T23:33:44+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 52.0
+       "pct": 63.0
       },
       {
        "name": "CeeDee Lamb",
        "pct": 11.0
       },
       {
-       "name": "Christian Watson",
-       "pct": 6.0
+       "name": "Tee Higgins",
+       "pct": 5.0
       }
      ],
      "totalMarkets": 29
@@ -30,41 +30,21 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 38.0
+       "pct": 43.0
       },
       {
        "name": "Jordan Love",
-       "pct": 27.0
+       "pct": 26.0
       },
       {
        "name": "Kirk Cousins",
-       "pct": 26.0
+       "pct": 18.0
       }
      ],
      "totalMarkets": 29
-    },
-    {
-     "category": "Interceptions Leader",
-     "source": "kalshi",
-     "ticker": "KXLEADERNFLINT",
-     "options": [
-      {
-       "name": "Amani Hooker",
-       "pct": 68.0
-      },
-      {
-       "name": "Renardo Green",
-       "pct": 46.0
-      },
-      {
-       "name": "Xavier McKinney",
-       "pct": 21.0
-      }
-     ],
-     "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-15T20:52:25+00:00",
+   "fetchedAt": "2026-11-15T23:33:44+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -80,21 +60,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-15T20:52:25+00:00",
+   "fetchedAt": "2026-11-15T23:33:44+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-15T20:52:25+00:00",
+   "fetchedAt": "2026-11-15T23:33:44+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-15T20:52:25+00:00",
+   "fetchedAt": "2026-11-15T23:33:44+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -156,7 +136,7 @@
     }
    ],
    "fetchedAt": "2026-11-15T20:52:25+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
