@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-15T09:04:26+00:00",
+ "lastRun": "2026-11-15T19:49:33+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -14,7 +14,7 @@
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 9.0
+       "pct": 11.0
       },
       {
        "name": "Christian Watson",
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 33.0
+       "pct": 38.0
       },
       {
        "name": "Jordan Love",
-       "pct": 29.0
+       "pct": 27.0
       },
       {
        "name": "Kirk Cousins",
-       "pct": 18.0
+       "pct": 26.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-15T09:04:26+00:00",
+   "fetchedAt": "2026-11-15T19:49:33+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -76,25 +76,25 @@
     "Las Vegas": 16.0,
     "Los Angeles": 2.0,
     "Indiana": 9.0,
-    "Golden State": 42.0,
+    "Golden State": 41.0,
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-15T09:04:26+00:00",
+   "fetchedAt": "2026-11-15T19:49:33+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-15T09:04:26+00:00",
+   "fetchedAt": "2026-11-15T19:49:33+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-15T09:04:26+00:00",
+   "fetchedAt": "2026-11-15T19:49:33+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -102,7 +102,7 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 42.0,
+     "price": 41.0,
      "depth": null,
      "flow": {
       "totalVolume": 473.34000000000003,
@@ -155,7 +155,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-15T09:04:26+00:00",
+   "fetchedAt": "2026-11-15T19:49:33+00:00",
    "stale": false
   }
  }
