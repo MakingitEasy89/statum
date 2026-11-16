@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-16T09:15:27+00:00",
+ "lastRun": "2026-11-16T23:28:22+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,14 +10,14 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 71.0
-      },
-      {
-       "name": "CeeDee Lamb",
-       "pct": 17.0
+       "pct": 78.0
       },
       {
        "name": "Ja'Marr Chase",
+       "pct": 8.0
+      },
+      {
+       "name": "CeeDee Lamb",
        "pct": 7.0
       }
      ],
@@ -34,7 +34,7 @@
       },
       {
        "name": "Jordan Love",
-       "pct": 19.0
+       "pct": 16.0
       },
       {
        "name": "Dak Prescott",
@@ -58,13 +58,13 @@
       },
       {
        "name": "Xavier McKinney",
-       "pct": 23.0
+       "pct": 18.0
       }
      ],
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-16T09:15:27+00:00",
+   "fetchedAt": "2026-11-16T23:28:22+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -80,21 +80,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-16T09:15:27+00:00",
+   "fetchedAt": "2026-11-16T23:28:22+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-16T09:15:27+00:00",
+   "fetchedAt": "2026-11-16T23:28:22+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-16T09:15:27+00:00",
+   "fetchedAt": "2026-11-16T23:28:22+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -136,28 +136,9 @@
        71.98
       ]
      }
-    },
-    {
-     "ticker": "KXWNBA-27-DAL",
-     "name": "Dallas",
-     "price": 16.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 79.0,
-      "latestOI": 79.0,
-      "oiChange": 71.0,
-      "oiSeries": [
-       8.0,
-       71.0,
-       79.0,
-       79.0,
-       79.0,
-       79.0
-      ]
-     }
     }
    ],
-   "fetchedAt": "2026-11-16T09:15:27+00:00",
+   "fetchedAt": "2026-11-16T23:28:22+00:00",
    "stale": false
   }
  }
