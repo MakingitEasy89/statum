@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-16T02:52:23+00:00",
+ "lastRun": "2026-11-16T09:15:27+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 65.0
+       "pct": 71.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 11.0
+       "pct": 17.0
       },
       {
-       "name": "Tee Higgins",
-       "pct": 5.0
+       "name": "Ja'Marr Chase",
+       "pct": 7.0
       }
      ],
      "totalMarkets": 29
@@ -30,14 +30,14 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 45.0
+       "pct": 52.0
       },
       {
        "name": "Jordan Love",
-       "pct": 23.0
+       "pct": 19.0
       },
       {
-       "name": "Kirk Cousins",
+       "name": "Dak Prescott",
        "pct": 10.0
       }
      ],
@@ -58,13 +58,13 @@
       },
       {
        "name": "Xavier McKinney",
-       "pct": 21.0
+       "pct": 23.0
       }
      ],
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-16T02:52:23+00:00",
+   "fetchedAt": "2026-11-16T09:15:27+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -80,21 +80,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-16T02:52:23+00:00",
+   "fetchedAt": "2026-11-16T09:15:27+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-16T02:52:23+00:00",
+   "fetchedAt": "2026-11-16T09:15:27+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-16T02:52:23+00:00",
+   "fetchedAt": "2026-11-16T09:15:27+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -105,17 +105,17 @@
      "price": 41.0,
      "depth": null,
      "flow": {
-      "totalVolume": 473.34000000000003,
-      "latestOI": 1389.26,
-      "oiChange": 343.29999999999995,
+      "totalVolume": 439.49,
+      "latestOI": 1403.41,
+      "oiChange": 313.68000000000006,
       "oiSeries": [
-       1045.96,
        1089.73,
        1135.13,
        1135.13,
        1136.13,
        1149.13,
-       1389.26
+       1389.26,
+       1403.41
       ]
      }
     },
@@ -131,6 +131,7 @@
       "oiSeries": [
        54.05,
        54.05,
+       71.98,
        71.98,
        71.98
       ]
@@ -150,12 +151,13 @@
        71.0,
        79.0,
        79.0,
+       79.0,
        79.0
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-16T02:52:23+00:00",
+   "fetchedAt": "2026-11-16T09:15:27+00:00",
    "stale": false
   }
  }
