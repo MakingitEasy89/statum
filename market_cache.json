@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-17T04:59:48+00:00",
+ "lastRun": "2026-11-17T10:25:45+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 61.0
+       "pct": 60.0
       },
       {
        "name": "Jordan Love",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-17T04:59:48+00:00",
+   "fetchedAt": "2026-11-17T10:25:45+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -81,65 +81,41 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-17T04:59:48+00:00",
+   "fetchedAt": "2026-11-17T10:25:45+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-17T04:59:48+00:00",
+   "fetchedAt": "2026-11-17T10:25:45+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-17T04:59:48+00:00",
+   "fetchedAt": "2026-11-17T10:25:45+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
    "data": [
     {
-     "ticker": "KXWNBA-27-GS",
-     "name": "Golden State",
-     "price": 41.0,
+     "ticker": "KXWNBA-27-PDX",
+     "name": "Portland",
+     "price": 21.0,
      "depth": null,
      "flow": {
-      "totalVolume": 439.49,
-      "latestOI": 1403.41,
-      "oiChange": 313.68000000000006,
+      "totalVolume": 144.0,
+      "latestOI": 144.0,
+      "oiChange": 0,
       "oiSeries": [
-       1089.73,
-       1135.13,
-       1135.13,
-       1136.13,
-       1149.13,
-       1389.26,
-       1403.41
-      ]
-     }
-    },
-    {
-     "ticker": "KXWNBA-27-LV",
-     "name": "Las Vegas",
-     "price": 16.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 18.93,
-      "latestOI": 71.98,
-      "oiChange": 17.930000000000007,
-      "oiSeries": [
-       54.05,
-       54.05,
-       71.98,
-       71.98,
-       71.98
+       144.0
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-17T04:59:48+00:00",
+   "fetchedAt": "2026-11-17T10:25:45+00:00",
    "stale": false
   }
  }
