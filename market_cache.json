@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-16T23:28:22+00:00",
+ "lastRun": "2026-11-17T04:20:51+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,11 +10,11 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 78.0
+       "pct": 77.0
       },
       {
        "name": "Ja'Marr Chase",
-       "pct": 8.0
+       "pct": 13.0
       },
       {
        "name": "CeeDee Lamb",
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 52.0
+       "pct": 56.0
       },
       {
        "name": "Jordan Love",
-       "pct": 16.0
+       "pct": 14.0
       },
       {
        "name": "Dak Prescott",
-       "pct": 10.0
+       "pct": 11.0
       }
      ],
      "totalMarkets": 29
@@ -49,28 +49,29 @@
      "ticker": "KXLEADERNFLINT",
      "options": [
       {
-       "name": "Amani Hooker",
-       "pct": 68.0
-      },
-      {
-       "name": "Renardo Green",
-       "pct": 46.0
-      },
-      {
        "name": "Xavier McKinney",
-       "pct": 18.0
+       "pct": 43.0
+      },
+      {
+       "name": "Amani Hooker",
+       "pct": 9.0
+      },
+      {
+       "name": "Xavier Watts",
+       "pct": 9.0
       }
      ],
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-16T23:28:22+00:00",
+   "fetchedAt": "2026-11-17T04:20:51+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Washington": 3.0,
     "Seattle": 2.0,
+    "Portland": 21.0,
     "New York": 11.0,
     "Minnesota": 5.0,
     "Las Vegas": 16.0,
@@ -80,21 +81,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-16T23:28:22+00:00",
+   "fetchedAt": "2026-11-17T04:20:51+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-16T23:28:22+00:00",
+   "fetchedAt": "2026-11-17T04:20:51+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-16T23:28:22+00:00",
+   "fetchedAt": "2026-11-17T04:20:51+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -138,7 +139,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-16T23:28:22+00:00",
+   "fetchedAt": "2026-11-17T04:20:51+00:00",
    "stale": false
   }
  }
