@@ -4697,33 +4697,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401866466,
-      "homeTeam": "Kent State",
-      "awayTeam": "Miami (OH)",
-      "predictedMargin": -5.1,
-      "predictedTotal": 50.1,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866465,
-      "homeTeam": "Western Michigan",
-      "awayTeam": "Eastern Michigan",
-      "predictedMargin": 21.8,
-      "predictedTotal": 47.3,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866464,
-      "homeTeam": "Ohio",
-      "awayTeam": "Ball State",
-      "predictedMargin": 31.2,
-      "predictedTotal": 51.0,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401866469,
       "homeTeam": "Buffalo",
       "awayTeam": "Central Michigan",
@@ -81969,16 +81942,82 @@
       "snapshotDate": "2026-11-09",
       "gradedDate": "2026-11-17",
       "shown": 23.5
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Miami (OH) @ Kent State",
+      "stat": "winner",
+      "line": -5.1,
+      "actual": -17,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Miami (OH) @ Kent State",
+      "stat": "total_within3",
+      "line": 50.1,
+      "actual": 23,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Eastern Michigan @ Western Michigan",
+      "stat": "winner",
+      "line": 21.8,
+      "actual": 7,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Eastern Michigan @ Western Michigan",
+      "stat": "total_within3",
+      "line": 47.3,
+      "actual": 61,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Ball State @ Ohio",
+      "stat": "winner",
+      "line": 31.2,
+      "actual": 7,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Ball State @ Ohio",
+      "stat": "total_within3",
+      "line": 51.0,
+      "actual": 63,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-18"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 540,
-      "hits": 355,
-      "rate": 65.7
+      "graded": 543,
+      "hits": 358,
+      "rate": 65.9
     },
     "cfb_total_within3": {
-      "graded": 540,
+      "graded": 543,
       "hits": 65,
       "rate": 12.0
     },
