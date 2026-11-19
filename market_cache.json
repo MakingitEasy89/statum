@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-08T21:34:49+00:00",
+ "lastRun": "2026-11-19T22:28:36+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 71.0
+       "pct": 75.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 11.0
+       "pct": 7.0
       },
       {
-       "name": "Tee Higgins",
-       "pct": 7.0
+       "name": "Ja'Marr Chase",
+       "pct": 4.0
       }
      ],
      "totalMarkets": 29
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 37.0
-      },
-      {
-       "name": "Jared Goff",
-       "pct": 18.0
+       "pct": 51.0
       },
       {
        "name": "Jordan Love",
-       "pct": 12.0
+       "pct": 19.0
+      },
+      {
+       "name": "Dak Prescott",
+       "pct": 9.0
       }
      ],
      "totalMarkets": 29
@@ -49,50 +49,53 @@
      "ticker": "KXLEADERNFLINT",
      "options": [
       {
+       "name": "Xavier McKinney",
+       "pct": 17.0
+      },
+      {
+       "name": "Amani Hooker",
+       "pct": 9.0
+      },
+      {
        "name": "Xavier Watts",
        "pct": 9.0
-      },
-      {
-       "name": "Kyle Hamilton",
-       "pct": 9.0
-      },
-      {
-       "name": "Alex Anzalone",
-       "pct": 8.0
       }
      ],
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-08T21:34:49+00:00",
+   "fetchedAt": "2026-11-19T22:28:36+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
-    "Washington": 2.0,
-    "New York": 6.0,
-    "Minnesota": 11.0,
-    "Las Vegas": 16.0,
-    "Indiana": 7.0,
-    "Golden State": 49.0,
-    "Dallas": 4.0,
-    "Atlanta": 11.0
+    "Washington": 5.0,
+    "Seattle": 2.0,
+    "Portland": 18.0,
+    "New York": 11.0,
+    "Minnesota": 21.0,
+    "Las Vegas": 17.0,
+    "Los Angeles": 2.0,
+    "Indiana": 11.0,
+    "Golden State": 24.0,
+    "Dallas": 16.0,
+    "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-08T21:34:49+00:00",
+   "fetchedAt": "2026-11-19T22:28:36+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-08T21:34:49+00:00",
+   "fetchedAt": "2026-11-19T22:28:36+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-08T21:34:49+00:00",
+   "fetchedAt": "2026-11-19T22:28:36+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -100,56 +103,60 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 49.0,
+     "price": 24.0,
      "depth": null,
      "flow": {
-      "totalVolume": 1097.44,
-      "latestOI": 997.96,
-      "oiChange": 942.24,
+      "totalVolume": 436.53,
+      "latestOI": 1541.41,
+      "oiChange": 405.28,
       "oiSeries": [
-       55.72,
-       819.75,
-       835.75,
-       964.99,
-       997.96
-      ]
-     }
-    },
-    {
-     "ticker": "KXWNBA-27-LV",
-     "name": "Las Vegas",
-     "price": 16.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 55.1,
-      "latestOI": 53.05,
-      "oiChange": 2.049999999999997,
-      "oiSeries": [
-       51.0,
-       51.0,
-       53.05,
-       53.05
+       1136.13,
+       1149.13,
+       1389.26,
+       1403.41,
+       1403.41,
+       1536.41,
+       1541.41
       ]
      }
     },
     {
      "ticker": "KXWNBA-27-MIN",
      "name": "Minnesota",
-     "price": 11.0,
+     "price": 21.0,
      "depth": null,
      "flow": {
-      "totalVolume": 51.0,
-      "latestOI": 51.0,
-      "oiChange": 0.0,
+      "totalVolume": 111.68,
+      "latestOI": 121.57,
+      "oiChange": 60.67999999999999,
       "oiSeries": [
-       51.0,
-       51.0,
-       51.0
+       60.89,
+       60.89,
+       60.89,
+       60.89,
+       121.57,
+       121.57
+      ]
+     }
+    },
+    {
+     "ticker": "KXWNBA-27-PDX",
+     "name": "Portland",
+     "price": 18.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 224.0,
+      "latestOI": 224.0,
+      "oiChange": 80.0,
+      "oiSeries": [
+       144.0,
+       224.0,
+       224.0
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-08T21:34:49+00:00",
+   "fetchedAt": "2026-11-19T22:28:36+00:00",
    "stale": false
   }
  }

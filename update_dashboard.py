@@ -1034,6 +1034,208 @@ def _compact_json(obj):
     return json.dumps(_shrink_floats(obj), separators=(',', ':'))
 
 
+# ---------------------------------------------------------------------------
+# Posted-line history (the DART series)
+# ---------------------------------------------------------------------------
+# The one thing in this pipeline that cannot be backfilled. A line that closed last
+# Tuesday is gone — no API sells it back. So this appends a snapshot of every posted line
+# on every run, and the series it accumulates is what the DART/CLV view reads later.
+#
+# Shape, per (sport, player, stat, game date):
+#   o   [line, iso_timestamp]   first line seen that day  -> the "open"
+#   c   [line, iso_timestamp]   most recent line seen     -> the "close" as it moves
+#   n   observations that day
+#   p50 Statum's own P50 at capture time, so model-vs-market is comparable later
+#   bk  how many books were quoting it
+# Keys are flat strings rather than nested dicts to keep the file small and diff-friendly.
+
+# ---------------------------------------------------------------------------
+# Cross-sport lookup index (powers the Ask bar)
+# ---------------------------------------------------------------------------
+# Deliberately NOT data-search.json: that file is the global palette's name stub, with a
+# different schema and a different job. This one carries ladder values so a question like
+# "P50 for Jefferson and Henry" is answered inline instead of navigating somewhere. Both
+# ship; they do different things.
+#
+# Rows are arrays rather than objects because the naive shape is several times larger for
+# the same content, and this downloads before the first answer can appear.
+
+SEARCH_DEFAULT_STAT = {
+    'nfl': {'WR': 'Receiving Yards', 'TE': 'Receiving Yards', 'RB': 'Rush Yards',
+            'QB': 'Passing Yards', 'K': 'Kicking Points', None: 'Receiving Yards'},
+    'nba': {None: 'Points'},
+    'wnba': {None: 'Points'},
+    'mlb': {'P': 'Strikeouts', None: 'Hits'},
+}
+
+
+def _lookup_team_pos(players):
+    """name -> (team, pos). WNBA and MLB pool rows carry neither, so they are joined back
+    from the players array; NFL and NBA rows already have both and take precedence."""
+    out = {}
+    for p in players or []:
+        name = p.get('name')
+        if not name:
+            continue
+        pos = p.get('pos') or p.get('position')
+        if not pos and p.get('group'):
+            pos = 'P' if str(p['group']).lower().startswith('pitch') else 'H'
+        out[name] = (p.get('team'), pos)
+    return out
+
+
+def build_lookup_index(sources):
+    """One row per player per sport, carrying every ladder computed for them.
+
+    A sport with no pool this run contributes nothing rather than an empty shell, so the
+    Ask bar can tell "no data for that sport" from "no such player"."""
+    rows, stats_by_sport, skipped = [], {}, {}
+    for sport, src in (sources or {}).items():
+        pool = (src or {}).get('pool') or []
+        if not pool:
+            skipped[sport] = 'no pool data this run'
+            continue
+        lookup = _lookup_team_pos((src or {}).get('players'))
+        by_player, stat_names = {}, set()
+        for e in pool:
+            if e.get('kind') != 'ladder':
+                continue
+            name, stat = e.get('player'), e.get('stat')
+            if not name or not stat:
+                continue
+            tranches = []
+            for key in ('p25', 'p50', 'p75'):
+                t = e.get(key) or {}
+                line, hit = t.get('line'), t.get('testHit')
+                if line is None or hit is None:
+                    tranches = None
+                    break
+                tranches.extend([round(float(line), 2), round(float(hit), 1)])
+            if not tranches:
+                continue        # a partial ladder is not a usable answer
+            stat_names.add(stat)
+            team, pos = lookup.get(name, (None, None))
+            rec = by_player.setdefault(name, {
+                'n': name, 's': sport,
+                't': e.get('team') or team, 'p': e.get('pos') or pos, 'l': {},
+            })
+            rec['l'][stat] = tranches + [int(e.get('testGames') or 0),
+                                         1 if e.get('isRookie') else 0]
+        rows.extend(by_player.values())
+        stats_by_sport[sport] = sorted(stat_names)
+    return {
+        'generatedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
+        'schema': ['p25Line', 'p25Hit', 'p50Line', 'p50Hit', 'p75Line', 'p75Hit',
+                   'testGames', 'isRookie'],
+        'defaultStat': SEARCH_DEFAULT_STAT,
+        'statsBySport': stats_by_sport,
+        'skipped': skipped,
+        'players': sorted(rows, key=lambda r: (r['s'], r['n'])),
+    }
+
+
+LINE_HISTORY_PATH = SCRIPT_DIR / "line_history.json"
+LINE_HISTORY_KEEP_DAYS = 400       # ~2 NFL seasons; prevents unbounded growth
+
+
+def _consensus_line(real_lines):
+    """Median posted line across books. Median rather than mean: one book hanging a stale
+    or wildly off number should not drag the consensus, and that happens often enough to
+    matter on thin markets."""
+    pts = sorted(r['line'] for r in (real_lines or []) if r.get('line') is not None)
+    if not pts:
+        return None, 0
+    mid = len(pts) // 2
+    med = pts[mid] if len(pts) % 2 else (pts[mid - 1] + pts[mid]) / 2.0
+    return round(float(med), 2), len(pts)
+
+
+def capture_line_history(sources, path=LINE_HISTORY_PATH, now=None,
+                         keep_days=LINE_HISTORY_KEEP_DAYS):
+    """Append this run's posted lines to the history file.
+
+    `sources` is {sport: {'pool': [...], 'date': 'YYYY-MM-DD'}}. Pool entries carry
+    'realLines' from the odds fetch; entries without them are skipped silently, since a
+    player with no posted line simply has nothing to record.
+
+    Only ever adds. An existing day's 'o' is never overwritten — that is the open, and the
+    whole point is that it is the first thing we saw. 'c' advances on every run."""
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    stamp = now.isoformat(timespec='seconds')
+    today = now.date().isoformat()
+
+    try:
+        store = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+    except (ValueError, OSError):
+        # A corrupt history is worse than a short one, but losing it silently is worse
+        # still — rename it so it can be recovered by hand, and start clean.
+        try:
+            path.rename(path.with_suffix('.corrupt.json'))
+            print(f"  [!] line_history.json was unreadable — kept as {path.with_suffix('.corrupt.json').name}")
+        except OSError:
+            pass
+        store = {}
+    rows = store.get('rows') or {}
+
+    added = updated = 0
+    for sport, src in (sources or {}).items():
+        for entry in (src or {}).get('pool') or []:
+            real = entry.get('realLines')
+            if not real:
+                continue
+            line, books = _consensus_line(real)
+            if line is None:
+                continue
+            key = f"{sport}|{entry.get('player')}|{entry.get('stat')}|{today}"
+            p50 = ((entry.get('p50') or {}).get('line'))
+            row = rows.get(key)
+            if row is None:
+                rows[key] = {'o': [line, stamp], 'c': [line, stamp], 'n': 1,
+                             'p50': p50, 'bk': books}
+                added += 1
+            else:
+                # The open stays put. Only the close moves.
+                row['c'] = [line, stamp]
+                row['n'] = int(row.get('n') or 0) + 1
+                row['bk'] = max(int(row.get('bk') or 0), books)
+                if row.get('p50') is None:
+                    row['p50'] = p50
+                updated += 1
+
+    # Prune by the date in the key so the file cannot grow forever.
+    if keep_days:
+        cutoff = (now.date() - datetime.timedelta(days=keep_days)).isoformat()
+        rows = {k: v for k, v in rows.items() if k.rsplit('|', 1)[-1] >= cutoff}
+
+    store = {'version': 1, 'updated': stamp, 'rows': rows}
+    path.write_text(_compact_json(store), encoding='utf-8')
+    return {'added': added, 'updated': updated, 'total': len(rows)}
+
+
+def summarize_line_moves(path=LINE_HISTORY_PATH, min_move=0.5, limit=10):
+    """The lines that moved most today — the first thing the DART view will show, and
+    useful in the run log straight away so the capture proves itself from day one."""
+    try:
+        rows = (json.loads(path.read_text(encoding='utf-8')) or {}).get('rows') or {}
+    except (ValueError, OSError):
+        return []
+    moves = []
+    for key, row in rows.items():
+        try:
+            sport, player, stat, day = key.split('|')
+            o, c = row['o'][0], row['c'][0]
+        except (ValueError, KeyError, IndexError, TypeError):
+            continue
+        if row.get('n', 0) < 2 or o is None or c is None:
+            continue
+        delta = round(c - o, 2)
+        if abs(delta) >= min_move:
+            moves.append({'sport': sport, 'player': player, 'stat': stat, 'day': day,
+                          'open': o, 'close': c, 'move': delta, 'p50': row.get('p50')})
+    moves.sort(key=lambda m: -abs(m['move']))
+    return moves[:limit]
+
+
 def write_search_stub(path, wnba_players, mlb_players, nba_players, cfb_teams):
     """~100KB name index for the global search box, so searching never has to download the
     multi-MB per-sport files. Real data files are still fetched when a result is opened."""
@@ -6863,6 +7065,28 @@ def main():
             print(f"  MLB: matched real lines for {len(mlb_odds)} player/stat combos")
             if ODDS_CREDITS_REMAINING is not None:
                 print(f"  Credits remaining on your the-odds-api.com plan: {ODDS_CREDITS_REMAINING}")
+
+            # Snapshot every posted line we just saw. This is the only data in the whole
+            # pipeline that cannot be reconstructed later, so it runs inside the odds block
+            # the moment the lines are in hand, and its failures never stop the run.
+            try:
+                cap = capture_line_history({
+                    'nfl': {'pool': full_pool},
+                    'wnba': {'pool': wnba_pool},
+                    'mlb': {'pool': mlb_pool},
+                    'nba': {'pool': nba_pool},
+                })
+                print(f"  Line history: {cap['added']} new, {cap['updated']} updated, "
+                      f"{cap['total']} rows on file")
+                moves = summarize_line_moves()
+                if moves:
+                    print("  Biggest line moves since open:")
+                    for m in moves[:5]:
+                        arrow = "up" if m['move'] > 0 else "down"
+                        print(f"    {m['player']} {m['stat']}: {m['open']} -> {m['close']} "
+                              f"({arrow} {abs(m['move'])})")
+            except Exception as e:
+                print(f"  [!] Line history error: {e} — nothing else affected.")
         except Exception as e:
             print(f"  Real odds fetch error: {e} — continuing without real lines this run, everything else unaffected.")
     else:
@@ -7019,6 +7243,27 @@ def main():
         write_search_stub(SCRIPT_DIR / "data-search.json", wnba_players, mlb_players, nba_players, cfb_teams)
     except Exception as e:
         print(f"  [!] Search index skipped: {e} — the search box still works for sports already loaded.")
+
+    # The Ask bar's own index — ladder values, so a question is answered inline rather than
+    # navigated to. Separate file from the palette stub above on purpose.
+    lookup_path = SCRIPT_DIR / "data-lookup.json"
+    try:
+        lookup = build_lookup_index({
+            'nfl': {'pool': full_pool, 'players': receivers + qbs + kickers},
+            'nba': {'pool': nba_pool, 'players': nba_players},
+            'wnba': {'pool': wnba_pool, 'players': wnba_players},
+            'mlb': {'pool': mlb_pool, 'players': mlb_players},
+        })
+        lookup_path.write_text(_compact_json(lookup), encoding='utf-8')
+        n_lines = sum(len(r['l']) for r in lookup['players'])
+        by_sport = ", ".join(f"{s}:{sum(1 for r in lookup['players'] if r['s'] == s)}"
+                             for s in sorted(lookup['statsBySport']))
+        print(f"  Ask bar index: {len(lookup['players'])} players, {n_lines} ladders ({by_sport})")
+        for sport, why in (lookup.get('skipped') or {}).items():
+            print(f"    [!] {sport} not answerable this run — {why}")
+    except Exception as e:
+        print(f"  [!] Ask bar index error: {e} — the Ask bar will say it's unavailable, "
+              f"nothing else affected.")
     sizes = " · ".join(f"{p.name} ({p.stat().st_size/1024:.0f} KB)" for p in
                        (wnba_json_path, mlb_json_path, cfb_json_path, nba_json_path) if p.exists())
     print(f"  Wrote {sizes} — all fetched on demand, not embedded")
@@ -7102,7 +7347,7 @@ def main():
         # market_cache.json rides along so the last good Kalshi/Polymarket values survive
         # between Actions runs — a transient API failure then costs you hours of freshness,
         # not a fall-back-to-a-months-old-constant.
-        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'data-nba.json', 'data-search.json', 'accuracy.json',
+        files_to_add = [f for f in ['index.html', 'data-wnba.json', 'data-mlb.json', 'data-cfb.json', 'data-nba.json', 'data-search.json', 'data-lookup.json', 'line_history.json', 'accuracy.json',
                                     'accuracy_ledger.json', 'market_cache.json', 'news_cache.json']
                         if (SCRIPT_DIR / f).exists()]
         for source_file in ['update_dashboard.py', 'dashboard_template.jsx', 'guide.html', 'market_probe.py']:

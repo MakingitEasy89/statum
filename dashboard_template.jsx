@@ -25,7 +25,9 @@ const DAILY_BRIEFS = __DAILY_BRIEFS__;
 // WNBA, MLB, and CFB data are NOT embedded here — they're fetched on demand the first
 // time you switch to that sport, instead of every visitor's browser having to load and
 // parse every sport's data just to see the page. This is the fix for the mobile crash.
-let SportDataCache = { wnba: null, mlb: null, cfb: null, nba: null };
+// "lookup" rides the same lazy ./data-<key>.json loader as the sport bundles — it is
+// the Ask bar's ladder index, fetched only when someone actually asks something.
+let SportDataCache = { wnba: null, mlb: null, cfb: null, nba: null, lookup: null };
 function nbaPlayers() { return SportDataCache.nba?.players || []; }
 function nbaPool() { return SportDataCache.nba?.pool || []; }
 function nbaTeamDefense() { return SportDataCache.nba?.teamDefense || {}; }
@@ -2684,6 +2686,361 @@ function MarketPulseView({ sport }) {
 // =====================================================================
 
 // =====================================================================
+// ASK STATUM — inline cross-sport lookup
+// =====================================================================
+// Answers "P50 for Justin Jefferson, Derrick Henry" from data-lookup.json. This is the
+// companion to GlobalSearch, not a replacement: the palette takes you to a player, this
+// gives you the number without leaving the page. Deliberately deterministic — it reads
+// lines the pipeline computed and can only return those or nothing, because a confidently
+// wrong line is far worse here than an honest miss.
+
+// Spoken and typed stat names don't match the pipeline's labels. The data says "Rush
+// Yards"; people say "rushing yards". Longest alias wins so "passing touchdowns" is not
+// eaten by "passing".
+const ASK_STAT_ALIASES = {
+  "Receiving Yards": ["receiving yards", "rec yards", "rec yds", "receiving", "yards receiving"],
+  "Receptions": ["receptions", "catches", "recs", "rec"],
+  "Targets": ["targets", "tgts"],
+  "Rush Yards": ["rushing yards", "rush yards", "rush yds", "rushing", "yards rushing"],
+  "Rush Attempts": ["rushing attempts", "rush attempts", "carries", "attempts"],
+  "Passing Yards": ["passing yards", "pass yards", "pass yds", "passing"],
+  "Passing Touchdowns": ["passing touchdowns", "passing tds", "pass tds", "td passes"],
+  "Completions": ["completions", "comps"],
+  "QB Rush Yards": ["qb rush yards", "quarterback rushing"],
+  "Kicking Points": ["kicking points", "kicker points"],
+  "FG Made": ["field goals made", "fg made", "field goals", "fgs"],
+  "Points": ["points", "pts", "buckets"],
+  "Rebounds": ["rebounds", "boards", "rebs", "reb"],
+  "Assists": ["assists", "dimes", "asts", "ast"],
+  "Steals": ["steals", "stls", "stl"],
+  "Blocks": ["blocks", "blks", "blk"],
+  "Three-Pointers Made": ["three pointers made", "three pointers", "threes", "3 pointers", "3pm"],
+  "Hits": ["hits"],
+  "HR": ["home runs", "homers", "hr", "dingers"],
+  "RBI": ["rbis", "rbi", "runs batted in"],
+  "Runs": ["runs scored", "runs"],
+  "Total Bases": ["total bases", "bases", "tb"],
+  "Strikeouts": ["strikeouts", "punchouts", "ks", "k"],
+};
+
+function askNorm(s) {
+  return String(s || "")
+    .toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[.'’`]/g, "")
+    .replace(/[^a-z0-9 ]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// Same normalization, but commas and semicolons survive — they are how someone separates
+// four players in one question, and askNorm deletes them.
+function askNormQuery(s) {
+  return String(s || "")
+    .toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[.'’`]/g, "")
+    .replace(/[^a-z0-9,; ]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// Strip the suffix so "Odell Beckham Jr." matches a stored "Odell Beckham".
+function askNameKey(s) {
+  return askNorm(s).replace(/\b(jr|sr|ii|iii|iv|v)\b/g, "").replace(/\s+/g, " ").trim();
+}
+
+// Words never part of a name but constant in a spoken question. Deliberately excludes
+// "and": that is a separator, and removing it before the split would weld four players
+// into one unmatchable string.
+const ASK_FILLER = new Set(("hey statum what whats is are the for of on vs versus me my give show tell get " +
+  "ask please their his her hit rate rates line lines over under in at a an to do does how much many about " +
+  "with anytime number numbers stat stats value values look up lookup today tonight week").split(" "));
+
+// Order is the whole correctness story: normalize keeping separators -> cut the tranche ->
+// cut the stats -> SPLIT -> only then drop filler. Splitting last welds "a, b and c" into
+// one string; dropping filler first deletes the "and" the split needs; not cutting the
+// tranche and stat text leaves "p50" and "rushing" to be matched against surnames.
+function parseAskQuery(raw, knownStats) {
+  const text = askNormQuery(raw);
+  if (!text) return null;
+
+  let tranche = null;
+  const tm = text.match(/\bp\s*(25|50|75)\b/);
+  if (tm) tranche = "p" + tm[1];
+  else if (/\bmedian\b/.test(text)) tranche = "p50";
+  else if (/\b(floor|safe|low)\b/.test(text)) tranche = "p25";
+  else if (/\b(ceiling|upside|high)\b/.test(text)) tranche = "p75";
+
+  // Two different questions: "is this a stat word?" and "do we have that stat?". EVERY
+  // known stat word is cut, because a leftover "rebounds" gets read as part of a surname
+  // and makes a real player unfindable. Only stats the data holds are recorded.
+  const allowed = knownStats && knownStats.length
+    ? new Set(knownStats) : new Set(Object.keys(ASK_STAT_ALIASES));
+  const pairs = [];
+  for (const [canon, aliases] of Object.entries(ASK_STAT_ALIASES)) {
+    for (const a of aliases) pairs.push([a, canon]);
+  }
+  pairs.sort((x, y) => y[0].length - x[0].length);
+
+  let rest = " " + text.replace(/\bp\s*(25|50|75)\b/g, " ")
+                       .replace(/\b(median|floor|ceiling|upside)\b/g, " ") + " ";
+  const stats = [];
+  for (const [alias, canon] of pairs) {
+    const re = new RegExp("(?<=[\\s,;])" + alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?=[\\s,;])", "g");
+    if (re.test(rest)) {
+      if (allowed.has(canon) && !stats.includes(canon)) stats.push(canon);
+      rest = rest.replace(re, " ");
+    }
+  }
+
+  const names = rest.split(/\s*(?:,|;|\/|\band\b|\+|&)\s*/)
+    .map(seg => seg.split(/\s+/).filter(w => w && !ASK_FILLER.has(w)).join(" ").trim())
+    .filter(s => s.length >= 2);
+
+  return { tranche: tranche || "p50", trancheExplicit: !!tranche, stats, names, raw: String(raw || "") };
+}
+
+// Ranked name match. Exact beats prefix beats surname beats token-subset.
+function matchAskPlayers(name, index, sportFilter) {
+  const q = askNameKey(name);
+  if (!q || !index || !index.players) return [];
+  const qTokens = q.split(" ").filter(Boolean);
+  const scored = [];
+  for (const row of index.players) {
+    if (sportFilter && row.s !== sportFilter) continue;
+    const key = askNameKey(row.n);
+    if (!key) continue;
+    const tokens = key.split(" ").filter(Boolean);
+    const last = tokens[tokens.length - 1];
+    let score = 0;
+    if (key === q) score = 100;
+    else if (key.startsWith(q)) score = 80;
+    else if (qTokens.length === 1 && last === q) score = 70;
+    else if (qTokens.length === 1 && tokens.includes(q)) score = 55;
+    else if (qTokens.every(t => tokens.some(tok => tok.startsWith(t)))) score = 45;
+    else if (key.includes(q)) score = 30;
+    if (score) scored.push({ row, score });
+  }
+  scored.sort((a, b) => b.score - a.score || a.row.n.length - b.row.n.length);
+  return scored;
+}
+
+const ASK_SCHEMA_IDX = { p25: [0, 1], p50: [2, 3], p75: [4, 5] };
+
+function pickAskStat(row, requestedStats, index) {
+  const have = Object.keys(row.l || {});
+  if (!have.length) return null;
+  for (const s of requestedStats || []) if (have.includes(s)) return s;
+  const defaults = (index && index.defaultStat && index.defaultStat[row.s]) || {};
+  const byPos = defaults[row.p] || defaults[""] || defaults["null"] || defaults[null];
+  if (byPos && have.includes(byPos)) return byPos;
+  return have[0];
+}
+
+function answerAskQuery(parsed, index, sportFilter) {
+  if (!parsed) return { rows: [], misses: [], ambiguous: [] };
+  const rows = [], misses = [], ambiguous = [];
+  const seen = new Set();
+  for (const name of parsed.names) {
+    const hits = matchAskPlayers(name, index, sportFilter);
+    if (!hits.length) { misses.push(name); continue; }
+    const top = hits[0];
+    const tied = hits.filter(h => h.score === top.score);
+    // Any tie at the top is ambiguous, INCLUDING two exact matches — two real players
+    // share a name more often than people expect, and silently picking one is how you
+    // quote the wrong man's line to someone about to bet on it.
+    if (tied.length > 1) {
+      ambiguous.push({ query: name, options: tied.slice(0, 5).map(h => h.row) });
+      continue;
+    }
+    const row = top.row;
+    if (seen.has(row.s + "|" + row.n)) continue;
+    seen.add(row.s + "|" + row.n);
+    const wanted = (parsed.stats || []).filter(s => (row.l || {})[s]);
+    const statList = wanted.length ? wanted : [pickAskStat(row, parsed.stats, index)].filter(Boolean);
+    for (const stat of statList) {
+      const vals = row.l[stat];
+      if (!vals) continue;
+      const [lineIdx, hitIdx] = ASK_SCHEMA_IDX[parsed.tranche] || ASK_SCHEMA_IDX.p50;
+      rows.push({
+        player: row.n, sport: row.s, team: row.t, pos: row.p, stat,
+        tranche: parsed.tranche,
+        line: vals[lineIdx], hitPct: vals[hitIdx],
+        all: { p25: [vals[0], vals[1]], p50: [vals[2], vals[3]], p75: [vals[4], vals[5]] },
+        testGames: vals[6], isRookie: !!vals[7],
+        statInferred: !wanted.length && !!(parsed.stats || []).length,
+        statDefaulted: !(parsed.stats || []).length,
+      });
+    }
+  }
+  return { rows, misses, ambiguous };
+}
+
+const ASK_SPORT_LABEL = { nfl: "NFL", nba: "NBA", wnba: "WNBA", mlb: "MLB" };
+const ASK_EXAMPLES = [
+  "P50 for Justin Jefferson, Derrick Henry",
+  "P25 Cade Cunningham",
+  "P75 A'ja Wilson rebounds",
+];
+
+function AskStatum({ index, status, onNeedIndex, sport }) {
+  const [q, setQ] = useState("");
+  const [submitted, setSubmitted] = useState("");
+  const [scopeToSport, setScopeToSport] = useState(false);
+
+  const knownStats = useMemo(() => {
+    if (!index || !index.statsBySport) return null;
+    const all = new Set();
+    Object.values(index.statsBySport).forEach(list => (list || []).forEach(x => all.add(x)));
+    return [...all];
+  }, [index]);
+
+  const result = useMemo(() => {
+    if (!submitted || !index) return null;
+    const parsed = parseAskQuery(submitted, knownStats);
+    if (!parsed) return null;
+    const scope = scopeToSport && ASK_SPORT_LABEL[sport] ? sport : null;
+    return { parsed, ...answerAskQuery(parsed, index, scope) };
+  }, [submitted, index, knownStats, scopeToSport, sport]);
+
+  function run(text) {
+    const v = text !== undefined ? text : q;
+    if (text !== undefined) setQ(text);
+    if (onNeedIndex) onNeedIndex();
+    setSubmitted(v);
+  }
+
+  const T = (v) => (v === null || v === undefined ? "—" : v);
+  const cell = { padding: "7px 10px", fontSize: 12.5, borderBottom: "1px solid var(--overlay-6)" };
+  const head = { ...cell, fontSize: 10.5, letterSpacing: "0.09em", textTransform: "uppercase",
+                 color: "var(--text-secondary-b)", fontWeight: 700, textAlign: "left" };
+
+  return (
+    <Glass hover={false} style={{ padding: "13px 16px", marginBottom: 14 }}>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <span style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase",
+                       fontWeight: 800, color: ACCENT.teal, whiteSpace: "nowrap" }}>Ask Statum</span>
+        <input
+          value={q}
+          onChange={e => setQ(e.target.value)}
+          onFocus={onNeedIndex}
+          onKeyDown={e => { if (e.key === "Enter") run(); }}
+          placeholder="P50 for Justin Jefferson, Derrick Henry…"
+          style={{ flex: "1 1 240px", minWidth: 0, background: "transparent", color: "var(--text-primary-b)",
+                   border: "1px solid var(--overlay-6)", borderRadius: 10, padding: "8px 12px", fontSize: 13 }}
+        />
+        <button onClick={() => run()} className="bubble-btn" style={{
+          background: ACCENT.teal, color: "#08090B", border: "none", borderRadius: 10,
+          padding: "8px 16px", fontSize: 12.5, fontWeight: 800, cursor: "pointer", whiteSpace: "nowrap",
+        }}>Look up</button>
+        {ASK_SPORT_LABEL[sport] && (
+          <label style={{ fontSize: 11, color: "var(--text-secondary-b)", display: "flex",
+                          alignItems: "center", gap: 5, whiteSpace: "nowrap", cursor: "pointer" }}>
+            <input type="checkbox" checked={scopeToSport} onChange={e => setScopeToSport(e.target.checked)} />
+            {ASK_SPORT_LABEL[sport]} only
+          </label>
+        )}
+      </div>
+
+      {!submitted && (
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 9 }}>
+          {ASK_EXAMPLES.map(ex => (
+            <button key={ex} onClick={() => run(ex)} className="bubble-btn" style={{
+              background: "transparent", color: "var(--text-secondary-b)", border: "1px solid var(--overlay-6)",
+              borderRadius: 999, padding: "3px 10px", fontSize: 10.5, cursor: "pointer",
+            }}>{ex}</button>
+          ))}
+        </div>
+      )}
+
+      {status === "loading" && <div style={{ fontSize: 11.5, color: "var(--text-secondary-b)", marginTop: 9 }}>Loading the index…</div>}
+      {status === "error" && (
+        <div style={{ fontSize: 11.5, color: ACCENT.rose, marginTop: 9 }}>
+          Couldn't load data-lookup.json. Everything else on the site is unaffected.
+        </div>
+      )}
+
+      {result && status === "loaded" && (
+        <div style={{ marginTop: 11 }}>
+          {result.rows.length > 0 && (
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead><tr>
+                  <th style={head}>Player</th><th style={head}>Stat</th>
+                  <th style={head}>{result.parsed.tranche.toUpperCase()} line</th>
+                  <th style={head}>Hit</th><th style={head}>P25</th><th style={head}>P50</th><th style={head}>P75</th>
+                  <th style={head}>Games</th>
+                </tr></thead>
+                <tbody>
+                  {result.rows.map((r, i) => (
+                    <tr key={i}>
+                      <td style={{ ...cell, fontWeight: 700 }}>
+                        {r.player}
+                        <span style={{ color: "var(--text-secondary-b)", fontWeight: 400, fontSize: 10.5, marginLeft: 6 }}>
+                          {ASK_SPORT_LABEL[r.sport] || r.sport}{r.team ? ` · ${r.team}` : ""}{r.pos ? ` · ${r.pos}` : ""}
+                        </span>
+                        {r.isRookie && <span style={{ color: ACCENT.amber, fontSize: 10, marginLeft: 6 }}>ROOKIE LINE</span>}
+                      </td>
+                      <td style={cell}>
+                        {r.stat}
+                        {r.statInferred && <span style={{ color: ACCENT.amber, fontSize: 10, marginLeft: 5 }}>(closest available)</span>}
+                      </td>
+                      <td style={{ ...cell, fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, color: ACCENT.teal }}>{T(r.line)}</td>
+                      <td style={{ ...cell, fontFamily: "'JetBrains Mono', monospace" }}>{T(r.hitPct)}%</td>
+                      {["p25", "p50", "p75"].map(k => (
+                        <td key={k} style={{ ...cell, fontFamily: "'JetBrains Mono', monospace",
+                              fontSize: 11.5, color: k === r.tranche ? ACCENT.teal : "var(--text-secondary-b)" }}>
+                          {T(r.all[k][0])} <span style={{ opacity: 0.65 }}>/ {T(r.all[k][1])}%</span>
+                        </td>
+                      ))}
+                      <td style={{ ...cell, fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5 }}>{T(r.testGames)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div style={{ fontSize: 10.5, color: "var(--text-tertiary)", marginTop: 7, lineHeight: 1.6 }}>
+                Lines are percentiles of the player's own baseline games. The hit % is how often he cleared
+                that line in a held-out slice he was never fitted on — not a projection for the next game.
+                {result.rows.some(r => r.statDefaulted) && " Stat chosen by position where none was given."}
+              </div>
+            </div>
+          )}
+
+          {result.ambiguous.map((a, i) => (
+            <div key={i} style={{ fontSize: 12, color: ACCENT.amber, marginTop: 9 }}>
+              More than one player matches <b>{a.query}</b> — pick one:{" "}
+              {a.options.map(o => (
+                <button key={o.s + o.n} onClick={() => run(`${result.parsed.tranche} ${o.n}`)}
+                  className="bubble-btn"
+                  style={{ background: "transparent", color: ACCENT.teal, border: "1px solid var(--overlay-6)",
+                           borderRadius: 999, padding: "2px 9px", fontSize: 11, cursor: "pointer", margin: "0 4px" }}>
+                  {o.n} ({ASK_SPORT_LABEL[o.s] || o.s}{o.t ? ` · ${o.t}` : ""})
+                </button>
+              ))}
+            </div>
+          ))}
+
+          {result.misses.length > 0 && (
+            <div style={{ fontSize: 12, color: ACCENT.rose, marginTop: 9 }}>
+              No line computed for: <b>{result.misses.join(", ")}</b>.
+              {" "}That means this player isn't in the pool — too few games, below the minimum line, or not in the feed.
+              {" "}Nothing is estimated here, so there's no number to show.
+            </div>
+          )}
+
+          {result.rows.length === 0 && result.misses.length === 0 && result.ambiguous.length === 0 && (
+            <div style={{ fontSize: 12, color: "var(--text-secondary-b)", marginTop: 9 }}>
+              No player names found in that. Try “P50 for Derrick Henry”.
+            </div>
+          )}
+        </div>
+      )}
+    </Glass>
+  );
+}
+
+// =====================================================================
 // PARLAY MATH
 // =====================================================================
 function probToAmerican(p) {
@@ -3221,7 +3578,87 @@ function PoolCard({ e, onAdd, inSlipTranches }) {
 const QUAD_MAX_PER_POS = 2;
 const QUAD_MAX_PER_TEAM = 2;
 
-function buildCustomBox({ ladderCandidates, tdCandidates, lockedIds, excluded, minHit, minTdHit, seed }) {
+function summarizeBox(allLegs, name, blurb) {
+  const combined = allLegs.reduce((p, l) => p * ((l.hitPct || 0) / 100), 1);
+  return {
+    name, blurb,
+    legs: allLegs,
+    combinedProb: Math.round(combined * 10000) / 100,
+    americanOdds: probToAmerican(combined),
+    decimalOdds: combined > 0 ? Math.round((1 / combined) * 100) / 100 : null,
+    avgScore: Math.round((allLegs.reduce((s, l) => s + (l.score || 0), 0) / allLegs.length) * 10) / 10,
+    weakestLeg: allLegs.reduce((a, b) => ((a.hitPct || 0) <= (b.hitPct || 0) ? a : b)).player,
+  };
+}
+
+// An all-TD card, any number of legs. A different animal from the mixed box: there are no
+// floor legs carrying it, so every leg is a 25-50% shot and the combined probability falls
+// off a cliff with each one added. The UI says so out loud rather than just showing a
+// juicy price.
+function buildTdBox({ tdCandidates, lockedIds, excluded, minTdHit, seed, legCount, posTilt }) {
+  const n = Math.max(2, Math.min(legCount || 6, 10));
+  const eligible = (c) => !excluded.has(c.player) && !isUnplayable(c.player)
+                          && (c.hitPct || 0) >= (minTdHit || 0);
+  const pool = tdCandidates.filter(eligible);
+  if (pool.length < n) return null;
+
+  // A tilt is a preference, not a filter: tilted players sort first, but the card still
+  // fills with the best of everyone else rather than failing when the position runs dry.
+  const ranked = [...pool].sort((a, b) => {
+    if (posTilt) {
+      const at = a.pos === posTilt ? 1 : 0, bt = b.pos === posTilt ? 1 : 0;
+      if (at !== bt) return bt - at;
+    }
+    return (b.score || 0) - (a.score || 0);
+  });
+  const rotated = ranked.slice(seed % ranked.length).concat(ranked.slice(0, seed % ranked.length));
+
+  const locked = tdCandidates.filter(c => lockedIds.has(c.id) && eligible(c)).slice(0, n);
+  const used = new Set(locked.map(c => c.player));
+  const teamCount = {}, posCount = {};
+  const tally = (c) => {
+    teamCount[c.team || "?"] = (teamCount[c.team || "?"] || 0) + 1;
+    posCount[c.pos || "?"] = (posCount[c.pos || "?"] || 0) + 1;
+  };
+  locked.forEach(tally);
+
+  // Two scorers from one team is already a correlated bet; more than that and the card is
+  // really a bet on one offense having a big day, not six independent legs.
+  // n/3 rather than n/2 on positions: at n/2 a six-leg card can be three RBs and three WRs
+  // and still be "within cap", which is not diversification at all.
+  const posCap = (p) => (posTilt && p === posTilt ? n : Math.max(QUAD_MAX_PER_POS, Math.ceil(n / 3)));
+
+  const legs = [...locked];
+  for (const pass of [0, 1]) {
+    for (const c of rotated) {
+      if (legs.length >= n) break;
+      if (used.has(c.player)) continue;
+      if ((teamCount[c.team || "?"] || 0) >= QUAD_MAX_PER_TEAM) continue;
+      // Second pass drops the position cap rather than returning a short card: a thin
+      // slate shouldn't mean no card at all.
+      if (pass === 0 && (posCount[c.pos || "?"] || 0) >= posCap(c.pos || "?")) continue;
+      legs.push(c); used.add(c.player); tally(c);
+    }
+    if (legs.length >= n) break;
+  }
+  if (legs.length < n) return null;
+
+  const tes = legs.filter(l => l.pos === "TE").length;
+  const box = summarizeBox(legs, `${n}-Leg TD`,
+    posTilt
+      ? `All anytime-TD legs, tilted to ${posTilt} — ${tes} of ${n} are tight ends.`
+      : `All anytime-TD legs. No floor legs carrying this one.`);
+  box.allTd = true;
+  box.legCount = n;
+  box.posTilt = posTilt || null;
+  return box;
+}
+
+function buildCustomBox({ ladderCandidates, tdCandidates, lockedIds, excluded, minHit, minTdHit, seed,
+                         mode, legCount, posTilt }) {
+  if (mode === "td") {
+    return buildTdBox({ tdCandidates, lockedIds, excluded, minTdHit, seed, legCount, posTilt });
+  }
   // Two separate floors on purpose. A P25 yardage line hits 70-90% of the time; an Anytime
   // TD hits 25-50%. One shared slider set anywhere useful for the floor legs wipes out every
   // TD candidate and the generator just reports "no valid card" — so each side gets its own
@@ -3261,16 +3698,8 @@ function buildCustomBox({ ladderCandidates, tdCandidates, lockedIds, excluded, m
   if (legs.length < 3) return null;
 
   const allLegs = [...legs, tdLeg];
-  const combined = allLegs.reduce((p, l) => p * ((l.hitPct || 0) / 100), 1);
-  return {
-    name: "Custom", blurb: "Built from the same scored candidate pool, with your constraints applied.",
-    legs: allLegs,
-    combinedProb: Math.round(combined * 10000) / 100,
-    americanOdds: probToAmerican(combined),
-    decimalOdds: combined > 0 ? Math.round((1 / combined) * 100) / 100 : null,
-    avgScore: Math.round((allLegs.reduce((s, l) => s + (l.score || 0), 0) / allLegs.length) * 10) / 10,
-    weakestLeg: allLegs.reduce((a, b) => ((a.hitPct || 0) <= (b.hitPct || 0) ? a : b)).player,
-  };
+  return summarizeBox(allLegs, "Custom",
+    "Built from the same scored candidate pool, with your constraints applied.");
 }
 
 function QuadLegRow({ leg, index, locked, onToggleLock, onExclude, onSelectPlayer }) {
@@ -3338,14 +3767,22 @@ function QuadBoxView({ slip, setSlip, stake, setStake, onSelectPlayer }) {
   const [minHit, setMinHit] = useState(0);
   const [minTdHit, setMinTdHit] = useState(0);
   const [seed, setSeed] = useState(0);
+  // "mixed" is the original card: three P25 floor legs carrying one TD scorer. "td" is an
+  // all-TD card of any length — a different bet entirely, priced far longer.
+  const [cardType, setCardType] = useState("mixed");
+  const [tdLegCount, setTdLegCount] = useState(6);
+  const [posTilt, setPosTilt] = useState(null);
 
   const customBox = useMemo(() => buildCustomBox({
     ladderCandidates, tdCandidates, lockedIds, excluded, minHit, minTdHit, seed,
-  }), [ladderCandidates, tdCandidates, lockedIds, excluded, minHit, minTdHit, seed]);
+    mode: cardType, legCount: tdLegCount, posTilt,
+  }), [ladderCandidates, tdCandidates, lockedIds, excluded, minHit, minTdHit, seed,
+      cardType, tdLegCount, posTilt]);
 
   // Any customization at all means the preset no longer describes what's on screen, so
   // the view switches to the custom card rather than silently showing a stale preset.
-  const customized = lockedIds.size > 0 || excluded.size > 0 || minHit > 0 || minTdHit > 0 || seed > 0;
+  const customized = lockedIds.size > 0 || excluded.size > 0 || minHit > 0 || minTdHit > 0
+                     || seed > 0 || cardType !== "mixed";
   const activePreset = presets.find(p => p.name === mode);
   const box = (customized || !activePreset) ? customBox : activePreset;
 
@@ -3360,7 +3797,10 @@ function QuadBoxView({ slip, setSlip, stake, setStake, onSelectPlayer }) {
       return n;
     });
   }
-  function reset() { setLockedIds(new Set()); setExcluded(new Set()); setMinHit(0); setMinTdHit(0); setSeed(0); }
+  function reset() {
+    setLockedIds(new Set()); setExcluded(new Set()); setMinHit(0); setMinTdHit(0); setSeed(0);
+    setCardType("mixed"); setTdLegCount(6); setPosTilt(null);
+  }
 
   // Send to the real parlay slip: look the ORIGINAL pool entries back up by id, so the slip
   // gets the full entry (real sportsbook lines, every tranche, grading fields) rather than
@@ -3523,14 +3963,53 @@ function QuadBoxView({ slip, setSlip, stake, setStake, onSelectPlayer }) {
                 border: "none", background: sentCount === box.legs.length ? `${ACCENT.green}33` : ACCENT.green,
                 color: sentCount === box.legs.length ? ACCENT.green : "#08090B"
               }}>
-                {sentCount === box.legs.length ? "✓ On your slip" : "Send all 4 to parlay slip →"}
+                {sentCount === box.legs.length ? "✓ On your slip" : `Send all ${box.legs.length} to parlay slip →`}
               </button>
             </div>
           </Glass>
 
           <Glass hover={false} style={{ padding: "14px 18px", marginBottom: 14 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700, marginBottom: 10 }}>Card type</div>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 12 }}>
+              {[["mixed", "3 floor + 1 TD"], ["td", "All anytime TD"]].map(([v, label]) => (
+                <button key={v} onClick={() => setCardType(v)} className="bubble-btn" style={{
+                  background: cardType === v ? ACCENT.violet : "transparent",
+                  color: cardType === v ? "#08090B" : "var(--text-secondary-b)",
+                  border: `1px solid ${cardType === v ? ACCENT.violet : "var(--overlay-6)"}`,
+                  borderRadius: 8, padding: "5px 11px", fontSize: 11.5, fontWeight: 700, cursor: "pointer",
+                }}>{label}</button>
+              ))}
+            </div>
+            {cardType === "td" && (
+              <div style={{ display: "grid", gap: 9, marginBottom: 12 }}>
+                <label style={{ fontSize: 11.5, color: "var(--text-secondary-b)", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                  <span style={{ minWidth: 150 }}>Legs</span>
+                  <input type="range" min="2" max="10" step="1" value={tdLegCount}
+                    onChange={e => setTdLegCount(Number(e.target.value))} style={{ width: 150 }} />
+                  <b style={{ fontFamily: "'JetBrains Mono', monospace", color: ACCENT.violet, width: 38 }}>{tdLegCount}</b>
+                </label>
+                <div style={{ fontSize: 11.5, color: "var(--text-secondary-b)", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                  <span style={{ minWidth: 150 }}>Tilt toward</span>
+                  {[[null, "None"], ["TE", "TE"], ["RB", "RB"], ["WR", "WR"]].map(([v, label]) => (
+                    <button key={label} onClick={() => setPosTilt(v)} className="bubble-btn" style={{
+                      background: posTilt === v ? ACCENT.amber : "transparent",
+                      color: posTilt === v ? "#08090B" : "var(--text-secondary-b)",
+                      border: `1px solid ${posTilt === v ? ACCENT.amber : "var(--overlay-6)"}`,
+                      borderRadius: 8, padding: "3px 10px", fontSize: 11, fontWeight: 700, cursor: "pointer",
+                    }}>{label}</button>
+                  ))}
+                </div>
+                {/* No floor legs holding this card up. Six legs at ~40% each is about 0.4%
+                    to cash — worth saying plainly next to a long price. */}
+                <div style={{ fontSize: 10.5, color: ACCENT.rose, lineHeight: 1.5 }}>
+                  No floor legs on this card. Every leg is a 25–50% shot, so the odds get long
+                  fast — six legs lands near 1-in-250 even picking well.
+                </div>
+              </div>
+            )}
             <div style={{ fontSize: 11, letterSpacing: "0.1em", color: "var(--text-secondary-b)", textTransform: "uppercase", fontWeight: 700, marginBottom: 10 }}>Constraints</div>
             <div style={{ display: "grid", gap: 10 }}>
+              {cardType !== "td" && (
               <label style={{ fontSize: 11.5, color: "var(--text-secondary-b)", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                 <span style={{ minWidth: 150 }}>Floor legs — min hit rate</span>
                 <input type="range" min="0" max="85" step="5" value={minHit}
@@ -3540,8 +4019,9 @@ function QuadBoxView({ slip, setSlip, stake, setStake, onSelectPlayer }) {
                   {ladderCandidates.filter(c => (c.hitPct || 0) >= minHit && !excluded.has(c.player) && !isUnplayable(c.player)).length} qualify
                 </span>
               </label>
+              )}
               <label style={{ fontSize: 11.5, color: "var(--text-secondary-b)", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                <span style={{ minWidth: 150 }}>TD leg — min scoring rate</span>
+                <span style={{ minWidth: 150 }}>{cardType === "td" ? "All legs" : "TD leg"} — min scoring rate</span>
                 <input type="range" min="0" max="55" step="5" value={minTdHit}
                   onChange={e => setMinTdHit(Number(e.target.value))} style={{ width: 150 }} />
                 <b style={{ fontFamily: "'JetBrains Mono', monospace", color: minTdHit ? ACCENT.violet : "var(--text-tertiary)", width: 38 }}>{minTdHit}%</b>
@@ -3550,7 +4030,9 @@ function QuadBoxView({ slip, setSlip, stake, setStake, onSelectPlayer }) {
                 </span>
               </label>
               <div style={{ fontSize: 10.5, color: "var(--text-tertiary)" }}>
-                Separate scales on purpose: a P25 floor clears 70–90%, an Anytime TD 25–50%.
+                {cardType === "td"
+                  ? "One scale here — every leg is an Anytime TD, which clears 25–50%."
+                  : "Separate scales on purpose: a P25 floor clears 70–90%, an Anytime TD 25–50%."}
               </div>
             </div>
             {excluded.size > 0 && (
@@ -6272,7 +6754,7 @@ function App() {
   // Lazy-load state for WNBA/MLB data — declared early since several useMemo hooks below
   // depend on dataTick to know when to recompute after a fetch completes.
   const [dataTick, setDataTick] = useState(0); // bumped after a lazy-load completes, to force a re-render
-  const [sportDataStatus, setSportDataStatus] = useState({ wnba: "idle", mlb: "idle", cfb: "idle", nba: "idle" });
+  const [sportDataStatus, setSportDataStatus] = useState({ wnba: "idle", mlb: "idle", cfb: "idle", nba: "idle", lookup: "idle" });
 
   async function loadSportData(key) {
     if (SportDataCache[key] || sportDataStatus[key] === "loading") return;
@@ -6582,6 +7064,13 @@ function App() {
             padding: "7px 14px", textDecoration: "none", whiteSpace: "nowrap"
           }}>📖 Guide & Risk Info</a>
         </div>
+
+        <AskStatum
+          index={SportDataCache.lookup}
+          status={sportDataStatus.lookup}
+          onNeedIndex={() => loadSportData("lookup")}
+          sport={sport}
+        />
 
         <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
           <Pill active={tab==="dashboard"} onClick={()=>{setTab("dashboard");setSelected(null);}} accent="#FFD54A">🏠 Dashboard</Pill>
