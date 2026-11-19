@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-19T02:58:37+00:00",
+ "lastRun": "2026-11-19T10:07:06+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -14,7 +14,7 @@
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 6.0
+       "pct": 7.0
       },
       {
        "name": "Ja'Marr Chase",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-19T02:58:37+00:00",
+   "fetchedAt": "2026-11-19T10:07:06+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -74,28 +74,28 @@
     "Portland": 18.0,
     "New York": 11.0,
     "Minnesota": 21.0,
-    "Las Vegas": 19.0,
+    "Las Vegas": 17.0,
     "Los Angeles": 2.0,
     "Indiana": 11.0,
     "Golden State": 25.0,
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-19T02:58:37+00:00",
+   "fetchedAt": "2026-11-19T10:07:06+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-19T02:58:37+00:00",
+   "fetchedAt": "2026-11-19T10:07:06+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-19T02:58:37+00:00",
+   "fetchedAt": "2026-11-19T10:07:06+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -106,59 +106,38 @@
      "price": 25.0,
      "depth": null,
      "flow": {
-      "totalVolume": 411.53,
-      "latestOI": 1536.41,
-      "oiChange": 401.28,
+      "totalVolume": 436.53,
+      "latestOI": 1541.41,
+      "oiChange": 405.28,
       "oiSeries": [
-       1135.13,
        1136.13,
        1149.13,
        1389.26,
        1403.41,
        1403.41,
-       1536.41
+       1536.41,
+       1541.41
       ]
      }
     },
     {
-     "ticker": "KXWNBA-27-MIN",
-     "name": "Minnesota",
-     "price": 21.0,
+     "ticker": "KXWNBA-27-PDX",
+     "name": "Portland",
+     "price": 18.0,
      "depth": null,
      "flow": {
-      "totalVolume": 121.46000000000001,
-      "latestOI": 121.57,
-      "oiChange": 60.67999999999999,
+      "totalVolume": 224.0,
+      "latestOI": 224.0,
+      "oiChange": 80.0,
       "oiSeries": [
-       60.89,
-       60.89,
-       60.89,
-       60.89,
-       60.89,
-       121.57
-      ]
-     }
-    },
-    {
-     "ticker": "KXWNBA-27-LV",
-     "name": "Las Vegas",
-     "price": 19.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 72.49000000000001,
-      "latestOI": 101.0,
-      "oiChange": 29.019999999999996,
-      "oiSeries": [
-       71.98,
-       71.98,
-       71.98,
-       71.98,
-       101.0
+       144.0,
+       224.0,
+       224.0
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-19T02:58:37+00:00",
+   "fetchedAt": "2026-11-19T10:07:06+00:00",
    "stale": false
   }
  }

@@ -4697,24 +4697,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401866469,
-      "homeTeam": "Buffalo",
-      "awayTeam": "Central Michigan",
-      "predictedMargin": 12.6,
-      "predictedTotal": 46.5,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866467,
-      "homeTeam": "Massachusetts",
-      "awayTeam": "Akron",
-      "predictedMargin": 5.2,
-      "predictedTotal": 49.6,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401862830,
       "homeTeam": "Temple",
       "awayTeam": "Rice",
@@ -82008,18 +81990,62 @@
       "hit": false,
       "snapshotDate": "2026-10-25",
       "gradedDate": "2026-11-18"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Central Michigan @ Buffalo",
+      "stat": "winner",
+      "line": 12.6,
+      "actual": 19,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Central Michigan @ Buffalo",
+      "stat": "total_within3",
+      "line": 46.5,
+      "actual": 61,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Akron @ Massachusetts",
+      "stat": "winner",
+      "line": 5.2,
+      "actual": -1,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Akron @ Massachusetts",
+      "stat": "total_within3",
+      "line": 49.6,
+      "actual": 67,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-19"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 543,
-      "hits": 358,
+      "graded": 545,
+      "hits": 359,
       "rate": 65.9
     },
     "cfb_total_within3": {
-      "graded": 543,
+      "graded": 545,
       "hits": 65,
-      "rate": 12.0
+      "rate": 11.9
     },
     "nfl_p25": {
       "graded": 1766,
