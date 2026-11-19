@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-19T10:07:06+00:00",
+ "lastRun": "2026-11-19T22:14:13+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 70.0
+       "pct": 75.0
       },
       {
        "name": "CeeDee Lamb",
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 52.0
+       "pct": 51.0
       },
       {
        "name": "Jordan Love",
        "pct": 19.0
       },
       {
-       "name": "Kirk Cousins",
-       "pct": 10.0
+       "name": "Dak Prescott",
+       "pct": 9.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-19T10:07:06+00:00",
+   "fetchedAt": "2026-11-19T22:14:13+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -77,25 +77,25 @@
     "Las Vegas": 17.0,
     "Los Angeles": 2.0,
     "Indiana": 11.0,
-    "Golden State": 25.0,
+    "Golden State": 24.0,
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-19T10:07:06+00:00",
+   "fetchedAt": "2026-11-19T22:14:13+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-19T10:07:06+00:00",
+   "fetchedAt": "2026-11-19T22:14:13+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-19T10:07:06+00:00",
+   "fetchedAt": "2026-11-19T22:14:13+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -103,7 +103,7 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 25.0,
+     "price": 24.0,
      "depth": null,
      "flow": {
       "totalVolume": 436.53,
@@ -117,6 +117,25 @@
        1403.41,
        1536.41,
        1541.41
+      ]
+     }
+    },
+    {
+     "ticker": "KXWNBA-27-MIN",
+     "name": "Minnesota",
+     "price": 21.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 111.68,
+      "latestOI": 121.57,
+      "oiChange": 60.67999999999999,
+      "oiSeries": [
+       60.89,
+       60.89,
+       60.89,
+       60.89,
+       121.57,
+       121.57
       ]
      }
     },
@@ -137,7 +156,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-19T10:07:06+00:00",
+   "fetchedAt": "2026-11-19T22:14:13+00:00",
    "stale": false
   }
  }
