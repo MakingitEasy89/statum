@@ -65,8 +65,16 @@ ODDS_MARKET_MAP = {
         'Hits': 'batter_hits', 'HR': 'batter_home_runs', 'RBI': 'batter_rbis',
         'Runs': 'batter_runs_scored', 'Total Bases': 'batter_total_bases', 'Strikeouts': 'pitcher_strikeouts',
     },
+    # Same market keys as the WNBA — the odds API names basketball props identically for
+    # both leagues. Without this entry NBA never gets a posted line, which also means no
+    # NBA rows ever reach line_history.json, in the sport that is most in season.
+    'nba': {
+        'Points': 'player_points', 'Rebounds': 'player_rebounds', 'Assists': 'player_assists',
+        'Three-Pointers Made': 'player_threes', 'Blocks': 'player_blocks', 'Steals': 'player_steals',
+    },
 }
-ODDS_SPORT_KEYS = {'nfl': 'americanfootball_nfl', 'wnba': 'basketball_wnba', 'mlb': 'baseball_mlb'}
+ODDS_SPORT_KEYS = {'nfl': 'americanfootball_nfl', 'wnba': 'basketball_wnba',
+                   'mlb': 'baseball_mlb', 'nba': 'basketball_nba'}
 
 
 # ESPN's team abbreviations mostly match nflverse's, with a few known exceptions.
@@ -7063,6 +7071,17 @@ def main():
                 if key in mlb_odds:
                     entry['realLines'] = mlb_odds[key]
             print(f"  MLB: matched real lines for {len(mlb_odds)} player/stat combos")
+
+            # NBA runs a nightly slate, so a 2-day window is plenty and keeps credit use
+            # in line with MLB rather than the 7-day NFL window.
+            if nba_pool:
+                nba_names = list({p['name'] for p in nba_players})
+                nba_odds = build_real_odds('nba', odds_key, nba_names, days_ahead=2)
+                for entry in nba_pool:
+                    key = (entry['player'], entry['stat'])
+                    if key in nba_odds:
+                        entry['realLines'] = nba_odds[key]
+                print(f"  NBA: matched real lines for {len(nba_odds)} player/stat combos")
             if ODDS_CREDITS_REMAINING is not None:
                 print(f"  Credits remaining on your the-odds-api.com plan: {ODDS_CREDITS_REMAINING}")
 
