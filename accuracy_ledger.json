@@ -4697,15 +4697,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401862830,
-      "homeTeam": "Temple",
-      "awayTeam": "Rice",
-      "predictedMargin": 20.7,
-      "predictedTotal": 54.2,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401856869,
       "homeTeam": "UCF",
       "awayTeam": "Iowa State",
@@ -75986,16 +75977,38 @@
       "hit": false,
       "snapshotDate": "2026-10-25",
       "gradedDate": "2026-11-19"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Rice @ Temple",
+      "stat": "winner",
+      "line": 20.7,
+      "actual": -4,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-20"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Rice @ Temple",
+      "stat": "total_within3",
+      "line": 54.2,
+      "actual": 58,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-20"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 545,
+      "graded": 546,
       "hits": 359,
-      "rate": 65.9
+      "rate": 65.8
     },
     "cfb_total_within3": {
-      "graded": 545,
+      "graded": 546,
       "hits": 65,
       "rate": 11.9
     },
