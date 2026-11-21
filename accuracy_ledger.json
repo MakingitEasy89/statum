@@ -4657,51 +4657,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401856869,
-      "homeTeam": "UCF",
-      "awayTeam": "Iowa State",
-      "predictedMargin": 9.8,
-      "predictedTotal": 49.6,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866468,
-      "homeTeam": "Toledo",
-      "awayTeam": "Bowling Green",
-      "predictedMargin": 34.0,
-      "predictedTotal": 48.8,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858303,
-      "homeTeam": "Duke",
-      "awayTeam": "Clemson",
-      "predictedMargin": 14.0,
-      "predictedTotal": 51.7,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858529,
-      "homeTeam": "Michigan State",
-      "awayTeam": "Oregon",
-      "predictedMargin": -13.9,
-      "predictedTotal": 52.1,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401864545,
-      "homeTeam": "Air Force",
-      "awayTeam": "UTEP",
-      "predictedMargin": 26.1,
-      "predictedTotal": 54.7,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401856754,
       "homeTeam": "Tennessee",
       "awayTeam": "LSU",
@@ -5296,15 +5251,6 @@
       "awayTeam": "Colorado State",
       "predictedMargin": 27.9,
       "predictedTotal": 54.3,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401864542,
-      "homeTeam": "Wyoming",
-      "awayTeam": "New Mexico",
-      "predictedMargin": -4.6,
-      "predictedTotal": 43.4,
       "snapshotDate": "2026-11-01"
     },
     {
@@ -76610,18 +76556,150 @@
       "snapshotDate": "2026-11-19",
       "gradedDate": "2026-11-20",
       "shown": 53.8
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Iowa State @ UCF",
+      "stat": "winner",
+      "line": 9.8,
+      "actual": 31,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Iowa State @ UCF",
+      "stat": "total_within3",
+      "line": 49.6,
+      "actual": 65,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Bowling Green @ Toledo",
+      "stat": "winner",
+      "line": 34.0,
+      "actual": 19,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Bowling Green @ Toledo",
+      "stat": "total_within3",
+      "line": 48.8,
+      "actual": 19,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Clemson @ Duke",
+      "stat": "winner",
+      "line": 14.0,
+      "actual": -10,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Clemson @ Duke",
+      "stat": "total_within3",
+      "line": 51.7,
+      "actual": 30,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Oregon @ Michigan State",
+      "stat": "winner",
+      "line": -13.9,
+      "actual": -38,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Oregon @ Michigan State",
+      "stat": "total_within3",
+      "line": 52.1,
+      "actual": 52,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "UTEP @ Air Force",
+      "stat": "winner",
+      "line": 26.1,
+      "actual": 49,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "UTEP @ Air Force",
+      "stat": "total_within3",
+      "line": 54.7,
+      "actual": 55,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "New Mexico @ Wyoming",
+      "stat": "winner",
+      "line": -4.6,
+      "actual": -7,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "New Mexico @ Wyoming",
+      "stat": "total_within3",
+      "line": 43.4,
+      "actual": 41,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-21"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 546,
-      "hits": 359,
-      "rate": 65.8
+      "graded": 552,
+      "hits": 364,
+      "rate": 65.9
     },
     "cfb_total_within3": {
-      "graded": 546,
-      "hits": 65,
-      "rate": 11.9
+      "graded": 552,
+      "hits": 68,
+      "rate": 12.3
     },
     "nfl_p25": {
       "graded": 1614,
