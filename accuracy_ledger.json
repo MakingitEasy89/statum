@@ -4666,29 +4666,11 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401862835,
-      "homeTeam": "Tulane",
-      "awayTeam": "North Texas",
-      "predictedMargin": -3.7,
-      "predictedTotal": 60.2,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401858535,
       "homeTeam": "Washington",
       "awayTeam": "Indiana",
       "predictedMargin": -5.6,
       "predictedTotal": 51.1,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858530,
-      "homeTeam": "Minnesota",
-      "awayTeam": "Northwestern",
-      "predictedMargin": 5.5,
-      "predictedTotal": 46.5,
       "snapshotDate": "2026-10-25"
     },
     {
@@ -4743,15 +4725,6 @@
       "awayTeam": "Virginia Tech",
       "predictedMargin": 35.6,
       "predictedTotal": 53.6,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858533,
-      "homeTeam": "Purdue",
-      "awayTeam": "Wisconsin",
-      "predictedMargin": 3.5,
-      "predictedTotal": 46.4,
       "snapshotDate": "2026-10-25"
     },
     {
@@ -4877,15 +4850,6 @@
       "awayTeam": "UCLA",
       "predictedMargin": 20.9,
       "predictedTotal": 46.7,
-      "snapshotDate": "2026-10-25"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858531,
-      "homeTeam": "Nebraska",
-      "awayTeam": "Ohio State",
-      "predictedMargin": -4.1,
-      "predictedTotal": 49.1,
       "snapshotDate": "2026-10-25"
     },
     {
@@ -5075,30 +5039,12 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401858310,
-      "homeTeam": "Georgia Tech",
-      "awayTeam": "Wake Forest",
-      "predictedMargin": 4.7,
-      "predictedTotal": 54.5,
-      "snapshotDate": "2026-10-29"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401858304,
       "homeTeam": "Florida State",
       "awayTeam": "NC State",
       "predictedMargin": 16.8,
       "predictedTotal": 58.1,
       "snapshotDate": "2026-10-30"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856748,
-      "homeTeam": "Florida",
-      "awayTeam": "Vanderbilt",
-      "predictedMargin": 6.0,
-      "predictedTotal": 55.9,
-      "snapshotDate": "2026-10-31"
     },
     {
       "sport": "cfb",
@@ -5120,38 +5066,11 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401856867,
-      "homeTeam": "Cincinnati",
-      "awayTeam": "Colorado",
-      "predictedMargin": 26.0,
-      "predictedTotal": 55.2,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401869958,
       "homeTeam": "Marshall",
       "awayTeam": "Georgia State",
       "predictedMargin": 16.5,
       "predictedTotal": 58.4,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862834,
-      "homeTeam": "Navy",
-      "awayTeam": "Memphis",
-      "predictedMargin": 0.1,
-      "predictedTotal": 58.2,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862831,
-      "homeTeam": "Army",
-      "awayTeam": "East Carolina",
-      "predictedMargin": 6.4,
-      "predictedTotal": 51.0,
       "snapshotDate": "2026-11-01"
     },
     {
@@ -76688,18 +76607,216 @@
       "hit": true,
       "snapshotDate": "2026-11-01",
       "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "North Texas @ Tulane",
+      "stat": "winner",
+      "line": -3.7,
+      "actual": 4,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "North Texas @ Tulane",
+      "stat": "total_within3",
+      "line": 60.2,
+      "actual": 52,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Northwestern @ Minnesota",
+      "stat": "winner",
+      "line": 5.5,
+      "actual": 3,
+      "hit": true,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Northwestern @ Minnesota",
+      "stat": "total_within3",
+      "line": 46.5,
+      "actual": 37,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Wisconsin @ Purdue",
+      "stat": "winner",
+      "line": 3.5,
+      "actual": -32,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Wisconsin @ Purdue",
+      "stat": "total_within3",
+      "line": 46.4,
+      "actual": 52,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Ohio State @ Nebraska",
+      "stat": "winner",
+      "line": -4.1,
+      "actual": 3,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Ohio State @ Nebraska",
+      "stat": "total_within3",
+      "line": 49.1,
+      "actual": 59,
+      "hit": false,
+      "snapshotDate": "2026-10-25",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Wake Forest @ Georgia Tech",
+      "stat": "winner",
+      "line": 4.7,
+      "actual": -21,
+      "hit": false,
+      "snapshotDate": "2026-10-29",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Wake Forest @ Georgia Tech",
+      "stat": "total_within3",
+      "line": 54.5,
+      "actual": 79,
+      "hit": false,
+      "snapshotDate": "2026-10-29",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Vanderbilt @ Florida",
+      "stat": "winner",
+      "line": 6.0,
+      "actual": 7,
+      "hit": true,
+      "snapshotDate": "2026-10-31",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Vanderbilt @ Florida",
+      "stat": "total_within3",
+      "line": 55.9,
+      "actual": 61,
+      "hit": false,
+      "snapshotDate": "2026-10-31",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Colorado @ Cincinnati",
+      "stat": "winner",
+      "line": 26.0,
+      "actual": 7,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Colorado @ Cincinnati",
+      "stat": "total_within3",
+      "line": 55.2,
+      "actual": 63,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Memphis @ Navy",
+      "stat": "winner",
+      "line": 0.1,
+      "actual": 4,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Memphis @ Navy",
+      "stat": "total_within3",
+      "line": 58.2,
+      "actual": 72,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "East Carolina @ Army",
+      "stat": "winner",
+      "line": 6.4,
+      "actual": -4,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-21"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "East Carolina @ Army",
+      "stat": "total_within3",
+      "line": 51.0,
+      "actual": 16,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-21"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 552,
-      "hits": 364,
-      "rate": 65.9
+      "graded": 561,
+      "hits": 368,
+      "rate": 65.6
     },
     "cfb_total_within3": {
-      "graded": 552,
+      "graded": 561,
       "hits": 68,
-      "rate": 12.3
+      "rate": 12.1
     },
     "nfl_p25": {
       "graded": 1614,
