@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-22T20:50:34+00:00",
+ "lastRun": "2026-11-22T21:35:30+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 59.0
+       "pct": 51.0
       },
       {
        "name": "Jordan Love",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-22T20:50:34+00:00",
+   "fetchedAt": "2026-11-22T21:35:30+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -83,21 +83,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-22T20:50:34+00:00",
+   "fetchedAt": "2026-11-22T21:35:30+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-22T20:50:34+00:00",
+   "fetchedAt": "2026-11-22T21:35:30+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-22T20:50:34+00:00",
+   "fetchedAt": "2026-11-22T21:35:30+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -124,7 +124,7 @@
     }
    ],
    "fetchedAt": "2026-11-22T20:50:34+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
