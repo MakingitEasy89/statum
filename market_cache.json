@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-21T20:39:17+00:00",
+ "lastRun": "2026-11-22T09:35:46+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -18,7 +18,7 @@
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 11.0
+       "pct": 6.0
       }
      ],
      "totalMarkets": 29
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 51.0
-      },
-      {
-       "name": "Jordan Love",
-       "pct": 13.0
+       "pct": 47.0
       },
       {
        "name": "Dak Prescott",
        "pct": 11.0
+      },
+      {
+       "name": "Jordan Love",
+       "pct": 10.0
       }
      ],
      "totalMarkets": 29
@@ -50,7 +50,7 @@
      "options": [
       {
        "name": "Xavier McKinney",
-       "pct": 17.0
+       "pct": 25.0
       },
       {
        "name": "Amani Hooker",
@@ -64,38 +64,42 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-21T20:39:17+00:00",
+   "fetchedAt": "2026-11-22T09:35:46+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
    "data": {
     "Washington": 3.0,
+    "Toronto": 1.0,
     "Seattle": 2.0,
+    "Phoenix": 1.0,
     "Portland": 2.0,
     "New York": 11.0,
     "Minnesota": 14.0,
     "Las Vegas": 16.0,
     "Los Angeles": 2.0,
     "Indiana": 11.0,
+    "Houston": 1.0,
     "Golden State": 19.0,
     "Dallas": 16.0,
+    "Chicago": 1.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-21T20:39:17+00:00",
+   "fetchedAt": "2026-11-22T09:35:46+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-21T20:39:17+00:00",
+   "fetchedAt": "2026-11-22T09:35:46+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-21T20:39:17+00:00",
+   "fetchedAt": "2026-11-22T09:35:46+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -162,7 +166,7 @@
     }
    ],
    "fetchedAt": "2026-11-21T20:39:17+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
