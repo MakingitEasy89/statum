@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-23T02:09:13+00:00",
+ "lastRun": "2026-11-23T03:48:49+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -34,11 +34,11 @@
       },
       {
        "name": "Dak Prescott",
-       "pct": 17.0
+       "pct": 26.0
       },
       {
-       "name": "Jordan Love",
-       "pct": 7.0
+       "name": "Brock Purdy",
+       "pct": 11.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-23T02:09:13+00:00",
+   "fetchedAt": "2026-11-23T03:48:49+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -83,45 +83,25 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-23T02:09:13+00:00",
+   "fetchedAt": "2026-11-23T03:48:49+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-23T02:09:13+00:00",
+   "fetchedAt": "2026-11-23T03:48:49+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-23T02:09:13+00:00",
+   "fetchedAt": "2026-11-23T03:48:49+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
    "data": [
-    {
-     "ticker": "KXWNBA-27-GS",
-     "name": "Golden State",
-     "price": 19.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 247.93,
-      "latestOI": 1505.63,
-      "oiChange": 102.22000000000003,
-      "oiSeries": [
-       1403.41,
-       1403.41,
-       1536.41,
-       1541.41,
-       1512.99,
-       1505.63,
-       1505.63
-      ]
-     }
-    },
     {
      "ticker": "KXWNBA-27-LV",
      "name": "Las Vegas",
@@ -141,29 +121,9 @@
        223.59
       ]
      }
-    },
-    {
-     "ticker": "KXWNBA-27-DAL",
-     "name": "Dallas",
-     "price": 16.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 0.0,
-      "latestOI": 79.0,
-      "oiChange": 0.0,
-      "oiSeries": [
-       79.0,
-       79.0,
-       79.0,
-       79.0,
-       79.0,
-       79.0,
-       79.0
-      ]
-     }
     }
    ],
-   "fetchedAt": "2026-11-23T02:09:13+00:00",
+   "fetchedAt": "2026-11-23T03:48:49+00:00",
    "stale": false
   }
  }
