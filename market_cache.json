@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-23T00:14:00+00:00",
+ "lastRun": "2026-11-23T02:09:13+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 54.0
+       "pct": 60.0
       },
       {
        "name": "Dak Prescott",
-       "pct": 13.0
+       "pct": 17.0
       },
       {
        "name": "Jordan Love",
-       "pct": 12.0
+       "pct": 7.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-23T00:14:00+00:00",
+   "fetchedAt": "2026-11-23T02:09:13+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -83,21 +83,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-23T00:14:00+00:00",
+   "fetchedAt": "2026-11-23T02:09:13+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-23T00:14:00+00:00",
+   "fetchedAt": "2026-11-23T02:09:13+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-23T00:14:00+00:00",
+   "fetchedAt": "2026-11-23T02:09:13+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -123,6 +123,26 @@
      }
     },
     {
+     "ticker": "KXWNBA-27-LV",
+     "name": "Las Vegas",
+     "price": 16.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 229.56,
+      "latestOI": 223.59,
+      "oiChange": 151.61,
+      "oiSeries": [
+       71.98,
+       71.98,
+       101.0,
+       215.11,
+       215.11,
+       215.11,
+       223.59
+      ]
+     }
+    },
+    {
      "ticker": "KXWNBA-27-DAL",
      "name": "Dallas",
      "price": 16.0,
@@ -143,7 +163,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-23T00:14:00+00:00",
+   "fetchedAt": "2026-11-23T02:09:13+00:00",
    "stale": false
   }
  }
