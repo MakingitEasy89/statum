@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-23T03:48:49+00:00",
+ "lastRun": "2026-11-23T10:32:06+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 68.0
+       "pct": 67.0
       },
       {
        "name": "Ja'Marr Chase",
@@ -30,11 +30,11 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 60.0
+       "pct": 59.0
       },
       {
        "name": "Dak Prescott",
-       "pct": 26.0
+       "pct": 17.0
       },
       {
        "name": "Brock Purdy",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-23T03:48:49+00:00",
+   "fetchedAt": "2026-11-23T10:32:06+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -83,25 +83,45 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-23T03:48:49+00:00",
+   "fetchedAt": "2026-11-23T10:32:06+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-23T03:48:49+00:00",
+   "fetchedAt": "2026-11-23T10:32:06+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-23T03:48:49+00:00",
+   "fetchedAt": "2026-11-23T10:32:06+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
    "data": [
+    {
+     "ticker": "KXWNBA-27-GS",
+     "name": "Golden State",
+     "price": 19.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 245.59,
+      "latestOI": 1493.82,
+      "oiChange": 90.40999999999985,
+      "oiSeries": [
+       1403.41,
+       1536.41,
+       1541.41,
+       1512.99,
+       1505.63,
+       1505.63,
+       1493.82
+      ]
+     }
+    },
     {
      "ticker": "KXWNBA-27-LV",
      "name": "Las Vegas",
@@ -113,7 +133,6 @@
       "oiChange": 151.61,
       "oiSeries": [
        71.98,
-       71.98,
        101.0,
        215.11,
        215.11,
@@ -121,9 +140,29 @@
        223.59
       ]
      }
+    },
+    {
+     "ticker": "KXWNBA-27-DAL",
+     "name": "Dallas",
+     "price": 16.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 0.0,
+      "latestOI": 79.0,
+      "oiChange": 0.0,
+      "oiSeries": [
+       79.0,
+       79.0,
+       79.0,
+       79.0,
+       79.0,
+       79.0,
+       79.0
+      ]
+     }
     }
    ],
-   "fetchedAt": "2026-11-23T03:48:49+00:00",
+   "fetchedAt": "2026-11-23T10:32:06+00:00",
    "stale": false
   }
  }
