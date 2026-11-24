@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-24T06:35:21+00:00",
+ "lastRun": "2026-11-24T12:14:47+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -14,7 +14,7 @@
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 11.0
+       "pct": 12.0
       },
       {
        "name": "Ja'Marr Chase",
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 50.0
+       "pct": 45.0
       },
       {
        "name": "Dak Prescott",
@@ -38,7 +38,7 @@
       },
       {
        "name": "Jordan Love",
-       "pct": 10.0
+       "pct": 9.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-24T06:35:21+00:00",
+   "fetchedAt": "2026-11-24T12:14:47+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -83,21 +83,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-24T06:35:21+00:00",
+   "fetchedAt": "2026-11-24T12:14:47+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-24T06:35:21+00:00",
+   "fetchedAt": "2026-11-24T12:14:47+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-24T06:35:21+00:00",
+   "fetchedAt": "2026-11-24T12:14:47+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -123,6 +123,24 @@
      }
     },
     {
+     "ticker": "KXWNBA-27-LV",
+     "name": "Las Vegas",
+     "price": 16.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 229.56,
+      "latestOI": 223.59,
+      "oiChange": 122.59,
+      "oiSeries": [
+       101.0,
+       215.11,
+       215.11,
+       215.11,
+       223.59
+      ]
+     }
+    },
+    {
      "ticker": "KXWNBA-27-DAL",
      "name": "Dallas",
      "price": 16.0,
@@ -143,8 +161,8 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-24T05:40:03+00:00",
-   "stale": true
+   "fetchedAt": "2026-11-24T12:14:47+00:00",
+   "stale": false
   }
  }
 }
