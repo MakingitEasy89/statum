@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-24T12:14:47+00:00",
+ "lastRun": "2026-11-24T23:39:15+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 71.0
+       "pct": 74.0
       },
       {
        "name": "CeeDee Lamb",
@@ -18,7 +18,7 @@
       },
       {
        "name": "Ja'Marr Chase",
-       "pct": 10.0
+       "pct": 5.0
       }
      ],
      "totalMarkets": 29
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 45.0
+       "pct": 62.0
       },
       {
        "name": "Dak Prescott",
@@ -38,7 +38,7 @@
       },
       {
        "name": "Jordan Love",
-       "pct": 9.0
+       "pct": 7.0
       }
      ],
      "totalMarkets": 29
@@ -50,7 +50,7 @@
      "options": [
       {
        "name": "Xavier McKinney",
-       "pct": 24.0
+       "pct": 22.0
       },
       {
        "name": "Amani Hooker",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-24T12:14:47+00:00",
+   "fetchedAt": "2026-11-24T23:39:15+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -79,25 +79,25 @@
     "Los Angeles": 2.0,
     "Indiana": 11.0,
     "Houston": 1.0,
-    "Golden State": 29.0,
+    "Golden State": 35.0,
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-24T12:14:47+00:00",
+   "fetchedAt": "2026-11-24T23:39:15+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-24T12:14:47+00:00",
+   "fetchedAt": "2026-11-24T23:39:15+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-24T12:14:47+00:00",
+   "fetchedAt": "2026-11-24T23:39:15+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -105,7 +105,7 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 29.0,
+     "price": 35.0,
      "depth": null,
      "flow": {
       "totalVolume": 1329.12,
@@ -161,7 +161,7 @@
      }
     }
    ],
-   "fetchedAt": "2026-11-24T12:14:47+00:00",
+   "fetchedAt": "2026-11-24T23:39:15+00:00",
    "stale": false
   }
  }
