@@ -5351,36 +5351,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Ja'Marr Chase",
-      "stat": "Receptions",
-      "p25": 6.0,
-      "p50": 7.0,
-      "p75": 9.0,
-      "shown": {
-        "p25": 68.8,
-        "p50": 56.2,
-        "p75": 37.5
-      },
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Ja'Marr Chase",
-      "stat": "Receiving Yards",
-      "p25": 62.0,
-      "p50": 86.0,
-      "p75": 102.0,
-      "shown": {
-        "p25": 62.5,
-        "p50": 62.5,
-        "p75": 43.8
-      },
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
       "player": "Puka Nacua",
       "stat": "Receptions",
       "p25": 5.0,
@@ -5587,36 +5557,6 @@
         "p75": 16.7
       },
       "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Tee Higgins",
-      "stat": "Receptions",
-      "p25": 4.0,
-      "p50": 5.0,
-      "p75": 8.0,
-      "shown": {
-        "p25": 46.7,
-        "p50": 40.0,
-        "p75": 0.0
-      },
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Tee Higgins",
-      "stat": "Receiving Yards",
-      "p25": 56.0,
-      "p50": 73.0,
-      "p75": 84.0,
-      "shown": {
-        "p25": 53.3,
-        "p50": 26.7,
-        "p75": 20.0
-      },
-      "gamelogLenAtSnapshot": 36,
       "snapshotDate": "2026-11-19"
     },
     {
@@ -5831,36 +5771,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Stefon Diggs",
-      "stat": "Receptions",
-      "p25": 5.0,
-      "p50": 5.0,
-      "p75": 6.0,
-      "shown": {
-        "p25": 42.9,
-        "p50": 42.9,
-        "p75": 33.3
-      },
-      "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Stefon Diggs",
-      "stat": "Receiving Yards",
-      "p25": 36.0,
-      "p50": 73.0,
-      "p75": 81.0,
-      "shown": {
-        "p25": 57.1,
-        "p50": 23.8,
-        "p75": 23.8
-      },
-      "gamelogLenAtSnapshot": 37,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
       "player": "Bijan Robinson",
       "stat": "Receptions",
       "p25": 2.0,
@@ -5917,51 +5827,6 @@
         "p75": 29.4
       },
       "gamelogLenAtSnapshot": 44,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Chase Brown",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 3.0,
-      "p75": 4.0,
-      "shown": {
-        "p25": 100.0,
-        "p50": 70.6,
-        "p75": 47.1
-      },
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Chase Brown",
-      "stat": "Rush Attempts",
-      "p25": 11.0,
-      "p50": 13.0,
-      "p75": 18.0,
-      "shown": {
-        "p25": 76.5,
-        "p50": 47.1,
-        "p75": 23.5
-      },
-      "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Chase Brown",
-      "stat": "Rush Yards",
-      "p25": 43.0,
-      "p50": 60.0,
-      "p75": 81.0,
-      "shown": {
-        "p25": 64.7,
-        "p50": 47.1,
-        "p75": 23.5
-      },
-      "gamelogLenAtSnapshot": 42,
       "snapshotDate": "2026-11-19"
     },
     {
@@ -6052,36 +5917,6 @@
         "p75": 42.9
       },
       "gamelogLenAtSnapshot": 39,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Mike Gesicki",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 3.0,
-      "p75": 5.0,
-      "shown": {
-        "p25": 66.7,
-        "p50": 33.3,
-        "p75": 8.3
-      },
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Mike Gesicki",
-      "stat": "Receiving Yards",
-      "p25": 17.0,
-      "p50": 34.0,
-      "p75": 69.0,
-      "shown": {
-        "p25": 50.0,
-        "p50": 33.3,
-        "p75": 8.3
-      },
-      "gamelogLenAtSnapshot": 36,
       "snapshotDate": "2026-11-19"
     },
     {
@@ -6626,21 +6461,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Antonio Williams",
-      "stat": "Receiving Yards",
-      "p25": 21.0,
-      "p50": 27.0,
-      "p75": 45.0,
-      "shown": {
-        "p25": 100.0,
-        "p50": 66.7,
-        "p75": 33.3
-      },
-      "gamelogLenAtSnapshot": 9,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
       "player": "Eli Raridon",
       "stat": "Receiving Yards",
       "p25": 11.0,
@@ -6817,36 +6637,6 @@
         "p75": 37.5
       },
       "gamelogLenAtSnapshot": 42,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Joe Burrow",
-      "stat": "Passing Yards",
-      "p25": 234.0,
-      "p50": 271.0,
-      "p75": 356.0,
-      "shown": {
-        "p25": 62.5,
-        "p50": 37.5,
-        "p75": 0.0
-      },
-      "gamelogLenAtSnapshot": 34,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jayden Daniels",
-      "stat": "Passing Yards",
-      "p25": 205.0,
-      "p50": 230.0,
-      "p75": 260.0,
-      "shown": {
-        "p25": 42.9,
-        "p50": 28.6,
-        "p75": 0.0
-      },
-      "gamelogLenAtSnapshot": 34,
       "snapshotDate": "2026-11-19"
     },
     {
@@ -10210,6 +10000,216 @@
       },
       "gamelogLenAtSnapshot": 20,
       "snapshotDate": "2026-11-23"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ja'Marr Chase",
+      "stat": "Receptions",
+      "p25": 6.0,
+      "p50": 7.0,
+      "p75": 9.0,
+      "shown": {
+        "p25": 68.8,
+        "p50": 56.2,
+        "p75": 37.5
+      },
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Ja'Marr Chase",
+      "stat": "Receiving Yards",
+      "p25": 62.0,
+      "p50": 86.0,
+      "p75": 102.0,
+      "shown": {
+        "p25": 62.5,
+        "p50": 62.5,
+        "p75": 43.8
+      },
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tee Higgins",
+      "stat": "Receptions",
+      "p25": 4.0,
+      "p50": 5.0,
+      "p75": 8.0,
+      "shown": {
+        "p25": 46.7,
+        "p50": 40.0,
+        "p75": 0.0
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tee Higgins",
+      "stat": "Receiving Yards",
+      "p25": 56.0,
+      "p50": 73.0,
+      "p75": 84.0,
+      "shown": {
+        "p25": 53.3,
+        "p50": 26.7,
+        "p75": 20.0
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 5.0,
+      "p75": 6.0,
+      "shown": {
+        "p25": 42.9,
+        "p50": 42.9,
+        "p75": 33.3
+      },
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "p25": 36.0,
+      "p50": 73.0,
+      "p75": 81.0,
+      "shown": {
+        "p25": 57.1,
+        "p50": 23.8,
+        "p75": 23.8
+      },
+      "gamelogLenAtSnapshot": 38,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chase Brown",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "shown": {
+        "p25": 100.0,
+        "p50": 70.6,
+        "p75": 47.1
+      },
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chase Brown",
+      "stat": "Rush Attempts",
+      "p25": 11.0,
+      "p50": 13.0,
+      "p75": 18.0,
+      "shown": {
+        "p25": 76.5,
+        "p50": 47.1,
+        "p75": 23.5
+      },
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Chase Brown",
+      "stat": "Rush Yards",
+      "p25": 43.0,
+      "p50": 60.0,
+      "p75": 81.0,
+      "shown": {
+        "p25": 64.7,
+        "p50": 47.1,
+        "p75": 23.5
+      },
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mike Gesicki",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "shown": {
+        "p25": 66.7,
+        "p50": 33.3,
+        "p75": 8.3
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Mike Gesicki",
+      "stat": "Receiving Yards",
+      "p25": 17.0,
+      "p50": 34.0,
+      "p75": 69.0,
+      "shown": {
+        "p25": 50.0,
+        "p50": 33.3,
+        "p75": 8.3
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "p25": 22.0,
+      "p50": 31.0,
+      "p75": 52.0,
+      "shown": {
+        "p25": 100.0,
+        "p50": 66.7,
+        "p75": 33.3
+      },
+      "gamelogLenAtSnapshot": 10,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Joe Burrow",
+      "stat": "Passing Yards",
+      "p25": 234.0,
+      "p50": 271.0,
+      "p75": 356.0,
+      "shown": {
+        "p25": 62.5,
+        "p50": 37.5,
+        "p75": 0.0
+      },
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "p25": 205.0,
+      "p50": 230.0,
+      "p75": 260.0,
+      "shown": {
+        "p25": 42.9,
+        "p50": 28.6,
+        "p75": 0.0
+      },
+      "gamelogLenAtSnapshot": 35,
+      "snapshotDate": "2026-11-24"
     }
   ],
   "graded": [
@@ -84645,6 +84645,510 @@
       "snapshotDate": "2026-11-19",
       "gradedDate": "2026-11-23",
       "shown": 10.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Ja'Marr Chase",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 5.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 68.8
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Ja'Marr Chase",
+      "stat": "Receptions",
+      "line": 7.0,
+      "actual": 5.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 56.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Ja'Marr Chase",
+      "stat": "Receptions",
+      "line": 9.0,
+      "actual": 5.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 37.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Ja'Marr Chase",
+      "stat": "Receiving Yards",
+      "line": 62.0,
+      "actual": 31.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 62.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Ja'Marr Chase",
+      "stat": "Receiving Yards",
+      "line": 86.0,
+      "actual": 31.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 62.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Ja'Marr Chase",
+      "stat": "Receiving Yards",
+      "line": 102.0,
+      "actual": 31.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 43.8
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Tee Higgins",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 46.7
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Tee Higgins",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 40.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Tee Higgins",
+      "stat": "Receptions",
+      "line": 8.0,
+      "actual": 2.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 0.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Tee Higgins",
+      "stat": "Receiving Yards",
+      "line": 56.0,
+      "actual": 43.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 53.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Tee Higgins",
+      "stat": "Receiving Yards",
+      "line": 73.0,
+      "actual": 43.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 26.7
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Tee Higgins",
+      "stat": "Receiving Yards",
+      "line": 84.0,
+      "actual": 43.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 20.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 4.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 42.9
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 4.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 42.9
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Stefon Diggs",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 4.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 33.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "line": 36.0,
+      "actual": 45.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 57.1
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "line": 73.0,
+      "actual": 45.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 23.8
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Stefon Diggs",
+      "stat": "Receiving Yards",
+      "line": 81.0,
+      "actual": 45.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 23.8
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Chase Brown",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 100.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Chase Brown",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 70.6
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Chase Brown",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 47.1
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Chase Brown",
+      "stat": "Rush Attempts",
+      "line": 11.0,
+      "actual": 6.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 76.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Chase Brown",
+      "stat": "Rush Attempts",
+      "line": 13.0,
+      "actual": 6.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 47.1
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Chase Brown",
+      "stat": "Rush Attempts",
+      "line": 18.0,
+      "actual": 6.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 23.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Chase Brown",
+      "stat": "Rush Yards",
+      "line": 43.0,
+      "actual": 6.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 64.7
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Chase Brown",
+      "stat": "Rush Yards",
+      "line": 60.0,
+      "actual": 6.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 47.1
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Chase Brown",
+      "stat": "Rush Yards",
+      "line": 81.0,
+      "actual": 6.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 23.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Mike Gesicki",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 66.7
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Mike Gesicki",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 33.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Mike Gesicki",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 8.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Mike Gesicki",
+      "stat": "Receiving Yards",
+      "line": 17.0,
+      "actual": 77.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 50.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Mike Gesicki",
+      "stat": "Receiving Yards",
+      "line": 34.0,
+      "actual": 77.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 33.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Mike Gesicki",
+      "stat": "Receiving Yards",
+      "line": 69.0,
+      "actual": 77.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 8.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "line": 21.0,
+      "actual": 122.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 100.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "line": 27.0,
+      "actual": 122.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 66.7
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Antonio Williams",
+      "stat": "Receiving Yards",
+      "line": 45.0,
+      "actual": 122.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 33.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Joe Burrow",
+      "stat": "Passing Yards",
+      "line": 234.0,
+      "actual": 300.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 62.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Joe Burrow",
+      "stat": "Passing Yards",
+      "line": 271.0,
+      "actual": 300.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 37.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Joe Burrow",
+      "stat": "Passing Yards",
+      "line": 356.0,
+      "actual": 300.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 0.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "line": 205.0,
+      "actual": 289.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 42.9
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "line": 230.0,
+      "actual": 289.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 28.6
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jayden Daniels",
+      "stat": "Passing Yards",
+      "line": 260.0,
+      "actual": 289.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-24",
+      "shown": 0.0
     }
   ],
   "summary": {
@@ -84659,19 +85163,19 @@
       "rate": 12.7
     },
     "nfl_p25": {
-      "graded": 1807,
-      "hits": 1222,
-      "rate": 67.6
+      "graded": 1821,
+      "hits": 1229,
+      "rate": 67.5
     },
     "nfl_p50": {
-      "graded": 1807,
-      "hits": 828,
+      "graded": 1821,
+      "hits": 834,
       "rate": 45.8
     },
     "nfl_p75": {
-      "graded": 1807,
-      "hits": 488,
-      "rate": 27.0
+      "graded": 1821,
+      "hits": 493,
+      "rate": 27.1
     }
   }
 }

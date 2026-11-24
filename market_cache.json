@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-24T05:40:03+00:00",
+ "lastRun": "2026-11-24T06:35:21+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 49.0
+       "pct": 50.0
       },
       {
        "name": "Dak Prescott",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-24T05:40:03+00:00",
+   "fetchedAt": "2026-11-24T06:35:21+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -83,21 +83,21 @@
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-24T05:40:03+00:00",
+   "fetchedAt": "2026-11-24T06:35:21+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-24T05:40:03+00:00",
+   "fetchedAt": "2026-11-24T06:35:21+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-24T05:40:03+00:00",
+   "fetchedAt": "2026-11-24T06:35:21+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -144,7 +144,7 @@
     }
    ],
    "fetchedAt": "2026-11-24T05:40:03+00:00",
-   "stale": false
+   "stale": true
   }
  }
 }
