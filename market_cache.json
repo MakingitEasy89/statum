@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-24T23:39:15+00:00",
+ "lastRun": "2026-11-25T11:07:44+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,11 +10,11 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 74.0
+       "pct": 73.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 12.0
+       "pct": 8.0
       },
       {
        "name": "Ja'Marr Chase",
@@ -30,15 +30,15 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 62.0
+       "pct": 63.0
       },
       {
        "name": "Dak Prescott",
-       "pct": 17.0
+       "pct": 12.0
       },
       {
        "name": "Jordan Love",
-       "pct": 7.0
+       "pct": 6.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-24T23:39:15+00:00",
+   "fetchedAt": "2026-11-25T11:07:44+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -79,25 +79,25 @@
     "Los Angeles": 2.0,
     "Indiana": 11.0,
     "Houston": 1.0,
-    "Golden State": 35.0,
+    "Golden State": 32.0,
     "Dallas": 16.0,
     "Atlanta": 16.0
    },
-   "fetchedAt": "2026-11-24T23:39:15+00:00",
+   "fetchedAt": "2026-11-25T11:07:44+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-24T23:39:15+00:00",
+   "fetchedAt": "2026-11-25T11:07:44+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-24T23:39:15+00:00",
+   "fetchedAt": "2026-11-25T11:07:44+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -105,20 +105,20 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 35.0,
+     "price": 32.0,
      "depth": null,
      "flow": {
-      "totalVolume": 1329.12,
-      "latestOI": 2557.35,
-      "oiChange": 1020.9399999999998,
+      "totalVolume": 1834.11,
+      "latestOI": 2756.34,
+      "oiChange": 1214.93,
       "oiSeries": [
-       1536.41,
        1541.41,
        1512.99,
        1505.63,
        1505.63,
        1493.82,
-       2557.35
+       2557.35,
+       2756.34
       ]
      }
     },
@@ -128,14 +128,14 @@
      "price": 16.0,
      "depth": null,
      "flow": {
-      "totalVolume": 229.56,
+      "totalVolume": 175.0,
       "latestOI": 223.59,
-      "oiChange": 122.59,
+      "oiChange": 8.47999999999999,
       "oiSeries": [
-       101.0,
        215.11,
        215.11,
        215.11,
+       223.59,
        223.59
       ]
      }
@@ -155,13 +155,13 @@
        79.0,
        79.0,
        79.0,
-       79.0,
+       85.18,
        85.18
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-24T23:39:15+00:00",
+   "fetchedAt": "2026-11-25T11:07:44+00:00",
    "stale": false
   }
  }
