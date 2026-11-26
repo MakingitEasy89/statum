@@ -5933,36 +5933,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Tucker Kraft",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 3.0,
-      "p75": 4.0,
-      "shown": {
-        "p25": 100.0,
-        "p50": 62.5,
-        "p75": 50.0
-      },
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Tucker Kraft",
-      "stat": "Receiving Yards",
-      "p25": 26.0,
-      "p50": 35.0,
-      "p75": 54.0,
-      "shown": {
-        "p25": 75.0,
-        "p50": 62.5,
-        "p75": 50.0
-      },
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
       "player": "Demarcus Robinson",
       "stat": "Receiving Yards",
       "p25": 12.0,
@@ -6019,51 +5989,6 @@
         "p75": 17.6
       },
       "gamelogLenAtSnapshot": 41,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Kyren Williams",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 2.0,
-      "p75": 3.0,
-      "shown": {
-        "p25": 90.0,
-        "p50": 70.0,
-        "p75": 30.0
-      },
-      "gamelogLenAtSnapshot": 48,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Kyren Williams",
-      "stat": "Rush Attempts",
-      "p25": 15.0,
-      "p50": 19.0,
-      "p75": 22.0,
-      "shown": {
-        "p25": 35.0,
-        "p50": 20.0,
-        "p75": 10.0
-      },
-      "gamelogLenAtSnapshot": 48,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Kyren Williams",
-      "stat": "Rush Yards",
-      "p25": 69.0,
-      "p50": 86.0,
-      "p75": 100.0,
-      "shown": {
-        "p25": 55.0,
-        "p50": 25.0,
-        "p75": 5.0
-      },
-      "gamelogLenAtSnapshot": 48,
       "snapshotDate": "2026-11-19"
     },
     {
@@ -6578,21 +6503,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Matthew Stafford",
-      "stat": "Passing Yards",
-      "p25": 194.0,
-      "p50": 233.0,
-      "p75": 294.0,
-      "shown": {
-        "p25": 85.0,
-        "p50": 80.0,
-        "p75": 35.0
-      },
-      "gamelogLenAtSnapshot": 48,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
       "player": "Drake Maye",
       "stat": "Passing Yards",
       "p25": 117.0,
@@ -6604,21 +6514,6 @@
         "p75": 66.7
       },
       "gamelogLenAtSnapshot": 44,
-      "snapshotDate": "2026-11-19"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jordan Love",
-      "stat": "Passing Yards",
-      "p25": 193.0,
-      "p50": 222.0,
-      "p75": 260.0,
-      "shown": {
-        "p25": 56.2,
-        "p50": 56.2,
-        "p75": 37.5
-      },
-      "gamelogLenAtSnapshot": 42,
       "snapshotDate": "2026-11-19"
     },
     {
@@ -10192,6 +10087,111 @@
       },
       "gamelogLenAtSnapshot": 35,
       "snapshotDate": "2026-11-24"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tucker Kraft",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "shown": {
+        "p25": 100.0,
+        "p50": 62.5,
+        "p75": 50.0
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tucker Kraft",
+      "stat": "Receiving Yards",
+      "p25": 26.0,
+      "p50": 35.0,
+      "p75": 54.0,
+      "shown": {
+        "p25": 75.0,
+        "p50": 62.5,
+        "p75": 50.0
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyren Williams",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "shown": {
+        "p25": 90.0,
+        "p50": 70.0,
+        "p75": 30.0
+      },
+      "gamelogLenAtSnapshot": 49,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyren Williams",
+      "stat": "Rush Attempts",
+      "p25": 15.0,
+      "p50": 19.0,
+      "p75": 22.0,
+      "shown": {
+        "p25": 35.0,
+        "p50": 20.0,
+        "p75": 10.0
+      },
+      "gamelogLenAtSnapshot": 49,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kyren Williams",
+      "stat": "Rush Yards",
+      "p25": 69.0,
+      "p50": 86.0,
+      "p75": 100.0,
+      "shown": {
+        "p25": 55.0,
+        "p50": 25.0,
+        "p75": 5.0
+      },
+      "gamelogLenAtSnapshot": 49,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Matthew Stafford",
+      "stat": "Passing Yards",
+      "p25": 194.0,
+      "p50": 233.0,
+      "p75": 294.0,
+      "shown": {
+        "p25": 85.0,
+        "p50": 80.0,
+        "p75": 35.0
+      },
+      "gamelogLenAtSnapshot": 49,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jordan Love",
+      "stat": "Passing Yards",
+      "p25": 193.0,
+      "p50": 222.0,
+      "p75": 260.0,
+      "shown": {
+        "p25": 56.2,
+        "p50": 56.2,
+        "p75": 37.5
+      },
+      "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-26"
     }
   ],
   "graded": [
@@ -85175,6 +85175,258 @@
       "hit": false,
       "snapshotDate": "2026-11-01",
       "gradedDate": "2026-11-25"
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Tucker Kraft",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 100.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Tucker Kraft",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 62.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Tucker Kraft",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 3.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 50.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Tucker Kraft",
+      "stat": "Receiving Yards",
+      "line": 26.0,
+      "actual": 24.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 75.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Tucker Kraft",
+      "stat": "Receiving Yards",
+      "line": 35.0,
+      "actual": 24.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 62.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Tucker Kraft",
+      "stat": "Receiving Yards",
+      "line": 54.0,
+      "actual": 24.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 50.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Kyren Williams",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 90.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Kyren Williams",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 70.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Kyren Williams",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 30.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Kyren Williams",
+      "stat": "Rush Attempts",
+      "line": 15.0,
+      "actual": 12.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 35.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Kyren Williams",
+      "stat": "Rush Attempts",
+      "line": 19.0,
+      "actual": 12.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 20.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Kyren Williams",
+      "stat": "Rush Attempts",
+      "line": 22.0,
+      "actual": 12.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 10.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Kyren Williams",
+      "stat": "Rush Yards",
+      "line": 69.0,
+      "actual": 46.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 55.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Kyren Williams",
+      "stat": "Rush Yards",
+      "line": 86.0,
+      "actual": 46.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 25.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Kyren Williams",
+      "stat": "Rush Yards",
+      "line": 100.0,
+      "actual": 46.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 5.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Matthew Stafford",
+      "stat": "Passing Yards",
+      "line": 194.0,
+      "actual": 140.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 85.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Matthew Stafford",
+      "stat": "Passing Yards",
+      "line": 233.0,
+      "actual": 140.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 80.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Matthew Stafford",
+      "stat": "Passing Yards",
+      "line": 294.0,
+      "actual": 140.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 35.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jordan Love",
+      "stat": "Passing Yards",
+      "line": 193.0,
+      "actual": 198.0,
+      "hit": true,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 56.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jordan Love",
+      "stat": "Passing Yards",
+      "line": 222.0,
+      "actual": 198.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 56.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jordan Love",
+      "stat": "Passing Yards",
+      "line": 260.0,
+      "actual": 198.0,
+      "hit": false,
+      "snapshotDate": "2026-11-19",
+      "gradedDate": "2026-11-26",
+      "shown": 37.5
     }
   ],
   "summary": {
@@ -85189,19 +85441,19 @@
       "rate": 12.7
     },
     "nfl_p25": {
-      "graded": 1821,
-      "hits": 1229,
-      "rate": 67.5
+      "graded": 1828,
+      "hits": 1232,
+      "rate": 67.4
     },
     "nfl_p50": {
-      "graded": 1821,
-      "hits": 834,
-      "rate": 45.8
+      "graded": 1828,
+      "hits": 836,
+      "rate": 45.7
     },
     "nfl_p75": {
-      "graded": 1821,
-      "hits": 493,
-      "rate": 27.1
+      "graded": 1828,
+      "hits": 494,
+      "rate": 27.0
     }
   }
 }

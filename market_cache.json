@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-26T03:57:10+00:00",
+ "lastRun": "2026-11-26T10:42:01+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,7 +10,7 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 80.0
+       "pct": 76.0
       },
       {
        "name": "CeeDee Lamb",
@@ -30,7 +30,7 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 31.0
+       "pct": 57.0
       },
       {
        "name": "Dak Prescott",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-26T03:57:10+00:00",
+   "fetchedAt": "2026-11-26T10:42:01+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -79,25 +79,25 @@
     "Los Angeles": 2.0,
     "Indiana": 11.0,
     "Houston": 1.0,
-    "Golden State": 22.0,
+    "Golden State": 32.0,
     "Dallas": 16.0,
     "Atlanta": 12.0
    },
-   "fetchedAt": "2026-11-26T03:57:10+00:00",
+   "fetchedAt": "2026-11-26T10:42:01+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-26T03:57:10+00:00",
+   "fetchedAt": "2026-11-26T10:42:01+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-26T03:57:10+00:00",
+   "fetchedAt": "2026-11-26T10:42:01+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -105,38 +105,20 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 22.0,
+     "price": 32.0,
      "depth": null,
      "flow": {
-      "totalVolume": 1834.11,
-      "latestOI": 2756.34,
-      "oiChange": 1214.93,
+      "totalVolume": 2074.7,
+      "latestOI": 2737.49,
+      "oiChange": 1224.4999999999998,
       "oiSeries": [
-       1541.41,
        1512.99,
        1505.63,
        1505.63,
        1493.82,
        2557.35,
-       2756.34
-      ]
-     }
-    },
-    {
-     "ticker": "KXWNBA-27-LV",
-     "name": "Las Vegas",
-     "price": 16.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 175.0,
-      "latestOI": 223.59,
-      "oiChange": 8.47999999999999,
-      "oiSeries": [
-       215.11,
-       215.11,
-       215.11,
-       223.59,
-       223.59
+       2756.34,
+       2737.49
       ]
      }
     },
@@ -154,14 +136,14 @@
        79.0,
        79.0,
        79.0,
-       79.0,
+       85.18,
        85.18,
        85.18
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-26T03:57:10+00:00",
+   "fetchedAt": "2026-11-26T10:42:01+00:00",
    "stale": false
   }
  }
