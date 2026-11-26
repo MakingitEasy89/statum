@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-26T10:42:01+00:00",
+ "lastRun": "2026-11-26T23:04:46+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -14,7 +14,7 @@
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 8.0
+       "pct": 9.0
       },
       {
        "name": "Tee Higgins",
@@ -34,11 +34,11 @@
       },
       {
        "name": "Dak Prescott",
-       "pct": 15.0
+       "pct": 26.0
       },
       {
-       "name": "Jordan Love",
-       "pct": 5.0
+       "name": "Kirk Cousins",
+       "pct": 13.0
       }
      ],
      "totalMarkets": 29
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-26T10:42:01+00:00",
+   "fetchedAt": "2026-11-26T23:04:46+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -74,7 +74,7 @@
     "Phoenix": 1.0,
     "Portland": 2.0,
     "New York": 11.0,
-    "Minnesota": 14.0,
+    "Minnesota": 20.0,
     "Las Vegas": 16.0,
     "Los Angeles": 2.0,
     "Indiana": 11.0,
@@ -83,21 +83,21 @@
     "Dallas": 16.0,
     "Atlanta": 12.0
    },
-   "fetchedAt": "2026-11-26T10:42:01+00:00",
+   "fetchedAt": "2026-11-26T23:04:46+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-26T10:42:01+00:00",
+   "fetchedAt": "2026-11-26T23:04:46+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-26T10:42:01+00:00",
+   "fetchedAt": "2026-11-26T23:04:46+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -123,27 +123,44 @@
      }
     },
     {
-     "ticker": "KXWNBA-27-DAL",
-     "name": "Dallas",
+     "ticker": "KXWNBA-27-MIN",
+     "name": "Minnesota",
+     "price": 20.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 18.04,
+      "latestOI": 125.59,
+      "oiChange": 4.02000000000001,
+      "oiSeries": [
+       121.57,
+       125.59,
+       125.59,
+       125.59,
+       125.59,
+       125.59
+      ]
+     }
+    },
+    {
+     "ticker": "KXWNBA-27-LV",
+     "name": "Las Vegas",
      "price": 16.0,
      "depth": null,
      "flow": {
-      "totalVolume": 6.18,
-      "latestOI": 85.18,
-      "oiChange": 6.180000000000007,
+      "totalVolume": 45.93,
+      "latestOI": 223.59,
+      "oiChange": 8.47999999999999,
       "oiSeries": [
-       79.0,
-       79.0,
-       79.0,
-       79.0,
-       85.18,
-       85.18,
-       85.18
+       215.11,
+       215.11,
+       223.59,
+       223.59,
+       223.59
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-26T10:42:01+00:00",
+   "fetchedAt": "2026-11-26T23:04:46+00:00",
    "stale": false
   }
  }

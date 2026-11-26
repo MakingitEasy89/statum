@@ -6850,36 +6850,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Amon-Ra St. Brown",
-      "stat": "Receptions",
-      "p25": 5.0,
-      "p50": 6.0,
-      "p75": 8.0,
-      "shown": {
-        "p25": 76.5,
-        "p50": 70.6,
-        "p75": 47.1
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Amon-Ra St. Brown",
-      "stat": "Receiving Yards",
-      "p25": 47.0,
-      "p50": 71.0,
-      "p75": 109.0,
-      "shown": {
-        "p25": 82.4,
-        "p50": 52.9,
-        "p75": 23.5
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
       "player": "Trey McBride",
       "stat": "Receptions",
       "p25": 4.0,
@@ -7120,36 +7090,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Rome Odunze",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 3.0,
-      "p75": 5.0,
-      "shown": {
-        "p25": 92.9,
-        "p50": 50.0,
-        "p75": 28.6
-      },
-      "gamelogLenAtSnapshot": 41,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Rome Odunze",
-      "stat": "Receiving Yards",
-      "p25": 23.0,
-      "p50": 39.0,
-      "p75": 42.0,
-      "shown": {
-        "p25": 85.7,
-        "p50": 71.4,
-        "p75": 64.3
-      },
-      "gamelogLenAtSnapshot": 41,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
       "player": "Chris Olave",
       "stat": "Receptions",
       "p25": 1.0,
@@ -7176,36 +7116,6 @@
         "p75": 31.2
       },
       "gamelogLenAtSnapshot": 34,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jameson Williams",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 4.0,
-      "p75": 5.0,
-      "shown": {
-        "p25": 82.4,
-        "p50": 58.8,
-        "p75": 41.2
-      },
-      "gamelogLenAtSnapshot": 43,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jameson Williams",
-      "stat": "Receiving Yards",
-      "p25": 32.0,
-      "p50": 58.0,
-      "p75": 80.0,
-      "shown": {
-        "p25": 76.5,
-        "p50": 58.8,
-        "p75": 35.3
-      },
-      "gamelogLenAtSnapshot": 43,
       "snapshotDate": "2026-11-23"
     },
     {
@@ -7330,66 +7240,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Jahmyr Gibbs",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 3.0,
-      "p75": 4.0,
-      "shown": {
-        "p25": 100.0,
-        "p50": 76.5,
-        "p75": 41.2
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jahmyr Gibbs",
-      "stat": "Receiving Yards",
-      "p25": 12.0,
-      "p50": 30.0,
-      "p75": 44.0,
-      "shown": {
-        "p25": 76.5,
-        "p50": 58.8,
-        "p75": 29.4
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jahmyr Gibbs",
-      "stat": "Rush Attempts",
-      "p25": 11.0,
-      "p50": 14.0,
-      "p75": 17.0,
-      "shown": {
-        "p25": 82.4,
-        "p50": 52.9,
-        "p75": 35.3
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Jahmyr Gibbs",
-      "stat": "Rush Yards",
-      "p25": 66.0,
-      "p50": 83.0,
-      "p75": 108.0,
-      "shown": {
-        "p25": 47.1,
-        "p50": 29.4,
-        "p75": 17.6
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
       "player": "Dallas Goedert",
       "stat": "Receiving Yards",
       "p25": 28.0,
@@ -7476,36 +7326,6 @@
         "p75": 12.5
       },
       "gamelogLenAtSnapshot": 44,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Sam LaPorta",
-      "stat": "Receptions",
-      "p25": 2.0,
-      "p50": 4.0,
-      "p75": 6.0,
-      "shown": {
-        "p25": 100.0,
-        "p50": 66.7,
-        "p75": 22.2
-      },
-      "gamelogLenAtSnapshot": 36,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Sam LaPorta",
-      "stat": "Receiving Yards",
-      "p25": 28.0,
-      "p50": 48.0,
-      "p75": 54.0,
-      "shown": {
-        "p25": 77.8,
-        "p50": 55.6,
-        "p75": 44.4
-      },
-      "gamelogLenAtSnapshot": 36,
       "snapshotDate": "2026-11-23"
     },
     {
@@ -7776,51 +7596,6 @@
         "p75": 0.0
       },
       "gamelogLenAtSnapshot": 35,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "D'Andre Swift",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 2.0,
-      "p75": 4.0,
-      "shown": {
-        "p25": 88.9,
-        "p50": 61.1,
-        "p75": 11.1
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "D'Andre Swift",
-      "stat": "Rush Attempts",
-      "p25": 13.0,
-      "p50": 14.0,
-      "p75": 17.0,
-      "shown": {
-        "p25": 72.2,
-        "p50": 44.4,
-        "p75": 33.3
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "D'Andre Swift",
-      "stat": "Rush Yards",
-      "p25": 30.0,
-      "p50": 53.0,
-      "p75": 73.0,
-      "shown": {
-        "p25": 94.4,
-        "p50": 72.2,
-        "p75": 38.9
-      },
-      "gamelogLenAtSnapshot": 45,
       "snapshotDate": "2026-11-23"
     },
     {
@@ -8230,21 +8005,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Tyler Conklin",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 3.0,
-      "p75": 4.0,
-      "shown": {
-        "p25": 83.3,
-        "p50": 0.0,
-        "p75": 0.0
-      },
-      "gamelogLenAtSnapshot": 26,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
       "player": "Tommy Tremble",
       "stat": "Receptions",
       "p25": 1.0,
@@ -8331,21 +8091,6 @@
         "p75": 50.0
       },
       "gamelogLenAtSnapshot": 8,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Kalif Raymond",
-      "stat": "Receptions",
-      "p25": 1.0,
-      "p50": 2.0,
-      "p75": 3.0,
-      "shown": {
-        "p25": 91.7,
-        "p50": 58.3,
-        "p75": 33.3
-      },
-      "gamelogLenAtSnapshot": 33,
       "snapshotDate": "2026-11-23"
     },
     {
@@ -8560,21 +8305,6 @@
     },
     {
       "sport": "nfl",
-      "player": "Jared Goff",
-      "stat": "Passing Yards",
-      "p25": 223.0,
-      "p50": 281.0,
-      "p75": 311.0,
-      "shown": {
-        "p25": 76.5,
-        "p50": 41.2,
-        "p75": 29.4
-      },
-      "gamelogLenAtSnapshot": 45,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
       "player": "Josh Allen",
       "stat": "Passing Yards",
       "p25": 167.0,
@@ -8614,21 +8344,6 @@
         "p25": 78.6,
         "p50": 64.3,
         "p75": 28.6
-      },
-      "gamelogLenAtSnapshot": 43,
-      "snapshotDate": "2026-11-23"
-    },
-    {
-      "sport": "nfl",
-      "player": "Caleb Williams",
-      "stat": "Passing Yards",
-      "p25": 134.0,
-      "p50": 191.0,
-      "p75": 256.0,
-      "shown": {
-        "p25": 100.0,
-        "p50": 84.2,
-        "p75": 31.6
       },
       "gamelogLenAtSnapshot": 43,
       "snapshotDate": "2026-11-23"
@@ -10191,6 +9906,291 @@
         "p75": 37.5
       },
       "gamelogLenAtSnapshot": 43,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receptions",
+      "p25": 5.0,
+      "p50": 6.0,
+      "p75": 8.0,
+      "shown": {
+        "p25": 76.5,
+        "p50": 70.6,
+        "p75": 47.1
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receiving Yards",
+      "p25": 47.0,
+      "p50": 71.0,
+      "p75": 109.0,
+      "shown": {
+        "p25": 82.4,
+        "p50": 52.9,
+        "p75": 23.5
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 3.0,
+      "p75": 5.0,
+      "shown": {
+        "p25": 92.9,
+        "p50": 50.0,
+        "p75": 28.6
+      },
+      "gamelogLenAtSnapshot": 42,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "p25": 23.0,
+      "p50": 39.0,
+      "p75": 42.0,
+      "shown": {
+        "p25": 85.7,
+        "p50": 71.4,
+        "p75": 64.3
+      },
+      "gamelogLenAtSnapshot": 42,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jameson Williams",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 5.0,
+      "shown": {
+        "p25": 82.4,
+        "p50": 58.8,
+        "p75": 41.2
+      },
+      "gamelogLenAtSnapshot": 44,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jameson Williams",
+      "stat": "Receiving Yards",
+      "p25": 32.0,
+      "p50": 58.0,
+      "p75": 80.0,
+      "shown": {
+        "p25": 76.5,
+        "p50": 58.8,
+        "p75": 35.3
+      },
+      "gamelogLenAtSnapshot": 44,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "shown": {
+        "p25": 100.0,
+        "p50": 76.5,
+        "p75": 41.2
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receiving Yards",
+      "p25": 12.0,
+      "p50": 30.0,
+      "p75": 44.0,
+      "shown": {
+        "p25": 76.5,
+        "p50": 58.8,
+        "p75": 29.4
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Attempts",
+      "p25": 11.0,
+      "p50": 14.0,
+      "p75": 17.0,
+      "shown": {
+        "p25": 82.4,
+        "p50": 52.9,
+        "p75": 35.3
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Yards",
+      "p25": 66.0,
+      "p50": 83.0,
+      "p75": 108.0,
+      "shown": {
+        "p25": 47.1,
+        "p50": 29.4,
+        "p75": 17.6
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam LaPorta",
+      "stat": "Receptions",
+      "p25": 2.0,
+      "p50": 4.0,
+      "p75": 6.0,
+      "shown": {
+        "p25": 100.0,
+        "p50": 66.7,
+        "p75": 22.2
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Sam LaPorta",
+      "stat": "Receiving Yards",
+      "p25": 28.0,
+      "p50": 48.0,
+      "p75": 54.0,
+      "shown": {
+        "p25": 77.8,
+        "p50": 55.6,
+        "p75": 44.4
+      },
+      "gamelogLenAtSnapshot": 37,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "shown": {
+        "p25": 88.9,
+        "p50": 61.1,
+        "p75": 11.1
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "p25": 13.0,
+      "p50": 14.0,
+      "p75": 17.0,
+      "shown": {
+        "p25": 72.2,
+        "p50": 44.4,
+        "p75": 33.3
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "p25": 30.0,
+      "p50": 53.0,
+      "p75": 73.0,
+      "shown": {
+        "p25": 94.4,
+        "p50": 72.2,
+        "p75": 38.9
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Tyler Conklin",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 3.0,
+      "p75": 4.0,
+      "shown": {
+        "p25": 83.3,
+        "p50": 0.0,
+        "p75": 0.0
+      },
+      "gamelogLenAtSnapshot": 27,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "shown": {
+        "p25": 91.7,
+        "p50": 58.3,
+        "p75": 33.3
+      },
+      "gamelogLenAtSnapshot": 34,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Jared Goff",
+      "stat": "Passing Yards",
+      "p25": 223.0,
+      "p50": 281.0,
+      "p75": 311.0,
+      "shown": {
+        "p25": 76.5,
+        "p50": 41.2,
+        "p75": 29.4
+      },
+      "gamelogLenAtSnapshot": 46,
+      "snapshotDate": "2026-11-26"
+    },
+    {
+      "sport": "nfl",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "p25": 134.0,
+      "p50": 191.0,
+      "p75": 256.0,
+      "shown": {
+        "p25": 100.0,
+        "p50": 84.2,
+        "p75": 31.6
+      },
+      "gamelogLenAtSnapshot": 44,
       "snapshotDate": "2026-11-26"
     }
   ],
@@ -85427,6 +85427,690 @@
       "snapshotDate": "2026-11-19",
       "gradedDate": "2026-11-26",
       "shown": 37.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 7.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 76.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 7.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 70.6
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receptions",
+      "line": 8.0,
+      "actual": 7.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 47.1
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receiving Yards",
+      "line": 47.0,
+      "actual": 148.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 82.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receiving Yards",
+      "line": 71.0,
+      "actual": 148.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 52.9
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Amon-Ra St. Brown",
+      "stat": "Receiving Yards",
+      "line": 109.0,
+      "actual": 148.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 23.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 6.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 92.9
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 6.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 50.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Rome Odunze",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 6.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 28.6
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "line": 23.0,
+      "actual": 87.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 85.7
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "line": 39.0,
+      "actual": 87.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 71.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Rome Odunze",
+      "stat": "Receiving Yards",
+      "line": 42.0,
+      "actual": 87.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 64.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jameson Williams",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 6.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 82.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jameson Williams",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 6.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 58.8
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jameson Williams",
+      "stat": "Receptions",
+      "line": 5.0,
+      "actual": 6.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 41.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jameson Williams",
+      "stat": "Receiving Yards",
+      "line": 32.0,
+      "actual": 59.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 76.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jameson Williams",
+      "stat": "Receiving Yards",
+      "line": 58.0,
+      "actual": 59.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 58.8
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jameson Williams",
+      "stat": "Receiving Yards",
+      "line": 80.0,
+      "actual": 59.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 35.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 100.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 76.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 5.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 41.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receiving Yards",
+      "line": 12.0,
+      "actual": 42.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 76.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receiving Yards",
+      "line": 30.0,
+      "actual": 42.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 58.8
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jahmyr Gibbs",
+      "stat": "Receiving Yards",
+      "line": 44.0,
+      "actual": 42.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 29.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Attempts",
+      "line": 11.0,
+      "actual": 21.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 82.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Attempts",
+      "line": 14.0,
+      "actual": 21.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 52.9
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Attempts",
+      "line": 17.0,
+      "actual": 21.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 35.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Yards",
+      "line": 66.0,
+      "actual": 205.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 47.1
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Yards",
+      "line": 83.0,
+      "actual": 205.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 29.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jahmyr Gibbs",
+      "stat": "Rush Yards",
+      "line": 108.0,
+      "actual": 205.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 17.6
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Sam LaPorta",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 100.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Sam LaPorta",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 4.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 66.7
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Sam LaPorta",
+      "stat": "Receptions",
+      "line": 6.0,
+      "actual": 4.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 22.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Sam LaPorta",
+      "stat": "Receiving Yards",
+      "line": 28.0,
+      "actual": 44.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 77.8
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Sam LaPorta",
+      "stat": "Receiving Yards",
+      "line": 48.0,
+      "actual": 44.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 55.6
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Sam LaPorta",
+      "stat": "Receiving Yards",
+      "line": 54.0,
+      "actual": 44.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 44.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 7.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 88.9
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 7.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 61.1
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "D'Andre Swift",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 7.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 11.1
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "line": 13.0,
+      "actual": 9.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 72.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "line": 14.0,
+      "actual": 9.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 44.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "D'Andre Swift",
+      "stat": "Rush Attempts",
+      "line": 17.0,
+      "actual": 9.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 33.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "line": 30.0,
+      "actual": 65.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 94.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "line": 53.0,
+      "actual": 65.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 72.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "D'Andre Swift",
+      "stat": "Rush Yards",
+      "line": 73.0,
+      "actual": 65.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 38.9
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Tyler Conklin",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 1.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 83.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Tyler Conklin",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 1.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 0.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Tyler Conklin",
+      "stat": "Receptions",
+      "line": 4.0,
+      "actual": 1.0,
+      "hit": false,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 0.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "line": 1.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 91.7
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "line": 2.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 58.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Kalif Raymond",
+      "stat": "Receptions",
+      "line": 3.0,
+      "actual": 3.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 33.3
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Jared Goff",
+      "stat": "Passing Yards",
+      "line": 223.0,
+      "actual": 313.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 76.5
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Jared Goff",
+      "stat": "Passing Yards",
+      "line": 281.0,
+      "actual": 313.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 41.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Jared Goff",
+      "stat": "Passing Yards",
+      "line": 311.0,
+      "actual": 313.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 29.4
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p25",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "line": 134.0,
+      "actual": 345.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 100.0
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p50",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "line": 191.0,
+      "actual": 345.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 84.2
+    },
+    {
+      "sport": "nfl",
+      "tranche": "p75",
+      "player": "Caleb Williams",
+      "stat": "Passing Yards",
+      "line": 256.0,
+      "actual": 345.0,
+      "hit": true,
+      "snapshotDate": "2026-11-23",
+      "gradedDate": "2026-11-26",
+      "shown": 31.6
     }
   ],
   "summary": {
@@ -85441,19 +86125,19 @@
       "rate": 12.7
     },
     "nfl_p25": {
-      "graded": 1828,
-      "hits": 1232,
-      "rate": 67.4
+      "graded": 1847,
+      "hits": 1250,
+      "rate": 67.7
     },
     "nfl_p50": {
-      "graded": 1828,
-      "hits": 836,
-      "rate": 45.7
+      "graded": 1847,
+      "hits": 852,
+      "rate": 46.1
     },
     "nfl_p75": {
-      "graded": 1828,
-      "hits": 494,
-      "rate": 27.0
+      "graded": 1847,
+      "hits": 505,
+      "rate": 27.3
     }
   }
 }
