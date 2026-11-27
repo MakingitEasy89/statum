@@ -4764,51 +4764,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401866473,
-      "homeTeam": "Ohio",
-      "awayTeam": "Toledo",
-      "predictedMargin": 0.9,
-      "predictedTotal": 51.3,
-      "snapshotDate": "2026-11-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401866472,
-      "homeTeam": "Akron",
-      "awayTeam": "Buffalo",
-      "predictedMargin": 2.8,
-      "predictedTotal": 49.5,
-      "snapshotDate": "2026-11-04"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401862840,
-      "homeTeam": "UTSA",
-      "awayTeam": "Tulsa",
-      "predictedMargin": 17.5,
-      "predictedTotal": 57.3,
-      "snapshotDate": "2026-11-05"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401858536,
-      "homeTeam": "Iowa",
-      "awayTeam": "Nebraska",
-      "predictedMargin": 14.8,
-      "predictedTotal": 46.7,
-      "snapshotDate": "2026-11-05"
-    },
-    {
-      "sport": "cfb",
-      "gameId": 401856762,
-      "homeTeam": "Ole Miss",
-      "awayTeam": "Mississippi State",
-      "predictedMargin": 26.1,
-      "predictedTotal": 58.2,
-      "snapshotDate": "2026-11-05"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401869930,
       "homeTeam": "South Alabama",
       "awayTeam": "App State",
@@ -87621,18 +87576,128 @@
       "snapshotDate": "2026-11-23",
       "gradedDate": "2026-11-27",
       "shown": 35.3
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Toledo @ Ohio",
+      "stat": "winner",
+      "line": 0.9,
+      "actual": -3,
+      "hit": false,
+      "snapshotDate": "2026-11-04",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Toledo @ Ohio",
+      "stat": "total_within3",
+      "line": 51.3,
+      "actual": 65,
+      "hit": false,
+      "snapshotDate": "2026-11-04",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Buffalo @ Akron",
+      "stat": "winner",
+      "line": 2.8,
+      "actual": -8,
+      "hit": false,
+      "snapshotDate": "2026-11-04",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Buffalo @ Akron",
+      "stat": "total_within3",
+      "line": 49.5,
+      "actual": 26,
+      "hit": false,
+      "snapshotDate": "2026-11-04",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Tulsa @ UTSA",
+      "stat": "winner",
+      "line": 17.5,
+      "actual": 6,
+      "hit": true,
+      "snapshotDate": "2026-11-05",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Tulsa @ UTSA",
+      "stat": "total_within3",
+      "line": 57.3,
+      "actual": 50,
+      "hit": false,
+      "snapshotDate": "2026-11-05",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Nebraska @ Iowa",
+      "stat": "winner",
+      "line": 14.8,
+      "actual": 24,
+      "hit": true,
+      "snapshotDate": "2026-11-05",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Nebraska @ Iowa",
+      "stat": "total_within3",
+      "line": 46.7,
+      "actual": 38,
+      "hit": false,
+      "snapshotDate": "2026-11-05",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "Mississippi State @ Ole Miss",
+      "stat": "winner",
+      "line": 26.1,
+      "actual": 24,
+      "hit": true,
+      "snapshotDate": "2026-11-05",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "Mississippi State @ Ole Miss",
+      "stat": "total_within3",
+      "line": 58.2,
+      "actual": 58,
+      "hit": true,
+      "snapshotDate": "2026-11-05",
+      "gradedDate": "2026-11-27"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 609,
-      "hits": 401,
+      "graded": 614,
+      "hits": 404,
       "rate": 65.8
     },
     "cfb_total_within3": {
-      "graded": 609,
-      "hits": 77,
-      "rate": 12.6
+      "graded": 614,
+      "hits": 78,
+      "rate": 12.7
     },
     "nfl_p25": {
       "graded": 1888,
