@@ -4657,15 +4657,6 @@
     },
     {
       "sport": "cfb",
-      "gameId": 401856879,
-      "homeTeam": "Texas Tech",
-      "awayTeam": "TCU",
-      "predictedMargin": 28.8,
-      "predictedTotal": 51.6,
-      "snapshotDate": "2026-11-01"
-    },
-    {
-      "sport": "cfb",
       "gameId": 401862837,
       "homeTeam": "East Carolina",
       "awayTeam": "Florida Atlantic",
@@ -86111,18 +86102,40 @@
       "snapshotDate": "2026-11-23",
       "gradedDate": "2026-11-26",
       "shown": 31.6
+    },
+    {
+      "sport": "cfb",
+      "tranche": "winner",
+      "player": "TCU @ Texas Tech",
+      "stat": "winner",
+      "line": 28.8,
+      "actual": 21,
+      "hit": true,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-27"
+    },
+    {
+      "sport": "cfb",
+      "tranche": "total_within3",
+      "player": "TCU @ Texas Tech",
+      "stat": "total_within3",
+      "line": 51.6,
+      "actual": 75,
+      "hit": false,
+      "snapshotDate": "2026-11-01",
+      "gradedDate": "2026-11-27"
     }
   ],
   "summary": {
     "cfb_winner": {
-      "graded": 608,
-      "hits": 400,
+      "graded": 609,
+      "hits": 401,
       "rate": 65.8
     },
     "cfb_total_within3": {
-      "graded": 608,
+      "graded": 609,
       "hits": 77,
-      "rate": 12.7
+      "rate": 12.6
     },
     "nfl_p25": {
       "graded": 1847,

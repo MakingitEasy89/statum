@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-26T23:04:46+00:00",
+ "lastRun": "2026-11-27T04:43:04+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -14,7 +14,7 @@
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 9.0
+       "pct": 17.0
       },
       {
        "name": "Tee Higgins",
@@ -30,11 +30,11 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 57.0
+       "pct": 60.0
       },
       {
        "name": "Dak Prescott",
-       "pct": 26.0
+       "pct": 18.0
       },
       {
        "name": "Kirk Cousins",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-26T23:04:46+00:00",
+   "fetchedAt": "2026-11-27T04:43:04+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -72,32 +72,32 @@
     "Washington": 3.0,
     "Seattle": 2.0,
     "Phoenix": 1.0,
-    "Portland": 2.0,
-    "New York": 11.0,
-    "Minnesota": 20.0,
+    "Portland": 1.0,
+    "New York": 7.0,
+    "Minnesota": 14.0,
     "Las Vegas": 16.0,
-    "Los Angeles": 2.0,
-    "Indiana": 11.0,
+    "Los Angeles": 1.0,
+    "Indiana": 5.0,
     "Houston": 1.0,
-    "Golden State": 32.0,
-    "Dallas": 16.0,
+    "Golden State": 41.0,
+    "Dallas": 3.0,
     "Atlanta": 12.0
    },
-   "fetchedAt": "2026-11-26T23:04:46+00:00",
+   "fetchedAt": "2026-11-27T04:43:04+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-26T23:04:46+00:00",
+   "fetchedAt": "2026-11-27T04:43:04+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-26T23:04:46+00:00",
+   "fetchedAt": "2026-11-27T04:43:04+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -105,7 +105,7 @@
     {
      "ticker": "KXWNBA-27-GS",
      "name": "Golden State",
-     "price": 32.0,
+     "price": 41.0,
      "depth": null,
      "flow": {
       "totalVolume": 2074.7,
@@ -119,25 +119,6 @@
        2557.35,
        2756.34,
        2737.49
-      ]
-     }
-    },
-    {
-     "ticker": "KXWNBA-27-MIN",
-     "name": "Minnesota",
-     "price": 20.0,
-     "depth": null,
-     "flow": {
-      "totalVolume": 18.04,
-      "latestOI": 125.59,
-      "oiChange": 4.02000000000001,
-      "oiSeries": [
-       121.57,
-       125.59,
-       125.59,
-       125.59,
-       125.59,
-       125.59
       ]
      }
     },
@@ -158,9 +139,28 @@
        223.59
       ]
      }
+    },
+    {
+     "ticker": "KXWNBA-27-MIN",
+     "name": "Minnesota",
+     "price": 14.0,
+     "depth": null,
+     "flow": {
+      "totalVolume": 18.04,
+      "latestOI": 125.59,
+      "oiChange": 4.02000000000001,
+      "oiSeries": [
+       121.57,
+       125.59,
+       125.59,
+       125.59,
+       125.59,
+       125.59
+      ]
+     }
     }
    ],
-   "fetchedAt": "2026-11-26T23:04:46+00:00",
+   "fetchedAt": "2026-11-27T04:43:04+00:00",
    "stale": false
   }
  }
