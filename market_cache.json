@@ -1,5 +1,5 @@
 {
- "lastRun": "2026-11-27T22:46:26+00:00",
+ "lastRun": "2026-11-28T10:02:29+00:00",
  "sections": {
   "nflLeaders": {
    "data": [
@@ -10,15 +10,15 @@
      "options": [
       {
        "name": "Jaxon Smith-Njigba",
-       "pct": 81.0
+       "pct": 80.0
       },
       {
        "name": "CeeDee Lamb",
-       "pct": 17.0
+       "pct": 14.0
       },
       {
        "name": "Ja'Marr Chase",
-       "pct": 3.0
+       "pct": 4.0
       }
      ],
      "totalMarkets": 29
@@ -30,11 +30,11 @@
      "options": [
       {
        "name": "Joe Burrow",
-       "pct": 30.0
+       "pct": 60.0
       },
       {
        "name": "Dak Prescott",
-       "pct": 17.0
+       "pct": 15.0
       },
       {
        "name": "Kirk Cousins",
@@ -64,7 +64,7 @@
      "totalMarkets": 34
     }
    ],
-   "fetchedAt": "2026-11-27T22:46:26+00:00",
+   "fetchedAt": "2026-11-28T10:02:29+00:00",
    "stale": false
   },
   "wnbaChampKalshi": {
@@ -83,21 +83,21 @@
     "Dallas": 3.0,
     "Atlanta": 12.0
    },
-   "fetchedAt": "2026-11-27T22:46:26+00:00",
+   "fetchedAt": "2026-11-28T10:02:29+00:00",
    "stale": false
   },
   "wnbaChampPoly": {
    "data": {
     "Golden State": 100.0
    },
-   "fetchedAt": "2026-11-27T22:46:26+00:00",
+   "fetchedAt": "2026-11-28T10:02:29+00:00",
    "stale": false
   },
   "mlbChampPoly": {
    "data": {
     "Milwaukee Brewers": 100.0
    },
-   "fetchedAt": "2026-11-27T22:46:26+00:00",
+   "fetchedAt": "2026-11-28T10:02:29+00:00",
    "stale": false
   },
   "wnbaDepthFlow": {
@@ -108,17 +108,17 @@
      "price": 38.0,
      "depth": null,
      "flow": {
-      "totalVolume": 2640.85,
-      "latestOI": 3372.06,
-      "oiChange": 1866.4299999999998,
+      "totalVolume": 2646.1,
+      "latestOI": 3384.67,
+      "oiChange": 1879.04,
       "oiSeries": [
-       1505.63,
        1505.63,
        1493.82,
        2557.35,
        2756.34,
        2737.49,
-       3372.06
+       3372.06,
+       3384.67
       ]
      }
     },
@@ -128,14 +128,14 @@
      "price": 16.0,
      "depth": null,
      "flow": {
-      "totalVolume": 85.39,
+      "totalVolume": 60.25,
       "latestOI": 263.05,
-      "oiChange": 47.94,
+      "oiChange": 39.46000000000001,
       "oiSeries": [
-       215.11,
        223.59,
        223.59,
        223.59,
+       263.05,
        263.05
       ]
      }
@@ -146,7 +146,7 @@
      "price": 14.0,
      "depth": null,
      "flow": {
-      "totalVolume": 62.5,
+      "totalVolume": 44.46,
       "latestOI": 170.05,
       "oiChange": 44.46000000000001,
       "oiSeries": [
@@ -154,13 +154,13 @@
        125.59,
        125.59,
        125.59,
-       125.59,
+       170.05,
        170.05
       ]
      }
     }
    ],
-   "fetchedAt": "2026-11-27T22:46:26+00:00",
+   "fetchedAt": "2026-11-28T10:02:29+00:00",
    "stale": false
   }
  }
